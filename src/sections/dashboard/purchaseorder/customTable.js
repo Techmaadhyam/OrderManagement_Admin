@@ -61,47 +61,47 @@ const tableHeader=[
     {
         id:'product_name',
         name:'Product Name',
-        width: 200,
+        width: 300,
     },
     {
         id:'quantity',
         name:'Quantity',
-        width: 200,
+        width: 300,
     },
     {
         id:'weight',
         name:'Weight',
-        width: 150,
+        width: 200,
     },
     {
         id:'cost',
         name:'Cost',
-        width: 150,
+        width: 200,
     },
     {
         id:'gst',
         name:'GST',
-        width: 150,
+        width: 200,
     },
     {
         id:'cgst',
         name:'CGST',
-        width: 150,
+        width: 200,
     },
     {
         id:'description',
         name:'Description',
-        width: 350,
+        width: 450,
     },
     {
         id:'add',
         name:'Add',
-        width: 50,
+        width: 30,
     },
     {
         id:'delete',
         name:'Delete',
-        width: 50,
+        width: 30,
     }
 ];
 const styles = theme => ({

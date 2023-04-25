@@ -155,7 +155,7 @@ const Page = () => {
               You can use <b>demo@devias.io</b> and password <b>Password123!</b>
             </div>
           </Alert>
-          <AuthIssuer issuer={issuer} />
+          {/* <AuthIssuer issuer={issuer} /> */}
         </Stack>
       </div>
     </>

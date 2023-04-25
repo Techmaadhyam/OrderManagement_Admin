@@ -14,9 +14,9 @@ const BlogPostDetailPage = lazy(() => import('src/pages/dashboard/blog/detail'))
 const BlogPostCreatePage = lazy(() => import('src/pages/dashboard/blog/create'));
 
 // PuchaseOrder
-const PuchaseOrderCreatePage = lazy(() => import('src/pages/dashboard/purchaseorder/edit'));
-const PuchaseOrderViewPage = lazy(() => import('src/pages/dashboard/purchaseorder/detail'));
-const PuchaseOrderInvoicePage = lazy(() => import('src/pages/dashboard/purchaseorder/list'));
+const PuchaseOrderCreatePage = lazy(() => import('src/pages/dashboard/purchaseorder/create'));
+const PuchaseOrderViewPage = lazy(() => import('src/pages/dashboard/purchaseorder/view'));
+const PuchaseOrderInvoicePage = lazy(() => import('src/pages/dashboard/purchaseorder/invoice'));
 
 // Invoice
 const InvoiceListPage = lazy(() => import('src/pages/dashboard/invoices/list'));

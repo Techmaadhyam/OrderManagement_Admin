@@ -222,8 +222,8 @@ export const PurchaseOrderCreateForm = (props) => {
               xs={12}
               md={6}
             >
-  <label style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'grey'}}>Delivery Date:</label>
-               <DatePicker height='50px'/>
+               <DatePicker placeholder="Delivery Date"
+height='50px'/>
             </Grid>
             <Grid
               xs={12}
@@ -296,7 +296,7 @@ export const PurchaseOrderCreateForm = (props) => {
         <Divider/>
       </Card>
     </form>
-    <CustomTable/>
+    <CustomTable regular={true}/>
     <Grid
               xs={12}
               md={6}
