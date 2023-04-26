@@ -30,6 +30,9 @@ import React from 'react';
 import { Input } from 'antd';
 import { Add, Delete } from '@mui/icons-material';
 import Grid from 'antd/es/card/Grid';
+import './customTable.css'
+import { primaryColor } from 'src/primaryColor';
+
 
 const userOptions = [
   {
@@ -61,47 +64,48 @@ const tableHeader=[
     {
         id:'product_name',
         name:'Product Name',
-        width: 300,
+        width: 200,
+        
     },
     {
         id:'quantity',
         name:'Quantity',
-        width: 300,
+        width: 200,
     },
     {
         id:'weight',
         name:'Weight',
-        width: 200,
+        width: 150,
     },
     {
         id:'cost',
         name:'Cost',
-        width: 200,
+        width: 150,
     },
     {
         id:'gst',
         name:'GST',
-        width: 200,
+        width: 150,
     },
     {
         id:'cgst',
         name:'CGST',
-        width: 200,
+        width: 150,
     },
     {
         id:'description',
         name:'Description',
-        width: 450,
+        width: 350,
     },
     {
         id:'add',
         name:'Add',
-        width: 30,
+        width: 50,
     },
     {
         id:'delete',
         name:'Delete',
-        width: 30,
+        width: 50,
     }
 ];
 const styles = theme => ({
@@ -116,12 +120,19 @@ const styles = theme => ({
 });
 
 class CustomTable extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-    rows:[{}]
- };
-}
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: '',
+      weight: '',
+      gst: '',
+      quantity: '',
+      cost: '',
+      cgst: '',
+      description: '',
+      rows: []
+    };
+  }
  handleChange = idx => e => {
     const {name, value} =e.target;
     const rows = {...this.state.row}
@@ -159,7 +170,44 @@ handleRemoveRow = idx =>() =>{
     rows.splice(idx,1);
     this.setState({rows});
 };
+
+toggleForm = () => {
+  this.setState((prevState) => ({
+    showForm: !prevState.showForm,
+  }));
+};
+
+handleModalClick = (event) => {
+  if (event.target.classList.contains('modal')) {
+    this.toggleForm();
+  }
+};
+
+handleSubmit = (e) => {
+  e.preventDefault();
+
+  //handle popup form data
+  const { name, weight, gst, quantity, cost, cgst, description } = this.state;
+  const newRow = { name, weight, gst, quantity, cost, cgst, description };
+  const newRows = [...this.state.rows, newRow];
+  this.setState({ rows: newRows });
+  this.setState({ showForm: false });
+
+  this.setState({
+    name: "",
+    weight: "",
+    gst: "",
+    quantity: "",
+    cost: "",
+    cgst: "",
+    description: "",
+    showForm: false,
+  });
+};
+
+
 render (){
+
     const {
         count = 0,
         items = [],
@@ -177,6 +225,144 @@ render (){
     return (
         <>
         <Box sx={{  position: 'relative' , overflowX: "auto"}}>    
+        <div className='purchase-popup'>
+        <button className='add-purchase' style={{background: `${primaryColor}`}} onClick={this.toggleForm}>Add Product</button>
+
+        {this.state.showForm && (
+          <div className="modal" onClick={this.handleModalClick}>
+            <div className="modal-content">
+              <h5 className='product-detail-heading'>Add Product Details</h5>
+              <form className='form'>
+             
+              <div className='form-row'>
+      
+               <div className='popup-left'>
+
+               <Grid
+              xs={12}
+              md={6}
+            >
+              <TextField
+                    fullWidth
+                    label="Name"
+                    name="name"
+                    select
+                    value={this.state.name}
+                    onChange={e => this.setState({ name: e.target.value })}
+                    style={{ marginBottom: 10 }}
+                  >
+                    {userOptions.map((option) => (
+                      <MenuItem
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+                <Grid
+              xs={12}
+              md={6}
+              >
+                  <TextField
+            
+                  fullWidth
+                  label="Weight"
+                  name="weight"
+                  value={this.state.weight}
+                  onChange={e => this.setState({ weight: e.target.value })}
+                  style={{ marginBottom: 10 }}
+              
+                />
+               </Grid>
+                <Grid
+                xs={12}
+                md={6}
+                >
+                  <TextField
+            
+                  fullWidth
+                  label="GST"
+                  name="gst"
+                  value={this.state.gst}
+                  onChange={e => this.setState({ gst: e.target.value })}
+                  style={{ marginBottom: 10 }}
+              
+                  />
+                </Grid>
+               </div>
+               <div className='popup-right'>
+               <Grid
+                xs={12}
+                md={6}
+                >
+                  <TextField
+            
+                  fullWidth
+                  label="Quantity"
+                  name="quantity"
+                  value={this.state.quantity}
+                  onChange={e => this.setState({ quantity: e.target.value })}
+                  style={{ marginBottom: 10 }}
+              
+                  />
+                </Grid>
+                <Grid
+                xs={12}
+                md={6}
+                >
+                  <TextField
+            
+                  fullWidth
+                  label="Cost"
+                  name="cost"
+                  value={this.state.cost}
+                  onChange={e => this.setState({ cost: e.target.value })}
+                  style={{ marginBottom: 10 }}
+              
+                  />
+                </Grid>
+                <Grid
+                xs={12}
+                md={6}
+                >
+                  <TextField
+            
+                  fullWidth
+                  label="CGST"
+                  name="cgst"
+                  value={this.state.cgst}
+                  onChange={e => this.setState({ cgst: e.target.value })}
+                  style={{ marginBottom: 10 }}
+              
+                  />
+                </Grid>
+               </div>  
+               </div>
+               <Grid
+              xs={12}
+              md={6}
+              >
+                  <TextField
+                  fullWidth
+                  label="description"
+                  name="description"
+                  multiline
+                  rows={4}
+                  value={this.state.description}
+                  onChange={e => this.setState({ description: e.target.value })}
+                  style={{ marginBottom: 10 }}
+                />
+               </Grid>
+              
+              <div className='submit-purchase'><button  style={{background: `${primaryColor}`}} className='submit' type="submit" onClick={this.handleSubmit}>Save</button></div>
+       
+              </form>
+            </div>
+          </div>
+        )}
+      </div>
       <Scrollbar>
         <Table sx={{ minWidth: 800,overflowX: "auto" }}>
           <TableHead>
@@ -190,103 +376,47 @@ key={idx}>
             </TableRow>
           </TableHead>
           <TableBody>
-           {rows.map((item,idx)=> (
-                <TableRow
-                  hover
-                  key={idx}
+          {this.state.rows.map((row, idx) => (
+            <TableRow hover key={idx}>
+              <TableCell>
+                <div>{row.name}</div>
+              </TableCell>
+              <TableCell>
+                <div>{row.quantity}</div>
+              </TableCell>
+              <TableCell>
+                <div>{row.weight}</div>
+              </TableCell>
+              <TableCell>
+                <div>{row.cost}</div>
+              </TableCell>
+              <TableCell>
+                <div>{row.gst}</div>
+              </TableCell>
+              <TableCell>
+                <div>{row.cgst}</div>
+              </TableCell>
+              <TableCell>
+                <div>{row.description}</div>
+              </TableCell>
+              <TableCell>
+                <IconButton onClick={this.handleAddRow}>
+                  <Icon>
+                    <Add />
+                  </Icon>
+                </IconButton>
+              </TableCell>
+              <TableCell align="right">
+                <IconButton
+                  onClick={this.handleRemoveRow(idx)}
                 >
-                <TableCell>
-                <TextField
-                    fullWidth
-                    select
-                    value="Product"
-                  >
-                    {userOptions.map((option) => (
-                      <MenuItem
-                        key={option.value}
-                        value={option.value}
-                      >
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </TableCell>
-                <TableCell>
-                <TextField
-                    fullWidth
-                    select
-                    value="Quantity"
-                  >
-                    {userOptions.map((option) => (
-                      <MenuItem
-                        key={option.value}
-                        value={option.value}
-                      >
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </TableCell>
-                <TableCell>
-                <TextField
-                    fullWidth
-                    name="Weight"
-                  >
-                  </TextField>
-                </TableCell>
-                <TableCell>
-                <TextField
-                    fullWidth
-                    name="Cost"
-                  >
-                  </TextField>
-                </TableCell>
-                <TableCell>
-                <TextField
-                    fullWidth
-                    name="GST"
-                  >
-                  </TextField>
-                </TableCell>
-                <TableCell>
-                <TextField
-                    fullWidth
-                    name="CGST"
-                  >
-                  </TextField>
-                </TableCell>
-                <TableCell>
-                <TextField
-  multiline
-  rows={2}
-  maxRows={4}
-/>
-                </TableCell>
-                  <TableCell>
-                    <IconButton
-                      onClick={this.handleAddRow}
-                    >
-                      <Icon>
-                        <Add />
-                      </Icon>
-                    </IconButton>
-                    
-                  </TableCell>
-                <TableCell align="right">
-                    <IconButton
-                    disabled ={idx === 0 ? true: false}
-                      onClick={this.handleRemoveRow(idx)}
-                    >
-                      <Icon>
-                        <Delete />
-                      </Icon>
-                    </IconButton>
-                    
-                  </TableCell>
-                 
-                </TableRow>
-              ))
-            }
+                  <Icon>
+                    <Delete />
+                  </Icon>
+                </IconButton>
+              </TableCell>
+            </TableRow>
+          ))}
           </TableBody>
         </Table>
       </Scrollbar>
@@ -300,6 +430,7 @@ key={idx}>
         rowsPerPageOptions={[5, 10, 25]}
       /> */}
     </Box>
+    <br></br>
     <Grid
               xs={12}
               md={6}
