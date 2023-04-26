@@ -9,9 +9,35 @@ import { LogoAccenture } from 'src/components/logos/logo-accenture';
 import { LogoAtt } from 'src/components/logos/logo-att';
 import { RouterLink } from 'src/components/router-link';
 import { paths } from 'src/paths';
+import React, { useState, useEffect } from 'react';
+import { primaryColor } from 'src/primaryColor'; 
 
 export const Layout = (props) => {
   const { children } = props;
+  const [currentImage, setCurrentImage] = useState(0);
+
+  const images = [
+    '/assets/logos/logo.png',
+    '/assets/logos/logo1.png',
+    '/assets/logos/logo2.png',
+    '/assets/logos/logo3.png',
+    '/assets/logos/logo4.png', 
+    '/assets/logos/logo5.png', 
+    '/assets/logos/logo6.png', 
+    '/assets/logos/logo7.png', 
+    '/assets/logos/logo8.png', 
+    '/assets/logos/logo9.png',
+    '/assets/logos/logo10.png',  
+  ];
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentImage(currentImage => (currentImage + 1) % images.length);
+    }, 3000);
+    
+    return () => clearInterval(intervalId);
+  }, []);
+
 
   return (
     <Box
@@ -61,9 +87,9 @@ export const Layout = (props) => {
           >
             <img
               alt=""
-              src="/assets/logos/logo.png"
+              src={images[currentImage]}
+              style={{width: 350 , height: 'auto'}}
             />
-            
           </Stack>
         </Box>
       </Box>
@@ -94,33 +120,31 @@ export const Layout = (props) => {
             <Stack
               alignItems="center"
               component={RouterLink}
-              direction="row"
-              display="inline-flex"
+              direction="column"
+              display="flex"
               href={paths.authDemo.login.modern}
               spacing={1}
               sx={{ textDecoration: 'none' }}
             >
               <Box
                 sx={{
-                  display: 'inline-flex',
-                  height: 24,
-                  width: 24,
-                  marginRight:'35px'
+                  display: 'flex',
                 }}
               >
                <img
               alt=""
-              src="/assets/icons/icon.png"
+              src="/assets/icons/icon.png" 
+              style={{ width: 'auto', height: 40 }}
             />
               </Box>
               <Box
                 sx={{
-                  color: 'text.primary',
+                  color: primaryColor,
                   fontFamily: '\'Plus Jakarta Sans\', sans-serif',
-                  fontSize: 14,
+                  fontSize: 22,
                   fontWeight: 800,
                   letterSpacing: '0.3px',
-                  lineHeight: 2.5,
+                  lineHeight: 1,
                   '& span': {
                     color: 'primary.main'
                   }
