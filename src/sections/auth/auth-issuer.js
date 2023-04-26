@@ -19,7 +19,7 @@ export const AuthIssuer = (props) => {
         borderRadius: 2.5,
         borderStyle: 'solid',
         borderWidth: 1,
-        display: 'none',
+        display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         p: 3,
