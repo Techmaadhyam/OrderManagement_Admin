@@ -19,10 +19,10 @@ export const AuthIssuer = (props) => {
         borderRadius: 2.5,
         borderStyle: 'solid',
         borderWidth: 1,
-        display: 'flex',
+        display: 'none',
         flexDirection: 'column',
         alignItems: 'center',
-        p: 3
+        p: 3,
       }}
     >
       <Typography variant="body2">
