@@ -112,12 +112,16 @@ export const useSections = () => {
             ),
             items: [
               {
-                title: t(tokens.nav.buy),
+                title: t(tokens.nav.create),
                 path: paths.dashboard.academy.index
               },
               {
-                title: t(tokens.nav.sell),
+                title: t(tokens.nav.view),
                 path: paths.dashboard.academy.courseDetails
+              },
+              {
+                title: t(tokens.nav.invoice),
+                path: ''
               }
             ]
           },
