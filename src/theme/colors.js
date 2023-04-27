@@ -45,8 +45,8 @@ export const green = withAlphas({
 export const indigo = withAlphas({
   lightest: '#F5F7FF',
   light: '#EBEEFE',
-  main: '#6366F1',
-  dark: '#4338CA',
+  main: '#FF6900', //primary tech maadhyam
+  dark: '#EA5E00', // //secondary tech maadhyam
   darkest: '#312E81',
   contrastText: '#FFFFFF'
 });
