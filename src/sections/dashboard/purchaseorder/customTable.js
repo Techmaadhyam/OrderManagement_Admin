@@ -32,6 +32,7 @@ import { Add, Delete } from '@mui/icons-material';
 import Grid from 'antd/es/card/Grid';
 import './customTable.css'
 import { primaryColor } from 'src/primaryColor';
+import EditIcon from '@mui/icons-material/Edit';
 
 
 const userOptions = [
@@ -63,7 +64,7 @@ const userOptions = [
 const tableHeader=[
     {
         id:'product_name',
-        name:'Product Name',
+        name:'Name',
         width: 200,
         
     },
@@ -99,12 +100,12 @@ const tableHeader=[
     },
     {
         id:'add',
-        name:'Add',
+        name:'',
         width: 50,
     },
     {
         id:'delete',
-        name:'Delete',
+        name:'',
         width: 50,
     }
 ];
@@ -304,7 +305,7 @@ render (){
                   name="quantity"
                   value={this.state.quantity}
                   onChange={e => this.setState({ quantity: e.target.value })}
-                  style={{ marginBottom: 10 }}
+                  style={{ marginBottom: 15 }}
               
                   />
                 </Grid>
@@ -334,7 +335,7 @@ render (){
                   name="cgst"
                   value={this.state.cgst}
                   onChange={e => this.setState({ cgst: e.target.value })}
-                  style={{ marginBottom: 10 }}
+                  style={{ marginBottom: 16 }}
               
                   />
                 </Grid>
@@ -346,7 +347,7 @@ render (){
               >
                   <TextField
                   fullWidth
-                  label="description"
+                  label="Description"
                   name="description"
                   multiline
                   rows={4}
@@ -402,7 +403,7 @@ key={idx}>
               <TableCell>
                 <IconButton onClick={this.handleAddRow}>
                   <Icon>
-                    <Add />
+                    <EditIcon />
                   </Icon>
                 </IconButton>
               </TableCell>
