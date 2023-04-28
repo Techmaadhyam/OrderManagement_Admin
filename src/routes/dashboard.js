@@ -27,6 +27,9 @@ const JobBrowsePage = lazy(() => import('src/pages/dashboard/jobs/browse'));
 const JobCreatePage = lazy(() => import('src/pages/dashboard/jobs/create'));
 const CompanyDetailPage = lazy(() => import('src/pages/dashboard/jobs/companies/detail'));
 
+//inventory
+const InventoryCreatePage = lazy(()=> import('src/pages/dashboard/inventory/create'))
+
 // Logistics
 const LogisticsDashboardPage = lazy(() => import('src/pages/dashboard/logistics/dashboard'));
 const LogisticsFleetPage = lazy(() => import('src/pages/dashboard/logistics/fleet'));
@@ -180,6 +183,19 @@ export const dashboardRoutes = [
           {
             path: ':orderId',
             element: <OrderDetailPage />
+          }
+        ]
+      },
+      {
+        path: 'inventory',
+        children: [
+          {
+            index: true,
+            element: <InventoryCreatePage />
+          },
+          {
+            path: 'create',
+            element: <InventoryCreatePage />
           }
         ]
       },
