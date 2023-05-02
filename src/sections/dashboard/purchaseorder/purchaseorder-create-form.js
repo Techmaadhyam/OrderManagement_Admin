@@ -222,7 +222,7 @@ export const PurchaseOrderCreateForm = (props) => {
               xs={12}
               md={6}
             >
-               <DatePicker placeholder="Delivery Date"
+                <DatePicker placeholder="Delivery Date" 
 height='50px'/>
             </Grid>
             <Grid

@@ -131,7 +131,9 @@ class CustomTable extends React.Component {
       cost: '',
       cgst: '',
       description: '',
-      rows: []
+      rows: [],
+      showForm: false,
+      editIndex: null, 
     };
   }
  handleChange = idx => e => {
@@ -162,6 +164,7 @@ class CustomTable extends React.Component {
         email:'',
         mobile:''
     }
+
  this.setState({
     rows: [...this.state.rows, item]
  })
@@ -175,6 +178,14 @@ handleRemoveRow = idx =>() =>{
 toggleForm = () => {
   this.setState((prevState) => ({
     showForm: !prevState.showForm,
+    editIndex: null,
+    name: '',
+    weight: '',
+    gst: '',
+    quantity: '',
+    cost: '',
+    cgst: '',
+    description: '', 
   }));
 };
 
@@ -183,29 +194,51 @@ handleModalClick = (event) => {
     this.toggleForm();
   }
 };
-
 handleSubmit = (e) => {
   e.preventDefault();
 
   //handle popup form data
-  const { name, weight, gst, quantity, cost, cgst, description } = this.state;
+  const { name, weight, gst, quantity, cost, cgst, description, editIndex } = this.state;
   const newRow = { name, weight, gst, quantity, cost, cgst, description };
-  const newRows = [...this.state.rows, newRow];
-  this.setState({ rows: newRows });
-  this.setState({ showForm: false });
+
+  // update the edited row
+  if (editIndex !== null) {
+    const newRows = [...this.state.rows];
+    newRows[editIndex] = newRow;
+    this.setState({ rows: newRows });
+  } else {
+    // add a new row
+    const newRows = [...this.state.rows, newRow];
+    this.setState({ rows: newRows });
+  }
 
   this.setState({
-    name: "",
-    weight: "",
-    gst: "",
-    quantity: "",
-    cost: "",
-    cgst: "",
-    description: "",
+    name: '',
+    weight: '',
+    gst: '',
+    quantity: '',
+    cost: '',
+    cgst: '',
+    description: '',
     showForm: false,
+    editIndex: null,
   });
 };
 
+
+handleEditRow = (idx, row) => {
+  this.setState({
+    name: row.name,
+    weight: row.weight,
+    gst: row.gst,
+    quantity: row.quantity,
+    cost: row.cost,
+    cgst: row.cgst,
+    description: row.description,
+    editIndex: idx,
+    showForm: true,
+  });
+};
 
 render (){
 
@@ -379,7 +412,7 @@ key={idx}>
           <TableBody>
           {this.state.rows.map((row, idx) => (
             <TableRow hover key={idx}>
-              <TableCell >
+              <TableCell>
                 <div>{row.name}</div>
               </TableCell>
               <TableCell>
@@ -401,9 +434,9 @@ key={idx}>
                 <div>{row.description}</div>
               </TableCell>
               <TableCell>
-                <IconButton onClick={this.handleAddRow}>
+              <IconButton onClick={() => this.handleEditRow(idx, row)}>
                   <Icon>
-                    <EditIcon/>
+                    <EditIcon />
                   </Icon>
                 </IconButton>
               </TableCell>
