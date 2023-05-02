@@ -1,0 +1,31 @@
+.css-lag5vb-MuiContainer-root {
+    padding: 0px;
+    max-width: none;
+}
+
+.css-8t176w-MuiStack-root{
+    display: none;
+}
+#root > div.css-fcuzk0 > div > div > div{
+    display: flex;
+    height: 100vh
+}
+#root > div.css-fcuzk0 > div > div > div > div.MuiBox-root.css-m3wybf{
+    overflow-y: auto;
+    height: 100vh
+
+}
+#root > div.css-fcuzk0 > div > div > div > div.MuiBox-root.css-e9n4sd{
+    height: 100vh;
+}
+
+@media only screen and (max-width: 900px) {
+    #root > div.css-fcuzk0 > div > div > div{
+        display: flex;
+        height: auto;
+    }
+    #root > div.css-fcuzk0 > div > div > div > div.MuiBox-root.css-e9n4sd{
+        height: auto;
+    }
+}
+ 
