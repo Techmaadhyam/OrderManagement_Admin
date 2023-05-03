@@ -1,10 +1,10 @@
 .css-lag5vb-MuiContainer-root {
-    padding: 0px;
-    max-width: none;
+    padding: 0px !important;
+    max-width: none !important;
 }
 
 .css-8t176w-MuiStack-root{
-    display: none;
+    display: none !important; 
 }
 #root > div.css-fcuzk0 > div > div > div{
     display: flex;
