@@ -35,9 +35,10 @@ const Register = () => {
   const [countries, setCountries] = useState([]);
   const [states, setStates]= useState([])
   const [cities, setCities]= useState([])
-  const [currentCountry, setCurrentCountry]= useState(['India'])
+  const [currentCountry, setCurrentCountry]= useState('India')
   const [currentState, setCurrentState]= useState([])
   const [currentCity, setCurrentCity] =useState([])
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -159,6 +160,27 @@ const handleState = async (event) => {
       } catch (error) {
         console.error("Error fetching states:", error);
       }
+};
+
+
+const handleDefaultState = async () => {
+  try {;
+    if (currentCountry === 'India') {
+      const response = await fetch('https://www.universal-tutorial.com/api/states/India', {
+        headers: {
+          "Authorization": "Bearer " + accessToken,
+          "Accept": "application/json"
+        }
+      });
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setStates(data);
+    }
+  } catch (error) {
+    console.error("Error fetching states:", error);
+  }
 };
 
 const handleCities = async (event) => {
@@ -432,7 +454,7 @@ const handleCities = async (event) => {
                     name="country"
                     select
                     defaultValue= ''
-                    value={currentCountry}
+                    value={[currentCountry]}
                     onChange={handleCountry}
                   >
                     {userOptions?.map((option) => (
@@ -457,6 +479,7 @@ const handleCities = async (event) => {
                     defaultValue=''
                     value={currentState}
                     onChange={handleState}
+                    onFocus={handleDefaultState}
                    
                 > 
                 {userOptionsState?.map((option) => (
@@ -481,6 +504,7 @@ const handleCities = async (event) => {
                 defaultValue=''
                 value={currentCity}
                 onChange={handleCities}
+             
               >
                   {userOptionsCities?.map((option) => (
                       <MenuItem
