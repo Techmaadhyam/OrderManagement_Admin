@@ -335,7 +335,7 @@ const handleCities = async (event) => {
           </Box>
      
         <div style={{minWidth: "100%", marginBottom: '1rem' }}>
-      <h3>Register</h3>
+      <h2>New user registration</h2>
     <form>
       <Card>
         <CardHeader title="Create new account" />
