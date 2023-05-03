@@ -572,6 +572,7 @@ const handleCities = async (event) => {
                     variant="contained"
                     align="right"
                     onClick={handleToHome}
+                    href={paths.index}
                  
                 
                     >
