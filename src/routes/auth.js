@@ -108,11 +108,11 @@ export const authRoutes = [
         path: 'jwt',
         element: (
           <IssuerGuard issuer={Issuer.JWT}>
-            <GuestGuard>
+
               <AuthLayout>
                 <Outlet />
               </AuthLayout>
-            </GuestGuard>
+      
           </IssuerGuard>
         ),
         children: [

@@ -27,9 +27,43 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
+const userOptions = [
+  {
+    label: 'Healthcare',
+    value: 'healthcare'
+  },
+  {
+    label: 'Makeup',
+    value: 'makeup'
+  },
+  {
+    label: 'Dress',
+    value: 'dress'
+  },
+  {
+    label: 'Skincare',
+    value: 'skincare'
+  },
+  {
+    label: 'Jewelry',
+    value: 'jewelry'
+  },
+ 
+];
+
 const Register = () => {
   const [currentImage, setCurrentImage] = useState(0);
-  const notify = () => toast("You have sucessfully registered your account");
+  const notify = () => toast.success('You have sucessfully registered your account', {
+    position: "top-right",
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+    });
+
 
   const images = [
     '/assets/logos/logo.png',
@@ -56,7 +90,6 @@ const Register = () => {
 
   const handleToHome =() => {
       notify();
-
   }
 
   return (
@@ -297,8 +330,17 @@ const Register = () => {
                     fullWidth
                     label="Country"
                     name="country"
-                    select              
+                    select 
+                    defaultValue=""             
                   >
+                    {userOptions.map((option) => (
+                      <MenuItem
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))}
                   </TextField>
             </Grid>
             <Grid
@@ -310,7 +352,16 @@ const Register = () => {
                     label="State"
                     name="state"
                     select
-                >              
+                    defaultValue=""
+                > 
+                {userOptions.map((option) => (
+                      <MenuItem
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))}             
                 </TextField>
             </Grid>
             <Grid
@@ -322,19 +373,31 @@ const Register = () => {
                 label="City"
                 name="city"
                 select
-              />
+                defaultValue=""
+              >
+                  {userOptions.map((option) => (
+                      <MenuItem
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))} 
+              </TextField>
             </Grid>
             <Grid
               xs={12}
               md={6}
             >
+              
               <TextField
 
                 fullWidth
                 label="Zip Code"
                 name="zipcode"
     
-              />
+              >
+                </TextField>
             </Grid>
           <Grid
               xs={12}
@@ -384,7 +447,16 @@ const Register = () => {
                     Save
                     </Button>
                     <ToastContainer
-                     />
+                     position="top-right"
+                     autoClose={2000}
+                     hideProgressBar={false}
+                     newestOnTop={false}
+                     closeOnClick
+                     rtl={false}
+                     pauseOnFocusLoss
+                     draggable
+                     pauseOnHover
+                     theme="light"/>
             </Box>
           </Grid>
     </div>
