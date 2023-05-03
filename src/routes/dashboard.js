@@ -13,11 +13,12 @@ const BlogPostListPage = lazy(() => import('src/pages/dashboard/blog/list'));
 const BlogPostDetailPage = lazy(() => import('src/pages/dashboard/blog/detail'));
 const BlogPostCreatePage = lazy(() => import('src/pages/dashboard/blog/create'));
 
-// PuchaseOrder
-const PuchaseOrderCreatePage = lazy(() => import('src/pages/dashboard/purchaseorder/create'));
-const PuchaseOrderViewPage = lazy(() => import('src/pages/dashboard/purchaseorder/view'));
-const PuchaseOrderInvoicePage = lazy(() => import('src/pages/dashboard/purchaseorder/invoice'));
-
+// PurchaseOrder
+const PurchaseOrderCreatePage = lazy(() => import('src/pages/dashboard/purchaseorder/create'));
+const PurchaseOrderViewPage = lazy(() => import('src/pages/dashboard/purchaseorder/view'));
+const PurchaseOrderInvoicePage = lazy(() => import('src/pages/dashboard/purchaseorder/invoice'));
+const PurchaseOrderViewDetailPage = lazy(() => import('src/pages/dashboard/purchaseorder/viewDetail'));
+const PurchaseOrderEdit = lazy(() => import('src/pages/dashboard/purchaseorder/edit'));
 // Invoice
 const InvoiceListPage = lazy(() => import('src/pages/dashboard/invoices/list'));
 const InvoiceDetailPage = lazy(() => import('src/pages/dashboard/invoices/detail'));
@@ -113,16 +114,24 @@ export const dashboardRoutes = [
         children: [
           {
             index: true,
-            element: <PuchaseOrderCreatePage />
+            element: <PurchaseOrderCreatePage />
           },
           {
             path: ':customerId',
-            element: <PuchaseOrderViewPage />
+            element: <PurchaseOrderViewPage />
           },
           {
             path: ':customerId/edit',
-            element: <PuchaseOrderInvoicePage />
+            element: <PurchaseOrderInvoicePage />
+          },
+          {
+            path: 'viewDetail',
+            element: <PurchaseOrderViewDetailPage/>
+          },{
+            path: 'edit',
+            element: <PurchaseOrderEdit/>
           }
+         
         ]
       },
       {
