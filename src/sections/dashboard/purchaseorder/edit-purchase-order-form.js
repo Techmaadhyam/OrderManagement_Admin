@@ -10,13 +10,18 @@ import {
   Divider,
   TextField,
   MenuItem,
-  Unstable_Grid2 as Grid
+  Unstable_Grid2 as Grid,
+  Link,
+  SvgIcon
 } from '@mui/material';
-import { DatePicker } from 'antd';
+import { DatePicker, Typography } from 'antd';
+import ArrowLeftIcon from '@untitled-ui/icons-react/build/esm/ArrowLeft';
 import { wait } from 'src/utils/wait';
 import CustomTable  from './customTable';
 import './purchase-order.css'
 import { Box } from '@mui/system';
+import { RouterLink } from 'src/components/router-link';
+import { paths } from 'src/paths';
 
 const userOptions = [
   {
@@ -45,7 +50,7 @@ const userOptions = [
   }
 ];
 
-export const PurchaseOrderCreateForm = (props) => {
+export const EditPurchaseOrderForm = (props) => {
   const { customer, ...other } = props;
   const formik = useFormik({
     initialValues: {
@@ -97,7 +102,26 @@ export const PurchaseOrderCreateForm = (props) => {
 
   return (
     <div style={{minWidth: "100%" }}>
- <h2>Create Purchase Order</h2>
+      <div>
+                <Link
+                  color="text.primary"
+                  component={RouterLink}
+                  href={paths.dashboard.purchaseorder.view}
+                  sx={{
+                    alignItems: 'center',
+                    display: 'inline-flex'
+                  }}
+                  underline="hover"
+                >
+                  <SvgIcon sx={{ mr: 1 }}>
+                    <ArrowLeftIcon />
+                  </SvgIcon>
+                  <Typography variant="subtitle2">
+                    Purchase Order List
+                  </Typography>
+                </Link>
+              </div>
+ <h2>Edit Purchase Order</h2>
     <form
       onSubmit={formik.handleSubmit}
       {...other}>
@@ -131,17 +155,6 @@ export const PurchaseOrderCreateForm = (props) => {
                       </MenuItem>
                     ))}
                   </TextField>
-              {/* <TextField
-                error={!!(formik.touched.name && formik.errors.name)}
-                fullWidth
-                helperText={formik.touched.name && formik.errors.name}
-                label="Full name"
-                name="name"
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-                required
-                value={formik.values.name}
-              /> */}
             </Grid>
             <Grid/>
             <Grid
@@ -191,33 +204,7 @@ export const PurchaseOrderCreateForm = (props) => {
                       </MenuItem>
                     ))}
                   </TextField>
-              {/* <TextField
-                error={!!(formik.touched.email && formik.errors.email)}
-                fullWidth
-                helperText={formik.touched.email && formik.errors.email}
-                label="Email address"
-                name="email"
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-                required
-                value={formik.values.email}
-              /> */}
             </Grid>
-            {/* <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-                error={!!(formik.touched.state && formik.errors.state)}
-                fullWidth
-                helperText={formik.touched.state && formik.errors.state}
-                label="Contact Name"
-                name="contactName"
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-                // value={formik.values.state}
-              />
-            </Grid> */}
             <Grid
               xs={12}
               md={6}
@@ -248,16 +235,6 @@ height='50px'/>
                       </MenuItem>
                     ))}
                   </TextField>
-              {/* <TextField
-                error={!!(formik.touched.address2 && formik.errors.address2)}
-                fullWidth
-                helperText={formik.touched.address2 && formik.errors.address2}
-                label="Address 2"
-                name="address2"
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-                value={formik.values.address2}
-              /> */}
             </Grid>
             <Grid
               xs={12}
@@ -311,7 +288,7 @@ marginRight="12px">
             align="right"
            
           >
-            Place Order
+            Save
           </Button>
         </Box>
           </Grid>
@@ -319,6 +296,6 @@ marginRight="12px">
   );
 };
 
-PurchaseOrderCreateForm.propTypes = {
+EditPurchaseOrderForm.propTypes = {
   customer: PropTypes.object.isRequired
 };

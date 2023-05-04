@@ -1,211 +1,197 @@
 import PropTypes from 'prop-types';
-import toast from 'react-hot-toast';
-import * as Yup from 'yup';
-import { useFormik } from 'formik';
 import {
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Divider,
-  TextField,
-  MenuItem,
   Unstable_Grid2 as Grid,
-  Typography
+  Typography,
+  IconButton,
+  Icon,
+  Link
 } from '@mui/material';
-import { DatePicker } from 'antd';
-import { wait } from 'src/utils/wait';
-import TableCreate  from './tableCreate';
+import { Table } from 'antd';
 import './purchase-order.css'
-import { Box, Stack } from '@mui/system';
-import { PropertyList } from 'src/components/property-list';
-import { PropertyListItem } from 'src/components/property-list-item';
+import { Box } from '@mui/system';
+import React from 'react';
+import { Scrollbar } from 'src/components/scrollbar';
+import EditIcon from '@mui/icons-material/Edit';
+import {  Delete } from '@mui/icons-material';
+import { RouterLink } from 'src/components/router-link';
+import { paths } from 'src/paths';
 
-const userOptions = [
+
+const columns = [
   {
-    label: 'Healthcare',
-    value: 'healthcare'
+    title: 'Purchase Order Number',
+    dataIndex: 'purchaseOrder',
+    key: 'purchaseOrder',
+    render: () => <Link
+    color="primary"
+    component={RouterLink}
+    href={paths.dashboard.purchaseorder.viewDetail}
+    sx={{
+      alignItems: 'center',
+      textAlign: 'center'
+      // display: 'inline-flex'
+    }}
+    underline="hover"
+  >
+    <Typography variant="subtitle2">
+   12345
+    </Typography>
+  </Link>
   },
   {
-    label: 'Makeup',
-    value: 'makeup'
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+    },
+  {
+    title: 'User',
+    dataIndex: 'user',
+    key: 'user',
+  },
+  
+  {
+    title: 'Delivery Date',
+    key: 'deliveryDate',
+    dataIndex: 'deliveryDate',
   },
   {
-    label: 'Dress',
-    value: 'dress'
-  },
-  {
-    label: 'Skincare',
-    value: 'skincare'
-  },
-  {
-    label: 'Jewelry',
-    value: 'jewelry'
-  },
-  {
-    label: 'Blouse',
-    value: 'blouse'
-  }
+      title: 'Created Date',
+      key: 'createdDate',
+      dataIndex: 'createdDate',
+    },
+    {
+      title: 'Last Modified Date',
+      key: 'lastModified',
+      dataIndex: 'lastModified',
+    },
+    {
+      dataIndex: 'actionEdit',
+      key: 'actionEdit',
+    render: () => <Link
+    component={RouterLink}
+    href={paths.dashboard.purchaseorder.edit}
+  >
+    <IconButton>
+  <Icon>
+         <EditIcon />
+     </Icon>
+     </IconButton>
+  </Link>
+    },
+    {
+      dataIndex: 'actionDelete',
+      key: 'actionDelete',
+      render: (_, __, index) =>  <IconButton
+       onClick={() => this.handleRemoveRow(index)}
+     >
+       <Icon>
+         <Delete />
+       </Icon>
+     </IconButton>
+    },
 ];
 
-const data={
-  userName: 'Harsh',
-  type: 'Stell',
-  quotation: ' ',
-  deliveryDate: 23/4/2021,
-  contactName: 'Nilla',
-  contactno: '567892483984',
-  status: 'Canceled'
+const data = [
+  {
+    key: '1',
+    purchaseOrder: '',
+    status: "Completed",
+    user: 'Harsh',
+    deliveryDate: '26/02/2023',
+    createdDate:'16/02/2023',
+    lastModified:'3/03/2023',
+  },
+];
+
+class PurchaseOrderViewForm extends React.Component {
+  constructor(props) {
+      super(props);
+      this.state = {
+  rows:[{}]
+};
+}
+handleChange = idx => e => {
+  const {name, value} =e.target;
+  const rows = {...this.state.row}
+  rows[idx] ={
+  ...rows[idx],
+  [name]:value
+};
+this.setState({
+  rows
+})
 }
 
-const statusOptions = ['Canceled', 'Complete', 'Rejected'];
-
-export const PurchaseOrderViewForm = (props) => {
-  const { customer, ...other } = props;
-  const align = 'horizontal' 
-  const formik = useFormik({
-    initialValues: {
-      address1: customer.address1 || '',
-      address2: customer.address2 || '',
-      country: customer.country || '',
-      email: customer.email || '',
-      hasDiscount: customer.hasDiscount || false,
-      isVerified: customer.isVerified || false,
-      name: customer.name || '',
-      phone: customer.phone || '',
-      state: customer.state || '',
-      submit: null
-    },
-    validationSchema: Yup.object({
-      address1: Yup.string().max(255),
-      address2: Yup.string().max(255),
-      country: Yup.string().max(255),
-      email: Yup
-        .string()
-        .email('Must be a valid email')
-        .max(255)
-        .required('Email is required'),
-      hasDiscount: Yup.bool(),
-      isVerified: Yup.bool(),
-      name: Yup
-        .string()
-        .max(255)
-        .required('Name is required'),
-      phone: Yup.string().max(15),
-      state: Yup.string().max(255)
-    }),
-    onSubmit: async (values, helpers) => {
-      try {
-        // NOTE: Make API request
-        await wait(500);
-        helpers.setStatus({ success: true });
-        helpers.setSubmitting(false);
-        toast.success('Customer updated');
-      } catch (err) {
-        console.error(err);
-        toast.error('Something went wrong!');
-        helpers.setStatus({ success: false });
-        helpers.setErrors({ submit: err.message });
-        helpers.setSubmitting(false);
-      }
-    }
-  });
-
+handleEmailChange = idx => e => {
+  const {name, value} =e.target;
+  const rows = {...this.state.row}
+  rows[idx] ={
+  ...rows[idx],
+  email:value
+};
+this.setState({
+  rows
+})
+}
+handleAddRow = () => {
+  const item ={
+      email:'',
+      mobile:''
+  }
+this.setState({
+  rows: [...this.state.rows, item]
+})
+}
+handleRemoveRow = idx =>() =>{
+  const rows = [...this.state.rows];
+  rows.splice(idx,1);
+  this.setState({rows});
+};
+render (){
+  const {
+      count = 0,
+      items = [],
+      onDeselectAll,
+      onDeselectOne,
+      onPageChange = () => { },
+      onRowsPerPageChange,
+      onSelectAll,
+      onSelectOne,
+      page = 0,
+      rowsPerPage = 0,
+      selected = [],
+      classes
+    } = this.props;
+    const {rows} =this.state;
   return (
     <div style={{minWidth: "100%" }}>
- <h2>View Puchase Order</h2>
-      <Card style={{marginBottom: "60px" }}>
-        <CardHeader title="Product Order Detail" />
-        <PropertyList>
-        <PropertyListItem
-          align={align}
-          label="userName"
-        >
-          <Typography variant="subtitle2">
-            {data.userName}
-          </Typography>
-        </PropertyListItem>
-        <Divider />
-        <PropertyListItem
-          align={align}
-          label="quotation"
-          value={data.quotation}
-        />
-        <Divider />
-        <PropertyListItem
-          align={align}
-          label="Invoice"
-          value={data.type}
-        />
-        <Divider />
-        <PropertyListItem
-          align={align}
-          label="DeliveryDate"
-          value={data.deliveryDate}
-        />
-        <Divider />
-        <PropertyListItem
-          align={align}
-          label="Contact Name"
-          value={data.contactName}
-        />
-        <Divider />
-        <PropertyListItem
-          align={align}
-          label="Contact No"
-          value={data.contactno}
-        />
-        <Divider />
-        <PropertyListItem
-          align={align}
-          label="Status"
-        >
-          <Stack
-            alignItems={{
-              xs: 'stretch',
-              sm: 'center'
-            }}
-            direction={{
-              xs: 'column',
-              sm: 'row'
-            }}
-            spacing={1}
-          >
-            <TextField
-              label="Status"
-              margin="normal"
-              name="status"
-              // onChange={handleChange}
-              select
-              SelectProps={{ native: true }}
-              sx={{
-                flexGrow: 1,
-                minWidth: 150
-              }}
-              value={data.status}
+ <h2>View Purchase Order</h2>
+ <Box sx={{  position: 'relative' , overflowX: "auto"}}>    
+      <Scrollbar>
+        <Table sx={{ minWidth: 800,overflowX: "auto" }} columns={columns} dataSource={data}></Table>
+      </Scrollbar>
+    </Box>
+    <Grid
+              xs={12}
+              md={6}
             >
-              {statusOptions.map((option) => (
-                <option
-                  key={option}
-                  value={option}
-                >
-                  {option}
-                </option>
-              ))}
-            </TextField>
-            <Button variant="contained">
-              Save
-            </Button>
-          </Stack>
-        </PropertyListItem>
-      </PropertyList>
-        <Divider/>
-      </Card>
-    <TableCreate/>
+  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Total Amount : 56,78,020</Typography>
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
+              style={{marginTop: "20px", marginBottom: "30px"}}
+            >
+  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Terms &Conditions :  This product can be sold on the said customer</Typography>
+
+            </Grid>
     </div>
   );
+    }
 };
 
 PurchaseOrderViewForm.propTypes = {
   customer: PropTypes.object.isRequired
 };
+
+export default PurchaseOrderViewForm;
