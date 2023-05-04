@@ -29,9 +29,13 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 const Register = () => {
+  //image carousel state handeling
   const [currentImage, setCurrentImage] = useState(0);
+  // country, state, city API access token
   const [accessToken, setAccessToken] = useState(null);
   const [error, setError] = useState(null);
+
+  //state management for countries,states and cities
   const [countries, setCountries] = useState([]);
   const [states, setStates]= useState([])
   const [cities, setCities]= useState([])
@@ -39,7 +43,7 @@ const Register = () => {
   const [currentState, setCurrentState]= useState([])
   const [currentCity, setCurrentCity] =useState([])
 
-
+//fetches API token
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -68,6 +72,7 @@ const Register = () => {
     fetchData();
   }, []);
 
+//fetches country list for dropdown and pushesh it to state which is later mapped 
   const fetchCountries = useCallback(async () => {
     try {
       const response = await fetch("https://www.universal-tutorial.com/api/countries/", {
@@ -86,11 +91,13 @@ const Register = () => {
       console.error("Error fetching countries:", error);
     }
   }, [accessToken]);
-
+  
+//using useeffect to prevent fetch request being called on render
   useEffect(()=>{
     fetchCountries()
   },[fetchCountries])
 
+//mapping countries to MUI select input field
   const userOptions = useMemo(() => {
     return countries.map(country => ({
       label: country.country_name,
@@ -98,12 +105,15 @@ const Register = () => {
     }));
   }, [countries]);
 
+//mapping states to MUI select input field
   const userOptionsState = useMemo(() => {
     return states.map(state => ({
       label: state.state_name,
       value: state.state_name
     }));
   }, [states]);
+
+  //mapping cities to MUI select input field
   const userOptionsCities = useMemo(() => {
     return cities.map(city => ({
       label: city.city_name,
@@ -111,6 +121,7 @@ const Register = () => {
     }));
   }, [cities]);
 
+//toast notification from toastify library
   const notify = () => toast.success('You have sucessfully registered your account', {
     position: "top-right",
     autoClose: 2000,
@@ -121,7 +132,7 @@ const Register = () => {
     progress: undefined,
     theme: "light",
     });
-
+//fetches states list for dropdown and pushesh it to setStates which is later mapped 
     const handleCountry = async (event) => {
       try {
         setCurrentCountry(event.target.value);
@@ -142,6 +153,7 @@ const Register = () => {
       }
     };
 
+//fetches cities list for dropdown and pushesh it to setCities which is later mapped 
 const handleState = async (event) => {
       try {
         setCurrentState(event.target.value);
@@ -162,7 +174,7 @@ const handleState = async (event) => {
       }
 };
 
-
+//sets default country to India and fetches state list for India and is pushed to setStates
 const handleDefaultState = async () => {
   try {;
     if (currentCountry === 'India') {
@@ -183,6 +195,7 @@ const handleDefaultState = async () => {
   }
 };
 
+//sets current city value in MUI select field onchange event
 const handleCities = async (event) => {
     setCurrentCity(event.target.value);
 }
@@ -200,6 +213,7 @@ const handleCities = async (event) => {
     '/assets/logos/logo10.png',  
   ];
 
+//handles image carousel
   const handleImageChange = useCallback(() => {
     setCurrentImage(currentImage => (currentImage + 1) % images.length);
   }, [images.length]);
@@ -209,6 +223,7 @@ const handleCities = async (event) => {
     return () => clearInterval(intervalId);
   }, [handleImageChange]);
 
+  //calls toast notification on sucessful registration and redirects to login page
   const handleToHome =() => {
       notify();
   }
