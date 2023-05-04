@@ -19,13 +19,13 @@ import { paths } from 'src/paths';
 
 const columns = [
   {
-    title: 'Purchase Order Number',
-    dataIndex: 'purchaseOrder',
-    key: 'purchaseOrder',
+    title: 'Sales Order Number',
+    dataIndex: 'salesOrder',
+    key: 'salesOrder',
     render: (name) => <Link
     color="primary"
     component={RouterLink}
-    href={paths.dashboard.purchaseorder.viewDetail}
+    href={paths.dashboard.orders.viewDetail}
     sx={{
       alignItems: 'center',
       textAlign: 'center'
@@ -69,7 +69,7 @@ const columns = [
       key: 'actionEdit',
     render: () => <Link
     component={RouterLink}
-    href={paths.dashboard.purchaseorder.edit}
+    href={paths.dashboard.orders.edit}
   >
     <IconButton>
   <Icon>
@@ -94,7 +94,7 @@ const columns = [
 const data = [
   {
     key: '1',
-    purchaseOrder: '12345',
+    salesOrder: '12345',
     status: "Completed",
     user: 'Harsh',
     deliveryDate: '26/02/2023',
@@ -103,7 +103,7 @@ const data = [
   },
 ];
 
-class PurchaseOrderViewForm extends React.Component {
+class SalesOrderViewList extends React.Component {
   constructor(props) {
       super(props);
       this.state = {
@@ -165,7 +165,7 @@ render (){
     const {rows} =this.state;
   return (
     <div style={{minWidth: "100%" }}>
- <h2>View Purchase Order</h2>
+ <h2>View Sales Order</h2>
  <Box sx={{  position: 'relative' , overflowX: "auto"}}>    
       <Scrollbar>
         <Table sx={{ minWidth: 800,overflowX: "auto" }} columns={columns} dataSource={data}></Table>
@@ -190,8 +190,8 @@ render (){
     }
 };
 
-PurchaseOrderViewForm.propTypes = {
+SalesOrderViewList.propTypes = {
   customer: PropTypes.object.isRequired
 };
 
-export default PurchaseOrderViewForm;
+export default SalesOrderViewList;

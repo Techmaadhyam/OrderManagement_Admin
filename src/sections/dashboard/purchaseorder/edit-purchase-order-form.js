@@ -281,12 +281,12 @@ height='50px'/>
  <Box sx={{ mt: 2 }}
 display="flex"
 justifyContent="flex-end"
-marginRight="12px">
+marginRight="12px"
+marginBottom="30px">
           <Button
             color="primary"
             variant="contained"
             align="right"
-           
           >
             Save
           </Button>

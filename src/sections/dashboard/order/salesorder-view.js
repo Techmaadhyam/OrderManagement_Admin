@@ -90,7 +90,7 @@ const rowData = [
 ];
 
 
-export const ViewPurchaseOrder = (props) => {
+export const ViewSalesOrder = (props) => {
   const { customer, ...other } = props;
   const [status, setStatus] = useState(statusOptions[0]);
 
@@ -152,7 +152,7 @@ export const ViewPurchaseOrder = (props) => {
                 <Link
                   color="text.primary"
                   component={RouterLink}
-                  href={paths.dashboard.purchaseorder.view}
+                  href={paths.dashboard.orders.details}
                   sx={{
                     alignItems: 'center',
                     display: 'inline-flex'
@@ -163,13 +163,13 @@ export const ViewPurchaseOrder = (props) => {
                     <ArrowLeftIcon />
                   </SvgIcon>
                   <Typography variant="subtitle2">
-                    Purchase Order List
+                    Sales Order List
                   </Typography>
                 </Link>
               </div>
- <h2>Purchase Order</h2>
+ <h2>Sales Order</h2>
       <Card style={{marginBottom: "12px" }}>
-        <CardHeader title="Product Order Detail" />
+        <CardHeader title="Sales Order Detail" />
         <PropertyList>
         <PropertyListItem
           align={align}
@@ -245,6 +245,6 @@ export const ViewPurchaseOrder = (props) => {
   );
 };
 
-ViewPurchaseOrder.propTypes = {
+ViewSalesOrder.propTypes = {
   customer: PropTypes.object.isRequired
 };

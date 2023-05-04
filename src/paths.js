@@ -91,8 +91,10 @@ export const paths = {
     mail: '/dashboard/mail',
     orders: {
       index: '/dashboard/orders',
-      details: '/dashboard/orders/:orderId',
-      invoice: '/dashboard/orders/invoice'
+      invoice  : '/dashboard/orders/:orderId',
+      details: '/dashboard/orders/details',
+      viewDetail: '/dashboard/orders/viewDetail',
+      edit: '/dashboard/orders/edit',
     },
     inventory: {
       view: '/dashboard/inventory',
