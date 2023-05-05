@@ -173,7 +173,7 @@ export const ViewPurchaseOrder = (props) => {
         <PropertyList>
         <PropertyListItem
           align={align}
-          label="User Name"
+          label="Name"
         >
           <Typography variant="subtitle2">
             {data.userName}
@@ -184,12 +184,6 @@ export const ViewPurchaseOrder = (props) => {
           align={align}
           label="Quotation"
           value={data.quotation}
-        />
-        <Divider />
-        <PropertyListItem
-          align={align}
-          label="Invoice"
-          value={data.type}
         />
         <Divider />
         <PropertyListItem

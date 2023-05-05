@@ -188,12 +188,6 @@ export const ViewSalesOrder = (props) => {
         <Divider />
         <PropertyListItem
           align={align}
-          label="Invoice"
-          value={data.type}
-        />
-        <Divider />
-        <PropertyListItem
-          align={align}
           label="DeliveryDate"
           value={data.deliveryDate}
         />

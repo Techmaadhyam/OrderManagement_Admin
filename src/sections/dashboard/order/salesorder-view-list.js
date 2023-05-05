@@ -44,9 +44,9 @@ const columns = [
       key: 'status',
     },
   {
-    title: 'User',
-    dataIndex: 'user',
-    key: 'user',
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name',
   },
   
   {
@@ -96,7 +96,7 @@ const data = [
     key: '1',
     salesOrder: '12345',
     status: "Completed",
-    user: 'Harsh',
+    name: 'Harsh',
     deliveryDate: '26/02/2023',
     createdDate:'16/02/2023',
     lastModified:'3/03/2023',
