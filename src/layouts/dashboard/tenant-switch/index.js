@@ -11,41 +11,16 @@ export const TenantSwitch = (props) => {
 
   return (
     <>
-      <Stack
-        alignItems="center"
-        direction="row"
-        spacing={2}
-        {...props}>
-        <Box sx={{ flexGrow: 1 }}>
-          <Typography
-            color="inherit"
-            variant="h6"
-          >
-            Devias
-          </Typography>
-          <Typography
-            color="neutral.400"
-            variant="body2"
-          >
-            Production
-          </Typography>
-        </Box>
-        <IconButton
-          onClick={popover.handleOpen}
-          ref={popover.anchorRef}
-        >
-          <SvgIcon sx={{ fontSize: 16 }}>
-            <ChevronDownIcon />
-          </SvgIcon>
-        </IconButton>
-      </Stack>
-      <TenantPopover
-        anchorEl={popover.anchorRef.current}
-        onChange={popover.handleClose}
-        onClose={popover.handleClose}
-        open={popover.open}
-        tenants={tenants}
-      />
+        <Box
+        component="img"
+        sx={{
+          height: 55,
+          width: 'auto',
+
+        }}
+        alt="Tech Maadhyam logo"
+        src='/assets/logos/logo.png'
+        />
     </>
   );
 };

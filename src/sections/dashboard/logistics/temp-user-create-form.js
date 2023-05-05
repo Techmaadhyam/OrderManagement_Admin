@@ -14,10 +14,7 @@ import {
 } from '@mui/material';
 import { DatePicker } from 'antd';
 import { wait } from 'src/utils/wait';
-import CustomTable  from './customTable';
-import './purchase-order.css'
 import { Box } from '@mui/system';
-import IconWithPopup from '../user/user-icon';
 
 const userOptions = [
   {
@@ -46,7 +43,7 @@ const userOptions = [
   }
 ];
 
-export const SalesOrderCreateForm = (props) => {
+export const TempUserCreateForm = (props) => {
   const { customer, ...other } = props;
   const formik = useFormik({
     initialValues: {
@@ -97,21 +94,135 @@ export const SalesOrderCreateForm = (props) => {
   });
 
   return (
-    <div style={{minWidth: "100%", marginBottom: '1rem' }}>
-    <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-      <h2>Create Sales Order</h2>
-      <IconWithPopup/>
-    </div>
+    <div style={{minWidth: "100%" , marginBottom: '1rem' }}>
+    <h2>Create Temporary User</h2>
     <form
       onSubmit={formik.handleSubmit}
       {...other}>
       <Card>
-        <CardHeader title="Product Order Detail" />
+        <CardHeader title="New Temporary User" />
         <CardContent sx={{ pt: 0 }}>
           <Grid
             container
             spacing={3}
           >
+              <Grid
+              xs={12}
+              md={6}
+            >
+              <TextField
+                error={!!(formik.touched.address1 && formik.errors.address1)}
+                fullWidth
+                helperText={formik.touched.address1 && formik.errors.address1}
+                label="First Name"
+                name="firstname"
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+
+              />
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
+            >
+              <TextField
+                error={!!(formik.touched.address1 && formik.errors.address1)}
+                fullWidth
+                helperText={formik.touched.address1 && formik.errors.address1}
+                label="Last Name"
+                name="lastame"
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+         
+              />
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
+            >
+              <TextField
+                error={!!(formik.touched.address1 && formik.errors.address1)}
+                fullWidth
+                helperText={formik.touched.address1 && formik.errors.address1}
+                label="Email"
+                name="email"
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+             
+              />
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
+            >
+              <TextField
+                error={!!(formik.touched.address1 && formik.errors.address1)}
+                fullWidth
+                helperText={formik.touched.address1 && formik.errors.address1}
+                label="Phone"
+                name="phone"
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+
+              />
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
+            >
+              <TextField
+                error={!!(formik.touched.address1 && formik.errors.address1)}
+                fullWidth
+                helperText={formik.touched.address1 && formik.errors.address1}
+                label="Type"
+                name="Type"
+                select
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+              >
+              {userOptions.map((option) => (
+                <MenuItem
+                  key={option.value}
+                  value={option.value}
+                >
+                  {option.label}
+                </MenuItem>
+              ))}
+              </TextField>
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
+            >
+              <TextField
+                error={!!(formik.touched.address1 && formik.errors.address1)}
+                fullWidth
+                helperText={formik.touched.address1 && formik.errors.address1}
+                label="Company"
+                name="company"
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+
+              />
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
+            >
+              <TextField
+                error={!!(formik.touched.address1 && formik.errors.address1)}
+                fullWidth
+                helperText={formik.touched.address1 && formik.errors.address1}
+                label="Address"
+                multiline
+                minRows={3}
+                name="address"
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+
+              />
+            </Grid>
+            <Grid/>
             <Grid
               xs={12}
               md={6}
@@ -119,8 +230,8 @@ export const SalesOrderCreateForm = (props) => {
               <TextField
                     error={!!(formik.touched.category && formik.errors.category)}
                     fullWidth
-                    label="User"
-                    name="user"
+                    label="Country"
+                    name="country"
                     onBlur={formik.handleBlur}
                     onChange={formik.handleChange}
                     select
@@ -135,17 +246,6 @@ export const SalesOrderCreateForm = (props) => {
                       </MenuItem>
                     ))}
                   </TextField>
-              {/* <TextField
-                error={!!(formik.touched.name && formik.errors.name)}
-                fullWidth
-                helperText={formik.touched.name && formik.errors.name}
-                label="Full name"
-                name="name"
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-                required
-                value={formik.values.name}
-              /> */}
             </Grid>
             <Grid/>
             <Grid
@@ -155,8 +255,8 @@ export const SalesOrderCreateForm = (props) => {
                 <TextField
                     error={!!(formik.touched.category && formik.errors.category)}
                     fullWidth
-                    label="Type"
-                    name="type"
+                    label="State"
+                    name="state"
                     onBlur={formik.handleBlur}
                     onChange={formik.handleChange}
                     select
@@ -172,6 +272,7 @@ export const SalesOrderCreateForm = (props) => {
                     ))}
                   </TextField>
             </Grid>
+            <Grid/>
             <Grid
               xs={12}
               md={6}
@@ -179,8 +280,8 @@ export const SalesOrderCreateForm = (props) => {
                <TextField
                     error={!!(formik.touched.category && formik.errors.category)}
                     fullWidth
-                    label="Quotation"
-                    name="quotation"
+                    label="City"
+                    name="city"
                     onBlur={formik.handleBlur}
                     onChange={formik.handleChange}
                     select
@@ -195,74 +296,8 @@ export const SalesOrderCreateForm = (props) => {
                       </MenuItem>
                     ))}
                   </TextField>
-              {/* <TextField
-                error={!!(formik.touched.email && formik.errors.email)}
-                fullWidth
-                helperText={formik.touched.email && formik.errors.email}
-                label="Email address"
-                name="email"
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-                required
-                value={formik.values.email}
-              /> */}
             </Grid>
-            {/* <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-                error={!!(formik.touched.state && formik.errors.state)}
-                fullWidth
-                helperText={formik.touched.state && formik.errors.state}
-                label="Contact Name"
-                name="contactName"
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-                // value={formik.values.state}
-              />
-            </Grid> */}
-            <Grid
-              xs={12}
-              md={6}
-            >
-               <DatePicker placeholder="Delivery Date"
-height='50px'/>
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-                    error={!!(formik.touched.category && formik.errors.category)}
-                    fullWidth
-                    label="Status"
-                    name="status"
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    select
-                    value={formik.values.category}
-                  >
-                    {userOptions.map((option) => (
-                      <MenuItem
-                        key={option.value}
-                        value={option.value}
-                      >
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-              {/* <TextField
-                error={!!(formik.touched.address2 && formik.errors.address2)}
-                fullWidth
-                helperText={formik.touched.address2 && formik.errors.address2}
-                label="Address 2"
-                name="address2"
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-                value={formik.values.address2}
-              /> */}
-            </Grid>
+            <Grid/>
             <Grid
               xs={12}
               md={6}
@@ -271,51 +306,30 @@ height='50px'/>
                 error={!!(formik.touched.address1 && formik.errors.address1)}
                 fullWidth
                 helperText={formik.touched.address1 && formik.errors.address1}
-                label="Contact Name"
-                name="contactName"
+                label="ZipCode"
+                name="zipcode"
                 onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
-                // value={formik.values.address1}
               />
             </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-                error={!!(formik.touched.address1 && formik.errors.address1)}
-                fullWidth
-                helperText={formik.touched.address1 && formik.errors.address1}
-                label="Mobile No."
-                name="mobileno"
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-                // value={formik.values.address1}
-              />
-            </Grid>
-         
-       
           </Grid>
         </CardContent>
         <Divider/>
       </Card>
     </form>
-    <CustomTable regular={true}/>
     <Grid
               xs={12}
               md={6}
             >
- <Box sx={{ mt: 2 }}
-display="flex"
-justifyContent="flex-end"
-marginRight="12px">
+            <Box sx={{ mt: 2 }}
+            display="flex"
+            justifyContent="flex-end">
           <Button
             color="primary"
             variant="contained"
             align="right"
-           
           >
-            Place Order
+            Save
           </Button>
         </Box>
           </Grid>
@@ -323,6 +337,6 @@ marginRight="12px">
   );
 };
 
-SalesOrderCreateForm.propTypes = {
+TempUserCreateForm.propTypes = {
   customer: PropTypes.object.isRequired
 };

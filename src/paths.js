@@ -103,6 +103,10 @@ export const paths = {
       view: '/dashboard/inventory',
       create: '/dashboard/inventory/create'
     },
+    products: {
+      view: '/dashboard/products',
+      create: '/dashboard/products/create'
+    },
     social: {
       index: '/dashboard/social',
       profile: '/dashboard/social/profile',

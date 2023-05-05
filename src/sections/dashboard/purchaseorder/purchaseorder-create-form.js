@@ -17,6 +17,9 @@ import { wait } from 'src/utils/wait';
 import CustomTable  from './customTable';
 import './purchase-order.css'
 import { Box } from '@mui/system';
+import IconWithPopup from '../user/user-icon';
+
+
 
 const userOptions = [
   {
@@ -97,7 +100,10 @@ export const PurchaseOrderCreateForm = (props) => {
 
   return (
     <div style={{minWidth: "100%" }}>
- <h2>Create Purchase Order</h2>
+    <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+      <h2>Create Purchase Order</h2>
+      <IconWithPopup/>
+    </div>
     <form
       onSubmit={formik.handleSubmit}
       {...other}>

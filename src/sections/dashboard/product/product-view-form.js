@@ -7,7 +7,6 @@ import {
   Link
 } from '@mui/material';
 import { Table } from 'antd';
-import './purchase-order.css'
 import { Box } from '@mui/system';
 import React from 'react';
 import { Scrollbar } from 'src/components/scrollbar';
@@ -18,31 +17,7 @@ import { paths } from 'src/paths';
 
 
 const columns = [
-  {
-    title: 'Sales Order Number',
-    dataIndex: 'salesOrder',
-    key: 'salesOrder',
-    render: (name) => <Link
-    color="primary"
-    component={RouterLink}
-    href={paths.dashboard.orders.viewDetail}
-    sx={{
-      alignItems: 'center',
-      textAlign: 'center'
-      // display: 'inline-flex'
-    }}
-    underline="hover"
-  >
-    <Typography variant="subtitle2">
-   {name}
-    </Typography>
-  </Link>
-  },
-  {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
-    },
+ 
   {
     title: 'Name',
     dataIndex: 'name',
@@ -50,26 +25,25 @@ const columns = [
   },
   
   {
-    title: 'Delivery Date',
-    key: 'deliveryDate',
-    dataIndex: 'deliveryDate',
+    title: 'Category',
+    key: 'category',
+    dataIndex: 'category',
   },
   {
-      title: 'Created Date',
-      key: 'createdDate',
-      dataIndex: 'createdDate',
+      title: 'Type',
+      key: 'type',
+      dataIndex: 'type',
     },
     {
-      title: 'Last Modified Date',
-      key: 'lastModified',
-      dataIndex: 'lastModified',
+      title: 'Description',
+      key: 'description',
+      dataIndex: 'description',
     },
     {
       dataIndex: 'actionEdit',
       key: 'actionEdit',
     render: () => <Link
-    component={RouterLink}
-    href={paths.dashboard.orders.edit}
+
   >
     <IconButton>
   <Icon>
@@ -94,16 +68,14 @@ const columns = [
 const data = [
   {
     key: '1',
-    salesOrder: '12345',
-    status: "Completed",
-    name: 'Harsh',
-    deliveryDate: '26/02/2023',
-    createdDate:'16/02/2023',
-    lastModified:'3/03/2023',
+    name: 'user1',
+    description: 'testing description',
+    type:'type test',
+    category:'category test',
   },
 ];
 
-class SalesOrderViewList extends React.Component {
+class ViewProduct extends React.Component {
   constructor(props) {
       super(props);
       this.state = {
@@ -165,33 +137,19 @@ render (){
     const {rows} =this.state;
   return (
     <div style={{minWidth: "100%" }}>
- <h2>View Sales Order</h2>
- <Box sx={{  position: 'relative' , overflowX: "auto"}}>    
+ <h2>View Product</h2>
+      <Box sx={{  position: 'relative' , overflowX: "auto"}}>    
       <Scrollbar>
         <Table sx={{ minWidth: 800,overflowX: "auto" }} columns={columns} dataSource={data}></Table>
       </Scrollbar>
     </Box>
-    {/* <Grid
-              xs={12}
-              md={6}
-            >
-  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Total Amount : 56,78,020</Typography>
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-              style={{marginTop: "20px", marginBottom: "30px"}}
-            >
-  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Terms &Conditions :  This product can be sold on the said customer</Typography>
-
-            </Grid> */}
     </div>
   );
     }
 };
 
-SalesOrderViewList.propTypes = {
+ViewProduct.propTypes = {
   customer: PropTypes.object.isRequired
 };
 
-export default SalesOrderViewList;
+export default ViewProduct;

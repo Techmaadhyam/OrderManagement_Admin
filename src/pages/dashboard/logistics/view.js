@@ -4,7 +4,7 @@ import { customersApi } from 'src/api/customers';
 import { Seo } from 'src/components/seo';
 import { useMounted } from 'src/hooks/use-mounted';
 import { usePageView } from 'src/hooks/use-page-view';
-import { CreateProduct } from 'src/sections/dashboard/product/product-create-form';
+import ViewTemporaryUser from 'src/sections/dashboard/logistics/view-temp-user';
 
 const useCustomer = () => {
   const isMounted = useMounted();
@@ -52,7 +52,7 @@ const Page = () => {
       >
         <Container maxWidth="lg">
           <Stack spacing={4}>
-            <CreateProduct customer={customer} />
+            <ViewTemporaryUser customer={customer} />
           </Stack>
         </Container>
       </Box>
@@ -61,3 +61,4 @@ const Page = () => {
 };
 
 export default Page;
+

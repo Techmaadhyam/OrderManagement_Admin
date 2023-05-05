@@ -25,6 +25,8 @@ import { RouterLink } from 'src/components/router-link';
 import { paths } from 'src/paths';
 import { Scrollbar } from 'src/components/scrollbar';
 import { Table } from 'antd';
+import { primaryColor } from 'src/primaryColor';
+import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 
 
 const data={
@@ -147,33 +149,33 @@ export const ViewPurchaseOrder = (props) => {
   });
 
   return (
-    <div style={{minWidth: "100%" }}>
+    <div style={{minWidth: "100%", marginTop: "1rem"  }}>
       <div>
-                <Link
-                  color="text.primary"
-                  component={RouterLink}
-                  href={paths.dashboard.purchaseorder.view}
-                  sx={{
-                    alignItems: 'center',
-                    display: 'inline-flex'
-                  }}
-                  underline="hover"
-                >
-                  <SvgIcon sx={{ mr: 1 }}>
-                    <ArrowLeftIcon />
-                  </SvgIcon>
-                  <Typography variant="subtitle2">
-                    Purchase Order List
-                  </Typography>
-                </Link>
-              </div>
+          <Link
+          color="text.primary"
+          component={RouterLink}
+          href={paths.dashboard.purchaseorder.view}
+          sx={{
+            alignItems: 'center',
+            display: 'inline-flex',
+          }}
+          underline="none"
+        >
+          <SvgIcon sx={{ mr: 1, width: 38, height: 38,  transition: 'color 0.5s','&:hover': { color: `${primaryColor}` }}}>
+            <ArrowCircleLeftOutlinedIcon/>
+          </SvgIcon>
+          <Typography variant="subtitle2">
+            Purchase <span style={{color: `${primaryColor}` , fontWeight: 600}}>Order List</span> 
+          </Typography>
+        </Link>
+      </div>
  <h2>Purchase Order</h2>
       <Card style={{marginBottom: "12px" }}>
         <CardHeader title="Product Order Detail" />
         <PropertyList>
         <PropertyListItem
           align={align}
-          label="User Name"
+          label="Name"
         >
           <Typography variant="subtitle2">
             {data.userName}
@@ -184,12 +186,6 @@ export const ViewPurchaseOrder = (props) => {
           align={align}
           label="Quotation"
           value={data.quotation}
-        />
-        <Divider />
-        <PropertyListItem
-          align={align}
-          label="Invoice"
-          value={data.type}
         />
         <Divider />
         <PropertyListItem

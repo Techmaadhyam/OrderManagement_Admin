@@ -11,7 +11,10 @@ import {
   Stack,
   TextField,
   MenuItem,
-  Unstable_Grid2 as Grid
+  Unstable_Grid2 as Grid,
+  SvgIcon,
+  Typography,
+  Link
 } from '@mui/material';
 import { RouterLink } from 'src/components/router-link';
 import { Seo } from 'src/components/seo';
@@ -25,6 +28,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { primaryColor } from 'src/primaryColor'; 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 
 
 
@@ -241,7 +245,7 @@ const handleCities = async (event) => {
           md: 'row'
         }
       }}
-    > 
+    >   
       <Box
         sx={{
           alignItems: 'center',
@@ -309,7 +313,25 @@ const handleCities = async (event) => {
         }}
       >
      
-   
+     <div>
+    <Link
+      color="text.primary"
+      component={RouterLink}
+      href={paths.index}
+      sx={{
+        alignItems: 'center',
+        display: 'inline-flex',
+      }}
+      underline="none"
+    >
+      <SvgIcon sx={{ mr: 1, width: 38, height: 38,  transition: 'color 0.5s','&:hover': { color: `${primaryColor}` }}}>
+        <ArrowCircleLeftOutlinedIcon/>
+      </SvgIcon>
+      <Typography variant="subtitle2">
+        Back To <span style={{color: `${primaryColor}` , fontWeight: 600}}>Log In</span> 
+      </Typography>
+    </Link>
+  </div>
           <Box sx={{ mb: 4 }}>
             <Stack
               alignItems="center"
@@ -331,6 +353,7 @@ const handleCities = async (event) => {
               style={{ width: 'auto', height: 40 }}
             />
               </Box>
+              
               <Box
                 sx={{
                   color: primaryColor,
@@ -350,7 +373,7 @@ const handleCities = async (event) => {
           </Box>
      
         <div style={{minWidth: "100%", marginBottom: '1rem' }}>
-      <h2>New user registration</h2>
+      <h2>New User Registration</h2>
     <form>
       <Card>
         <CardHeader title="Create new account" />
