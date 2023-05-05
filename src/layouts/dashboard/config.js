@@ -211,8 +211,26 @@ export const useSections = () => {
             
             ]
           },
-          
-         
+          {
+            title: t(tokens.nav.products),
+            path: paths.dashboard.products.index,
+            icon: (
+              <SvgIcon fontSize="small">
+                <Upload04Icon />
+              </SvgIcon>
+            ),
+            items: [
+              {
+                title: t(tokens.nav.create),
+                path: paths.dashboard.products.create
+              },
+              {
+                title: t(tokens.nav.view),
+                path: paths.dashboard.products.view
+              }
+            
+            ]
+          },
           {
             title: t(tokens.nav.user),
             path: paths.dashboard.logistics.index,
