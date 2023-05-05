@@ -36,8 +36,11 @@ const LogisticsDashboardPage = lazy(() => import('src/pages/dashboard/logistics/
 const LogisticsFleetPage = lazy(() => import('src/pages/dashboard/logistics/view'));
 
 // Orders
-const OrderListPage = lazy(() => import('src/pages/dashboard/orders/list'));
-const OrderDetailPage = lazy(() => import('src/pages/dashboard/orders/detail'));
+const OrderListPage = lazy(() => import('src/pages/dashboard/orders/create'));
+const OrderViewPage = lazy(() => import('src/pages/dashboard/orders/view'));
+const OrderInvoicePage = lazy(() => import('src/pages/dashboard/orders/invoice'));
+const OrderViewDetailPage = lazy(() => import('src/pages//dashboard/orders/viewDetail'));
+const OrderEditPage = lazy(() => import('src/pages//dashboard/orders/edit'));
 
 // Products
 const ProductListPage = lazy(() => import('src/pages/dashboard/products/list'));
@@ -191,7 +194,20 @@ export const dashboardRoutes = [
           },
           {
             path: ':orderId',
-            element: <OrderDetailPage />
+            element: <OrderInvoicePage />
+          },
+          {
+            path: 'details',
+           
+            element: <OrderViewPage />
+          },
+          {
+            path:'viewDetail',
+            element: <OrderViewDetailPage/>
+          },
+          {
+            path:'edit',
+            element: <OrderEditPage/>
           }
         ]
       },
