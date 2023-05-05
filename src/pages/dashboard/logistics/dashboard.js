@@ -11,11 +11,6 @@ import {
 import { Seo } from 'src/components/seo';
 import { usePageView } from 'src/hooks/use-page-view';
 import { useSettings } from 'src/hooks/use-settings';
-import { AcademyDailyProgress } from 'src/sections/dashboard/academy/academy-daily-progress';
-import { AcademyFind } from 'src/sections/dashboard/academy/academy-find';
-import { CourseCard } from 'src/sections/dashboard/academy/course-card';
-import { CourseSearch } from 'src/sections/dashboard/academy/course-search';
-import { QuotationOrderCreateForm } from 'src/sections/dashboard/academy/quotationorder-create-form';
 import { customersApi } from 'src/api/customers';
 import { useMounted } from 'src/hooks/use-mounted';
 import { useState,useCallback, useEffect } from 'react';
