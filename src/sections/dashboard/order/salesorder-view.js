@@ -25,6 +25,8 @@ import { RouterLink } from 'src/components/router-link';
 import { paths } from 'src/paths';
 import { Scrollbar } from 'src/components/scrollbar';
 import { Table } from 'antd';
+import { primaryColor } from 'src/primaryColor';
+import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 
 
 const data={
@@ -147,25 +149,25 @@ export const ViewSalesOrder = (props) => {
   });
 
   return (
-    <div style={{minWidth: "100%" }}>
-      <div>
-                <Link
-                  color="text.primary"
-                  component={RouterLink}
-                  href={paths.dashboard.orders.details}
-                  sx={{
-                    alignItems: 'center',
-                    display: 'inline-flex'
-                  }}
-                  underline="hover"
-                >
-                  <SvgIcon sx={{ mr: 1 }}>
-                    <ArrowLeftIcon />
-                  </SvgIcon>
-                  <Typography variant="subtitle2">
-                    Sales Order List
-                  </Typography>
-                </Link>
+    <div style={{minWidth: "100%", marginTop: "1rem" }}>
+      <div> 
+      <Link
+      color="text.primary"
+      component={RouterLink}
+      href={paths.dashboard.orders.details}
+      sx={{
+        alignItems: 'center',
+        display: 'inline-flex',
+      }}
+      underline="none"
+    >
+      <SvgIcon sx={{ mr: 1, width: 38, height: 38,  transition: 'color 0.5s','&:hover': { color: `${primaryColor}` }}}>
+        <ArrowCircleLeftOutlinedIcon/>
+      </SvgIcon>
+      <Typography variant="subtitle2">
+        Sales <span style={{color: `${primaryColor}` , fontWeight: 600}}>Order List</span> 
+      </Typography>
+    </Link>
               </div>
  <h2>Sales Order</h2>
       <Card style={{marginBottom: "12px" }}>
