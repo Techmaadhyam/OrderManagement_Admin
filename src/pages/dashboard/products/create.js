@@ -1,17 +1,48 @@
-import { Box, Breadcrumbs, Container, Link, Stack, Typography } from '@mui/material';
-import { BreadcrumbsSeparator } from 'src/components/breadcrumbs-separator';
-import { RouterLink } from 'src/components/router-link';
+import { useCallback, useEffect, useState } from 'react';
+import {  Box, Container, Stack } from '@mui/material';
+import { customersApi } from 'src/api/customers';
 import { Seo } from 'src/components/seo';
+import { useMounted } from 'src/hooks/use-mounted';
 import { usePageView } from 'src/hooks/use-page-view';
-import { paths } from 'src/paths';
-import { ProductCreateForm } from 'src/sections/dashboard/product/product-create-form';
+import { CreateProduct } from 'src/sections/dashboard/product/product-create-form';
+
+const useCustomer = () => {
+  const isMounted = useMounted();
+  const [customer, setCustomer] = useState(null);
+
+  const handleCustomerGet = useCallback(async () => {
+    try {
+      const response = await customersApi.getCustomer();
+
+      if (isMounted()) {
+        setCustomer(response);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, [isMounted]);
+
+  useEffect(() => {
+      handleCustomerGet();
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []);
+
+  return customer;
+};
 
 const Page = () => {
+  const customer = useCustomer();
+
   usePageView();
+
+  if (!customer) {
+    return null;
+  }
 
   return (
     <>
-      <Seo title="Dashboard: Product Create" />
+      <Seo title="Dashboard: Customer Edit" />
       <Box
         component="main"
         sx={{
@@ -19,38 +50,9 @@ const Page = () => {
           py: 8
         }}
       >
-        <Container maxWidth="xl">
-          <Stack spacing={3}>
-            <Stack spacing={1}>
-              <Typography variant="h4">
-                Create a new product
-              </Typography>
-              <Breadcrumbs separator={<BreadcrumbsSeparator />}>
-                <Link
-                  color="text.primary"
-                  component={RouterLink}
-                  href={paths.dashboard.index}
-                  variant="subtitle2"
-                >
-                  Dashboard
-                </Link>
-                <Link
-                  color="text.primary"
-                  component={RouterLink}
-                  href={paths.dashboard.products.index}
-                  variant="subtitle2"
-                >
-                  Products
-                </Link>
-                <Typography
-                  color="text.secondary"
-                  variant="subtitle2"
-                >
-                  Create
-                </Typography>
-              </Breadcrumbs>
-            </Stack>
-            <ProductCreateForm />
+        <Container maxWidth="lg">
+          <Stack spacing={4}>
+            <CreateProduct customer={customer} />
           </Stack>
         </Container>
       </Box>
