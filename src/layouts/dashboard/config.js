@@ -91,7 +91,7 @@ export const useSections = () => {
       //   ]
       // },
       {
-        subheader: t(tokens.nav.concepts),
+        
         items: [
           {
             title: t(tokens.nav.overview),
