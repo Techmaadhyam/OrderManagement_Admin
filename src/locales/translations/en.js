@@ -36,7 +36,7 @@ export const en = {
   [tokens.nav.mail]: 'Mail',
   [tokens.nav.management]: 'Management',
   [tokens.nav.orderList]: 'Sales Order',
-  [tokens.nav.overview]: 'Dashboard',
+  [tokens.nav.overview]: 'Home',
   [tokens.nav.pages]: 'Pages',
   [tokens.nav.postCreate]: 'Post Create',
   [tokens.nav.postDetails]: 'Post Details',
