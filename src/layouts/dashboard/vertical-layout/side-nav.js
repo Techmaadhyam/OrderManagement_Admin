@@ -180,25 +180,12 @@ export const SideNav = (props) => {
           <Stack
             alignItems="center"
             direction="row"
+            justifyContent="center"
             spacing={2}
-            sx={{ p: 3 }}
+            sx={{ paddingTop: 6, paddingBottom: 6 }}
           >
-            <Box
-              component={RouterLink}
-              href={paths.authDemo.login.modern}
-            sx={{
-              display: 'inline-flex',
-              height: 32,
-              width: 32
-            }}
-            >
-              <img
-              alt=""
-              src="src/components/logos/favicon.png"
-              //components/logos/favicon.png"
-            />
-            </Box>
-            {/* <TenantSwitch sx={{ flexGrow: 1 }} /> */}
+          
+            <TenantSwitch />
           </Stack>
           <Stack
             component="nav"
