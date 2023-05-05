@@ -48,9 +48,12 @@ export const paths = {
   },
   dashboard: {
     index: '/dashboard',
-    academy: {
-      index: '/dashboard/academy',
-      courseDetails: '/dashboard/academy/courses/:courseId'
+    quotation: {
+      index: '/dashboard/quotation',
+      view: '/dashboard/quotation/:courseId',
+      invoice: '/dashboard/quotation/invoice',
+      viewDetail: '/dashboard/quotation/viewDetail',
+      edit: '/dashboard/quotation/edit'
     },
     account: '/dashboard/account',
     analytics: '/dashboard/analytics',

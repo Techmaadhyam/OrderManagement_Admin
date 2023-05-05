@@ -1,24 +1,10 @@
-import ArrowRightIcon from '@untitled-ui/icons-react/build/esm/ArrowRight';
-import {
-  Box,
-  Button,
-  Container,
-  Stack,
-  SvgIcon,
-  Typography,
-  Unstable_Grid2 as Grid
-} from '@mui/material';
-import { Seo } from 'src/components/seo';
-import { usePageView } from 'src/hooks/use-page-view';
-import { useSettings } from 'src/hooks/use-settings';
-import { AcademyDailyProgress } from 'src/sections/dashboard/academy/academy-daily-progress';
-import { AcademyFind } from 'src/sections/dashboard/academy/academy-find';
-import { CourseCard } from 'src/sections/dashboard/academy/course-card';
-import { CourseSearch } from 'src/sections/dashboard/academy/course-search';
-import { QuotationOrderCreateForm } from 'src/sections/dashboard/academy/quotationorder-create-form';
+import { useCallback, useEffect, useState } from 'react';
+import {  Box, Container, Stack } from '@mui/material';
 import { customersApi } from 'src/api/customers';
+import { Seo } from 'src/components/seo';
 import { useMounted } from 'src/hooks/use-mounted';
-import { useState,useCallback, useEffect } from 'react';
+import { usePageView } from 'src/hooks/use-page-view';
+import {ViewQuotationDetail } from 'src/sections/dashboard/quotation/view-quotation-detail';
 
 const useCustomer = () => {
   const isMounted = useMounted();
@@ -45,7 +31,6 @@ const useCustomer = () => {
   return customer;
 };
 
-
 const Page = () => {
   const customer = useCustomer();
 
@@ -67,7 +52,7 @@ const Page = () => {
       >
         <Container maxWidth="lg">
           <Stack spacing={4}>
-            <QuotationOrderCreateForm customer={customer} />
+            <ViewQuotationDetail customer={customer}/>
           </Stack>
         </Container>
       </Box>
@@ -76,4 +61,3 @@ const Page = () => {
 };
 
 export default Page;
-

@@ -23,7 +23,7 @@ export const CourseCard = (props) => {
     <Card variant="outlined">
       <CardMedia
         component={RouterLink}
-        href={paths.dashboard.academy.courseDetails}
+        href={paths.dashboard.quotation.courseDetails}
         image={course.media}
         sx={{ height: 180 }}
       />
@@ -31,7 +31,7 @@ export const CourseCard = (props) => {
         <Link
           color="text.primary"
           component={RouterLink}
-          href={paths.dashboard.academy.courseDetails}
+          href={paths.dashboard.quotation.courseDetails}
           underline="none"
           variant="subtitle1"
         >
@@ -80,7 +80,7 @@ export const CourseCard = (props) => {
               <ArrowRightIcon />
             </SvgIcon>
           )}
-          href={paths.dashboard.academy.courseDetails}
+          href={paths.dashboard.quotation.courseDetails}
         >
           Continue
         </Button>

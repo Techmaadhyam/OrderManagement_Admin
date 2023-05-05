@@ -4,9 +4,13 @@ import { Layout as DashboardLayout } from 'src/layouts/dashboard';
 
 const IndexPage = lazy(() => import('src/pages/dashboard/index'));
 
-// Academy
-const AcademyDashboardPage = lazy(() => import('src/pages/dashboard/academy/dashboard'));
-const AcademyCoursePage = lazy(() => import('src/pages/dashboard/academy/course'));
+// Quotation
+const QuotationCreatePage = lazy(() => import('src/pages/dashboard/quotation/create'));
+const QuotationViewPage = lazy(() => import('src/pages/dashboard/quotation/view'));
+const QuotationInvoicePage = lazy(() => import('src/pages/dashboard/quotation/invoice'));
+const QuotationViewDetailPage = lazy(() => import('src/pages/dashboard/quotation/viewDetail'));
+const QuotationEditPage = lazy(() => import('src/pages/dashboard/quotation/edit'));
+
 
 // Blog
 const BlogPostListPage = lazy(() => import('src/pages/dashboard/blog/list'));
@@ -78,21 +82,28 @@ export const dashboardRoutes = [
         element: <IndexPage />
       },
       {
-        path: 'academy',
+        path: 'quotation',
         children: [
           {
             index: true,
-            element: <AcademyDashboardPage />
+            element: <QuotationCreatePage />
           },
-          {
-            path: 'courses',
-            children: [
               {
                 path: ':courseId',
-                element: <AcademyCoursePage />
+                element: <QuotationViewPage />
+              },
+              {
+                path: 'invoice',
+                element: <QuotationInvoicePage/>
+              },
+              {
+                path: 'viewDetail',
+                element: <QuotationViewDetailPage/>
+              },
+              {
+                path: 'edit',
+                element: <QuotationEditPage/>
               }
-            ]
-          }
         ]
       },
       {

@@ -104,7 +104,7 @@ export const useSections = () => {
           },
           {
             title: t(tokens.nav.quotation),
-            path: paths.dashboard.academy.index,
+            path: paths.dashboard.quotation.index,
             icon: (
               <SvgIcon fontSize="small">
                 <LayoutAlt02Icon />
@@ -113,15 +113,15 @@ export const useSections = () => {
             items: [
               {
                 title: t(tokens.nav.create),
-                path: paths.dashboard.academy.index
+                path: paths.dashboard.quotation.index
               },
               {
                 title: t(tokens.nav.view),
-                path: paths.dashboard.academy.courseDetails
+                path: paths.dashboard.quotation.view
               },
               {
                 title: t(tokens.nav.invoice),
-                path: ''
+                path: paths.dashboard.quotation.invoice
               }
             ]
           },
