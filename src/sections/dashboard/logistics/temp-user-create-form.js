@@ -207,7 +207,7 @@ export const TempUserCreateForm = (props) => {
             </Grid>
             <Grid
               xs={12}
-              md={12}
+              md={6}
             >
               <TextField
                 error={!!(formik.touched.address1 && formik.errors.address1)}
@@ -222,9 +222,10 @@ export const TempUserCreateForm = (props) => {
 
               />
             </Grid>
+            <Grid/>
             <Grid
               xs={12}
-              md={12}
+              md={6}
             >
               <TextField
                     error={!!(formik.touched.category && formik.errors.category)}
@@ -246,9 +247,10 @@ export const TempUserCreateForm = (props) => {
                     ))}
                   </TextField>
             </Grid>
+            <Grid/>
             <Grid
               xs={12}
-              md={12}
+              md={6}
             >
                 <TextField
                     error={!!(formik.touched.category && formik.errors.category)}
@@ -270,9 +272,10 @@ export const TempUserCreateForm = (props) => {
                     ))}
                   </TextField>
             </Grid>
+            <Grid/>
             <Grid
               xs={12}
-              md={12}
+              md={6}
             >
                <TextField
                     error={!!(formik.touched.category && formik.errors.category)}
@@ -294,10 +297,10 @@ export const TempUserCreateForm = (props) => {
                     ))}
                   </TextField>
             </Grid>
-        
+            <Grid/>
             <Grid
               xs={12}
-              md={12}
+              md={6}
             >
               <TextField
                 error={!!(formik.touched.address1 && formik.errors.address1)}
