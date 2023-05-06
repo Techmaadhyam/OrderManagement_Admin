@@ -22,6 +22,21 @@ const columns = [
     title: 'Name',
     dataIndex: 'name',
     key: 'name',
+    render: (name) => <Link
+    color="primary"
+    component={RouterLink}
+    href={paths.dashboard.products.viewDetail}
+    sx={{
+      alignItems: 'center',
+      textAlign: 'center'
+      // display: 'inline-flex'
+    }}
+    underline="hover"
+  >
+    <Typography variant="subtitle2">
+   {name}
+    </Typography>
+  </Link>
   },
   
   {
