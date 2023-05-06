@@ -7,7 +7,7 @@ import {
   Link
 } from '@mui/material';
 import { Table } from 'antd';
-import './purchase-order.css'
+import './sales-order.css'
 import { Box } from '@mui/system';
 import React from 'react';
 import { Scrollbar } from 'src/components/scrollbar';

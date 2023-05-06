@@ -16,7 +16,7 @@ import {
   Grid
 } from '@mui/material';
 import { wait } from 'src/utils/wait';
-import './purchase-order.css'
+import './sales-order.css'
 import {  Box, Stack } from '@mui/system';
 import { PropertyList } from 'src/components/property-list';
 import { PropertyListItem } from 'src/components/property-list-item';

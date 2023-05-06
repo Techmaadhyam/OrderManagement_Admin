@@ -18,7 +18,7 @@ import { DatePicker, Typography } from 'antd';
 import ArrowLeftIcon from '@untitled-ui/icons-react/build/esm/ArrowLeft';
 import { wait } from 'src/utils/wait';
 import CustomTable  from './customTable';
-import './purchase-order.css'
+import './sales-order.css'
 import { Box } from '@mui/system';
 import { RouterLink } from 'src/components/router-link';
 import { paths } from 'src/paths';
