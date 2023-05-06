@@ -38,8 +38,8 @@ const sections = [
             path: paths.dashboard.fileManager
           },
           {
-            title: 'Academy',
-            path: paths.dashboard.academy.index
+            title: 'Quotation',
+            path: paths.dashboard.quotation.index
           }
         ]
       }

@@ -10,11 +10,10 @@ import {
 } from '@mui/material';
 import { Seo } from 'src/components/seo';
 import { usePageView } from 'src/hooks/use-page-view';
-import { useSettings } from 'src/hooks/use-settings';
+import { QuotationOrderCreateForm } from 'src/sections/dashboard/quotation/quotationorder-create-form';
 import { customersApi } from 'src/api/customers';
 import { useMounted } from 'src/hooks/use-mounted';
 import { useState,useCallback, useEffect } from 'react';
-import { TempUserCreateForm } from 'src/sections/dashboard/logistics/temp-user-create-form';
 
 const useCustomer = () => {
   const isMounted = useMounted();
@@ -63,7 +62,7 @@ const Page = () => {
       >
         <Container maxWidth="lg">
           <Stack spacing={4}>
-            <TempUserCreateForm customer={customer} />
+            <QuotationOrderCreateForm customer={customer} />
           </Stack>
         </Container>
       </Box>
@@ -72,3 +71,4 @@ const Page = () => {
 };
 
 export default Page;
+

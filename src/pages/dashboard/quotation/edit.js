@@ -1,20 +1,10 @@
-import ArrowRightIcon from '@untitled-ui/icons-react/build/esm/ArrowRight';
-import {
-  Box,
-  Button,
-  Container,
-  Stack,
-  SvgIcon,
-  Typography,
-  Unstable_Grid2 as Grid
-} from '@mui/material';
-import { Seo } from 'src/components/seo';
-import { usePageView } from 'src/hooks/use-page-view';
-import { useSettings } from 'src/hooks/use-settings';
+import { useCallback, useEffect, useState } from 'react';
+import {  Box, Container, Stack } from '@mui/material';
 import { customersApi } from 'src/api/customers';
+import { Seo } from 'src/components/seo';
 import { useMounted } from 'src/hooks/use-mounted';
-import { useState,useCallback, useEffect } from 'react';
-import { TempUserCreateForm } from 'src/sections/dashboard/logistics/temp-user-create-form';
+import { usePageView } from 'src/hooks/use-page-view';
+import {EditQuotation } from 'src/sections/dashboard/quotation/edit-quotation';
 
 const useCustomer = () => {
   const isMounted = useMounted();
@@ -41,7 +31,6 @@ const useCustomer = () => {
   return customer;
 };
 
-
 const Page = () => {
   const customer = useCustomer();
 
@@ -63,7 +52,7 @@ const Page = () => {
       >
         <Container maxWidth="lg">
           <Stack spacing={4}>
-            <TempUserCreateForm customer={customer} />
+            <EditQuotation customer={customer}/>
           </Stack>
         </Container>
       </Box>
