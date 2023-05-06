@@ -29,6 +29,7 @@ import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutl
 import IconWithPopup from '../user/user-icon';
 
 
+
 const statusOptions = ['Canceled', 'Complete', 'Rejected'];
 const columns = [
   {
@@ -205,7 +206,7 @@ export const ViewInventoryDetail = (props) => {
          <Divider />
         <PropertyListItem
           align={align}
-          label="HSN code"
+          label="HSN Code"
           value={data.HSNcode}
         />
          <Divider />
