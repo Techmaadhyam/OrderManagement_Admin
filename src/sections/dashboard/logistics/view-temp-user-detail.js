@@ -30,44 +30,7 @@ import IconWithPopup from '../user/user-icon';
 
 
 const statusOptions = ['Canceled', 'Complete', 'Rejected'];
-const columns = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-  },
-  {
-    title: 'Email',
-    dataIndex: 'email',
-    key: 'email',
-  },
-  {
-    title: 'Type',
-    dataIndex: 'type',
-    key: 'type',
-  },
-  {
-    title: 'Company',
-    dataIndex: 'company',
-    key: 'company',
-  },
-  {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
-    },
 
-];
-
-const rowData = [
-    {
-        name: "Max Ray",
-        email: 'test@xyz.com',
-        type: 'test type',
-        company:'xyz company',
-        address:'Street:  277, I S Sadan X Road, Santoshnagar, Hyderabad, Andhra Pradesh, India'
-      },
-];
 
 const data = 
 {
@@ -153,7 +116,7 @@ export const ViewTemporaryUserDetail = (props) => {
             <ArrowCircleLeftOutlinedIcon/>
           </SvgIcon>
           <Typography variant="subtitle2">
-            Temporary User <span style={{color: `${primaryColor}` , fontWeight: 600}}>List</span> 
+             Back To <span style={{color: `${primaryColor}` , fontWeight: 600}}>Temporary User List</span> 
           </Typography>
         </Link>
         <IconWithPopup/>
@@ -197,15 +160,7 @@ export const ViewTemporaryUserDetail = (props) => {
       </PropertyList>
         <Divider/>
       </Card>
-      <Card style={{marginBottom: "40px" }}>
-      <Box sx={{  position: 'relative' , overflowX: "auto"}}>    
-      <Scrollbar>
-        <Table sx={{ minWidth: 800,overflowX: "auto" }} pagination={false} columns={columns} dataSource={rowData}></Table>
-      </Scrollbar>
-    </Box>
-
-        <Divider/>
-      </Card>
+    
     </div>
   );
 };

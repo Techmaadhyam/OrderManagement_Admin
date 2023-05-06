@@ -166,7 +166,7 @@ export const ViewQuotationDetail = (props) => {
             <ArrowCircleLeftOutlinedIcon/>
           </SvgIcon>
           <Typography variant="subtitle2">
-            Quotation <span style={{color: `${primaryColor}` , fontWeight: 600}}>List</span> 
+             Back To <span style={{color: `${primaryColor}` , fontWeight: 600}}>Quotation List</span> 
           </Typography>
         </Link>
         <IconWithPopup/>

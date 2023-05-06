@@ -30,39 +30,7 @@ import IconWithPopup from '../user/user-icon';
 
 
 const statusOptions = ['Canceled', 'Complete', 'Rejected'];
-const columns = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-  },
-  {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
-    },
-  {
-    title: 'Zip Code',
-    dataIndex: 'zipcode',
-    key: 'zipcode',
-  },
-  
-  {
-    title: 'Description',
-    key: 'description',
-    dataIndex: 'description',
-  },
 
-];
-
-const rowData = [
-    {
-        name: 'Max Ray',
-        address: "Street: 277, I S Sadan X Road, Santoshnagar, Hyderabad, Andhra Pradesh, India",
-        zipcode: '30827',
-        description: 'testing random description',
-      },
-];
 
 const data = 
 {
@@ -147,7 +115,7 @@ export const ViewWarehouseDetail = (props) => {
             <ArrowCircleLeftOutlinedIcon/>
           </SvgIcon>
           <Typography variant="subtitle2">
-            Warehouse <span style={{color: `${primaryColor}` , fontWeight: 600}}>List</span> 
+             Back To <span style={{color: `${primaryColor}` , fontWeight: 600}}>Warehouse List</span> 
           </Typography>
         </Link>
         <IconWithPopup/>
@@ -185,28 +153,7 @@ export const ViewWarehouseDetail = (props) => {
       </PropertyList>
         <Divider/>
       </Card>
-      <Card style={{marginBottom: "40px" }}>
-      <Box sx={{  position: 'relative' , overflowX: "auto", marginBottom: '30px'}}>    
-      <Scrollbar>
-        <Table sx={{ minWidth: 800,overflowX: "auto" }} pagination={false} columns={columns} dataSource={rowData}></Table>
-      </Scrollbar>
-    </Box>
-     <Grid
-              xs={12}
-              md={6}
-            >
-  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Total Amount : 56,78,020</Typography>
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-              style={{marginTop: "20px", marginBottom: "30px"}}
-            >
-  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Terms &Conditions :  This product can be sold on the said customer</Typography>
-
-            </Grid>
-        <Divider/>
-      </Card>
+   
     </div>
   );
 };

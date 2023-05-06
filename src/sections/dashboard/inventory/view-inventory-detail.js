@@ -31,45 +31,6 @@ import IconWithPopup from '../user/user-icon';
 
 
 const statusOptions = ['Canceled', 'Complete', 'Rejected'];
-const columns = [
-  {
-    title: 'Product',
-    dataIndex: 'product',
-    key: 'product',
-  },
-  {
-    title: 'Quantity',
-    dataIndex: 'quantity',
-    key: 'quantity',
-  },
-{
-  title: 'Cost',
-  dataIndex: 'cost',
-  key: 'cost',
-},
-
-{
-  title: 'Category',
-  key: 'category',
-  dataIndex: 'category',
-},
-{
-    title: 'HSN Code',
-    key: 'HSNcode',
-    dataIndex: 'HSNcode',
-  },
-];
-
-const rowData =  [
-    {
-      key: '1',
-      product: 'product 1',
-      quantity: "50",
-      cost: '$3082',
-      category: 'healthcare',
-      HSNcode: '26-342',
-    },
-  ];
 
 const data = 
 {
@@ -146,7 +107,7 @@ export const ViewInventoryDetail = (props) => {
   });
 
   return (
-    <div style={{minWidth: "100%", marginTop: "1rem"  }}>
+    <div style={{minWidth: "100%", marginTop: "1rem" ,marginBottom: "1rem"  }}>
       <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
           <Link
           color="text.primary"
@@ -162,7 +123,7 @@ export const ViewInventoryDetail = (props) => {
             <ArrowCircleLeftOutlinedIcon/>
           </SvgIcon>
           <Typography variant="subtitle2">
-            Inventory <span style={{color: `${primaryColor}` , fontWeight: 600}}>List</span> 
+             Back To <span style={{color: `${primaryColor}` , fontWeight: 600}}>Inventory List</span> 
           </Typography>
         </Link>
         <IconWithPopup/>
@@ -245,28 +206,6 @@ export const ViewInventoryDetail = (props) => {
           value={data.description}
         />
       </PropertyList>
-        <Divider/>
-      </Card>
-      <Card style={{marginBottom: "40px" }}>
-      <Box sx={{  position: 'relative' , overflowX: "auto", marginBottom: '30px'}}>    
-      <Scrollbar>
-        <Table sx={{ minWidth: 800,overflowX: "auto" }} pagination={false} columns={columns} dataSource={rowData}></Table>
-      </Scrollbar>
-    </Box>
-     <Grid
-              xs={12}
-              md={6}
-            >
-  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Total Amount : 56,78,020</Typography>
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-              style={{marginTop: "20px", marginBottom: "30px"}}
-            >
-  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Terms &Conditions :  This product can be sold on the said customer</Typography>
-
-            </Grid>
         <Divider/>
       </Card>
     </div>

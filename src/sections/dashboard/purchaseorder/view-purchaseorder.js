@@ -166,7 +166,7 @@ export const ViewPurchaseOrder = (props) => {
             <ArrowCircleLeftOutlinedIcon/>
           </SvgIcon>
           <Typography variant="subtitle2">
-            Purchase <span style={{color: `${primaryColor}` , fontWeight: 600}}>Order List</span> 
+             Back To <span style={{color: `${primaryColor}` , fontWeight: 600}}>Purchase Order List</span> 
           </Typography>
         </Link>
         <IconWithPopup/>
