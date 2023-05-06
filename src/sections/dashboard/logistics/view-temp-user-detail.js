@@ -26,6 +26,7 @@ import { Scrollbar } from 'src/components/scrollbar';
 import { Table } from 'antd';
 import { primaryColor } from 'src/primaryColor';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
+import IconWithPopup from '../user/user-icon';
 
 
 const statusOptions = ['Canceled', 'Complete', 'Rejected'];
@@ -137,7 +138,7 @@ export const ViewTemporaryUserDetail = (props) => {
 
   return (
     <div style={{minWidth: "100%", marginTop: "1rem"  }}>
-      <div>
+      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
           <Link
           color="text.primary"
           component={RouterLink}
@@ -155,6 +156,7 @@ export const ViewTemporaryUserDetail = (props) => {
             Temporary User <span style={{color: `${primaryColor}` , fontWeight: 600}}>List</span> 
           </Typography>
         </Link>
+        <IconWithPopup/>
       </div>
  <h2>Temporary User</h2>
       <Card style={{marginBottom: "12px" }}>

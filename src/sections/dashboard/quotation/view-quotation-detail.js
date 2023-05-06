@@ -25,6 +25,9 @@ import { RouterLink } from 'src/components/router-link';
 import { paths } from 'src/paths';
 import { Scrollbar } from 'src/components/scrollbar';
 import { Table } from 'antd';
+import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
+import IconWithPopup from '../user/user-icon';
+import { primaryColor } from 'src/primaryColor';
 
 
 const data={
@@ -147,26 +150,27 @@ export const ViewQuotationDetail = (props) => {
   });
 
   return (
-    <div style={{minWidth: "100%" }}>
-      <div>
-                <Link
-                  color="text.primary"
-                  component={RouterLink}
-                  href={paths.dashboard.quotation.view}
-                  sx={{
-                    alignItems: 'center',
-                    display: 'inline-flex'
-                  }}
-                  underline="hover"
-                >
-                  <SvgIcon sx={{ mr: 1 }}>
-                    <ArrowLeftIcon />
-                  </SvgIcon>
-                  <Typography variant="subtitle2">
-                    Quotation List
-                  </Typography>
-                </Link>
-              </div>
+    <div style={{minWidth: "100%", marginTop: "1rem"  }}>
+         <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+          <Link
+          color="text.primary"
+          component={RouterLink}
+          href={paths.dashboard.quotation.view}
+          sx={{
+            alignItems: 'center',
+            display: 'inline-flex',
+          }}
+          underline="none"
+        >
+          <SvgIcon sx={{ mr: 1, width: 38, height: 38,  transition: 'color 0.5s','&:hover': { color: `${primaryColor}` }}}>
+            <ArrowCircleLeftOutlinedIcon/>
+          </SvgIcon>
+          <Typography variant="subtitle2">
+            Quotation <span style={{color: `${primaryColor}` , fontWeight: 600}}>List</span> 
+          </Typography>
+        </Link>
+        <IconWithPopup/>
+      </div>
  <h2>Quotation Detail</h2>
       <Card style={{marginBottom: "12px" }}>
         {/* <CardHeader title="Product Order Detail" /> */}

@@ -20,6 +20,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import {  Delete } from '@mui/icons-material';
 import { RouterLink } from 'src/components/router-link';
 import { paths } from 'src/paths';
+import IconWithPopup from '../user/user-icon';
 
 
 const userOptions = [
@@ -186,7 +187,10 @@ render (){
     const {rows, type} =this.state;
   return (
     <div style={{ minWidth: "100%" }}>
- <h2>View Quotation</h2>
+    <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+      <h2>View Quotation</h2>
+      <IconWithPopup/>
+    </div>
       <TextField
                     sx={{ minWidth: 350 }}
                     label="Type"

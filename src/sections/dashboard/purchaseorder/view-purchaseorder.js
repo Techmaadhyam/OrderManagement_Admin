@@ -27,6 +27,7 @@ import { Scrollbar } from 'src/components/scrollbar';
 import { Table } from 'antd';
 import { primaryColor } from 'src/primaryColor';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
+import IconWithPopup from '../user/user-icon';
 
 
 const data={
@@ -150,7 +151,7 @@ export const ViewPurchaseOrder = (props) => {
 
   return (
     <div style={{minWidth: "100%", marginTop: "1rem"  }}>
-      <div>
+      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
           <Link
           color="text.primary"
           component={RouterLink}
@@ -168,6 +169,7 @@ export const ViewPurchaseOrder = (props) => {
             Purchase <span style={{color: `${primaryColor}` , fontWeight: 600}}>Order List</span> 
           </Typography>
         </Link>
+        <IconWithPopup/>
       </div>
  <h2>Purchase Order</h2>
       <Card style={{marginBottom: "12px" }}>

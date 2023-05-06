@@ -14,6 +14,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import {  Delete } from '@mui/icons-material';
 import { RouterLink } from 'src/components/router-link';
 import { paths } from 'src/paths';
+import IconWithPopup from '../user/user-icon';
 
 
 const columns = [
@@ -155,7 +156,10 @@ render (){
     const {rows} =this.state;
   return (
     <div style={{minWidth: "100%" }}>
+    <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
       <h2>View Temporary User</h2>
+      <IconWithPopup/>
+    </div>
  <Box sx={{  position: 'relative' , overflowX: "auto"}}>    
       <Scrollbar>
         <Table sx={{ minWidth: 800,overflowX: "auto" }} columns={columns} dataSource={data}></Table>
