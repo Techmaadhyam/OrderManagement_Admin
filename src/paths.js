@@ -67,6 +67,7 @@ export const paths = {
     chat: '/dashboard/chat',
     crypto: '/dashboard/crypto',
     purchaseorder: {
+      index: '/dashboard/purchaseorder',
       create: '/dashboard/purchaseorder/',
       view: '/dashboard/purchaseorder/:customerId',
       invoice: '/dashboard/purchaseorder/:customerId/edit',
@@ -103,11 +104,13 @@ export const paths = {
       edit: '/dashboard/orders/edit',
     },
     inventory: {
+      index: '/dashboard/inventory',
       view: '/dashboard/inventory/view',
       create: '/dashboard/inventory/create',
       viewDetail: '/dashboard/inventory/viewDetail',
     },
     products: {
+      index: '/dashboard/products',
       view: '/dashboard/products',
       create: '/dashboard/products/create',
       viewDetail: '/dashboard/products/viewDetail'
