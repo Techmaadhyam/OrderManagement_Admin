@@ -27,6 +27,7 @@ import { Scrollbar } from 'src/components/scrollbar';
 import { Table } from 'antd';
 import { primaryColor } from 'src/primaryColor';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
+import IconWithPopup from '../user/user-icon';
 
 
 const data={
@@ -150,7 +151,7 @@ export const ViewSalesOrder = (props) => {
 
   return (
     <div style={{minWidth: "100%", marginTop: "1rem" }}>
-      <div> 
+      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}> 
       <Link
       color="text.primary"
       component={RouterLink}
@@ -165,11 +166,14 @@ export const ViewSalesOrder = (props) => {
         <ArrowCircleLeftOutlinedIcon/>
       </SvgIcon>
       <Typography variant="subtitle2">
-        Sales <span style={{color: `${primaryColor}` , fontWeight: 600}}>Order List</span> 
+        Back To <span style={{color: `${primaryColor}` , fontWeight: 600}}>Sales Order List</span> 
       </Typography>
     </Link>
-              </div>
+    <IconWithPopup/>
+    </div>
  <h2>Sales Order</h2>
+
+  
       <Card style={{marginBottom: "12px" }}>
         <CardHeader title="Sales Order Detail" />
         <PropertyList>

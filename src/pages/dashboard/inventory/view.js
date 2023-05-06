@@ -11,7 +11,7 @@ import { OrderDrawer } from 'src/sections/dashboard/order/order-drawer';
 import { OrderListContainer } from 'src/sections/dashboard/order/order-list-container';
 import { OrderListSearch } from 'src/sections/dashboard/order/order-list-search';
 import { OrderListTable } from 'src/sections/dashboard/order/order-list-table';
-import  ViewWarehouse  from 'src/sections/dashboard/invoice/view-warehouse';
+import  ViewInventory  from 'src/sections/dashboard/inventory/view-inventory';
 
 const useCustomer = () => {
   const isMounted = useMounted();
@@ -60,7 +60,7 @@ const Page = () => {
       >
         <Container maxWidth="lg">
           <Stack spacing={4}>
-            <ViewWarehouse customer={customer} />
+            <ViewInventory customer={customer} />
           </Stack>
         </Container>
       </Box>

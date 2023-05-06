@@ -64,6 +64,7 @@ export const paths = {
       postCreate: '/dashboard/blog/create'
     },
     purchaseorder: {
+      index: '/dashboard/purchaseorder',
       create: '/dashboard/purchaseorder/',
       view: '/dashboard/purchaseorder/:customerId',
       invoice: '/dashboard/purchaseorder/:customerId/edit',
@@ -74,7 +75,8 @@ export const paths = {
     fileManager: '/dashboard/file-manager',
     invoices: {
       index: '/dashboard/invoices',
-      details: '/dashboard/invoices/:orderId'
+      details: '/dashboard/invoices/:orderId',
+      viewDetail: '/dashboard/invoices/viewDetail',
     },
     jobs: {
       index: '/dashboard/jobs',
@@ -86,7 +88,9 @@ export const paths = {
     kanban: '/dashboard/kanban',
     logistics: {
       index: '/dashboard/logistics',
-      fleet: '/dashboard/logistics/fleet'
+      fleet: '/dashboard/logistics/fleet',
+      viewDetail: '/dashboard/logistics/viewDetail',
+
     },
     mail: '/dashboard/mail',
     orders: {
@@ -97,12 +101,16 @@ export const paths = {
       edit: '/dashboard/orders/edit',
     },
     inventory: {
-      view: '/dashboard/inventory',
-      create: '/dashboard/inventory/create'
+      index: '/dashboard/inventory',
+      view: '/dashboard/inventory/view',
+      create: '/dashboard/inventory/create',
+      viewDetail: '/dashboard/inventory/viewDetail',
     },
     products: {
+      index: '/dashboard/products',
       view: '/dashboard/products',
-      create: '/dashboard/products/create'
+      create: '/dashboard/products/create',
+      viewDetail: '/dashboard/products/viewDetail'
     },
     social: {
       index: '/dashboard/social',

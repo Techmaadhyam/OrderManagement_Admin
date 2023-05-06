@@ -1,17 +1,10 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import PlusIcon from '@untitled-ui/icons-react/build/esm/Plus';
-import { Box, Button, Container, Divider, Stack, SvgIcon, Typography } from '@mui/material';
-import { ordersApi } from 'src/api/orders';
+import { useCallback, useEffect, useState } from 'react';
+import {  Box, Container, Stack } from '@mui/material';
 import { customersApi } from 'src/api/customers';
 import { Seo } from 'src/components/seo';
-import { useDialog } from 'src/hooks/use-dialog';
 import { useMounted } from 'src/hooks/use-mounted';
 import { usePageView } from 'src/hooks/use-page-view';
-import { OrderDrawer } from 'src/sections/dashboard/order/order-drawer';
-import { OrderListContainer } from 'src/sections/dashboard/order/order-list-container';
-import { OrderListSearch } from 'src/sections/dashboard/order/order-list-search';
-import { OrderListTable } from 'src/sections/dashboard/order/order-list-table';
-import  ViewWarehouse  from 'src/sections/dashboard/invoice/view-warehouse';
+import { ViewTemporaryUserDetail } from 'src/sections/dashboard/logistics/view-temp-user-detail';
 
 const useCustomer = () => {
   const isMounted = useMounted();
@@ -38,7 +31,6 @@ const useCustomer = () => {
   return customer;
 };
 
-
 const Page = () => {
   const customer = useCustomer();
 
@@ -60,7 +52,7 @@ const Page = () => {
       >
         <Container maxWidth="lg">
           <Stack spacing={4}>
-            <ViewWarehouse customer={customer} />
+            <ViewTemporaryUserDetail customer={customer}/>
           </Stack>
         </Container>
       </Box>

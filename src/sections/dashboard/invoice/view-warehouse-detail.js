@@ -16,7 +16,6 @@ import {
   Grid
 } from '@mui/material';
 import { wait } from 'src/utils/wait';
-import './purchase-order.css'
 import {  Box, Stack } from '@mui/system';
 import { PropertyList } from 'src/components/property-list';
 import { PropertyListItem } from 'src/components/property-list-item';
@@ -30,70 +29,20 @@ import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutl
 import IconWithPopup from '../user/user-icon';
 
 
-const data={
-  userName: 'Harsh',
-  type: 'Stell',
-  quotation: ' ',
-  deliveryDate: 23/4/2021,
-  contactName: 'Nilla',
-  contactno: '567892483984',
-  status: 'Canceled'
+const statusOptions = ['Canceled', 'Complete', 'Rejected'];
+
+
+const data = 
+{
+    name: 'Max Ray',
+    address: "Street: 277, I S Sadan X Road, Santoshnagar, Hyderabad, Andhra Pradesh, India",
+    zipcode: '30827',
+    description: 'testing random description',
 }
 
-const statusOptions = ['Canceled', 'Complete', 'Rejected'];
-const columns = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-  },
-  {
-      title: 'Quantity',
-      dataIndex: 'quantity',
-      key: 'quantity',
-    },
-  {
-    title: 'Weight',
-    dataIndex: 'weight',
-    key: 'weight',
-  },
-  
-  {
-    title: 'Cost',
-    key: 'cost',
-    dataIndex: 'cost',
-  },
-  {
-      title: 'GST',
-      key: 'gst',
-      dataIndex: 'gst',
-    },
-    {
-      title: 'CGST',
-      key: 'cgst',
-      dataIndex: 'cgst',
-    },
-    {
-      title: 'Description',
-      key: 'description',
-      dataIndex: 'description',
-    },
-];
-
-const rowData = [
-  {
-    name: 'Washing Machine',
-    quantity: '2',
-    weight: "56kg",
-    cost: '45689',
-    gst:'10',
-    cgst:'6',
-    description: 'Handle with care',
-  },
-];
 
 
-export const ViewPurchaseOrder = (props) => {
+export const ViewWarehouseDetail = (props) => {
   const { customer, ...other } = props;
   const [status, setStatus] = useState(statusOptions[0]);
 
@@ -155,7 +104,7 @@ export const ViewPurchaseOrder = (props) => {
           <Link
           color="text.primary"
           component={RouterLink}
-          href={paths.dashboard.purchaseorder.view}
+          href={paths.dashboard.invoices.details}
           sx={{
             alignItems: 'center',
             display: 'inline-flex',
@@ -166,83 +115,49 @@ export const ViewPurchaseOrder = (props) => {
             <ArrowCircleLeftOutlinedIcon/>
           </SvgIcon>
           <Typography variant="subtitle2">
-             Back To <span style={{color: `${primaryColor}` , fontWeight: 600}}>Purchase Order List</span> 
+             Back To <span style={{color: `${primaryColor}` , fontWeight: 600}}>Warehouse List</span> 
           </Typography>
         </Link>
         <IconWithPopup/>
       </div>
- <h2>Purchase Order</h2>
+ <h2>Warehouse</h2>
       <Card style={{marginBottom: "12px" }}>
-        <CardHeader title="Product Order Detail" />
+        <CardHeader title="Warehouse Detail" />
         <PropertyList>
         <PropertyListItem
           align={align}
           label="Name"
         >
           <Typography variant="subtitle2">
-            {data.userName}
+            {data.name}
           </Typography>
         </PropertyListItem>
         <Divider />
         <PropertyListItem
           align={align}
-          label="Quotation"
-          value={data.quotation}
+          label="Address"
+          value={data.address}
         />
         <Divider />
         <PropertyListItem
           align={align}
-          label="DeliveryDate"
-          value={data.deliveryDate}
+          label="Zip Code"
+          value={data.zipcode}
         />
         <Divider />
         <PropertyListItem
           align={align}
-          label="Contact Name"
-          value={data.contactName}
+          label="Description"
+          value={data.description}
         />
-        <Divider />
-        <PropertyListItem
-          align={align}
-          label="Contact No"
-          value={data.contactno}
-        />
-        <Divider />
-        <PropertyListItem
-          align={align}
-          label="Status"
-          value={data.status}
-        >
-        </PropertyListItem>
       </PropertyList>
         <Divider/>
       </Card>
-      <Card style={{marginBottom: "40px" }}>
-      <Box sx={{  position: 'relative' , overflowX: "auto", marginBottom: '30px'}}>    
-      <Scrollbar>
-        <Table sx={{ minWidth: 800,overflowX: "auto" }} pagination={false} columns={columns} dataSource={rowData}></Table>
-      </Scrollbar>
-    </Box>
-     <Grid
-              xs={12}
-              md={6}
-            >
-  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Total Amount : 56,78,020</Typography>
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-              style={{marginTop: "20px", marginBottom: "30px"}}
-            >
-  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Terms &Conditions :  This product can be sold on the said customer</Typography>
-
-            </Grid>
-        <Divider/>
-      </Card>
+   
     </div>
   );
 };
 
-ViewPurchaseOrder.propTypes = {
+ViewWarehouseDetail.propTypes = {
   customer: PropTypes.object.isRequired
 };

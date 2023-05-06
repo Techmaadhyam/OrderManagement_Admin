@@ -16,6 +16,7 @@ import { DatePicker } from 'antd';
 import { wait } from 'src/utils/wait';
 import './warehouse.css'
 import { Box } from '@mui/system';
+import IconWithPopup from '../user/user-icon';
 
 const userOptions = [
   {
@@ -96,7 +97,10 @@ export const CreateWarehouse = (props) => {
 
   return (
     <div style={{minWidth: "100%", marginBottom: '1rem' }}>
- <h2>Create Warehouse</h2>
+     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+      <h2>Create Warehouse</h2>
+      <IconWithPopup/>
+    </div>
     <form
       onSubmit={formik.handleSubmit}
       {...other}>

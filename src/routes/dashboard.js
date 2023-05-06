@@ -21,13 +21,17 @@ const PurchaseOrderEdit = lazy(() => import('src/pages/dashboard/purchaseorder/e
 // Invoice
 const InvoiceListPage = lazy(() => import('src/pages/dashboard/invoices/list'));
 const InvoiceDetailPage = lazy(() => import('src/pages/dashboard/invoices/detail'));
+const InvoiceViewPage = lazy(() => import('src/pages/dashboard/invoices/viewDetail'));
 
 //inventory
 const InventoryCreatePage = lazy(()=> import('src/pages/dashboard/inventory/create'))
+const InventoryViewPage = lazy(()=> import('src/pages/dashboard/inventory/view'))
+const InventoryDetailPage = lazy(()=> import('src/pages/dashboard/inventory/viewDetail'))
 
 // Temporary User
 const LogisticsDashboardPage = lazy(() => import('src/pages/dashboard/logistics/dashboard'));
 const LogisticsFleetPage = lazy(() => import('src/pages/dashboard/logistics/view'));
+const LogisticsViewDetailPage = lazy(() => import('src/pages/dashboard/logistics/viewDetail'));
 
 // Orders
 const OrderListPage = lazy(() => import('src/pages/dashboard/orders/create'));
@@ -39,6 +43,7 @@ const OrderEditPage = lazy(() => import('src/pages//dashboard/orders/edit'));
 // Products
 const ProductListPage = lazy(() => import('src/pages/dashboard/products/list'));
 const ProductCreatePage = lazy(() => import('src/pages/dashboard/products/create'));
+const ProductViewPage = lazy(() => import('src/pages/dashboard/products/viewDetail'));
 
 
 // Other
@@ -119,7 +124,11 @@ export const dashboardRoutes = [
           {
             path: ':invoiceId',
             element: <InvoiceDetailPage />
-          }
+          },
+          {
+            path:'viewDetail',
+            element: <InvoiceViewPage/>
+          },
         ]
       },
       {
@@ -132,7 +141,11 @@ export const dashboardRoutes = [
           {
             path: 'fleet',
             element: <LogisticsFleetPage />
-          }
+          },
+          {
+            path:'viewDetail',
+            element: <LogisticsViewDetailPage/>
+          },
         ]
       },
       {
@@ -165,12 +178,17 @@ export const dashboardRoutes = [
         path: 'inventory',
         children: [
           {
-            index: true,
-            element: <InventoryCreatePage />
+            
+            path: 'view',
+            element: <InventoryViewPage />
           },
           {
             path: 'create',
             element: <InventoryCreatePage />
+          },
+          {
+            path: 'viewDetail',
+            element: <InventoryDetailPage />
           }
         ]
       },
@@ -184,6 +202,10 @@ export const dashboardRoutes = [
           {
             path: 'create',
             element: <ProductCreatePage />
+          },
+          {
+            path: 'viewDetail',
+            element: <ProductViewPage />
           }
         ]
       },

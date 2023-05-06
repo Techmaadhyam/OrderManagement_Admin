@@ -4,15 +4,9 @@ import {
   Typography,
   IconButton,
   Icon,
-  Link,
-  MenuItem,
-  TextField,
-  FormControl,
-  InputLabel,
-  Select
+  Link
 } from '@mui/material';
 import { Table } from 'antd';
-import './purchase-order.css'
 import { Box } from '@mui/system';
 import React from 'react';
 import { Scrollbar } from 'src/components/scrollbar';
@@ -23,26 +17,15 @@ import { paths } from 'src/paths';
 import IconWithPopup from '../user/user-icon';
 
 
-const userOptions = [
-    {
-      label: 'Buy',
-      value: 'buy'
-    },
-    {
-      label: 'Sell',
-      value: 'sell'
-    },
-  ];
-
 const columns = [
   {
-    title: 'Quotation Order Number',
-    dataIndex: 'purchaseOrder',
-    key: 'purchaseOrder',
+    title: 'Product',
+    dataIndex: 'product',
+    key: 'product',
     render: (name) => <Link
     color="primary"
     component={RouterLink}
-    href={paths.dashboard.quotation.viewDetail}
+    href={paths.dashboard.inventory.viewDetail}
     sx={{
       alignItems: 'center',
       textAlign: 'center'
@@ -56,38 +39,32 @@ const columns = [
   </Link>
   },
   {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
+      title: 'Quantity',
+      dataIndex: 'quantity',
+      key: 'quantity',
     },
-    {
-        title: 'Type',
-        key: 'type',
-        dataIndex: 'type',
-      },
   {
-    title: 'User',
-    dataIndex: 'user',
-    key: 'user',
+    title: 'Cost',
+    dataIndex: 'cost',
+    key: 'cost',
   },
   
-  
   {
-      title: 'Created Date',
-      key: 'createdDate',
-      dataIndex: 'createdDate',
+    title: 'Category',
+    key: 'category',
+    dataIndex: 'category',
+  },
+  {
+      title: 'HSN Code',
+      key: 'HSNcode',
+      dataIndex: 'HSNcode',
     },
-    {
-      title: 'Last Modified Date',
-      key: 'lastModified',
-      dataIndex: 'lastModified',
-    },
+
     {
       dataIndex: 'actionEdit',
       key: 'actionEdit',
     render: () => <Link
-    component={RouterLink}
-    href={paths.dashboard.quotation.edit}
+ 
   >
     <IconButton>
   <Icon>
@@ -112,20 +89,18 @@ const columns = [
 const data = [
   {
     key: '1',
-    purchaseOrder: '12345',
-    status: "Completed",
-    user: 'Harsh',
-    type: 'Buy',
-    createdDate:'16/02/2023',
-    lastModified:'3/03/2023',
+    product: 'product 1',
+    quantity: "50",
+    cost: '$3082',
+    category: 'healthcare',
+    HSNcode: '26-342',
   },
 ];
 
-class QuotationViewTable extends React.Component {
+class ViewInventory extends React.Component {
   constructor(props) {
       super(props);
       this.state = {
-        type:'',
   rows:[{}]
 };
 }
@@ -166,9 +141,6 @@ handleRemoveRow = idx =>() =>{
   rows.splice(idx,1);
   this.setState({rows});
 };
-handleSelectChange = e => () =>{
-    this.setState({type: e.target.value})
-}
 render (){
   const {
       count = 0,
@@ -184,56 +156,26 @@ render (){
       selected = [],
       classes
     } = this.props;
-    const {rows, type} =this.state;
+    const {rows} =this.state;
   return (
-    <div style={{ minWidth: "100%" }}>
+    <div style={{minWidth: "100%" }}>
     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-      <h2>View Quotation</h2>
+      <h2>View Inventory</h2>
       <IconWithPopup/>
     </div>
-      <TextField
-                    sx={{ minWidth: 350 }}
-                    label="Type"
-                    name="type"
-                    onChange={this.handleSelectChange}
-                    select
-                    // value={formik.values.category}
-                  >
-                    {userOptions.map((option) => (
-                      <MenuItem
-                        key={option.value}
-                        value={option.value}
-                      >
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
- <Box sx={{  position: 'relative' , overflowX: "auto", marginTop:'30px'}}>    
+ <Box sx={{  position: 'relative' , overflowX: "auto"}}>    
       <Scrollbar>
         <Table sx={{ minWidth: 800,overflowX: "auto" }} columns={columns} dataSource={data}></Table>
       </Scrollbar>
     </Box>
-    {/* <Grid
-              xs={12}
-              md={6}
-            >
-  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Total Amount : 56,78,020</Typography>
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-              style={{marginTop: "20px", marginBottom: "30px"}}
-            >
-  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Terms &Conditions :  This product can be sold on the said customer</Typography>
 
-            </Grid> */}
     </div>
   );
     }
 };
 
-QuotationViewTable.propTypes = {
+ViewInventory.propTypes = {
   customer: PropTypes.object.isRequired
 };
 
-export default QuotationViewTable;
+export default ViewInventory;

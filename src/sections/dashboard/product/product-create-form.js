@@ -15,6 +15,7 @@ import {
 import { DatePicker } from 'antd';
 import { wait } from 'src/utils/wait';
 import { Box } from '@mui/system';
+import IconWithPopup from '../user/user-icon';
 
 const userOptions = [
   {
@@ -95,7 +96,10 @@ export const CreateProduct = (props) => {
 
   return (
     <div style={{minWidth: "100%", marginBottom: '1rem' }}>
- <h2>Create Product</h2>
+<div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+      <h2>Create Product</h2>
+      <IconWithPopup/>
+    </div>
     <form
       onSubmit={formik.handleSubmit}
       {...other}>

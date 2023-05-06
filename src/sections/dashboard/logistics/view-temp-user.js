@@ -14,14 +14,30 @@ import EditIcon from '@mui/icons-material/Edit';
 import {  Delete } from '@mui/icons-material';
 import { RouterLink } from 'src/components/router-link';
 import { paths } from 'src/paths';
+import IconWithPopup from '../user/user-icon';
 
 
 const columns = [
   {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-    },
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name',
+    render: (name) => <Link
+    color="primary"
+    component={RouterLink}
+    href={paths.dashboard.logistics.viewDetail}
+    sx={{
+      alignItems: 'center',
+      textAlign: 'center'
+      // display: 'inline-flex'
+    }}
+    underline="hover"
+  >
+    <Typography variant="subtitle2">
+   {name}
+    </Typography>
+  </Link>
+  },
   {
     title: 'Email',
     dataIndex: 'email',
@@ -70,7 +86,7 @@ const columns = [
 const data = [
   {
     key: '1',
-    name: "Test1",
+    name: "Max",
     email: 'test@xyz.com',
     type: 'test type',
     company:'xyz company',
@@ -140,7 +156,10 @@ render (){
     const {rows} =this.state;
   return (
     <div style={{minWidth: "100%" }}>
+    <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
       <h2>View Temporary User</h2>
+      <IconWithPopup/>
+    </div>
  <Box sx={{  position: 'relative' , overflowX: "auto"}}>    
       <Scrollbar>
         <Table sx={{ minWidth: 800,overflowX: "auto" }} columns={columns} dataSource={data}></Table>
