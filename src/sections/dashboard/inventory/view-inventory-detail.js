@@ -200,6 +200,7 @@ export const ViewInventoryDetail = (props) => {
           label="CGST"
           value={data.cgst}
         />
+         <Divider />
         <PropertyListItem
           align={align}
           label="Description"
