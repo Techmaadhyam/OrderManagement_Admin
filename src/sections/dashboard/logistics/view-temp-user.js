@@ -18,10 +18,25 @@ import { paths } from 'src/paths';
 
 const columns = [
   {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-    },
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name',
+    render: (name) => <Link
+    color="primary"
+    component={RouterLink}
+    href={paths.dashboard.logistics.viewDetail}
+    sx={{
+      alignItems: 'center',
+      textAlign: 'center'
+      // display: 'inline-flex'
+    }}
+    underline="hover"
+  >
+    <Typography variant="subtitle2">
+   {name}
+    </Typography>
+  </Link>
+  },
   {
     title: 'Email',
     dataIndex: 'email',
@@ -70,7 +85,7 @@ const columns = [
 const data = [
   {
     key: '1',
-    name: "Test1",
+    name: "Max",
     email: 'test@xyz.com',
     type: 'test type',
     company:'xyz company',
