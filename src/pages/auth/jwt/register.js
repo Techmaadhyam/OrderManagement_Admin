@@ -295,7 +295,7 @@ const handleCities = async (event) => {
     return () => clearInterval(intervalId);
   }, [handleImageChange]);
 
-  //calls toast notification on sucessful registration and redirects to login page
+  //calls toast notification on sucessful registration and redirects to login page, handles fetch POST request
   const handleToHome = async (event) => {
     event.preventDefault();
   
@@ -305,6 +305,7 @@ const handleCities = async (event) => {
           const response = await fetch('http://13.115.56.48:8080/techmadhyam/addUser', {
             method: 'POST',
             headers: {
+
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
@@ -328,10 +329,13 @@ const handleCities = async (event) => {
           if (response.ok) {
             // Redirect to home page upon successful submission
             //window.location.href = paths.index;
+           response.json().then(data => {
+            console.log(data);
             notify(
               "success",
-              "You have successfully registered your account."
+              "You have successfully registered your account. Please Log In."
             );
+  });
           } else {
             notify(
               "error",
