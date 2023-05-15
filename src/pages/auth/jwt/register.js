@@ -29,7 +29,7 @@ import { primaryColor } from 'src/primaryColor';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
-
+import { includes } from 'lodash';
 
 
 const Register = () => {
@@ -47,7 +47,73 @@ const Register = () => {
   const [currentState, setCurrentState]= useState([])
   const [currentCity, setCurrentCity] =useState([])
 
-//fetches API token
+  //form state handling
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [username, setUsername] = useState('');
+  const [company, setCompany] = useState("");
+  const [type, setType] = useState("");
+  const [address, setAddress] = useState("");
+  const [zipcode, setZipcode] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [currentDate, setCurrentDate] = useState('');
+
+
+  //updating form state
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+  
+    switch (name) {
+      case 'firstname':
+        setFirstName(value);
+        break;
+      case 'lastname':
+        setLastName(value);
+        break;
+      case 'Email':
+        setEmail(value);
+        break;
+      case 'phone':
+        setPhone(value);
+        break;
+      case 'username':
+        setUsername(value);
+        break;
+      case 'company':
+        setCompany(value);
+        break;
+      case 'type':
+        setType(value);
+          break;
+      case 'address':
+        setAddress(value);
+          break;
+      case 'zipcode':
+        setZipcode(value);
+          break;
+      case 'password':
+        setPassword(value);
+          break;
+      case 'confirmpassword':
+        setConfirmPassword(value);
+          break;
+      default:
+        break;
+    }
+  };
+
+  //getting current date
+  useEffect(() => {
+    const today = new Date();
+    const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
+    const formattedDate = today.toLocaleDateString('en-GB', options);
+    setCurrentDate(formattedDate);
+  }, []);
+
+  //fetches API token
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -126,7 +192,8 @@ const Register = () => {
   }, [cities]);
 
 //toast notification from toastify library
-  const notify = () => toast.success('You have sucessfully registered your account', {
+const notify = (type, message) => {
+  toast[type](message, {
     position: "top-right",
     autoClose: 2000,
     hideProgressBar: false,
@@ -135,7 +202,8 @@ const Register = () => {
     draggable: true,
     progress: undefined,
     theme: "light",
-    });
+  });
+};
 //fetches states list for dropdown and pushesh it to setStates which is later mapped 
     const handleCountry = async (event) => {
       try {
@@ -205,16 +273,16 @@ const handleCities = async (event) => {
 }
   const images = [
     '/assets/logos/logo.png',
-    '/assets/logos/logo1.png',
-    '/assets/logos/logo2.png',
-    '/assets/logos/logo3.png',
-    '/assets/logos/logo4.png', 
-    '/assets/logos/logo5.png', 
-    '/assets/logos/logo6.png', 
-    '/assets/logos/logo7.png', 
-    '/assets/logos/logo8.png', 
-    '/assets/logos/logo9.png',
-    '/assets/logos/logo10.png',  
+    // '/assets/logos/logo1.png',
+    // '/assets/logos/logo2.png',
+    // '/assets/logos/logo3.png',
+    // '/assets/logos/logo4.png', 
+    // '/assets/logos/logo5.png', 
+    // '/assets/logos/logo6.png', 
+    // '/assets/logos/logo7.png', 
+    // '/assets/logos/logo8.png', 
+    // '/assets/logos/logo9.png',
+    // '/assets/logos/logo10.png',  
   ];
 
 //handles image carousel
@@ -228,10 +296,65 @@ const handleCities = async (event) => {
   }, [handleImageChange]);
 
   //calls toast notification on sucessful registration and redirects to login page
-  const handleToHome =() => {
-      notify();
-  }
- 
+  const handleToHome = async (event) => {
+    event.preventDefault();
+  
+    if (password === confirmPassword) {
+      if (firstName && lastName && email && phone && username && company && type && currentCountry && currentState && currentCity && zipcode && password && currentDate) {
+        try {
+          const response = await fetch('http://13.115.56.48:8080/techmadhyam/addUser', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              companyName: company,
+              userName : username,
+              password: password,
+              firstName: firstName,
+              lastName: lastName,
+              emailId: email,
+              mobile: phone,
+              address: address,
+              city: currentCity,
+              state: currentState,
+              country: currentCountry,
+              type: type,
+              createdDate:currentDate,
+              unpdatedDate:currentDate
+            })
+          });
+          
+          if (response.ok) {
+            // Redirect to home page upon successful submission
+            //window.location.href = paths.index;
+            notify(
+              "success",
+              "You have successfully registered your account."
+            );
+          } else {
+            notify(
+              "error",
+              "Failed to submit the form. Please try again later."
+            );
+          }
+        } catch (error) {
+          notify(
+            "error",
+            "An error occurred while submitting the form. Please try again later."
+          );
+        }
+      } else {
+        notify(
+          "error",
+          "Please input all fields before submitting."
+        );
+      }
+    } else {
+      notify("error", "Your password does not match, please re-verify.");
+    }
+  };
+
 
   return (
    <>
@@ -391,7 +514,8 @@ const handleCities = async (event) => {
                     fullWidth
                     label="First Name"
                     name="firstname"
-
+                    value={firstName}
+                    onChange={handleInputChange}
                   >
                   </TextField>
             </Grid>
@@ -404,6 +528,8 @@ const handleCities = async (event) => {
                     fullWidth
                     label="Last Name"
                     name="lastname"
+                    value={lastName}
+                    onChange={handleInputChange}
 
                   >
                   </TextField>
@@ -413,12 +539,12 @@ const handleCities = async (event) => {
               md={12}
             >
               <TextField
-                  
                     fullWidth
                     label="Email"
                     name="Email"
-                  
-
+                    value={email}
+                    onChange={handleInputChange}
+                    color="warning"
                   >
                   </TextField>
             </Grid>
@@ -432,6 +558,8 @@ const handleCities = async (event) => {
                     label="Phone"
                     name="phone"
                     type='number'
+                    value={phone}
+                    onChange={handleInputChange}
 
                   >
                   </TextField>
@@ -444,6 +572,8 @@ const handleCities = async (event) => {
                     fullWidth
                     label="Username"
                     name="username"
+                    value={username}
+                    onChange={handleInputChange}
                   >
                   </TextField>
             </Grid>
@@ -455,6 +585,8 @@ const handleCities = async (event) => {
                     fullWidth
                     label="Company"
                     name="company"
+                    value={company}
+                    onChange={handleInputChange}
                   >
                   </TextField>
             </Grid>
@@ -466,6 +598,8 @@ const handleCities = async (event) => {
                     fullWidth
                     label="Type"
                     name="type"
+                    value={type}
+                    onChange={handleInputChange}
                   >
                   </TextField>
             </Grid>
@@ -478,7 +612,9 @@ const handleCities = async (event) => {
                     label="Address"
                     name="address"
                     multiline
-                    rows={2}           
+                    rows={2}   
+                    value={address}
+                    onChange={handleInputChange}        
                   >
                   </TextField>
             </Grid>
@@ -491,8 +627,8 @@ const handleCities = async (event) => {
                     label="Country"
                     name="country"
                     select
-                    defaultValue= ''
-                    value={[currentCountry]}
+                    defaultValue=''
+                    value={currentCountry}
                     onChange={handleCountry}
                   >
                     {userOptions?.map((option) => (
@@ -564,6 +700,8 @@ const handleCities = async (event) => {
                 fullWidth
                 label="Zip Code"
                 name="zipcode"
+                value={zipcode}
+                onChange={handleInputChange}
     
               >
                 </TextField>
@@ -577,6 +715,8 @@ const handleCities = async (event) => {
                     label="Password"
                     name="password"
                     type='password'
+                    value={password}
+                    onChange={handleInputChange}
                   >
                   </TextField>
             </Grid>
@@ -589,6 +729,8 @@ const handleCities = async (event) => {
                     label="Confirm Password"
                     name="confirmpassword"
                     type='password'
+                    value={confirmPassword}
+                    onChange={handleInputChange}
                   >
                   </TextField>
             </Grid>
@@ -611,8 +753,7 @@ const handleCities = async (event) => {
                     align="right"
                     onClick={handleToHome}
                     href={paths.index}
-                 
-                
+                    type="submit"
                     >
                     Save
                     </Button>
