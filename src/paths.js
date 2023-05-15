@@ -63,9 +63,6 @@ export const paths = {
       postDetails: '/dashboard/blog/:postId',
       postCreate: '/dashboard/blog/create'
     },
-    calendar: '/dashboard/calendar',
-    chat: '/dashboard/chat',
-    crypto: '/dashboard/crypto',
     purchaseorder: {
       index: '/dashboard/purchaseorder',
       create: '/dashboard/purchaseorder/',

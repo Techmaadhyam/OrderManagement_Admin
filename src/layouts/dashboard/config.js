@@ -1,31 +1,14 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Chip, SvgIcon } from '@mui/material';
-import AlignLeft02Icon from 'src/icons/untitled-ui/duocolor/align-left-02';
-import BarChartSquare02Icon from 'src/icons/untitled-ui/duocolor/bar-chart-square-02';
-import Building04Icon from 'src/icons/untitled-ui/duocolor/building-04';
-import CalendarIcon from 'src/icons/untitled-ui/duocolor/calendar';
-import CheckDone01Icon from 'src/icons/untitled-ui/duocolor/check-done-01';
-import CreditCard01Icon from 'src/icons/untitled-ui/duocolor/credit-card-01';
-import CurrencyBitcoinCircleIcon from 'src/icons/untitled-ui/duocolor/currency-bitcoin-circle';
-import File01Icon from 'src/icons/untitled-ui/duocolor/file-01';
-import GraduationHat01Icon from 'src/icons/untitled-ui/duocolor/graduation-hat-01';
+import { SvgIcon } from '@mui/material';
 import HomeSmileIcon from 'src/icons/untitled-ui/duocolor/home-smile';
 import LayoutAlt02Icon from 'src/icons/untitled-ui/duocolor/layout-alt-02';
-import LineChartUp04Icon from 'src/icons/untitled-ui/duocolor/line-chart-up-04';
-import Lock01Icon from 'src/icons/untitled-ui/duocolor/lock-01';
 import LogOut01Icon from 'src/icons/untitled-ui/duocolor/log-out-01';
-import Mail03Icon from 'src/icons/untitled-ui/duocolor/mail-03';
-import Mail04Icon from 'src/icons/untitled-ui/duocolor/mail-04';
-import MessageChatSquareIcon from 'src/icons/untitled-ui/duocolor/message-chat-square';
 import ReceiptCheckIcon from 'src/icons/untitled-ui/duocolor/receipt-check';
-import Share07Icon from 'src/icons/untitled-ui/duocolor/share-07';
 import ShoppingBag03Icon from 'src/icons/untitled-ui/duocolor/shopping-bag-03';
 import ShoppingCart01Icon from 'src/icons/untitled-ui/duocolor/shopping-cart-01';
-import Truck01Icon from 'src/icons/untitled-ui/duocolor/truck-01';
 import Upload04Icon from 'src/icons/untitled-ui/duocolor/upload-04';
 import Users03Icon from 'src/icons/untitled-ui/duocolor/users-03';
-import XSquareIcon from 'src/icons/untitled-ui/duocolor/x-square';
 import { tokens } from 'src/locales/tokens';
 import { paths } from 'src/paths';
 
@@ -46,50 +29,6 @@ export const useSections = () => {
       //       )
       //     },
       //     {
-      //       title: t(tokens.nav.analytics),
-      //       path: paths.dashboard.analytics,
-      //       icon: (
-      //         <SvgIcon fontSize="small">
-      //           <BarChartSquare02Icon />
-      //         </SvgIcon>
-      //       )
-      //     },
-      //     {
-      //       title: t(tokens.nav.ecommerce),
-      //       path: paths.dashboard.ecommerce,
-      //       icon: (
-      //         <SvgIcon fontSize="small">
-      //           <LineChartUp04Icon />
-      //         </SvgIcon>
-      //       )
-      //     },
-      //     {
-      //       title: t(tokens.nav.crypto),
-      //       path: paths.dashboard.crypto,
-      //       icon: (
-      //         <SvgIcon fontSize="small">
-      //           <CurrencyBitcoinCircleIcon />
-      //         </SvgIcon>
-      //       ),
-      //       label: (
-      //         <Chip
-      //           color="primary"
-      //           label="New"
-      //           size="small"
-      //         />
-      //       )
-      //     },
-      //     {
-      //       title: t(tokens.nav.account),
-      //       path: paths.dashboard.account,
-      //       icon: (
-      //         <SvgIcon fontSize="small">
-      //           <HomeSmileIcon />
-      //         </SvgIcon>
-      //       )
-      //     }
-      //   ]
-      // },
       {
         
         items: [
@@ -251,117 +190,6 @@ export const useSections = () => {
               }
             ]
           },
-         
-          // {
-          //   title: t(tokens.nav.jobList),
-          //   path: paths.dashboard.jobs.index,
-          //   icon: (
-          //     <SvgIcon fontSize="small">
-          //       <Building04Icon />
-          //     </SvgIcon>
-          //   ),
-          //   items: [
-          //     {
-          //       title: t(tokens.nav.browse),
-          //       path: paths.dashboard.jobs.index
-          //     },
-          //     {
-          //       title: t(tokens.nav.details),
-          //       path: paths.dashboard.jobs.companies.details
-          //     },
-          //     {
-          //       title: t(tokens.nav.create),
-          //       path: paths.dashboard.jobs.create
-          //     }
-          //   ]
-          // },
-          // {
-          //   title: t(tokens.nav.socialMedia),
-          //   path: paths.dashboard.social.index,
-          //   icon: (
-          //     <SvgIcon fontSize="small">
-          //       <Share07Icon />
-          //     </SvgIcon>
-          //   ),
-          //   items: [
-          //     {
-          //       title: t(tokens.nav.profile),
-          //       path: paths.dashboard.social.profile
-          //     },
-          //     {
-          //       title: t(tokens.nav.feed),
-          //       path: paths.dashboard.social.feed
-          //     }
-          //   ]
-          // },
-          // {
-          //   title: t(tokens.nav.blog),
-          //   path: paths.dashboard.blog.index,
-          //   icon: (
-          //     <SvgIcon fontSize="small">
-          //       <LayoutAlt02Icon />
-          //     </SvgIcon>
-          //   ),
-          //   items: [
-          //     {
-          //       title: t(tokens.nav.postList),
-          //       path: paths.dashboard.blog.index
-          //     },
-          //     {
-          //       title: t(tokens.nav.postDetails),
-          //       path: paths.dashboard.blog.postDetails
-          //     },
-          //     {
-          //       title: t(tokens.nav.postCreate),
-          //       path: paths.dashboard.blog.postCreate
-          //     }
-          //   ]
-          // },
-          // {
-          //   title: t(tokens.nav.fileManager),
-          //   path: paths.dashboard.fileManager,
-          //   icon: (
-          //     <SvgIcon fontSize="small">
-          //       <Upload04Icon />
-          //     </SvgIcon>
-          //   )
-          // },
-          // {
-          //   title: t(tokens.nav.kanban),
-          //   path: paths.dashboard.kanban,
-          //   icon: (
-          //     <SvgIcon fontSize="small">
-          //       <CheckDone01Icon />
-          //     </SvgIcon>
-          //   )
-          // },
-          // {
-          //   title: t(tokens.nav.mail),
-          //   path: paths.dashboard.mail,
-          //   icon: (
-          //     <SvgIcon fontSize="small">
-          //       <Mail03Icon />
-          //     </SvgIcon>
-          //   )
-          // },
-          // {
-          //   title: t(tokens.nav.chat),
-          //   path: paths.dashboard.chat,
-          //   icon: (
-          //     <SvgIcon fontSize="small">
-          //       <MessageChatSquareIcon />
-          //     </SvgIcon>
-          //   )
-          // },
-          // {
-          //   title: t(tokens.nav.calendar),
-          //   path: paths.dashboard.calendar,
-          //   icon: (
-          //     <SvgIcon fontSize="small">
-          //       <CalendarIcon />
-          //     </SvgIcon>
-          //   )
-          // }
         ]
       },
       // {

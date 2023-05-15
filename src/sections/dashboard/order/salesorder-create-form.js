@@ -15,7 +15,7 @@ import {
 import { DatePicker } from 'antd';
 import { wait } from 'src/utils/wait';
 import CustomTable  from './customTable';
-import './purchase-order.css'
+import './sales-order.css'
 import { Box } from '@mui/system';
 import IconWithPopup from '../user/user-icon';
 

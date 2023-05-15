@@ -12,11 +12,6 @@ const QuotationViewDetailPage = lazy(() => import('src/pages/dashboard/quotation
 const QuotationEditPage = lazy(() => import('src/pages/dashboard/quotation/edit'));
 
 
-// Blog
-const BlogPostListPage = lazy(() => import('src/pages/dashboard/blog/list'));
-const BlogPostDetailPage = lazy(() => import('src/pages/dashboard/blog/detail'));
-const BlogPostCreatePage = lazy(() => import('src/pages/dashboard/blog/create'));
-
 // PurchaseOrder
 const PurchaseOrderCreatePage = lazy(() => import('src/pages/dashboard/purchaseorder/create'));
 const PurchaseOrderViewPage = lazy(() => import('src/pages/dashboard/purchaseorder/view'));
@@ -28,17 +23,12 @@ const InvoiceListPage = lazy(() => import('src/pages/dashboard/invoices/list'));
 const InvoiceDetailPage = lazy(() => import('src/pages/dashboard/invoices/detail'));
 const InvoiceViewPage = lazy(() => import('src/pages/dashboard/invoices/viewDetail'));
 
-// Jobs
-const JobBrowsePage = lazy(() => import('src/pages/dashboard/jobs/browse'));
-const JobCreatePage = lazy(() => import('src/pages/dashboard/jobs/create'));
-const CompanyDetailPage = lazy(() => import('src/pages/dashboard/jobs/companies/detail'));
-
 //inventory
 const InventoryCreatePage = lazy(()=> import('src/pages/dashboard/inventory/create'))
 const InventoryViewPage = lazy(()=> import('src/pages/dashboard/inventory/view'))
 const InventoryDetailPage = lazy(()=> import('src/pages/dashboard/inventory/viewDetail'))
 
-// Logistics
+// Temporary User
 const LogisticsDashboardPage = lazy(() => import('src/pages/dashboard/logistics/dashboard'));
 const LogisticsFleetPage = lazy(() => import('src/pages/dashboard/logistics/view'));
 const LogisticsViewDetailPage = lazy(() => import('src/pages/dashboard/logistics/viewDetail'));
@@ -55,21 +45,9 @@ const ProductListPage = lazy(() => import('src/pages/dashboard/products/list'));
 const ProductCreatePage = lazy(() => import('src/pages/dashboard/products/create'));
 const ProductViewPage = lazy(() => import('src/pages/dashboard/products/viewDetail'));
 
-// Social
-const SocialFeedPage = lazy(() => import('src/pages/dashboard/social/feed'));
-const SocialProfilePage = lazy(() => import('src/pages/dashboard/social/profile'));
 
 // Other
-const AccountPage = lazy(() => import('src/pages/dashboard/account'));
-const AnalyticsPage = lazy(() => import('src/pages/dashboard/analytics'));
 const BlankPage = lazy(() => import('src/pages/dashboard/blank'));
-const CalendarPage = lazy(() => import('src/pages/dashboard/calendar'));
-const ChatPage = lazy(() => import('src/pages/dashboard/chat'));
-const CryptoPage = lazy(() => import('src/pages/dashboard/crypto'));
-const EcommercePage = lazy(() => import('src/pages/dashboard/ecommerce'));
-const FileManagerPage = lazy(() => import('src/pages/dashboard/file-manager'));
-const KanbanPage = lazy(() => import('src/pages/dashboard/kanban'));
-const MailPage = lazy(() => import('src/pages/dashboard/mail'));
 
 export const dashboardRoutes = [
   {
@@ -112,23 +90,6 @@ export const dashboardRoutes = [
         ]
       },
       {
-        path: 'blog',
-        children: [
-          {
-            index: true,
-            element: <BlogPostListPage />
-          },
-          {
-            path: 'create',
-            element: <BlogPostCreatePage />
-          },
-          {
-            path: ':postId',
-            element: <BlogPostDetailPage />
-          }
-        ]
-      },
-      {
         path: 'purchaseorder',
         children: [
           {
@@ -168,28 +129,6 @@ export const dashboardRoutes = [
             path:'viewDetail',
             element: <InvoiceViewPage/>
           },
-        ]
-      },
-      {
-        path: 'jobs',
-        children: [
-          {
-            index: true,
-            element: <JobBrowsePage />
-          },
-          {
-            path: 'create',
-            element: <JobCreatePage />
-          },
-          {
-            path: 'companies',
-            children: [
-              {
-                path: ':companyId',
-                element: <CompanyDetailPage />
-              }
-            ]
-          }
         ]
       },
       {
@@ -271,58 +210,9 @@ export const dashboardRoutes = [
         ]
       },
       {
-        path: 'social',
-        children: [
-          {
-            path: 'feed',
-            element: <SocialFeedPage />
-          },
-          {
-            path: 'profile',
-            element: <SocialProfilePage />
-          }
-        ]
-      },
-      {
-        path: 'account',
-        element: <AccountPage />
-      },
-      {
-        path: 'analytics',
-        element: <AnalyticsPage />
-      },
-      {
         path: 'blank',
         element: <BlankPage />
       },
-      {
-        path: 'calendar',
-        element: <CalendarPage />
-      },
-      {
-        path: 'chat',
-        element: <ChatPage />
-      },
-      {
-        path: 'crypto',
-        element: <CryptoPage />
-      },
-      {
-        path: 'ecommerce',
-        element: <EcommercePage />
-      },
-      {
-        path: 'file-manager',
-        element: <FileManagerPage />
-      },
-      {
-        path: 'kanban',
-        element: <KanbanPage />
-      },
-      {
-        path: 'mail',
-        element: <MailPage />
-      }
     ]
   }
 ];
