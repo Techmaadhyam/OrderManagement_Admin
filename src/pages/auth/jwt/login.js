@@ -12,6 +12,7 @@ import {
   TextField,
   Typography
 } from '@mui/material';
+import { useEffect, useState, useContext } from 'react';
 import { RouterLink } from 'src/components/router-link';
 import { Seo } from 'src/components/seo';
 import { useAuth } from 'src/hooks/use-auth';
@@ -21,6 +22,10 @@ import { useSearchParams } from 'src/hooks/use-search-params';
 import { paths } from 'src/paths';
 import { AuthIssuer } from 'src/sections/auth/auth-issuer';
 import { primaryColor } from 'src/primaryColor'; 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
+
 
 const initialValues = {
   email: 'demo@devias.io',
@@ -29,52 +34,123 @@ const initialValues = {
 };
 
 const validationSchema = Yup.object({
-  email: Yup
-    .string()
+  email: Yup.string()
     .email('Must be a valid email')
     .max(255)
     .required('Email is required'),
-  password: Yup
-    .string()
+  password: Yup.string()
     .max(255)
     .required('Password is required')
 });
 
+
+
 const Page = () => {
+  const [notification, setNotification] = useState(false);
+  const [getPassword, setGetPassword]= useState('')
+  const [userId, setUserId]= useState('')
+
+  const [username,setUsername]= useState('')
+  const [password, setPassword]= useState('')
+
   const isMounted = useMounted();
   const searchParams = useSearchParams();
   const returnTo = searchParams.get('returnTo');
-  const { issuer, signIn } = useAuth();
-  const formik = useFormik({
-    initialValues,
-    validationSchema,
-    onSubmit: async (values, helpers) => {
-      try {
-        await signIn(values.email, values.password);
 
-        if (isMounted()) {
-          // returnTo could be an absolute path
-          window.location.href = returnTo || paths.dashboard.index;
-        }
-      } catch (err) {
-        console.error(err);
 
-        if (isMounted()) {
-          helpers.setStatus({ success: false });
-          helpers.setErrors({ submit: err.message });
-          helpers.setSubmitting(false);
-        }
+
+ const handlePasswordChange = (event)=>{
+  setPassword(event.target.value);
+ }
+const handleUsernameUpdate = (event) => {
+  setUsername(event.target.value);
+};
+
+useEffect(() => {
+  console.log(username);
+
+  // Make the API call only if the username is not empty
+  if (username !== '') {
+    axios
+      .get(`http://13.115.56.48:8080/techmadhyam/getUserByUsername/${username}`)
+      .then((response) => {
+        console.log(response.data);
+        setGetPassword(response?.data[0]?.password);
+        setUserId(response?.data[0]?.id)
+        window.sessionStorage.setItem('user-id', userId);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }
+}, [username]);
+
+const handleClick = (e) => {
+  e.preventDefault()
+
+      if (getPassword === password && isMounted()) {
+         window.location.href = returnTo || paths.dashboard.index;
+     
       }
-    }
-  });
 
-  usePageView();
+};
+
+useEffect(() => {
+  const storedNotification = localStorage.getItem('notification');
+  if (storedNotification === 'true') {
+    setNotification(true);
+  }
+
+  const handleBeforeUnload = () => {
+    localStorage.removeItem('notification');
+  };
+
+  window.addEventListener('beforeunload', handleBeforeUnload);
+
+  return () => {
+    window.removeEventListener('beforeunload', handleBeforeUnload);
+  };
+}, []);
+
+useEffect(() => {
+  if (notification) {
+    notifyLogin();
+  }
+}, [notification]);
+
+const notifyLogin = () => {
+  toast.success("You have successfully registered your account. Please Log In.", {
+    position: "top-right",
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
+};
+
+usePageView();
 
   return (
     <>
+
       <Seo title="Login" />
+    
       <div>
         <Card elevation={15}>
+        <ToastContainer
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"/>
           <CardHeader
             subheader={(
               <Typography
@@ -89,59 +165,53 @@ const Page = () => {
                   underline="hover"
                   variant="subtitle2"
                 >
+                
                   Register
                 </Link>
               </Typography>
             )}
             sx={{ pb: 0 }}
             title="Log in"
-          />
+          />  
+        
           <CardContent>
+      
             <form
               noValidate
-              onSubmit={formik.handleSubmit}
+        
             >
               <Stack spacing={3}>
                 <TextField
                   autoFocus
-                  error={!!(formik.touched.email && formik.errors.email)}
+  
                   fullWidth
-                  helperText={formik.touched.email && formik.errors.email}
-                  label="Email Address"
-                  name="email"
-                  onBlur={formik.handleBlur}
-                  onChange={formik.handleChange}
-                  type="email"
-                  value={formik.values.email}
+
+                  label="Username"
+                  name="username"
+                  value={username}
+                  onChange={handleUsernameUpdate}  
                 />
                 <TextField
-                  error={!!(formik.touched.password && formik.errors.password)}
+   
                   fullWidth
-                  helperText={formik.touched.password && formik.errors.password}
+
                   label="Password"
                   name="password"
-                  onBlur={formik.handleBlur}
-                  onChange={formik.handleChange}
                   type="password"
-                  value={formik.values.password}
+                  value={password}
+                  onChange={handlePasswordChange}  
                 />
               </Stack>
-              {formik.errors.submit && (
-                <FormHelperText
-                  error
-                  sx={{ mt: 3 }}
-                >
-                  {formik.errors.submit}
-                </FormHelperText>
-              )}
+           
               <Button
-                disabled={formik.isSubmitting}
+      
                 fullWidth
                 size="large"
                 sx={{ mt: 2 }}
                 type="submit"
                 variant="contained"
                 style={{background: `${primaryColor}`}}
+                onClick={handleClick}
               
               >
                 Log In
@@ -149,18 +219,9 @@ const Page = () => {
             </form>
           </CardContent>
         </Card>
-        <Stack
-          spacing={3}
-          sx={{ mt: 3 }}
-        >
-          {/*<Alert severity="error">
-            <div>
-              You can use <b>demo@devias.io</b> and password <b>Password123!</b>
-            </div>
-          </Alert>*/}
-          <AuthIssuer issuer={issuer} />
-        </Stack>
+    
       </div>
+
     </>
   );
 };
