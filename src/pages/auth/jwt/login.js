@@ -20,13 +20,14 @@ import { usePageView } from 'src/hooks/use-page-view';
 import { useSearchParams } from 'src/hooks/use-search-params';
 import { paths } from 'src/paths';
 import { AuthIssuer } from 'src/sections/auth/auth-issuer';
+import { primaryColor } from 'src/primaryColor'; 
 
 const initialValues = {
   email: 'demo@devias.io',
   password: 'Password123!',
   submit: null
 };
-
+/*
 const validationSchema = Yup.object({
   email: Yup
     .string()
@@ -37,7 +38,7 @@ const validationSchema = Yup.object({
     .string()
     .max(255)
     .required('Password is required')
-});
+});*/
 
 const Page = () => {
   const isMounted = useMounted();
@@ -46,7 +47,6 @@ const Page = () => {
   const { issuer, signIn } = useAuth();
   const formik = useFormik({
     initialValues,
-    validationSchema,
     onSubmit: async (values, helpers) => {
       try {
         await signIn(values.email, values.password);
@@ -73,7 +73,7 @@ const Page = () => {
     <>
       <Seo title="Login" />
       <div>
-        <Card elevation={16}>
+        <Card elevation={15}>
           <CardHeader
             subheader={(
               <Typography
@@ -106,11 +106,11 @@ const Page = () => {
                   error={!!(formik.touched.email && formik.errors.email)}
                   fullWidth
                   helperText={formik.touched.email && formik.errors.email}
-                  label="Email Address"
+                  label="Username"
                   name="email"
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
-                  type="email"
+                  type="text"
                   value={formik.values.email}
                 />
                 <TextField
@@ -140,6 +140,8 @@ const Page = () => {
                 sx={{ mt: 2 }}
                 type="submit"
                 variant="contained"
+                style={{background: `${primaryColor}`}}
+              
               >
                 Log In
               </Button>
@@ -150,12 +152,12 @@ const Page = () => {
           spacing={3}
           sx={{ mt: 3 }}
         >
-          <Alert severity="error">
+          {/*<Alert severity="error">
             <div>
               You can use <b>demo@devias.io</b> and password <b>Password123!</b>
             </div>
-          </Alert>
-          {/* <AuthIssuer issuer={issuer} /> */}
+          </Alert>*/}
+          <AuthIssuer issuer={issuer} />
         </Stack>
       </div>
     </>
