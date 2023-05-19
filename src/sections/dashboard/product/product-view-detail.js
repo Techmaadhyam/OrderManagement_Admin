@@ -27,21 +27,14 @@ import { Table } from 'antd';
 import { primaryColor } from 'src/primaryColor';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 import IconWithPopup from '../user/user-icon';
+import { useLocation } from 'react-router-dom';
 
 const statusOptions = ['Canceled', 'Complete', 'Rejected'];
 
-
-const data = 
-{
-    name: 'user1',
-    description: 'testing description',
-    type:'type test',
-    category:'category test',
-  }
-
-
-
 export const ViewProductDetail = (props) => {
+  const location = useLocation();
+  const state = location.state;
+  //console.log(state);
   const { customer, ...other } = props;
   const [status, setStatus] = useState(statusOptions[0]);
 
@@ -128,26 +121,26 @@ export const ViewProductDetail = (props) => {
           label="Name"
         >
           <Typography variant="subtitle2">
-            {data.name}
+            {state?.productName || state?.name}
           </Typography>
         </PropertyListItem>
         <Divider />
         <PropertyListItem
           align={align}
           label="Category"
-          value={data.category}
+          value={state?.category || state?.categoryName}
         />
         <Divider />
         <PropertyListItem
           align={align}
           label="Type"
-          value={data.type}
+          value={state?.type}
         />
         <Divider />
         <PropertyListItem
           align={align}
           label="Description"
-          value={data.description}
+          value={state?.description}
         />
       </PropertyList>
         <Divider/>

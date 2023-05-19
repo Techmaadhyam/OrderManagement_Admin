@@ -24,12 +24,14 @@ import { usePageView } from 'src/hooks/use-page-view';
 import { useSearchParams } from 'src/hooks/use-search-params';
 import { paths } from 'src/paths';
 import { AuthIssuer } from 'src/sections/auth/auth-issuer';
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo , useContext } from 'react';
 import { primaryColor } from 'src/primaryColor'; 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 import { includes } from 'lodash';
+
+
 
 
 const Register = () => {
@@ -38,6 +40,7 @@ const Register = () => {
   // country, state, city API access token
   const [accessToken, setAccessToken] = useState(null);
   const [error, setError] = useState(null);
+
 
   //state management for countries,states and cities
   const [countries, setCountries] = useState([]);
@@ -109,7 +112,7 @@ const Register = () => {
   useEffect(() => {
     const today = new Date();
     const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
-    const formattedDate = today.toLocaleDateString('en-GB', options);
+    const formattedDate = today.toLocaleDateString('IN', options);
     setCurrentDate(formattedDate);
   }, []);
 
@@ -273,16 +276,16 @@ const handleCities = async (event) => {
 }
   const images = [
     '/assets/logos/logo.png',
-    // '/assets/logos/logo1.png',
-    // '/assets/logos/logo2.png',
-    // '/assets/logos/logo3.png',
-    // '/assets/logos/logo4.png', 
-    // '/assets/logos/logo5.png', 
-    // '/assets/logos/logo6.png', 
-    // '/assets/logos/logo7.png', 
-    // '/assets/logos/logo8.png', 
-    // '/assets/logos/logo9.png',
-    // '/assets/logos/logo10.png',  
+    '/assets/logos/logo1.png',
+    '/assets/logos/logo2.png',
+    '/assets/logos/logo3.png',
+    '/assets/logos/logo4.png', 
+    '/assets/logos/logo5.png', 
+    '/assets/logos/logo6.png', 
+    '/assets/logos/logo7.png', 
+    '/assets/logos/logo8.png', 
+    '/assets/logos/logo9.png',
+    '/assets/logos/logo10.png',  
   ];
 
 //handles image carousel
@@ -328,13 +331,16 @@ const handleCities = async (event) => {
           
           if (response.ok) {
             // Redirect to home page upon successful submission
-            //window.location.href = paths.index;
+        
            response.json().then(data => {
             console.log(data);
             notify(
               "success",
               "You have successfully registered your account. Please Log In."
             );
+            localStorage.setItem('notification', true);
+            window.location.href = paths.index;
+           
   });
           } else {
             notify(
@@ -347,12 +353,14 @@ const handleCities = async (event) => {
             "error",
             "An error occurred while submitting the form. Please try again later."
           );
+          
         }
       } else {
         notify(
           "error",
           "Please input all fields before submitting."
         );
+
       }
     } else {
       notify("error", "Your password does not match, please re-verify.");

@@ -1,66 +1,35 @@
-import numeral from 'numeral';
+
 import PropTypes from 'prop-types';
-import ArrowRightIcon from '@untitled-ui/icons-react/build/esm/ArrowRight';
-import Edit02Icon from '@untitled-ui/icons-react/build/esm/Edit02';
+
 import {
-  Avatar,
   Box,
-  Button,
-  Checkbox,
   IconButton,
-  Link,
-  Stack,
-  SvgIcon,
   Table,
   TableBody,
   TableCell,
   TextField,
   TableHead,
-  TablePagination,
   TableRow,
-  Typography,
   MenuItem,
   Icon
 } from '@mui/material';
-import { RouterLink } from 'src/components/router-link';
 import { Scrollbar } from 'src/components/scrollbar';
-import { paths } from 'src/paths';
-import { getInitials } from 'src/utils/get-initials';
 import React from 'react';
-import { Input } from 'antd';
 import { Add, Delete } from '@mui/icons-material';
 import Grid from 'antd/es/card/Grid';
 import './customTable.css'
 import { primaryColor } from 'src/primaryColor';
 import EditIcon from '@mui/icons-material/Edit';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useDispatch } from "react-redux";
+import { addToCart } from './cartSlice';
 
 
-const userOptions = [
-  {
-    label: 'Healthcare',
-    value: 'healthcare'
-  },
-  {
-    label: 'Makeup',
-    value: 'makeup'
-  },
-  {
-    label: 'Dress',
-    value: 'dress'
-  },
-  {
-    label: 'Skincare',
-    value: 'skincare'
-  },
-  {
-    label: 'Jewelry',
-    value: 'jewelry'
-  },
-  {
-    label: 'Blouse',
-    value: 'blouse'
-  }
-];
+const userId = sessionStorage.getItem('user');
+
+
+
 const tableHeader=[
     {
         id:'product_name',
@@ -109,205 +78,146 @@ const tableHeader=[
         width: 50,
     }
 ];
-const styles = theme => ({
-  root: {
-    width: "100%",
-    marginTop: theme.spacing.unit * 3,
-    overflowX: "auto"
-  },
-  table: {
-    minWidth: 700
-  }
-});
 
-class CustomTable extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: '',
-      weight: '',
-      gst: '',
-      quantity: '',
-      cost: '',
-      cgst: '',
-      description: '',
-      rows: [],
-      showForm: false,
-      editIndex: null, 
-    };
-  }
- handleChange = idx => e => {
-    const {name, value} =e.target;
-    const rows = {...this.state.row}
-    rows[idx] ={
-    ...rows[idx],
-    [name]:value
- };
- this.setState({
-    rows
- })
- }
+const CustomTable = () => {
 
- handleEmailChange = idx => e => {
-    const {name, value} =e.target;
-    const rows = {...this.state.row}
-    rows[idx] ={
-    ...rows[idx],
-    email:value
- };
- this.setState({
-    rows
- })
- }
- handleAddRow = () => {
-    const item ={
-        email:'',
-        mobile:''
+
+
+  const [name, setName] = useState('');
+  const [weight, setWeight] = useState('');
+  const [gst, setGst] = useState('');
+  const [quantity, setQuantity] = useState('');
+  const [cost, setCost] = useState('');
+  const [cgst, setCgst] = useState('');
+  const [description, setDescription] = useState('');
+  const [rows, setRows] = useState([]);
+  const [showForm, setShowForm] = useState(false);
+  const [editIndex, setEditIndex] = useState(null);
+
+    console.log(rows)
+
+  const [userData, setUserData] = useState([])
+  const [productId, setProductId] = useState()
+
+
+
+  const handleRemoveRow = (idx) => () => {
+    const updatedRows = rows.filter((_, index) => index !== idx);
+    setRows(updatedRows);
+  };
+
+  const toggleForm = () => {
+    setShowForm((prevState) => !prevState);
+    setEditIndex(null);
+    clearFormFields();
+  };
+
+  const handleModalClick = (event) => {
+    if (event.target.classList.contains('modal')) {
+      toggleForm();
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const newRow = { productId, name, weight, gst, quantity, cost, cgst, description };
+
+    if (editIndex !== null) {
+      const updatedRows = [...rows];
+      updatedRows[editIndex] = newRow;
+      setRows(updatedRows);
+    } else {
+      setRows((prevRows) => [...prevRows, newRow]);
     }
 
- this.setState({
-    rows: [...this.state.rows, item]
- })
- }
-handleRemoveRow = idx =>() =>{
-    const rows = [...this.state.rows];
-    rows.splice(idx,1);
-    this.setState({rows});
+    clearFormFields();
+    setShowForm(false);
+    setEditIndex(null);
+  };
+  const handleEditRow = (idx, row) => {
+  setName(row.name);
+  setWeight(row.weight);
+  setGst(row.gst);
+  setQuantity(row.quantity);
+  setCost(row.cost);
+  setCgst(row.cgst);
+  setDescription(row.description);
+  setEditIndex(idx);
+  setShowForm(true);
 };
+  
 
-toggleForm = () => {
-  this.setState((prevState) => ({
-    showForm: !prevState.showForm,
-    editIndex: null,
-    name: '',
-    weight: '',
-    gst: '',
-    quantity: '',
-    cost: '',
-    cgst: '',
-    description: '', 
-  }));
-};
+  const clearFormFields = () => {
+    setName('');
+    setWeight('');
+    setGst('');
+    setQuantity('');
+    setCost('');
+    setCgst('');
+    setDescription('');
+  };
 
-handleModalClick = (event) => {
-  if (event.target.classList.contains('modal')) {
-    this.toggleForm();
-  }
-};
-handleSubmit = (e) => {
-  e.preventDefault();
+  //
+  useEffect(() => {
+    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllItem/${userId}`)
+      .then(response => {
+        setUserData(response.data);
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
 
-  //handle popup form data
-  const { name, weight, gst, quantity, cost, cgst, description, editIndex } = this.state;
-  const newRow = { name, weight, gst, quantity, cost, cgst, description };
-
-  // update the edited row
-  if (editIndex !== null) {
-    const newRows = [...this.state.rows];
-    newRows[editIndex] = newRow;
-    this.setState({ rows: newRows });
-  } else {
-    // add a new row
-    const newRows = [...this.state.rows, newRow];
-    this.setState({ rows: newRows });
-  }
-
-  this.setState({
-    name: '',
-    weight: '',
-    gst: '',
-    quantity: '',
-    cost: '',
-    cgst: '',
-    description: '',
-    showForm: false,
-    editIndex: null,
-  });
-};
-
-
-handleEditRow = (idx, row) => {
-  this.setState({
-    name: row.name,
-    weight: row.weight,
-    gst: row.gst,
-    quantity: row.quantity,
-    cost: row.cost,
-    cgst: row.cgst,
-    description: row.description,
-    editIndex: idx,
-    showForm: true,
-  });
-};
-
-render (){
-
-    const {
-        count = 0,
-        items = [],
-        onDeselectAll,
-        onDeselectOne,
-        onPageChange = () => { },
-        onRowsPerPageChange,
-        onSelectAll,
-        onSelectOne,
-        page = 0,
-        rowsPerPage = 0,
-        selected = [],
-      } = this.props;
-      const {rows} =this.state;
-    return (
-        <>
-        <Box sx={{  position: 'relative' , overflowX: "auto"}}>    
+  return (
+    <>
+      <Box sx={{ position: 'relative', overflowX: 'auto' }}>
         <div className='purchase-popup'>
-        <button className='add-purchase' style={{background: `${primaryColor}`}} onClick={this.toggleForm}>Add Product</button>
+          <button className='add-purchase' style={{ background: `${primaryColor}` }} onClick={toggleForm}>
+            Add Product
+          </button>
 
-        {this.state.showForm && (
-          <div className="modal" onClick={this.handleModalClick}>
-            <div className="modal-content">
-              <h5 className='product-detail-heading'>Add Product Details</h5>
-              <form className='form'>
-             
-              <div className='form-row'>
-      
-               <div className='popup-left'>
-
-               <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-                    fullWidth
-                    label="Name"
-                    name="name"
-                    select
-                    value={this.state.name}
-                    onChange={e => this.setState({ name: e.target.value })}
-                    style={{ marginBottom: 10 }}
-                  >
-                    {userOptions.map((option) => (
-                      <MenuItem
-                        key={option.value}
-                        value={option.value}
-                      >
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </Grid>
-                <Grid
+          {showForm && (
+            <div className='modal' onClick={handleModalClick}>
+              <div className='modal-content'>
+                <h5 className='product-detail-heading'>Add Product Details</h5>
+                <form className='form'>
+                  {/* Form fields */}
+                  <div className='form-row'>
+                    <div className='popup-left'>
+                      <Grid xs={12} md={6}>
+                        <TextField
+                          fullWidth
+                          label='Name'
+                          name='name'
+                          select
+                          value={name}
+                          onChange={(e) => {
+                            const selectedOption = userData.find(option => option.name === e.target.value);
+                            setProductId(selectedOption.id);
+                            setName(e.target.value);
+                          }}
+                          style={{ marginBottom: 10 }}
+                        >
+                          {userData?.map((option) => (
+                            <MenuItem key={option.id} value={option.name}>
+                              {option.name}
+                            </MenuItem>
+                          ))}
+                        </TextField>
+                      </Grid>
+                      <Grid
               xs={12}
               md={6}
               >
                   <TextField
-            
                   fullWidth
                   label="Weight"
                   name="weight"
-                  value={this.state.weight}
-                  onChange={e => this.setState({ weight: e.target.value })}
+                  value={weight}
+                  onChange={(e) => setWeight(e.target.value)}
                   style={{ marginBottom: 10 }}
-              
                 />
                </Grid>
                 <Grid
@@ -315,12 +225,11 @@ render (){
                 md={6}
                 >
                   <TextField
-            
                   fullWidth
                   label="GST"
                   name="gst"
-                  value={this.state.gst}
-                  onChange={e => this.setState({ gst: e.target.value })}
+                  value={gst}
+                  onChange={(e) => setGst(e.target.value)}
                   style={{ marginBottom: 10 }}
               
                   />
@@ -332,14 +241,12 @@ render (){
                 md={6}
                 >
                   <TextField
-            
                   fullWidth
                   label="Quantity"
                   name="quantity"
-                  value={this.state.quantity}
-                  onChange={e => this.setState({ quantity: e.target.value })}
+                  value={quantity}
+                  onChange={(e) => setQuantity(e.target.value)}
                   style={{ marginBottom: 15 }}
-              
                   />
                 </Grid>
                 <Grid
@@ -347,12 +254,11 @@ render (){
                 md={6}
                 >
                   <TextField
-            
                   fullWidth
                   label="Cost"
                   name="cost"
-                  value={this.state.cost}
-                  onChange={e => this.setState({ cost: e.target.value })}
+                  value={cost}
+                  onChange={(e) => setCost(e.target.value)}
                   style={{ marginBottom: 10 }}
               
                   />
@@ -362,19 +268,20 @@ render (){
                 md={6}
                 >
                   <TextField
-            
                   fullWidth
                   label="CGST"
                   name="cgst"
-                  value={this.state.cgst}
-                  onChange={e => this.setState({ cgst: e.target.value })}
+                  value={cgst}
+                  onChange={(e) => setCgst(e.target.value)}
                   style={{ marginBottom: 16 }}
-              
                   />
                 </Grid>
-               </div>  
-               </div>
-               <Grid
+                
+           
+                    </div>
+                    
+                  </div>
+                  <Grid
               xs={12}
               md={6}
               >
@@ -384,38 +291,41 @@ render (){
                   name="description"
                   multiline
                   rows={4}
-                  value={this.state.description}
-                  onChange={e => this.setState({ description: e.target.value })}
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
                   style={{ marginBottom: 10 }}
                 />
                </Grid>
-              
-              <div className='submit-purchase'><button  style={{background: `${primaryColor}`}} className='submit' type="submit" onClick={this.handleSubmit}>Save</button></div>
-       
-              </form>
+                  <div className='submit-purchase'>
+                    <button style={{ background: `${primaryColor}` }} className='submit' type='submit' onClick={handleSubmit}>
+                      Save
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
-          </div>
-        )}
-      </div>
-      <Scrollbar>
-        <Table sx={{ minWidth: 800,overflowX: "auto" }}>
-          <TableHead>
-            <TableRow>
-            {tableHeader.map((item,idx)=> (
-                    <TableCell sx={{ width: item.width }}
-key={idx}>
+          )}
+        </div>
+
+        <Scrollbar>
+          <Table sx={{ minWidth: 800, overflowX: 'auto' }}>
+            <TableHead>
+              <TableRow>
+                {tableHeader.map((item, idx) => (
+                  <TableCell sx={{ width: item.width }} key={idx}>
                     {item.name}
                   </TableCell>
-            ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-          {this.state.rows.map((row, idx) => (
-            <TableRow hover key={idx}>
-              <TableCell>
-                <div>{row.name}</div>
-              </TableCell>
-              <TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((row, idx) => (
+                <TableRow hover key={idx}>
+                  {/* Render table rows */}
+                  <TableCell>
+                    <div>{row.name}</div>
+                  </TableCell>
+                  <TableCell>
                 <div>{row.quantity}</div>
               </TableCell>
               <TableCell>
@@ -433,49 +343,33 @@ key={idx}>
               <TableCell>
                 <div>{row.description}</div>
               </TableCell>
-              <TableCell>
-              <IconButton onClick={() => this.handleEditRow(idx, row)}>
-                  <Icon>
-                    <EditIcon />
-                  </Icon>
-                </IconButton>
-              </TableCell>
-              <TableCell align="right">
-                <IconButton
-                  onClick={this.handleRemoveRow(idx)}
-                >
-                  <Icon>
-                    <Delete />
-                  </Icon>
-                </IconButton>
-              </TableCell>
-            </TableRow>
-          ))}
-          </TableBody>
-        </Table>
-      </Scrollbar>
-      {/* <TablePagination
-        component="div"
-        count={count}
-        onPageChange={onPageChange}
-        onRowsPerPageChange={onRowsPerPageChange}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={[5, 10, 25]}
-      /> */}
-    </Box>
-    <br></br>
+                  <TableCell>
+                    <IconButton onClick={() => handleEditRow(idx, row)}>
+                      <Icon>
+                        <EditIcon />
+                      </Icon>
+                    </IconButton>
+                  </TableCell>
+                  <TableCell align='right'>
+                    <IconButton onClick={handleRemoveRow(idx)}>
+                      <Icon>
+                        <Delete />
+                      </Icon>
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Scrollbar>
+      </Box>
+      <br></br>
     <Grid
               xs={12}
               md={6}
             >
   <label style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Total Amount :</label>
   <TextField sx={{ height: 40 }}
-                    // error={!!(formik.touched.category && formik.errors.category)}
-                    // label="User"
-                    // name="user"
-                    // onBlur={formik.handleBlur}
-                    // onChange={formik.handleChange}
                   >
                   </TextField>
             </Grid>
@@ -492,24 +386,22 @@ key={idx}>
   maxRows={8}
 />
             </Grid>
-        </>
-    )
-
-
-}
+    </>
+  );
 };
+
 CustomTable.propTypes = {
-    count: PropTypes.number,
-    items: PropTypes.array,
-    onDeselectAll: PropTypes.func,
-    onDeselectOne: PropTypes.func,
-    onPageChange: PropTypes.func,
-    onRowsPerPageChange: PropTypes.func,
-    onSelectAll: PropTypes.func,
-    onSelectOne: PropTypes.func,
-    page: PropTypes.number,
-    rowsPerPage: PropTypes.number,
-    selected: PropTypes.array,
-  };
+  count: PropTypes.number,
+  items: PropTypes.array,
+  onDeselectAll: PropTypes.func,
+  onDeselectOne: PropTypes.func,
+  onPageChange: PropTypes.func,
+  onRowsPerPageChange: PropTypes.func,
+  onSelectAll: PropTypes.func,
+  onSelectOne: PropTypes.func,
+  page: PropTypes.number,
+  rowsPerPage: PropTypes.number,
+  selected: PropTypes.array,
+};
 
 export default CustomTable;

@@ -28,17 +28,10 @@ import { Table } from 'antd';
 import { primaryColor } from 'src/primaryColor';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 import IconWithPopup from '../user/user-icon';
+import { useLocation } from 'react-router-dom';
 
 
-const data={
-  userName: 'Harsh',
-  type: 'Stell',
-  quotation: ' ',
-  deliveryDate: 23/4/2021,
-  contactName: 'Nilla',
-  contactno: '567892483984',
-  status: 'Canceled'
-}
+
 
 const statusOptions = ['Canceled', 'Complete', 'Rejected'];
 const columns = [
@@ -80,20 +73,25 @@ const columns = [
     },
 ];
 
-const rowData = [
-  {
-    name: 'Washing Machine',
-    quantity: '2',
-    weight: "56kg",
-    cost: '45689',
-    gst:'10',
-    cgst:'6',
-    description: 'Handle with care',
-  },
-];
+
 
 
 export const ViewPurchaseOrder = (props) => {
+  const location = useLocation();
+  const state = location.state;
+
+  const rowData = [
+    {
+      name: '',
+      quantity: '',
+      weight: "56kg",
+      cost: '45689',
+      gst:'10',
+      cgst:'6',
+      description: 'Handle with care',
+    },
+  ];
+
   const { customer, ...other } = props;
   const [status, setStatus] = useState(statusOptions[0]);
 
@@ -180,38 +178,38 @@ export const ViewPurchaseOrder = (props) => {
           label="Name"
         >
           <Typography variant="subtitle2">
-            {data.userName}
+            {state?.contactPerson}
           </Typography>
         </PropertyListItem>
         <Divider />
         <PropertyListItem
           align={align}
           label="Quotation"
-          value={data.quotation}
+          value={state?.quotation}
         />
         <Divider />
         <PropertyListItem
           align={align}
           label="DeliveryDate"
-          value={data.deliveryDate}
+          value={state?.deliveryDate}
         />
         <Divider />
         <PropertyListItem
           align={align}
           label="Contact Name"
-          value={data.contactName}
+          value={state?.contactPerson}
         />
         <Divider />
         <PropertyListItem
           align={align}
           label="Contact No"
-          value={data.contactno}
+          value={state?.contactPhone}
         />
         <Divider />
         <PropertyListItem
           align={align}
           label="Status"
-          value={data.status}
+          value={state?.status}
         >
         </PropertyListItem>
       </PropertyList>

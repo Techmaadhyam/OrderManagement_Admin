@@ -17,83 +17,268 @@ import { wait } from 'src/utils/wait';
 import './warehouse.css'
 import { Box } from '@mui/system';
 import IconWithPopup from '../user/user-icon';
+import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const userOptions = [
-  {
-    label: 'Healthcare',
-    value: 'healthcare'
-  },
-  {
-    label: 'Makeup',
-    value: 'makeup'
-  },
-  {
-    label: 'Dress',
-    value: 'dress'
-  },
-  {
-    label: 'Skincare',
-    value: 'skincare'
-  },
-  {
-    label: 'Jewelry',
-    value: 'jewelry'
-  },
-  {
-    label: 'Blouse',
-    value: 'blouse'
-  }
-];
+  //get userid 
+const userId = sessionStorage.getItem('user');
+
 
 export const CreateWarehouse = (props) => {
+    // country, state, city API access token
+    const [accessToken, setAccessToken] = useState(null);
+    const [error, setError] = useState(null);
+  
+  
+    //state management for countries,states and cities
+    const [countries, setCountries] = useState([]);
+    const [states, setStates]= useState([])
+    const [cities, setCities]= useState([])
+    const [currentCountry, setCurrentCountry]= useState('India')
+    const [currentState, setCurrentState]= useState('')
+    const [currentCity, setCurrentCity] =useState('')
+      //form state handling
+
+  const [username, setUsername] = useState('');
+  const [address, setAddress] = useState("");
+  const [zipcode, setZipcode] = useState("");
+  const [description, setDescription] = useState("");
+  const [currentDate, setCurrentDate] = useState('');
+  const [phone, setPhone] = useState('');
+  const [contactName, setContactName] = useState('');
+
+
+
   const { customer, ...other } = props;
-  const formik = useFormik({
-    initialValues: {
-      address1: customer.address1 || '',
-      address2: customer.address2 || '',
-      country: customer.country || '',
-      email: customer.email || '',
-      hasDiscount: customer.hasDiscount || false,
-      isVerified: customer.isVerified || false,
-      name: customer.name || '',
-      phone: customer.phone || '',
-      state: customer.state || '',
-      submit: null
-    },
-    validationSchema: Yup.object({
-      address1: Yup.string().max(255),
-      address2: Yup.string().max(255),
-      country: Yup.string().max(255),
-      email: Yup
-        .string()
-        .email('Must be a valid email')
-        .max(255)
-        .required('Email is required'),
-      hasDiscount: Yup.bool(),
-      isVerified: Yup.bool(),
-      name: Yup
-        .string()
-        .max(255)
-        .required('Name is required'),
-      phone: Yup.string().max(15),
-      state: Yup.string().max(255)
-    }),
-    onSubmit: async (values, helpers) => {
-      try {
-        // NOTE: Make API request
-        await wait(500);
-        helpers.setStatus({ success: true });
-        helpers.setSubmitting(false);
-        toast.success('Customer updated');
-      } catch (err) {
-        console.error(err);
-        toast.error('Something went wrong!');
-        helpers.setStatus({ success: false });
-        helpers.setErrors({ submit: err.message });
-        helpers.setSubmitting(false);
-      }
+ 
+  ////
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+  
+    switch (name) {
+    
+      case 'name':
+        setUsername(value);
+        break;
+      case 'contactname':
+        setContactName(value);
+        break;
+      case 'phone':
+        setPhone(value);
+        break;
+      case 'address':
+        setAddress(value);
+          break;
+      case 'zipcode':
+        setZipcode(value);
+          break;
+      case 'description':
+        setDescription(value);
+          break;
+      default:
+        break;
     }
-  });
+  };
+  ////
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://www.universal-tutorial.com/api/getaccesstoken', {
+          headers: {
+            'Accept': 'application/json',
+            'api-token': '8HWETQvEFegKi6tGPUkSWDiQKfW8UdZxPqbzHX6JdShA3YShkrgKuHUbnTMkd11QGkE',
+            'user-email': 'mithesh.dev.work@gmail.com'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch access token');
+        }
+
+        const data = await response.json();
+
+        setAccessToken(data.auth_token);
+        setError(null);
+      } catch (error) {
+        console.error(error);
+        setError('Failed to fetch access token');
+      }
+    };
+
+    fetchData();
+  }, []);
+
+    //getting current date
+    useEffect(() => {
+      const today = new Date();
+      const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
+      const formattedDate = today.toLocaleDateString('IN', options);
+      setCurrentDate(formattedDate);
+    }, []);
+
+  //fetches country list for dropdown and pushesh it to state which is later mapped 
+  const fetchCountries = useCallback(async () => {
+    try {
+      const response = await fetch("https://www.universal-tutorial.com/api/countries/", {
+        headers: {
+          "Authorization": "Bearer " + accessToken,
+          "Accept": "application/json"
+        }
+      });
+  
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setCountries(data);
+    } catch (error) {
+      console.error("Error fetching countries:", error);
+    }
+  }, [accessToken]);
+  
+//using useeffect to prevent fetch request being called on render
+  useEffect(()=>{
+    fetchCountries()
+  },[fetchCountries])
+
+//mapping countries to MUI select input field
+  const userOptions = useMemo(() => {
+    return countries.map(country => ({
+      label: country.country_name,
+      value: country.country_name
+    }));
+  }, [countries]);
+
+//mapping states to MUI select input field
+  const userOptionsState = useMemo(() => {
+    return states.map(state => ({
+      label: state.state_name,
+      value: state.state_name
+    }));
+  }, [states]);
+
+  //mapping cities to MUI select input field
+  const userOptionsCities = useMemo(() => {
+    return cities.map(city => ({
+      label: city.city_name,
+      value: city.city_name
+    }));
+  }, [cities]);
+
+  //fetches states list for dropdown and pushesh it to setStates which is later mapped 
+  const handleCountry = async (event) => {
+    try {
+      setCurrentCountry(event.target.value);
+      const response = await fetch(`https://www.universal-tutorial.com/api/states/${event.target.value}`, {
+        headers: {
+          "Authorization": "Bearer " + accessToken,
+          "Accept": "application/json"
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setStates(data);
+    } catch (error) {
+      console.error("Error fetching states:", error);
+    }
+  };
+
+//fetches cities list for dropdown and pushesh it to setCities which is later mapped 
+const handleState = async (event) => {
+    try {
+      setCurrentState(event.target.value);
+      const response = await fetch(`https://www.universal-tutorial.com/api/cities/${event.target.value}`, {
+        headers: {
+          "Authorization": "Bearer " + accessToken,
+          "Accept": "application/json"
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setCities(data);
+    } catch (error) {
+      console.error("Error fetching states:", error);
+    }
+};
+
+//sets default country to India and fetches state list for India and is pushed to setStates
+const handleDefaultState = async () => {
+try {;
+  if (currentCountry === 'India') {
+    const response = await fetch('https://www.universal-tutorial.com/api/states/India', {
+      headers: {
+        "Authorization": "Bearer " + accessToken,
+        "Accept": "application/json"
+      }
+    });
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const data = await response.json();
+    setStates(data);
+  }
+} catch (error) {
+  console.error("Error fetching states:", error);
+}
+};
+
+//sets current city value in MUI select field onchange event
+const handleCities = async (event) => {
+  setCurrentCity(event.target.value);
+}
+
+  //for sending response body via route
+const navigate = useNavigate();
+
+const handleClick = async (event) => {
+  event.preventDefault();
+
+    if (username && currentCountry && currentState && address && description && currentCity && zipcode && currentDate) {
+      try {
+        const response = await fetch('http://13.115.56.48:8080/techmadhyam/addWareHouse', {
+          method: 'POST',
+          headers: {
+
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+  
+            name : username,
+            contactName: contactName,
+            phone: phone,
+            address: address,
+            description: description,
+            zipcode: zipcode,
+            city: currentCity,
+            state: currentState,
+            country: currentCountry,
+            createdBy: userId,
+            createdDate:currentDate,
+            lastModifiedDate:currentDate
+          })
+        });
+        
+        if (response.ok) {
+          // Redirect to home page upon successful submission
+      
+         response.json().then(data => {
+          console.log(data);
+          navigate('/dashboard/invoices/viewDetail', { state: data });
+         
+});
+        } 
+      } catch (error) {
+        console.error('API call failed:', error);
+      }
+    } 
+
+};
 
   return (
     <div style={{minWidth: "100%", marginBottom: '1rem' }}>
@@ -101,9 +286,7 @@ export const CreateWarehouse = (props) => {
       <h2>Create Warehouse</h2>
       <IconWithPopup/>
     </div>
-    <form
-      onSubmit={formik.handleSubmit}
-      {...other}>
+    <form>
       <Card>
         <CardHeader title="Warehouse Detail" />
         <CardContent sx={{ pt: 0 }}>
@@ -116,27 +299,15 @@ export const CreateWarehouse = (props) => {
               md={6}
             >
               <TextField
-                    error={!!(formik.touched.category && formik.errors.category)}
+
                     fullWidth
                     label="Name"
                     name="name"
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                   
-                    value={formik.values.category}
+                    value={username}
+                    onChange={handleInputChange}
                   >
                   </TextField>
-              {/* <TextField
-                error={!!(formik.touched.name && formik.errors.name)}
-                fullWidth
-                helperText={formik.touched.name && formik.errors.name}
-                label="Full name"
-                name="name"
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-                required
-                value={formik.values.name}
-              /> */}
+            
             </Grid>
             <Grid/>
             <Grid
@@ -144,15 +315,14 @@ export const CreateWarehouse = (props) => {
               md={6}
             >
                 <TextField
-                    error={!!(formik.touched.category && formik.errors.category)}
+
                     fullWidth
                     label="Address"
                     name="address"
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
                     multiline
                     rows={2}
-                    value={formik.values.category}
+                    value={address}
+                    onChange={handleInputChange}   
                   >
                   </TextField>
             </Grid>
@@ -166,30 +336,47 @@ export const CreateWarehouse = (props) => {
               md={6}
             >
                 <TextField
-                    error={!!(formik.touched.category && formik.errors.category)}
+
                     fullWidth
-                    label="Country"
-                    name="country"
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    value={formik.values.category}
+                    label="Contact Name"
+                    name="contactname"
+                    value={contactName}
+                    onChange={handleInputChange}   
                   >
+                  
                   </TextField>
             </Grid>
             <Grid
               xs={12}
               md={6}
             >
-              <TextField
-                    error={!!(formik.touched.category && formik.errors.category)}
+                <TextField
+
                     fullWidth
-                    label="State"
-                    name="state"
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    value={formik.values.category}
-                >
-                    {userOptions.map((option) => (
+                    label="Phone"
+                    name="phone"
+                    type='number'
+                    value={phone}
+                    onChange={handleInputChange}   
+                  >
+          
+                  </TextField>
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
+            >
+                <TextField
+
+                    fullWidth
+                    label="Country"
+                    name="country"
+                    select
+                    defaultValue=''
+                    value={currentCountry}
+                    onChange={handleCountry}
+                  >
+                     {userOptions?.map((option) => (
                       <MenuItem
                         key={option.value}
                         value={option.value}
@@ -197,6 +384,32 @@ export const CreateWarehouse = (props) => {
                         {option.label}
                       </MenuItem>
                     ))}
+                  </TextField>
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
+            >
+              <TextField
+
+                    fullWidth
+                    label="State"
+                    name="state"
+                    select
+                    defaultValue=''
+                    value={currentState}
+                    onChange={handleState}
+                    onFocus={handleDefaultState}
+                   
+                > 
+                {userOptionsState?.map((option) => (
+                      <MenuItem
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))}             
                 </TextField>
             </Grid>
             <Grid
@@ -204,26 +417,39 @@ export const CreateWarehouse = (props) => {
               md={6}
             >
               <TextField
-                error={!!(formik.touched.address1 && formik.errors.address1)}
+
                 fullWidth
-                helperText={formik.touched.address1 && formik.errors.address1}
+ 
                 label="City"
                 name="city"
-                onBlur={formik.handleBlur}
-              />
+                select
+                defaultValue=''
+                value={currentCity}
+                onChange={handleCities}
+             
+              >
+                  {userOptionsCities?.map((option) => (
+                      <MenuItem
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))} 
+                      </TextField>
             </Grid>
             <Grid
               xs={12}
               md={6}
             >
               <TextField
-                error={!!(formik.touched.address1 && formik.errors.address1)}
+
                 fullWidth
-                helperText={formik.touched.address1 && formik.errors.address1}
+     
                 label="Zip Code"
                 name="zipcode"
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
+                value={zipcode}
+                onChange={handleInputChange}
               />
             </Grid>
 
@@ -236,9 +462,12 @@ export const CreateWarehouse = (props) => {
                 <TextField
                 fullWidth
                 label= "Description"
+                name='description'
                 multiline
                 rows={4}
                 maxRows={6}
+                value={description}
+                onChange={handleInputChange}
                 />
             </Grid>
         </CardContent>
@@ -257,6 +486,8 @@ export const CreateWarehouse = (props) => {
                     color="primary"
                     variant="contained"
                     align="right"
+                    onClick={handleClick}
+            
                 
                     >
                     Save
