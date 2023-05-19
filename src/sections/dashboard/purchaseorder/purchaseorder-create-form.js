@@ -31,6 +31,7 @@ import { Scrollbar } from 'src/components/scrollbar';
 import React from 'react';
 import { Add, Delete } from '@mui/icons-material';
 import './customTable.css'
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -116,7 +117,7 @@ export const PurchaseOrderCreateForm = (props) => {
   const { customer, ...other } = props;
 
   const [userData, setUserData]= useState([])
-
+  const navigate = useNavigate();
 //form state handeling
 const [userName, setUserName] = useState('');
 const [type, setType] = useState("");
@@ -361,7 +362,8 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
         
            response.json().then(data => {
             console.log(data);
-           
+          
+            navigate('/dashboard/purchaseorder/viewDetail', { state: data });
     });
           } 
         } catch (error) {

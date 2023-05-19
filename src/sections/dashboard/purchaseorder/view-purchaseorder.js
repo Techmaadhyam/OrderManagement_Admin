@@ -80,6 +80,8 @@ export const ViewPurchaseOrder = (props) => {
   const location = useLocation();
   const state = location.state;
 
+  console.log(state)
+
   const rowData = [
     {
       name: '',
@@ -178,38 +180,38 @@ export const ViewPurchaseOrder = (props) => {
           label="Name"
         >
           <Typography variant="subtitle2">
-            {state?.contactPerson}
+            {state?.contactPerson || state?.purchaseOrderRec?.contactPerson}
           </Typography>
         </PropertyListItem>
         <Divider />
         <PropertyListItem
           align={align}
           label="Quotation"
-          value={state?.quotation}
+          value={state?.quotation || state?.purchaseOrderRec?.quotation}
         />
         <Divider />
         <PropertyListItem
           align={align}
           label="DeliveryDate"
-          value={state?.deliveryDate}
+          value={state?.deliveryDate || state?.purchaseOrderRec?.deliveryDate}
         />
         <Divider />
         <PropertyListItem
           align={align}
           label="Contact Name"
-          value={state?.contactPerson}
+          value={state?.contactPerson || state?.purchaseOrderRec?.contactPerson}
         />
         <Divider />
         <PropertyListItem
           align={align}
           label="Contact No"
-          value={state?.contactPhone}
+          value={state?.contactPhone || state?.purchaseOrderRec?.contactPhone}
         />
         <Divider />
         <PropertyListItem
           align={align}
           label="Status"
-          value={state?.status}
+          value={state?.status || state?.purchaseOrderRec?.status}
         >
         </PropertyListItem>
       </PropertyList>
