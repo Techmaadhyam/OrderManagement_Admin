@@ -16,186 +16,136 @@ import {  Delete } from '@mui/icons-material';
 import { RouterLink } from 'src/components/router-link';
 import { paths } from 'src/paths';
 import IconWithPopup from '../user/user-icon';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+const userId = sessionStorage.getItem('user');
+const SalesOrderViewList = () => {
+  const [rows, setRows] = useState([{}]);
+  const [userData, setUserData]= useState([])
+
+  const handleRemoveRow = (idx) => () => {
+    const updatedRows = [...rows];
+    updatedRows.splice(idx, 1);
+    setRows(updatedRows);
+  };
 
 
-const columns = [
-  {
-    title: 'Sales Order Number',
-    dataIndex: 'salesOrder',
-    key: 'salesOrder',
-    render: (name) => <Link
-    color="primary"
-    component={RouterLink}
-    href={paths.dashboard.orders.viewDetail}
-    sx={{
-      alignItems: 'center',
-      textAlign: 'center'
-      // display: 'inline-flex'
-    }}
-    underline="hover"
-  >
-    <Typography variant="subtitle2">
-   {name}
-    </Typography>
-  </Link>
-  },
-  {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
-    },
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-  },
+  const navigate = useNavigate();
   
-  {
-    title: 'Delivery Date',
-    key: 'deliveryDate',
-    dataIndex: 'deliveryDate',
-  },
-  {
+ 
+  useEffect(() => {
+    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllSalesOrderDetailByUser/${userId}`)
+      .then(response => {
+        setUserData(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+
+  const dataWithKeys = userData?.map((item) => ({ ...item, key: item.id }));
+ 
+  const columns = [
+    {
+      title: 'Sales Order Number',
+      dataIndex: 'id',
+      key: 'id',
+      render: (name, record) => {
+        const handleNavigation = () => {
+          navigate('/dashboard/orders/viewDetail', { state: record });
+        };
+        
+        return (
+          <Link
+            color="primary"
+            onClick={handleNavigation}
+            sx={{
+              alignItems: 'center',
+              textAlign: 'center',
+            }}
+            underline="hover"
+          >
+            <Typography variant="subtitle2">{name}</Typography>
+          </Link>
+        );
+      },
+    },
+    {
+      title: 'Status',
+      key: 'status',
+      dataIndex: 'status',
+    },
+    {
+      title: 'Name',
+      key: 'contactPerson',
+      dataIndex: 'contactPerson',
+    },
+    {
+      title: 'Delivery Date',
+      key: 'deliveryDate',
+      dataIndex: 'deliveryDate',
+    },
+    {
       title: 'Created Date',
       key: 'createdDate',
       dataIndex: 'createdDate',
     },
     {
       title: 'Last Modified Date',
-      key: 'lastModified',
-      dataIndex: 'lastModified',
+      key: 'lastModifiedDate',
+      dataIndex: 'lastModifiedDate',
     },
     {
       dataIndex: 'actionEdit',
       key: 'actionEdit',
-    render: () => <Link
-    component={RouterLink}
-    href={paths.dashboard.orders.edit}
-  >
-    <IconButton>
-  <Icon>
-         <EditIcon />
-     </Icon>
-     </IconButton>
-  </Link>
+      render: () => (
+        <Link>
+          <IconButton>
+            <Icon>
+              <EditIcon />
+            </Icon>
+          </IconButton>
+        </Link>
+      ),
     },
     {
       dataIndex: 'actionDelete',
       key: 'actionDelete',
-      render: (_, __, index) =>  <IconButton
-       onClick={() => this.handleRemoveRow(index)}
-     >
-       <Icon>
-         <Delete />
-       </Icon>
-     </IconButton>
+      render: (_, __, index) => (
+        <IconButton onClick={() => handleRemoveRow(index)}>
+          <Icon>
+            <Delete />
+          </Icon>
+        </IconButton>
+      ),
     },
-];
+  ];
 
-const data = [
-  {
-    key: '1',
-    salesOrder: '12345',
-    status: "Completed",
-    name: 'Harsh',
-    deliveryDate: '26/02/2023',
-    createdDate:'16/02/2023',
-    lastModified:'3/03/2023',
-  },
-];
-
-class SalesOrderViewList extends React.Component {
-  constructor(props) {
-      super(props);
-      this.state = {
-  rows:[{}]
-};
-}
-handleChange = idx => e => {
-  const {name, value} =e.target;
-  const rows = {...this.state.row}
-  rows[idx] ={
-  ...rows[idx],
-  [name]:value
-};
-this.setState({
-  rows
-})
-}
-
-handleEmailChange = idx => e => {
-  const {name, value} =e.target;
-  const rows = {...this.state.row}
-  rows[idx] ={
-  ...rows[idx],
-  email:value
-};
-this.setState({
-  rows
-})
-}
-handleAddRow = () => {
-  const item ={
-      email:'',
-      mobile:''
-  }
-this.setState({
-  rows: [...this.state.rows, item]
-})
-}
-handleRemoveRow = idx =>() =>{
-  const rows = [...this.state.rows];
-  rows.splice(idx,1);
-  this.setState({rows});
-};
-render (){
-  const {
-      count = 0,
-      items = [],
-      onDeselectAll,
-      onDeselectOne,
-      onPageChange = () => { },
-      onRowsPerPageChange,
-      onSelectAll,
-      onSelectOne,
-      page = 0,
-      rowsPerPage = 0,
-      selected = [],
-      classes
-    } = this.props;
-    const {rows} =this.state;
   return (
-    <div style={{minWidth: "100%" }}>
-      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-      <h2>View Sales Order</h2>
-      <IconWithPopup/>
-    </div>
- <Box sx={{  position: 'relative' , overflowX: "auto"}}>    
-      <Scrollbar>
-        <Table sx={{ minWidth: 800,overflowX: "auto" }} columns={columns} dataSource={data}></Table>
-      </Scrollbar>
-    </Box>
-    {/* <Grid
-              xs={12}
-              md={6}
-            >
-  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Total Amount : 56,78,020</Typography>
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-              style={{marginTop: "20px", marginBottom: "30px"}}
-            >
-  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Terms &Conditions :  This product can be sold on the said customer</Typography>
-
-            </Grid> */}
-    </div>
-  );
-    }
-};
-
-SalesOrderViewList.propTypes = {
-  customer: PropTypes.object.isRequired
-};
-
-export default SalesOrderViewList;
+    <div style={{ minWidth: '100%' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <h2>View Sales Order</h2>
+        <IconWithPopup/>
+      </div>
+      <Box sx={{ position: 'relative', overflowX: 'auto' }}>
+        <Scrollbar>
+          <Table
+            sx={{ minWidth: 800, overflowX: 'auto' }}
+            columns={columns}
+            dataSource={dataWithKeys}
+            ></Table>
+            </Scrollbar>
+          </Box>
+        </div>
+      );
+    };
+    
+    export default SalesOrderViewList;

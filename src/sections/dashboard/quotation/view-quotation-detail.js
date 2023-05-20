@@ -25,27 +25,22 @@ import { RouterLink } from 'src/components/router-link';
 import { paths } from 'src/paths';
 import { Scrollbar } from 'src/components/scrollbar';
 import { Table } from 'antd';
+import { primaryColor } from 'src/primaryColor';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 import IconWithPopup from '../user/user-icon';
-import { primaryColor } from 'src/primaryColor';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+import { useEffect } from 'react';
 
 
-const data={
-  userName: 'Harsh',
-  type: 'Stell',
-  quotation: ' ',
-  deliveryDate: 23/4/2021,
-  contactName: 'Nilla',
-  contactno: '567892483984',
-  status: 'Canceled'
-}
+
 
 const statusOptions = ['Canceled', 'Complete', 'Rejected'];
 const columns = [
   {
     title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
+    dataIndex: 'productName',
+    key: 'productName',
   },
   {
       title: 'Quantity',
@@ -57,21 +52,31 @@ const columns = [
     dataIndex: 'weight',
     key: 'weight',
   },
+  {
+    title: 'Size',
+    dataIndex: 'size',
+    key: 'size',
+  },
   
   {
     title: 'Cost',
-    key: 'cost',
-    dataIndex: 'cost',
+    key: 'price',
+    dataIndex: 'price',
   },
-  {
-      title: 'GST',
-      key: 'gst',
-      dataIndex: 'gst',
-    },
     {
       title: 'CGST',
       key: 'cgst',
       dataIndex: 'cgst',
+    },
+    {
+      title: 'SGST',
+      key: 'sgst',
+      dataIndex: 'sgst',
+    },
+    {
+      title: 'IGST',
+      key: 'igst',
+      dataIndex: 'igst',
     },
     {
       title: 'Description',
@@ -80,22 +85,21 @@ const columns = [
     },
 ];
 
-const rowData = [
-  {
-    name: 'Washing Machine',
-    quantity: '2',
-    weight: "56kg",
-    cost: '45689',
-    gst:'10',
-    cgst:'6',
-    description: 'Handle with care',
-  },
-];
+
 
 
 export const ViewQuotationDetail = (props) => {
+  const location = useLocation();
+  const state = location.state;
+
+  //console.log(state)
+
+ 
+
   const { customer, ...other } = props;
   const [status, setStatus] = useState(statusOptions[0]);
+  const [tempuser, setTempuser] =useState([])
+  const [rowData, setRowData] =useState()
 
   const handleChange = useCallback((event) => {
     setStatus(event.target.value);
@@ -149,9 +153,43 @@ export const ViewQuotationDetail = (props) => {
     }
   });
 
+  useEffect(() => {
+
+    axios.get(`http://13.115.56.48:8080/techmadhyam/getTempUserById/${state?.tempUserId || state?.quotation?.tempUserId}`)
+      .then(response => {
+       setTempuser(response.data)
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+
+  useEffect(() => {
+    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllQuotationDetails/${state?.id || state?.quotation?.id}`)
+      .then(response => {
+       setRowData(response.data)
+     
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+
+  const rowDat1a = [
+    {
+      name: '',
+      quantity: '',
+      weight: "56kg",
+      cost: '45689',
+      gst:'10',
+      cgst:'6',
+      description: 'Handle with care',
+    },
+  ];
+
   return (
     <div style={{minWidth: "100%", marginTop: "1rem"  }}>
-         <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
           <Link
           color="text.primary"
           component={RouterLink}
@@ -166,58 +204,63 @@ export const ViewQuotationDetail = (props) => {
             <ArrowCircleLeftOutlinedIcon/>
           </SvgIcon>
           <Typography variant="subtitle2">
-             Back To <span style={{color: `${primaryColor}` , fontWeight: 600}}>Quotation List</span> 
+             Back To <span style={{color: `${primaryColor}` , fontWeight: 600}}>Quotation Order</span> 
           </Typography>
         </Link>
         <IconWithPopup/>
       </div>
  <h2>Quotation Detail</h2>
       <Card style={{marginBottom: "12px" }}>
-        {/* <CardHeader title="Product Order Detail" /> */}
         <PropertyList>
         <PropertyListItem
           align={align}
           label="User Name"
         >
           <Typography variant="subtitle2">
-            {data.userName}
+          {tempuser.firstName+' '+tempuser.lastName}
           </Typography>
         </PropertyListItem>
         <Divider />
         <PropertyListItem
           align={align}
+          label="Quotation Order Number"
+          value={state?.id || state?.quotation?.id}
+        />
+        <Divider />
+        <PropertyListItem
+          align={align}
           label="Quotation"
-          value={data.quotation}
+          value=''
         />
         <Divider />
         <PropertyListItem
           align={align}
           label="Invoice"
-          value={data.type}
+          value=''
         />
         <Divider />
         <PropertyListItem
           align={align}
           label="DeliveryDate"
-          value={data.deliveryDate}
+          value={state?.deliveryDate || state?.quotation?.deliveryDate}
         />
         <Divider />
         <PropertyListItem
           align={align}
           label="Contact Name"
-          value={data.contactName}
+          value={state?.contactPersonName|| state?.quotation?.contactPersonName}
         />
         <Divider />
         <PropertyListItem
           align={align}
           label="Contact No"
-          value={data.contactno}
+          value={state?.contactPhoneNumber || state?.quotation?.contactPhoneNumber}
         />
         <Divider />
         <PropertyListItem
           align={align}
           label="Status"
-          value={data.status}
+          value={state?.status || state?.quotation?.status}
         >
         </PropertyListItem>
       </PropertyList>

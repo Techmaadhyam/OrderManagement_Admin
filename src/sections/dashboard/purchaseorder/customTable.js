@@ -22,8 +22,7 @@ import { primaryColor } from 'src/primaryColor';
 import EditIcon from '@mui/icons-material/Edit';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useDispatch } from "react-redux";
-import { addToCart } from './cartSlice';
+
 
 
 const userId = sessionStorage.getItem('user');

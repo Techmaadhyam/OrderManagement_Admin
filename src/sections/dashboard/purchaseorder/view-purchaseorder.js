@@ -29,6 +29,8 @@ import { primaryColor } from 'src/primaryColor';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 import IconWithPopup from '../user/user-icon';
 import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+import { useEffect } from 'react';
 
 
 
@@ -37,8 +39,8 @@ const statusOptions = ['Canceled', 'Complete', 'Rejected'];
 const columns = [
   {
     title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
+    dataIndex: 'productName',
+    key: 'productName',
   },
   {
       title: 'Quantity',
@@ -50,21 +52,31 @@ const columns = [
     dataIndex: 'weight',
     key: 'weight',
   },
+  {
+    title: 'Size',
+    dataIndex: 'size',
+    key: 'size',
+  },
   
   {
     title: 'Cost',
-    key: 'cost',
-    dataIndex: 'cost',
+    key: 'price',
+    dataIndex: 'price',
   },
-  {
-      title: 'GST',
-      key: 'gst',
-      dataIndex: 'gst',
-    },
     {
       title: 'CGST',
       key: 'cgst',
       dataIndex: 'cgst',
+    },
+    {
+      title: 'SGST',
+      key: 'sgst',
+      dataIndex: 'sgst',
+    },
+    {
+      title: 'IGST',
+      key: 'igst',
+      dataIndex: 'igst',
     },
     {
       title: 'Description',
@@ -80,22 +92,14 @@ export const ViewPurchaseOrder = (props) => {
   const location = useLocation();
   const state = location.state;
 
-  console.log(state)
+ 
 
-  const rowData = [
-    {
-      name: '',
-      quantity: '',
-      weight: "56kg",
-      cost: '45689',
-      gst:'10',
-      cgst:'6',
-      description: 'Handle with care',
-    },
-  ];
+ 
 
   const { customer, ...other } = props;
   const [status, setStatus] = useState(statusOptions[0]);
+  const [tempuser, setTempuser] =useState([])
+  const [rowData, setRowData] =useState()
 
   const handleChange = useCallback((event) => {
     setStatus(event.target.value);
@@ -149,6 +153,39 @@ export const ViewPurchaseOrder = (props) => {
     }
   });
 
+  useEffect(() => {
+    axios.get(`http://13.115.56.48:8080/techmadhyam/getTempUserById/${state?.tempUserId || state?.purchaseOrderRec?.tempUserId}`)
+      .then(response => {
+       setTempuser(response.data)
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+
+  useEffect(() => {
+    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllPurchaseOrderDetails/${state?.id || state?.purchaseOrderRec?.id}`)
+      .then(response => {
+       setRowData(response.data)
+
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+
+  const rowDat1a = [
+    {
+      name: '',
+      quantity: '',
+      weight: "56kg",
+      cost: '45689',
+      gst:'10',
+      cgst:'6',
+      description: 'Handle with care',
+    },
+  ];
+
   return (
     <div style={{minWidth: "100%", marginTop: "1rem"  }}>
       <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
@@ -177,12 +214,18 @@ export const ViewPurchaseOrder = (props) => {
         <PropertyList>
         <PropertyListItem
           align={align}
-          label="Name"
+          label="Username"
         >
           <Typography variant="subtitle2">
-            {state?.contactPerson || state?.purchaseOrderRec?.contactPerson}
+          {tempuser.firstName+' '+tempuser.lastName}
           </Typography>
         </PropertyListItem>
+        <Divider />
+        <PropertyListItem
+          align={align}
+          label="Purchase Order Number"
+          value={state?.id || state?.purchaseOrderRec?.id}
+        />
         <Divider />
         <PropertyListItem
           align={align}

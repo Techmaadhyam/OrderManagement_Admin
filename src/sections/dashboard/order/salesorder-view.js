@@ -28,24 +28,19 @@ import { Table } from 'antd';
 import { primaryColor } from 'src/primaryColor';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 import IconWithPopup from '../user/user-icon';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+import { useEffect } from 'react';
 
 
-const data={
-  userName: 'Harsh',
-  type: 'Stell',
-  quotation: ' ',
-  deliveryDate: 23/4/2021,
-  contactName: 'Nilla',
-  contactno: '567892483984',
-  status: 'Canceled'
-}
+
 
 const statusOptions = ['Canceled', 'Complete', 'Rejected'];
 const columns = [
   {
     title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
+    dataIndex: 'productName',
+    key: 'productName',
   },
   {
       title: 'Quantity',
@@ -57,21 +52,31 @@ const columns = [
     dataIndex: 'weight',
     key: 'weight',
   },
+  {
+    title: 'Size',
+    dataIndex: 'size',
+    key: 'size',
+  },
   
   {
     title: 'Cost',
-    key: 'cost',
-    dataIndex: 'cost',
+    key: 'price',
+    dataIndex: 'price',
   },
-  {
-      title: 'GST',
-      key: 'gst',
-      dataIndex: 'gst',
-    },
     {
       title: 'CGST',
       key: 'cgst',
       dataIndex: 'cgst',
+    },
+    {
+      title: 'SGST',
+      key: 'sgst',
+      dataIndex: 'sgst',
+    },
+    {
+      title: 'IGST',
+      key: 'igst',
+      dataIndex: 'igst',
     },
     {
       title: 'Description',
@@ -80,22 +85,17 @@ const columns = [
     },
 ];
 
-const rowData = [
-  {
-    name: 'Washing Machine',
-    quantity: '2',
-    weight: "56kg",
-    cost: '45689',
-    gst:'10',
-    cgst:'6',
-    description: 'Handle with care',
-  },
-];
+
 
 
 export const ViewSalesOrder = (props) => {
+  const location = useLocation();
+  const state = location.state;
+
   const { customer, ...other } = props;
   const [status, setStatus] = useState(statusOptions[0]);
+  const [tempuser, setTempuser] =useState([])
+  const [rowData, setRowData] =useState()
 
   const handleChange = useCallback((event) => {
     setStatus(event.target.value);
@@ -149,71 +149,97 @@ export const ViewSalesOrder = (props) => {
     }
   });
 
-  return (
-    <div style={{minWidth: "100%", marginTop: "1rem" }}>
-      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}> 
-      <Link
-      color="text.primary"
-      component={RouterLink}
-      href={paths.dashboard.orders.details}
-      sx={{
-        alignItems: 'center',
-        display: 'inline-flex',
-      }}
-      underline="none"
-    >
-      <SvgIcon sx={{ mr: 1, width: 38, height: 38,  transition: 'color 0.5s','&:hover': { color: `${primaryColor}` }}}>
-        <ArrowCircleLeftOutlinedIcon/>
-      </SvgIcon>
-      <Typography variant="subtitle2">
-        Back To <span style={{color: `${primaryColor}` , fontWeight: 600}}>Sales Order List</span> 
-      </Typography>
-    </Link>
-    <IconWithPopup/>
-    </div>
- <h2>Sales Order</h2>
+  useEffect(() => {
+    axios.get(`http://13.115.56.48:8080/techmadhyam/getTempUserById/${state?.tempUserId || state?.soRecord?.tempUserId}`)
+      .then(response => {
+       setTempuser(response.data)
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
 
-  
+  useEffect(() => {
+    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllSalesOrderDetails/${state?.id || state?.soRecord?.id}`)
+      .then(response => {
+       setRowData(response.data)
+
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+
+
+
+  return (
+    <div style={{minWidth: "100%", marginTop: "1rem"  }}>
+      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+          <Link
+          color="text.primary"
+          component={RouterLink}
+          href={paths.dashboard.orders.details}
+          sx={{
+            alignItems: 'center',
+            display: 'inline-flex',
+          }}
+          underline="none"
+        >
+          <SvgIcon sx={{ mr: 1, width: 38, height: 38,  transition: 'color 0.5s','&:hover': { color: `${primaryColor}` }}}>
+            <ArrowCircleLeftOutlinedIcon/>
+          </SvgIcon>
+          <Typography variant="subtitle2">
+             Back To <span style={{color: `${primaryColor}` , fontWeight: 600}}>Sales Order List</span> 
+          </Typography>
+        </Link>
+        <IconWithPopup/>
+      </div>
+ <h2>Sales Order</h2>
       <Card style={{marginBottom: "12px" }}>
-        <CardHeader title="Sales Order Detail" />
         <PropertyList>
         <PropertyListItem
           align={align}
-          label="User Name"
+          label="Username"
         >
           <Typography variant="subtitle2">
-            {data.userName}
+          {tempuser.firstName+' '+tempuser.lastName}
           </Typography>
         </PropertyListItem>
         <Divider />
         <PropertyListItem
           align={align}
+          label="Sales Order Number"
+          value={state?.id || state?.soRecord?.id}
+        />
+        <Divider />
+        <PropertyListItem
+          align={align}
           label="Quotation"
-          value={data.quotation}
+          value={state?.quotation || state?.soRecord?.quotation}
         />
         <Divider />
         <PropertyListItem
           align={align}
           label="DeliveryDate"
-          value={data.deliveryDate}
+          value={state?.deliveryDate || state?.soRecord?.deliveryDate}
         />
         <Divider />
         <PropertyListItem
           align={align}
           label="Contact Name"
-          value={data.contactName}
+          value={state?.contactPerson || state?.soRecord?.contactPerson}
         />
         <Divider />
         <PropertyListItem
           align={align}
           label="Contact No"
-          value={data.contactno}
+          value={state?.contactPhone || state?.soRecord?.contactPhone}
         />
         <Divider />
         <PropertyListItem
           align={align}
           label="Status"
-          value={data.status}
+          value={state?.status || state?.soRecord?.status}
         >
         </PropertyListItem>
       </PropertyList>

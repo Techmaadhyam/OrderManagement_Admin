@@ -82,13 +82,13 @@ const tableHeader=[
       width: 150,
   },
   {
+    id:'size',
+    name:'Size',
+    width: 150,
+},
+  {
       id:'cost',
       name:'Cost',
-      width: 150,
-  },
-  {
-      id:'gst',
-      name:'GST',
       width: 150,
   },
   {
@@ -96,6 +96,16 @@ const tableHeader=[
       name:'CGST',
       width: 150,
   },
+  {
+    id:'sgst',
+    name:'SCGST',
+    width: 150,
+},
+  {
+    id:'igst',
+    name:'IGST',
+    width: 150,
+},
   {
       id:'description',
       name:'Description',
@@ -134,12 +144,14 @@ const [comment, setComment] = useState('');
 const [currentDate, setCurrentDate] = useState('');
 
 //add product state
-const [name, setName] = useState('');
+const [productName, setProductName] = useState('');
   const [weight, setWeight] = useState('');
-  const [gst, setGst] = useState();
+  const [sgst, setSgst] = useState();
+  const [igst, setIgst] = useState();
   const [quantity, setQuantity] = useState();
   const [price, setPrice] = useState();
   const [cgst, setCgst] = useState();
+  const [size, setSize] = useState();
   const [description, setDescription] = useState('');
   const [rows, setRows] = useState([]);
   const [showForm, setShowForm] = useState(false);
@@ -231,19 +243,18 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
     e.preventDefault();
 
     const newRow = { 
-      productId,
-       name, 
+       productId,
+       productName, 
        weight,
        quotationId :null,
-       gst: parseFloat(gst), 
        quantity: parseFloat(quantity), 
        price: parseFloat(price), 
        cgst: parseFloat(cgst), 
        description, 
        createdBy:userId, 
-       size: "12*12",
-       sgst :6,
-       igst:6,
+       size: size,
+       sgst :parseFloat(sgst),
+       igst:parseFloat(igst),
        comments: comment,
        createdDate: currentDate, 
        lastModifiedDate: currentDate };
@@ -261,12 +272,14 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
     setEditIndex(null);
   };
   const handleEditRow = (idx, row) => {
-  setName(row.name);
+  setProductName(row.productName);
   setWeight(row.weight);
-  setGst(row.gst);
   setQuantity(row.quantity);
   setPrice(row.price);
   setCgst(row.cgst);
+  setIgst(row.igst)
+  setSgst(row.sgst)
+  setSize(row.size)
   setDescription(row.description);
   setEditIndex(idx);
   setShowForm(true);
@@ -274,12 +287,14 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
   
 
   const clearFormFields = () => {
-    setName('');
+    setProductName('');
     setWeight('');
-    setGst('');
     setQuantity('');
     setPrice('');
     setCgst('');
+    setSize('')
+    setIgst('')
+    setSgst('')
     setDescription('');
   };
 
@@ -295,33 +310,10 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
   }, []);
 
 
-  const updatedRows = rows.map(({ gst, name, ...rest }) => rest);
+  const updatedRows = rows.map(({ productName, ...rest }) => rest);
   //post request
   const handleClick = async (event) => {
 
-    console.log({
-      purchaseOrder:{
-          quotationId:null,
-          salesOrderId:null,
-          userId: userId,
-          tempUserId :tempId,
-          contactPerson: contactName,
-          contactPhone: phone,    
-          status: status,
-          paymentMode: null,
-          deliveryDate: formattedDeliveryDate,
-          deliveryAddress: address,
-          city: null,
-          state:null,
-          country: null,
-          createdBy: userId,
-          createdDate: currentDate,
-          lastModifiedDate: currentDate,
-          comments : comment,
-          termsAndCondition: terms,
-      },
-          purchaseOrderDetails: updatedRows
-  })
     event.preventDefault();
     
       if (contactName && address) {
@@ -361,7 +353,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
             // Redirect to home page upon successful submission
         
            response.json().then(data => {
-            console.log(data);
+    
           
             navigate('/dashboard/purchaseorder/viewDetail', { state: data });
     });
@@ -399,16 +391,18 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
                     select
                     value={userName}
                     onChange={(e) => {
-                      const selectedOption = userData?.find(option => option.userName === e.target.value);
-                      setTempId(selectedOption.id);
+                      const selectedOption = userData?.find((option) => option.userName === e.target.value);
+                      setTempId(selectedOption?.id || '');
                       setUserName(e.target.value);
                     }}
                     style={{ marginBottom: 10 }}
                   >
                     {userData?.map((option) => (
-                      <MenuItem key={option.id} value={option.userName}>
-                        {option.userName}
-                      </MenuItem>
+                      option.userName && (
+                        <MenuItem key={option.id} value={option.userName}>
+                          {option.userName}
+                        </MenuItem>
+                      )
                     ))}
                   </TextField>
             </Grid>
@@ -535,11 +529,11 @@ height='50px'/>
                           label='Name'
                           name='name'
                           select
-                          value={name}
+                          value={productName}
                           onChange={(e) => {
                             const selectedOption = userData2.find(option => option.name === e.target.value);
                             setProductId(selectedOption.id);
-                            setName(e.target.value);
+                            setProductName(e.target.value);
                           }}
                           style={{ marginBottom: 10 }}
                         >
@@ -569,11 +563,26 @@ height='50px'/>
                             >
                               <TextField
                               fullWidth
-                              label="GST"
-                              name="gst"
+                              label="SGST"
+                              name="sgst"
                               type='number'
-                              value={gst}
-                              onChange={(e) => setGst(e.target.value)}
+                              value={sgst}
+                              onChange={(e) => setSgst(e.target.value)}
+                              style={{ marginBottom: 10 }}
+                          
+                              />
+                            </Grid>
+                            <Grid
+                            xs={12}
+                            md={6}
+                            >
+                              <TextField
+                              fullWidth
+                              label="IGST"
+                              name="igst"
+                              type='number'
+                              value={igst}
+                              onChange={(e) => setIgst(e.target.value)}
                               style={{ marginBottom: 10 }}
                           
                               />
@@ -605,6 +614,20 @@ height='50px'/>
                               type='number'
                               value={price}
                               onChange={(e) => setPrice(e.target.value)}
+                              style={{ marginBottom: 10 }}
+                          
+                              />
+                            </Grid>
+                            <Grid
+                            xs={12}
+                            md={6}
+                            >
+                              <TextField
+                              fullWidth
+                              label="Size"
+                              name="size"
+                              value={size}
+                              onChange={(e) => setSize(e.target.value)}
                               style={{ marginBottom: 10 }}
                           
                               />
@@ -666,7 +689,7 @@ height='50px'/>
                           {rows.map((row, idx) => (
                             <TableRow hover key={idx}>
                               <TableCell>
-                                <div>{row.name}</div>
+                                <div>{row.productName}</div>
                               </TableCell>
                               <TableCell>
                                  <div>{row.quantity}</div>
@@ -675,13 +698,19 @@ height='50px'/>
                                 <div>{row.weight}</div>
                               </TableCell>
                               <TableCell>
+                                <div>{row.size}</div>
+                              </TableCell>
+                              <TableCell>
                                 <div>{row.price}</div>
                               </TableCell>
                               <TableCell>
-                                <div>{row.gst}</div>
+                                <div>{row.cgst}</div>
                               </TableCell>
                               <TableCell>
-                                <div>{row.cgst}</div>
+                                <div>{row.sgst}</div>
+                              </TableCell>
+                              <TableCell>
+                                <div>{row.igst}</div>
                               </TableCell>
                               <TableCell>
                                 <div>{row.description}</div>
