@@ -175,10 +175,12 @@ export const CreateProduct = (props) => {
           description: desc2,
           createdBy: userId,
           createdDate: currentDate,
-          categoryId:-1
+          lastModifiedDate: currentDate
+ 
         },
         category: {
           name: newCategory,
+          id:-1,
           description: desc1,
           createdBy: userId,
           createdDate: currentDate
@@ -192,8 +194,13 @@ export const CreateProduct = (props) => {
           description: desc2,
           createdBy: userId,
           createdDate: currentDate,
-          categoryId: category
+          lastModifiedDate: currentDate
+          
         },
+        category: {
+          id: category
+      
+        }
       }
     }
     
@@ -203,7 +210,7 @@ export const CreateProduct = (props) => {
         'Content-Type':'application/json'
       },
     };
-  
+   console.log(JSON.stringify(requestBody))
     axios.post('http://13.115.56.48:8080/techmadhyam/addProduct', JSON.stringify(requestBody), config)
       .then(response => {
         // Handle successful response
@@ -211,7 +218,9 @@ export const CreateProduct = (props) => {
         if (response.status === 200) {
           //navigate to view product details (using react router)
           navigate('/dashboard/products/viewDetail', { state: response.data });
+        
         }
+      
 
       })
       .catch(error => {

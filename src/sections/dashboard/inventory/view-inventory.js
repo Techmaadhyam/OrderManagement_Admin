@@ -15,167 +15,169 @@ import {  Delete } from '@mui/icons-material';
 import { RouterLink } from 'src/components/router-link';
 import { paths } from 'src/paths';
 import IconWithPopup from '../user/user-icon';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+  //get userid 
+  const userId = sessionStorage.getItem('user');
+
+const ViewInventory = () => {
+  const [rows, setRows] = useState([{}]);
+  const [userData, setUserData]= useState([])
 
 
-const columns = [
-  {
-    title: 'Product',
-    dataIndex: 'product',
-    key: 'product',
-    render: (name) => <Link
-    color="primary"
-    component={RouterLink}
-    href={paths.dashboard.inventory.viewDetail}
-    sx={{
-      alignItems: 'center',
-      textAlign: 'center'
-      // display: 'inline-flex'
-    }}
-    underline="hover"
-  >
-    <Typography variant="subtitle2">
-   {name}
-    </Typography>
-  </Link>
-  },
-  {
-      title: 'Quantity',
-      dataIndex: 'quantity',
-      key: 'quantity',
-    },
-  {
-    title: 'Cost',
-    dataIndex: 'cost',
-    key: 'cost',
-  },
+  const navigate = useNavigate();
   
-  {
-    title: 'Category',
-    key: 'category',
-    dataIndex: 'category',
-  },
-  {
-      title: 'HSN Code',
-      key: 'HSNcode',
-      dataIndex: 'HSNcode',
-    },
+ 
+  useEffect(() => {
+    axios.get(`http://13.115.56.48:8080/techmadhyam/getInventoryByUserId/${userId}`)
+      .then(response => {
+        setUserData(response.data);
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
 
+  const dataWithKeys = userData.map((item) => ({ ...item, key: item.inventoryId }));
+
+    //toast notification from toastify library
+const notify = (type, message) => {
+  toast[type](message, {
+    position: "top-right",
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
+};
+
+const handleRemoveRow = (id) => async () => {
+  try {
+    await axios.delete(`http://13.115.56.48:8080/techmadhyam/deleteInventoryById/${id}`);
+    const updatedRows = userData.filter(item => item.inventoryId !== id);
+    setUserData(updatedRows);
+    notify(
+      "success",
+      `Sucessfully deleted inventory row.`
+    );
+  } catch (error) {
+    console.error('Error deleting row:', error.message);
+  }
+};
+ 
+  const columns = [
+    {
+      title: 'Product',
+      dataIndex: 'productName',
+      key: 'productName',
+      render: (name, record) => {
+        const handleNavigation = () => {
+          navigate(`/dashboard/inventory/viewDetail`, { state: record });
+        };
+        
+        return (
+          <Link
+            color="primary"
+            onClick={handleNavigation}
+            sx={{
+              alignItems: 'center',
+              textAlign: 'center',
+            }}
+            underline="hover"
+          >
+            <Typography variant="subtitle2">{name}</Typography>
+          </Link>
+        );
+      },
+    },
+    {
+      title: 'Quantity',
+      key: 'quantity',
+      dataIndex: 'quantity',
+    },
+    {
+      title: 'Cost',
+      key: 'price',
+      dataIndex: 'price',
+    },
+    {
+      title: 'Category',
+      key: 'categoryName',
+      dataIndex: 'categoryName',
+    },
+    {
+      title: 'HSN Code',
+      key: 'hsncode',
+      dataIndex: 'hsncode',
+    },
     {
       dataIndex: 'actionEdit',
       key: 'actionEdit',
-    render: () => <Link
- 
-  >
-    <IconButton>
-  <Icon>
-         <EditIcon />
-     </Icon>
-     </IconButton>
-  </Link>
+      render: () => (
+        <Link>
+          <IconButton>
+            <Icon>
+              <EditIcon />
+            </Icon>
+          </IconButton>
+        </Link>
+      ),
     },
     {
       dataIndex: 'actionDelete',
       key: 'actionDelete',
-      render: (_, __, index) =>  <IconButton
-       onClick={() => this.handleRemoveRow(index)}
-     >
-       <Icon>
-         <Delete />
-       </Icon>
-     </IconButton>
+      render: (_, row) => (
+        <IconButton onClick={handleRemoveRow(row.inventoryId)}>
+          <Icon>
+            <Delete />
+          </Icon>
+        </IconButton>
+      ),
     },
-];
+  ];
 
-const data = [
-  {
-    key: '1',
-    product: 'product 1',
-    quantity: "50",
-    cost: '$3082',
-    category: 'healthcare',
-    HSNcode: '26-342',
-  },
-];
-
-class ViewInventory extends React.Component {
-  constructor(props) {
-      super(props);
-      this.state = {
-  rows:[{}]
-};
-}
-handleChange = idx => e => {
-  const {name, value} =e.target;
-  const rows = {...this.state.row}
-  rows[idx] ={
-  ...rows[idx],
-  [name]:value
-};
-this.setState({
-  rows
-})
-}
-
-handleEmailChange = idx => e => {
-  const {name, value} =e.target;
-  const rows = {...this.state.row}
-  rows[idx] ={
-  ...rows[idx],
-  email:value
-};
-this.setState({
-  rows
-})
-}
-handleAddRow = () => {
-  const item ={
-      email:'',
-      mobile:''
-  }
-this.setState({
-  rows: [...this.state.rows, item]
-})
-}
-handleRemoveRow = idx =>() =>{
-  const rows = [...this.state.rows];
-  rows.splice(idx,1);
-  this.setState({rows});
-};
-render (){
-  const {
-      count = 0,
-      items = [],
-      onDeselectAll,
-      onDeselectOne,
-      onPageChange = () => { },
-      onRowsPerPageChange,
-      onSelectAll,
-      onSelectOne,
-      page = 0,
-      rowsPerPage = 0,
-      selected = [],
-      classes
-    } = this.props;
-    const {rows} =this.state;
   return (
-    <div style={{minWidth: "100%" }}>
-    <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-      <h2>View Inventory</h2>
-      <IconWithPopup/>
-    </div>
- <Box sx={{  position: 'relative' , overflowX: "auto"}}>    
-      <Scrollbar>
-        <Table sx={{ minWidth: 800,overflowX: "auto" }} columns={columns} dataSource={data}></Table>
-      </Scrollbar>
-    </Box>
-
-    </div>
-  );
-    }
-};
-
-ViewInventory.propTypes = {
-  customer: PropTypes.object.isRequired
-};
-
-export default ViewInventory;
+    <div style={{ minWidth: '100%' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <h2>View Inventory</h2>
+        <IconWithPopup/>
+      </div>
+      <Box sx={{ position: 'relative', overflowX: 'auto' }}>
+        <Scrollbar>
+          <Table
+            sx={{ minWidth: 800, overflowX: 'auto' }}
+            columns={columns}
+            dataSource={dataWithKeys}
+            ></Table>
+            </Scrollbar>
+            <ToastContainer
+                     position="top-right"
+                     autoClose={2000}
+                     hideProgressBar={false}
+                     newestOnTop={false}
+                     closeOnClick
+                     rtl={false}
+                     pauseOnFocusLoss
+                     draggable
+                     pauseOnHover
+                     theme="light"/>
+          </Box>
+        </div>
+      );
+    };
+    
+    export default ViewInventory;

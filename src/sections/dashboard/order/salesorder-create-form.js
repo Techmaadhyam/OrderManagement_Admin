@@ -242,6 +242,8 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if(quantity && price && cgst && productName && sgst && igst && description && weight && size){
+
     const newRow = { 
        productId,
        productName, 
@@ -271,6 +273,8 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
     clearFormFields();
     setShowForm(false);
     setEditIndex(null);
+
+    }
   };
   const handleEditRow = (idx, row) => {
   setProductName(row.productName);
@@ -317,7 +321,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
 
     event.preventDefault();
     
-      if (contactName && address) {
+      if (contactName && address && userId && phone && status && address && comment && terms && updatedRows) {
         try {
           const response = await fetch('http://13.115.56.48:8080/techmadhyam/createSalesOrder', {
             method: 'POST',

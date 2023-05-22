@@ -17,37 +17,54 @@ import { wait } from 'src/utils/wait';
 import './inventory.css'
 import { Box } from '@mui/system';
 import IconWithPopup from '../user/user-icon';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
+const userId = sessionStorage.getItem('user');
 
-const userOptions = [
-  {
-    label: 'Healthcare',
-    value: 'healthcare'
-  },
-  {
-    label: 'Makeup',
-    value: 'makeup'
-  },
-  {
-    label: 'Dress',
-    value: 'dress'
-  },
-  {
-    label: 'Skincare',
-    value: 'skincare'
-  },
-  {
-    label: 'Jewelry',
-    value: 'jewelry'
-  },
-  {
-    label: 'Blouse',
-    value: 'blouse'
-  }
-];
+const userOptions=[{
+  label: 'Healthcare',
+  value: 'healthcare'
+},
+{
+  label: 'Makeup',
+  value: 'makeup'
+},]
 
 export const CreateInventory = (props) => {
   const { customer, ...other } = props;
+//warehouse
+  const [warehouse, setWarehouse]= useState()
+  const [warehouseId, setWarehouseId]=useState()
+  //purchase order
+  const [purchaseOrder, setPurchaseOrder]=useState()
+  const [purchaseId, setPurchaseId]=useState()
+  //category
+  const [category, setCategory]=useState()
+  const [categoryName, setCategoryName]=useState()
+  const [categoryId, setCategoryId]=useState()
+
+  //product name
+  const [selectedName, setSelectedName]= useState()
+  const [selectedId, setSelectedId] = useState();
+  const [product, setProduct]=useState()
+  //remaining form states
+
+  const [hsnCode, setHsnCode] = useState('');
+  const [size, setSize] = useState("");
+  const [rack,  setRack]= useState('')
+  const [weight, setWeight] = useState('');
+  const [createdDate, setCreatedDate] = useState('');
+  const [quantity, setQuantity] = useState('');
+  const [cost,setCost] = useState('')
+  const [sgst, setSgst] = useState('');
+  const [igst, setIgst] = useState('');
+  const [cgst, setCgst] = useState('');
+  const [description, setDescription] = useState('');
+
+  const navigate = useNavigate();
+  
   const formik = useFormik({
     initialValues: {
       address1: customer.address1 || '',
@@ -96,6 +113,152 @@ export const CreateInventory = (props) => {
     }
   });
 
+  //get warehouse data
+  useEffect(() => {
+    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllWareHouse/${userId}`)
+      .then(response => {
+
+        setWarehouse(response.data)
+
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+  //get purchase order
+   
+  useEffect(() => {
+    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllPurchaseOrderByUser/${userId}`)
+      .then(response => {
+
+        setPurchaseOrder(response.data)
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+//get category
+  useEffect(() => {
+    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllCategorys/${userId}`)
+      .then(response => {
+        setCategory(response.data);
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+
+  //get Product
+  useEffect(() => {
+    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllItem/${userId}`)
+      .then(response => {
+        setProduct(response.data);
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+
+  //  get date
+ useEffect(() => {
+  const today = new Date();
+  const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
+  const formattedDate = today.toLocaleDateString('IN', options);
+  setCreatedDate(formattedDate);
+}, []);
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+  
+    switch (name) {
+    
+        case 'hsncode':
+          setHsnCode(value);
+            break;
+        case 'rack':
+        setRack(value);
+          break;
+        case 'size':
+          setSize(value);
+          break;
+        case 'weight':
+          setWeight(value);
+          break;
+        case 'quantity':
+          setQuantity(value);
+          break;
+        case 'cost':
+          setCost(value);
+          break;
+        case 'cgst':
+          setCgst(value);
+          break;
+      case 'sgst':
+        setSgst(value);
+          break;
+      case 'igst':
+        setIgst(value);
+          break;
+      case 'description':
+        setDescription(value);
+          break;
+      default:
+        break;
+    }
+  };
+
+  const handleSave=async ()=>{
+
+    let inventory ={
+      productId: selectedId,
+      purchaseOrderId:purchaseId,
+      warehouseId:warehouseId,
+      quantity: parseFloat(quantity),
+      weight:weight,
+      size:size,
+      hsncode:hsnCode,
+      rack:rack,
+      cgst: parseFloat(cgst),
+      igst: parseFloat(igst),
+      sgst: parseFloat(sgst),
+      price: parseFloat(cost),
+      description: description,
+      createdBy:parseFloat(userId),
+      createdDate: createdDate,
+      lastModifiedDate: createdDate
+    }
+
+  
+    if (selectedId && purchaseId && warehouseId && quantity && weight && size && hsnCode && rack && cost && description && userId) {
+      try {
+        const response = await fetch('http://13.115.56.48:8080/techmadhyam/addInventory', {
+          method: 'POST',
+          headers: {
+  
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(inventory)
+        });
+        
+        if (response.ok) {
+          // Redirect to home page upon successful submission
+      
+         response.json().then(data => {
+  
+          console.log(data)
+          navigate('/dashboard/inventory/viewDetail', { state: data });
+        });
+        } 
+      } catch (error) {
+        console.error('API call failed:', error);
+      }
+    } 
+  }
+
+
+
   return (
     <div style={{minWidth: "100%", marginBottom: '1rem' }}>
    <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
@@ -117,22 +280,24 @@ export const CreateInventory = (props) => {
               md={6}
             >
               <TextField
-                    error={!!(formik.touched.category && formik.errors.category)}
                     fullWidth
                     label="Warehouse"
                     name="warehouse"
                     select
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    value={formik.values.category}
+                    value={warehouseId? warehouseId: ''}
+                    onChange={(e) => {
+                      const selectedOption = warehouse?.find((option) => option.id === e.target.value);
+                      setWarehouseId(selectedOption?.id || '');
+                  
+                    }}
+                    style={{ marginBottom: 10 }}
                   >
-                    {userOptions.map((option) => (
-                      <MenuItem
-                        key={option.value}
-                        value={option.value}
-                      >
-                        {option.label}
-                      </MenuItem>
+                    {warehouse?.map((option) => (
+                      option.id && (
+                        <MenuItem key={option.id} value={option.id}>
+                          {option.id}
+                        </MenuItem>
+                      )
                     ))}
                   </TextField>
             </Grid>
@@ -141,22 +306,24 @@ export const CreateInventory = (props) => {
               md={6}
             >
               <TextField
-                    error={!!(formik.touched.category && formik.errors.category)}
                     fullWidth
                     label="Purchase Order"
                     name="purchaseorder"
                     select
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    value={formik.values.category}
+                    value={purchaseId? purchaseId: ''}
+                    onChange={(e) => {
+                      const selectedOption = purchaseOrder?.find((option) => option.id === e.target.value);
+                      setPurchaseId(selectedOption?.id || '');
+                  
+                    }}
+                    style={{ marginBottom: 10 }}
                   >
-                    {userOptions.map((option) => (
-                      <MenuItem
-                        key={option.value}
-                        value={option.value}
-                      >
-                        {option.label}
-                      </MenuItem>
+                    {purchaseOrder?.map((option) => (
+                      option.id && (
+                        <MenuItem key={option.id} value={option.id}>
+                          {option.id}
+                        </MenuItem>
+                      )
                     ))}
                   </TextField>
             </Grid>
@@ -165,22 +332,24 @@ export const CreateInventory = (props) => {
               md={6}
             >
             <TextField
-                    error={!!(formik.touched.category && formik.errors.category)}
                     fullWidth
                     label="Category"
                     name="category"
                     select
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    value={formik.values.category}
+                    value={categoryName? categoryName: ''}
+                    onChange={(e) => {
+                      const selectedOption = category?.find((option) => option.name === e.target.value);
+                      setCategoryId(selectedOption?.id || '');
+                      setCategoryName(e.target.value);
+                    }}
+                    style={{ marginBottom: 10 }}
                   >
-                    {userOptions.map((option) => (
-                      <MenuItem
-                        key={option.value}
-                        value={option.value}
-                      >
-                        {option.label}
-                      </MenuItem>
+                    {category?.map((option) => (
+                      option.name && (
+                        <MenuItem key={option.id} value={option.name}>
+                          {option.name}
+                        </MenuItem>
+                      )
                     ))}
                   </TextField>
             </Grid>
@@ -189,23 +358,14 @@ export const CreateInventory = (props) => {
               md={6}
             >
                  <TextField
-                    error={!!(formik.touched.category && formik.errors.category)}
                     fullWidth
                     label="Rack"
                     name="rack"
-                    select
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    value={formik.values.category}
+                    value={rack}
+                    onChange={handleInputChange}
+
                   >
-                    {userOptions.map((option) => (
-                      <MenuItem
-                        key={option.value}
-                        value={option.value}
-                      >
-                        {option.label}
-                      </MenuItem>
-                    ))}
+                  
                   </TextField>
             </Grid>
             <Grid
@@ -213,22 +373,25 @@ export const CreateInventory = (props) => {
               md={6}
             >
                  <TextField
-                    error={!!(formik.touched.category && formik.errors.category)}
+
                     fullWidth
                     label="Product"
                     name="product"
                     select
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    value={formik.values.category}
+                    value={selectedName? selectedName:''}
+                    onChange={(e) => {
+                      const selectedOption = product?.find((option) => option.name === e.target.value);
+                      setSelectedId(selectedOption?.id || '');
+                      setSelectedName(e.target.value);
+                    }}
+                    style={{ marginBottom: 10 }}
                   >
-                    {userOptions.map((option) => (
-                      <MenuItem
-                        key={option.value}
-                        value={option.value}
-                      >
-                        {option.label}
-                      </MenuItem>
+                    {product?.map((option) => (
+                      option.categoryName === categoryName && (
+                        <MenuItem key={option.id} value={option.name}>
+                          {option.name}
+                        </MenuItem>
+                      )
                     ))}
                   </TextField>
             </Grid>
@@ -237,13 +400,12 @@ export const CreateInventory = (props) => {
               md={6}
             >
               <TextField
-                    error={!!(formik.touched.category && formik.errors.category)}
+           
                     fullWidth
                     label="HSN Code"
                     name="hsncode"
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    value={formik.values.category}
+                    value={hsnCode}
+                    onChange={handleInputChange}
                 >
                 </TextField>
             </Grid>
@@ -252,12 +414,11 @@ export const CreateInventory = (props) => {
               md={6}
             >
               <TextField
-                error={!!(formik.touched.address1 && formik.errors.address1)}
                 fullWidth
-                helperText={formik.touched.address1 && formik.errors.address1}
                 label="Size"
                 name="size"
-                onBlur={formik.handleBlur}
+                value={size}
+                onChange={handleInputChange}
               />
             </Grid>
             <Grid
@@ -265,12 +426,11 @@ export const CreateInventory = (props) => {
               md={6}
             >
               <TextField
-                error={!!(formik.touched.address1 && formik.errors.address1)}
                 fullWidth
-                helperText={formik.touched.address1 && formik.errors.address1}
                 label="Weight"
                 name="weight"
-                onBlur={formik.handleBlur}
+                value={weight}
+                onChange={handleInputChange}
               />
             </Grid>
             <Grid
@@ -278,14 +438,12 @@ export const CreateInventory = (props) => {
               md={6}
             >
               <TextField
-                error={!!(formik.touched.address1 && formik.errors.address1)}
                 fullWidth
-                helperText={formik.touched.address1 && formik.errors.address1}
                 label="Quantity"
                 name="quantity"
                 type='number'
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
+                value={quantity}
+                onChange={handleInputChange}
               />
             </Grid>
             <Grid
@@ -293,14 +451,12 @@ export const CreateInventory = (props) => {
               md={6}
             >
               <TextField
-                error={!!(formik.touched.address1 && formik.errors.address1)}
                 fullWidth
-                helperText={formik.touched.address1 && formik.errors.address1}
                 label="Cost"
                 name="cost"
                 type='number'
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
+                value={cost}
+                onChange={handleInputChange}
               />
             </Grid>
             <Grid
@@ -308,27 +464,35 @@ export const CreateInventory = (props) => {
               md={6}
             >
               <TextField
-                error={!!(formik.touched.address1 && formik.errors.address1)}
                 fullWidth
-                helperText={formik.touched.address1 && formik.errors.address1}
-                label="GST"
-                name="gst"
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-              />
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-                error={!!(formik.touched.address1 && formik.errors.address1)}
-                fullWidth
-                helperText={formik.touched.address1 && formik.errors.address1}
                 label="CGST"
                 name="cgst"
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
+                value={cgst}
+                onChange={handleInputChange}
+              />
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
+            >
+              <TextField
+                fullWidth
+                label="SGST"
+                name="sgst"
+                value={sgst}
+                onChange={handleInputChange}
+              />
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
+            >
+              <TextField
+                fullWidth
+                label="IGST"
+                name="igst"
+                value={igst}
+                onChange={handleInputChange}
               />
             </Grid>
           </Grid>
@@ -340,9 +504,12 @@ export const CreateInventory = (props) => {
                 <TextField
                 fullWidth
                 label= "Description"
+                name='description'
                 multiline
                 rows={4}
                 maxRows={6}
+                value={description}
+                onChange={handleInputChange}
                 />
             </Grid>
         </CardContent>
@@ -361,7 +528,7 @@ export const CreateInventory = (props) => {
                     color="primary"
                     variant="contained"
                     align="right"
-                
+                    onClick={handleSave}
                     >
                     Save
                     </Button>

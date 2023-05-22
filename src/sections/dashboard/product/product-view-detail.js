@@ -34,7 +34,7 @@ const statusOptions = ['Canceled', 'Complete', 'Rejected'];
 export const ViewProductDetail = (props) => {
   const location = useLocation();
   const state = location.state;
-  //console.log(state);
+  console.log(state);
   const { customer, ...other } = props;
   const [status, setStatus] = useState(statusOptions[0]);
 
@@ -90,6 +90,8 @@ export const ViewProductDetail = (props) => {
     }
   });
 
+
+
   return (
     <div style={{minWidth: "100%", marginTop: "1rem"  }}>
       <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
@@ -128,7 +130,7 @@ export const ViewProductDetail = (props) => {
         <PropertyListItem
           align={align}
           label="Category"
-          value={state?.category || state?.categoryName}
+          value={state?.category?.name}
         />
         <Divider />
         <PropertyListItem

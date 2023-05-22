@@ -27,7 +27,7 @@ import { Table } from 'antd';
 import { primaryColor } from 'src/primaryColor';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 import IconWithPopup from '../user/user-icon';
-
+import { useLocation } from 'react-router-dom';
 
 
 const statusOptions = ['Canceled', 'Complete', 'Rejected'];
@@ -51,6 +51,11 @@ const data =
 
 
 export const ViewInventoryDetail = (props) => {
+
+  const location = useLocation();
+  const state = location.state;
+  console.log(state)
+
   const { customer, ...other } = props;
   const [status, setStatus] = useState(statusOptions[0]);
 
@@ -137,74 +142,74 @@ export const ViewInventoryDetail = (props) => {
           label="Warehouse"
         >
           <Typography variant="subtitle2">
-            {data.warehouse}
+            {state?.warehouseName}
           </Typography>
         </PropertyListItem>
         <Divider />
         <PropertyListItem
           align={align}
           label="Purchase Order"
-          value={data.purchaseorder}
+          value={state?.purchaseOrderId}
         />
         <Divider />
         <PropertyListItem
           align={align}
           label="Category"
-          value={data.category}
+          value={state?.categoryId}
         />
          <Divider />
         <PropertyListItem
           align={align}
           label="Rack"
-          value={data.rack}
+          value={state?.rack}
         />
         <Divider />
         <PropertyListItem
           align={align}
           label="Product"
-          value={data.product}
+          value={state?.productName}
         />
          <Divider />
         <PropertyListItem
           align={align}
           label="HSN Code"
-          value={data.HSNcode}
+          value={state?.hsncode}
         />
          <Divider />
         <PropertyListItem
           align={align}
           label="Size"
-          value={data.size}
+          value={state?.size}
         />
          <Divider />
         <PropertyListItem
           align={align}
           label="Weight"
-          value={data.weight}
+          value={state?.weight}
         />
          <Divider />
         <PropertyListItem
           align={align}
           label="Quantity"
-          value={data.quantity}
-        />
-         <Divider />
-        <PropertyListItem
-          align={align}
-          label="GST"
-          value={data.gst}
+          value={state?.quantity}
         />
          <Divider />
         <PropertyListItem
           align={align}
           label="CGST"
-          value={data.cgst}
+          value={state?.cgst}
+        />
+         <Divider />
+        <PropertyListItem
+          align={align}
+          label="SGST"
+          value={state?.cgst}
         />
          <Divider />
         <PropertyListItem
           align={align}
           label="Description"
-          value={data.description}
+          value={state?.description}
         />
       </PropertyList>
         <Divider/>

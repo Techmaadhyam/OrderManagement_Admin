@@ -18,6 +18,8 @@ import IconWithPopup from '../user/user-icon';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
   //get userid 
   const userId = sessionStorage.getItem('user');
@@ -25,13 +27,6 @@ import { useNavigate } from 'react-router-dom';
 const ViewTemporaryUser = () => {
   const [rows, setRows] = useState([{}]);
   const [userData, setUserData]= useState([])
-
-  const handleRemoveRow = (idx) => () => {
-    const updatedRows = [...rows];
-    updatedRows.splice(idx, 1);
-    setRows(updatedRows);
-  };
-
 
   const navigate = useNavigate();
   
@@ -48,6 +43,36 @@ const ViewTemporaryUser = () => {
   }, []);
 
   const dataWithKeys = userData.map((item) => ({ ...item, key: item.id }));
+
+    //toast notification from toastify library
+const notify = (type, message) => {
+  toast[type](message, {
+    position: "top-right",
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
+};
+
+
+const handleRemoveRow = (id) => async () => {
+  try {
+    await axios.delete(`http://13.115.56.48:8080/techmadhyam/deleteTempUserId/${id}`);
+    const updatedRows = userData.filter(item => item.id !== id);
+    setUserData(updatedRows);
+    notify(
+      "success",
+      `Sucessfully deleted temporary user row.`
+    );
+  } catch (error) {
+    console.error('Error deleting row:', error.message);
+  }
+};
+
  
   const columns = [
     {
@@ -110,9 +135,9 @@ const ViewTemporaryUser = () => {
     },
     {
       dataIndex: 'actionDelete',
-      key: 'actionDelete',
-      render: (_, __, index) => (
-        <IconButton onClick={() => handleRemoveRow(index)}>
+      key: 'actionDelete', 
+      render: (_, row) => (
+        <IconButton onClick={handleRemoveRow(row.id)}>
           <Icon>
             <Delete />
           </Icon>
@@ -141,6 +166,17 @@ const ViewTemporaryUser = () => {
             dataSource={dataWithKeys}
             ></Table>
             </Scrollbar>
+            <ToastContainer
+                     position="top-right"
+                     autoClose={2000}
+                     hideProgressBar={false}
+                     newestOnTop={false}
+                     closeOnClick
+                     rtl={false}
+                     pauseOnFocusLoss
+                     draggable
+                     pauseOnHover
+                     theme="light"/>
           </Box>
         </div>
       );

@@ -20,17 +20,13 @@ import { PurchaseOrderCreateForm } from './purchaseorder-create-form';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const userId = sessionStorage.getItem('user');
-const PurchaseOrderViewForm = () => {
+  const PurchaseOrderViewForm = () => {
   const [rows, setRows] = useState([{}]);
   const [userData, setUserData]= useState([])
-
-  const handleRemoveRow = (idx) => () => {
-    const updatedRows = [...rows];
-    updatedRows.splice(idx, 1);
-    setRows(updatedRows);
-  };
 
 
   const navigate = useNavigate();
@@ -48,7 +44,35 @@ const PurchaseOrderViewForm = () => {
   }, []);
 
   const dataWithKeys = userData?.map((item) => ({ ...item, key: item.id }));
- 
+
+  const handleRemoveRow = (id) => async () => {
+    try {
+      await axios.delete(`http://13.115.56.48:8080/techmadhyam/deletePurchaseOrderId/${id}`);
+      const updatedRows = userData.filter(item => item.id !== id);
+      setUserData(updatedRows);
+      notify(
+        "success",
+        `Sucessfully deleted row with purchase order number: ${id}.`
+      );
+    } catch (error) {
+      console.error('Error deleting row:', error.message);
+    }
+  };
+
+  //toast notification from toastify library
+const notify = (type, message) => {
+  toast[type](message, {
+    position: "top-right",
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
+};
+
   const columns = [
     {
       title: 'Purchase Order Number',
@@ -115,8 +139,8 @@ const PurchaseOrderViewForm = () => {
     {
       dataIndex: 'actionDelete',
       key: 'actionDelete',
-      render: (_, __, index) => (
-        <IconButton onClick={() => handleRemoveRow(index)}>
+      render: (_, row) => (
+        <IconButton onClick={handleRemoveRow(row.id)}>
           <Icon>
             <Delete />
           </Icon>
@@ -145,6 +169,17 @@ const PurchaseOrderViewForm = () => {
             dataSource={dataWithKeys}
             ></Table>
             </Scrollbar>
+            <ToastContainer
+                     position="top-right"
+                     autoClose={2000}
+                     hideProgressBar={false}
+                     newestOnTop={false}
+                     closeOnClick
+                     rtl={false}
+                     pauseOnFocusLoss
+                     draggable
+                     pauseOnHover
+                     theme="light"/>
           </Box>
         </div>
       );
