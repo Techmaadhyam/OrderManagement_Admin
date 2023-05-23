@@ -62,7 +62,7 @@ const notify = (type, message) => {
 const handleRemoveRow = (id) => async () => {
   try {
     await axios.delete(`http://13.115.56.48:8080/techmadhyam/deleteInventoryById/${id}`);
-    const updatedRows = userData.filter(item => item.inventoryId !== id);
+    const updatedRows = userData.filter(item => item.id !== id);
     setUserData(updatedRows);
     notify(
       "success",
@@ -135,7 +135,7 @@ const handleRemoveRow = (id) => async () => {
       dataIndex: 'actionDelete',
       key: 'actionDelete',
       render: (_, row) => (
-        <IconButton onClick={handleRemoveRow(row.inventoryId)}>
+        <IconButton onClick={handleRemoveRow(row.id)}>
           <Icon>
             <Delete />
           </Icon>

@@ -35,6 +35,7 @@ const SalesOrderViewList = () => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllSalesOrderDetailByUser/${userId}`)
       .then(response => {
         setUserData(response.data);
+        console.log(response.data)
       })
       .catch(error => {
         console.error(error);

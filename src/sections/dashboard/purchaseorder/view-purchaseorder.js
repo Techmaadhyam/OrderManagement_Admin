@@ -270,7 +270,7 @@ export const ViewPurchaseOrder = (props) => {
               xs={12}
               md={6}
             >
-  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Total Amount : 56,78,020</Typography>
+  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Total Amount : {state?.totalAmount || state?.purchaseOrderRec?.totalAmount }</Typography>
             </Grid>
             <Grid
               xs={12}

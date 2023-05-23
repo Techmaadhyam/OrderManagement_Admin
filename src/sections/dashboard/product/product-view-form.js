@@ -111,8 +111,9 @@ const handleRemoveRow = (id) => async () => {
     },
     {
       title: 'Description',
-      key: 'description',
-      dataIndex: 'description',
+      key: 'category',
+      dataIndex: 'category',
+      render: (category) => category?.description
     },
     {
       dataIndex: 'actionEdit',

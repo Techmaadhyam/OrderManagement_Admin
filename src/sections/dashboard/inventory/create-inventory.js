@@ -23,17 +23,20 @@ import { useNavigate } from 'react-router-dom';
 
 const userId = sessionStorage.getItem('user');
 
-const userOptions=[{
-  label: 'Healthcare',
-  value: 'healthcare'
-},
-{
-  label: 'Makeup',
-  value: 'makeup'
-},]
-
+const userOptions = [
+  {
+    label: 'None',
+    value: 'none'
+  },
+  {
+    label: 'Others',
+    value: 'others'
+  },
+  
+];
 export const CreateInventory = (props) => {
   const { customer, ...other } = props;
+  const [showAdditionalFields, setShowAdditionalFields] = useState(false);
 //warehouse
   const [warehouse, setWarehouse]= useState()
   const [warehouseId, setWarehouseId]=useState()
@@ -48,7 +51,7 @@ export const CreateInventory = (props) => {
   //product name
   const [selectedName, setSelectedName]= useState()
   const [selectedId, setSelectedId] = useState();
-  const [product, setProduct]=useState()
+  const [product, setProduct]=useState([])
   //remaining form states
 
   const [hsnCode, setHsnCode] = useState('');
@@ -62,6 +65,11 @@ export const CreateInventory = (props) => {
   const [igst, setIgst] = useState('');
   const [cgst, setCgst] = useState('');
   const [description, setDescription] = useState('');
+
+  const [rackName, setRackName] =useState('')
+  const [rackDesc, setRackDesc] =useState('')
+
+  const [userData, setUserData]= useState([])
 
   const navigate = useNavigate();
   
@@ -119,6 +127,7 @@ export const CreateInventory = (props) => {
       .then(response => {
 
         setWarehouse(response.data)
+        console.log(response.data)
 
       })
       .catch(error => {
@@ -132,6 +141,7 @@ export const CreateInventory = (props) => {
       .then(response => {
 
         setPurchaseOrder(response.data)
+        console.log(response.data)
       })
       .catch(error => {
         console.error(error);
@@ -167,6 +177,17 @@ export const CreateInventory = (props) => {
   const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
   const formattedDate = today.toLocaleDateString('IN', options);
   setCreatedDate(formattedDate);
+}, []);
+
+useEffect(() => {
+  axios.get(`http://13.115.56.48:8080/techmadhyam/getInventoryByUserId/${userId}`)
+    .then(response => {
+      setUserData(response.data);
+      console.log(response.data);
+    })
+    .catch(error => {
+      console.error(error);
+    });
 }, []);
 
   const handleInputChange = (event) => {
@@ -209,29 +230,88 @@ export const CreateInventory = (props) => {
     }
   };
 
+  //handle rack change
+  const handleCategoryChange = (event) => {
+
+    const selectedCategory = event.target.value;
+
+    setRack(selectedCategory)
+
+    if (selectedCategory && selectedCategory !== 'none' && selectedCategory !== 'other' && isNaN(Number(selectedCategory))) {
+      setShowAdditionalFields(true);
+
+    } else {
+      setShowAdditionalFields(false);
+    }
+  };
+
+  const handleRack = (event) => {
+    setRackName(event.target.value);
+  };
+  const handleRackDesc = (event) => {
+    setRackDesc(event.target.value);
+  };
+
+  const mappedOptions = userData.map(({ name, id }) => ({
+    label: name,
+    value: id
+  }));
+
+  const updatedUserOptions = userOptions.concat(mappedOptions);
   const handleSave=async ()=>{
 
-    let inventory ={
-      productId: selectedId,
-      purchaseOrderId:purchaseId,
-      warehouseId:warehouseId,
-      quantity: parseFloat(quantity),
-      weight:weight,
-      size:size,
-      hsncode:hsnCode,
-      rack:rack,
-      cgst: parseFloat(cgst),
-      igst: parseFloat(igst),
-      sgst: parseFloat(sgst),
-      price: parseFloat(cost),
-      description: description,
-      createdBy:parseFloat(userId),
-      createdDate: createdDate,
-      lastModifiedDate: createdDate
-    }
+    // let inventory ={
+    //   productId: selectedId,
+    //   purchaseOrderId:purchaseId,
+    //   warehouseId:warehouseId,
+    //   quantity: parseFloat(quantity),
+    //   weight:weight,
+    //   size:size,
+    //   hsncode:hsnCode,
+    //   rack:rack,
+    //   cgst: parseFloat(cgst),
+    //   igst: parseFloat(igst),
+    //   sgst: parseFloat(sgst),
+    //   price: parseFloat(cost),
+    //   description: description,
+    //   createdBy:parseFloat(userId),
+    //   createdDate: createdDate,
+    //   lastModifiedDate: createdDate
+    // }
 
-  
-    if (selectedId && purchaseId && warehouseId && quantity && weight && size && hsnCode && rack && cost && description && userId) {
+    let inventory={
+      inventory:{
+          
+        quantity:parseFloat(quantity),
+        weight:weight,
+        size:size,
+        hsncode:hsnCode,
+        price:parseFloat(cost),
+        description:description,
+        createdBy: parseFloat(userId),
+        productId: selectedId,
+        purchaseOrderId:purchaseId,
+        warehouseId:warehouseId,
+        sgst:parseFloat(sgst),
+        cgst:parseFloat(cgst),
+        igst:parseFloat(igst),
+      },
+
+      rack:{
+            name: rackName,
+            description: rackDesc,
+            createdBy:parseFloat(userId),
+      },
+
+      category:{
+          id: categoryId
+      }
+
+      
+  }
+  console.log(JSON.stringify(inventory))
+
+    if (  purchaseId && warehouseId && quantity && weight && size && hsnCode && rack && cost && description && userId) {
       try {
         const response = await fetch('http://13.115.56.48:8080/techmadhyam/addInventory', {
           method: 'POST',
@@ -295,7 +375,7 @@ export const CreateInventory = (props) => {
                     {warehouse?.map((option) => (
                       option.id && (
                         <MenuItem key={option.id} value={option.id}>
-                          {option.id}
+                          {option.name}
                         </MenuItem>
                       )
                     ))}
@@ -353,6 +433,41 @@ export const CreateInventory = (props) => {
                     ))}
                   </TextField>
             </Grid>
+            
+            <Grid
+              xs={12}
+              md={6}
+            >
+                 <TextField
+                  fullWidth
+                  label="Product"
+                  name="product"
+                  select
+                  value={selectedId ? selectedId : ''}
+                  onChange={(e) => {
+                    const selectedProductId = e.target.value;
+                    const selectedOption = product.find((option) => option.id === selectedProductId);
+                    
+                    if (selectedOption) {
+                      setSelectedId(selectedOption.id);
+                      setSelectedName(selectedOption.productName);
+
+                    } else {
+                      setSelectedId(null);
+                      setSelectedName('');
+                    }
+                  }}
+                  style={{ marginBottom: 10 }}
+                >
+                  {product
+                    .filter((option) => option.category.id === categoryId)
+                    .map((option) => (
+                      <MenuItem key={option.id} value={option.id}>
+                        {option.productName}
+                      </MenuItem>
+                    ))}
+                </TextField>
+            </Grid>
             <Grid
               xs={12}
               md={6}
@@ -361,40 +476,56 @@ export const CreateInventory = (props) => {
                     fullWidth
                     label="Rack"
                     name="rack"
-                    value={rack}
-                    onChange={handleInputChange}
-
-                  >
-                  
-                  </TextField>
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-                 <TextField
-
-                    fullWidth
-                    label="Product"
-                    name="product"
                     select
-                    value={selectedName? selectedName:''}
-                    onChange={(e) => {
-                      const selectedOption = product?.find((option) => option.name === e.target.value);
-                      setSelectedId(selectedOption?.id || '');
-                      setSelectedName(e.target.value);
-                    }}
-                    style={{ marginBottom: 10 }}
+                    value={rack}
+                    onChange={(event) => {handleCategoryChange(event)}}
+  
+        
                   >
-                    {product?.map((option) => (
-                      option.categoryName === categoryName && (
-                        <MenuItem key={option.id} value={option.name}>
-                          {option.name}
-                        </MenuItem>
-                      )
+                     {updatedUserOptions.map((option) => (
+                      <MenuItem
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </MenuItem>
                     ))}
                   </TextField>
             </Grid>
+            {showAdditionalFields && (
+        <>
+      <Grid/>
+        <Grid
+              xs={12}
+              md={6}
+            >
+          <TextField
+
+            fullWidth
+            label="Rack Name"
+            name="rack name"
+            value={rackName}
+            onChange={handleRack} 
+ 
+          >
+          </TextField>
+          </Grid>
+          <Grid
+              xs={12}
+              md={6}
+            >
+          <TextField
+
+            fullWidth
+            label="Description"
+            name="description"
+            value={rackDesc}
+            onChange={handleRackDesc} 
+            multiline
+          />
+          </Grid>
+        </>
+      )}
             <Grid
               xs={12}
               md={6}

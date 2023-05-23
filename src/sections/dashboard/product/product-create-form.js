@@ -117,7 +117,7 @@ export const CreateProduct = (props) => {
       .then(response => {
    
         setData(response.data);
-        //console.log(data);
+        console.log(data);
       })
       .catch(error => {
         console.error(error);
@@ -142,7 +142,7 @@ export const CreateProduct = (props) => {
   }));
   
   const updatedUserOptions = userOptions.concat(mappedOptions);
-  console.log(updatedUserOptions)
+
 
   //handle user inputs
   const handleProduct = (event) => {
@@ -180,7 +180,6 @@ export const CreateProduct = (props) => {
         },
         category: {
           name: newCategory,
-          id:-1,
           description: desc1,
           createdBy: userId,
           createdDate: currentDate
@@ -214,7 +213,7 @@ export const CreateProduct = (props) => {
     axios.post('http://13.115.56.48:8080/techmadhyam/addProduct', JSON.stringify(requestBody), config)
       .then(response => {
         // Handle successful response
-        //console.log(response.data);
+        console.log(response.data);
         if (response.status === 200) {
           //navigate to view product details (using react router)
           navigate('/dashboard/products/viewDetail', { state: response.data });
@@ -228,6 +227,8 @@ export const CreateProduct = (props) => {
         console.error(error);
       });
   };
+
+
 
 
   return (

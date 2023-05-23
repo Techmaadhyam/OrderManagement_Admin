@@ -155,13 +155,13 @@ export const ViewInventoryDetail = (props) => {
         <PropertyListItem
           align={align}
           label="Category"
-          value={state?.categoryId}
+          value={state?.categoryName}
         />
          <Divider />
         <PropertyListItem
           align={align}
           label="Rack"
-          value={state?.rack}
+          value={state?.rackName}
         />
         <Divider />
         <PropertyListItem
@@ -204,6 +204,12 @@ export const ViewInventoryDetail = (props) => {
           align={align}
           label="SGST"
           value={state?.cgst}
+        />
+         <Divider />
+         <PropertyListItem
+          align={align}
+          label="IGST"
+          value={state?.igst}
         />
          <Divider />
         <PropertyListItem

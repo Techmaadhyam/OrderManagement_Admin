@@ -112,6 +112,11 @@ const tableHeader=[
       width: 350,
   },
   {
+    id:'amount',
+    name:'Net Amount',
+    width: 150,
+},
+  {
       id:'add',
       name:'',
       width: 50,
@@ -159,6 +164,8 @@ const [productName, setProductName] = useState('');
 
   const [userData2, setUserData2] = useState([])
   const [productId, setProductId] = useState()
+
+  const [totalAmount, setTotalAmount] = useState(0);
 
   //currentdate
   useEffect(() => {
@@ -241,41 +248,66 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if(quantity && price && cgst && productName && sgst && igst && description && weight && size){
-
-    const newRow = { 
-       productId,
-       productName, 
-       warehouseId :null,
-       weight,
-       quotationId :null,
-       quantity: parseFloat(quantity), 
-       price: parseFloat(price), 
-       cgst: parseFloat(cgst), 
-       description, 
-       createdBy:userId, 
-       size: size,
-       sgst :parseFloat(sgst),
-       igst:parseFloat(igst),
-       comments: comment,
-       createdDate: currentDate, 
-       lastModifiedDate: currentDate };
-
-    if (editIndex !== null) {
-      const updatedRows = [...rows];
-      updatedRows[editIndex] = newRow;
-      setRows(updatedRows);
-    } else {
-      setRows((prevRows) => [...prevRows, newRow]);
-    }
-
-    clearFormFields();
-    setShowForm(false);
-    setEditIndex(null);
-
+  
+    if (
+      quantity &&
+      price &&
+      cgst &&
+      productName &&
+      sgst &&
+      igst &&
+      description &&
+      weight &&
+      size
+    ) {
+      const newRow = {
+        productId,
+        productName,
+        weight,
+        quotationId: null,
+        quantity: parseFloat(quantity),
+        price: parseFloat(price),
+        cgst: parseFloat(cgst),
+        description,
+        createdBy: userId,
+        size: size,
+        sgst: parseFloat(sgst),
+        igst: parseFloat(igst),
+        comments: comment,
+        createdDate: currentDate,
+        lastModifiedDate: currentDate,
+      };
+  
+      let updatedRows;
+  
+      if (editIndex !== null) {
+        updatedRows = [...rows];
+        updatedRows[editIndex] = newRow;
+        setRows(updatedRows);
+      } else {
+        updatedRows = [...rows, newRow];
+        setRows(updatedRows);
+      }
+  
+      clearFormFields();
+      setShowForm(false);
+      setEditIndex(null);
+  
+      const calculatedTotalAmount = updatedRows.reduce(
+        (total, row) =>
+          total +
+          row.quantity * row.price +
+          (row.quantity * row.price * row.cgst) / 100 +
+          (row.quantity * row.price * row.igst) / 100 +
+          (row.quantity * row.price * row.sgst) / 100,
+        0
+      );
+  
+      setTotalAmount(calculatedTotalAmount);
     }
   };
+
+
   const handleEditRow = (idx, row) => {
   setProductName(row.productName);
   setWeight(row.weight);
@@ -318,7 +350,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
   const updatedRows = rows.map(({ productName, ...rest }) => rest);
   //post request
   const handleClick = async (event) => {
-
+    let finalAmount = totalAmount.toFixed(2)
     event.preventDefault();
     
       if (contactName && address && userId && phone && status && address && comment && terms && updatedRows) {
@@ -348,6 +380,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
                   lastModifiedDate: currentDate,
                   comments : comment,
                   termsAndCondition: terms,
+                  totalAmount: finalAmount,
               },
                   salesOrderDetails: updatedRows
           })
@@ -360,6 +393,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
 
           
             navigate('/dashboard/orders/viewDetail', { state: data });
+            console.log(data)
     });
           } 
         } catch (error) {
@@ -535,15 +569,15 @@ height='50px'/>
                           select
                           value={productName}
                           onChange={(e) => {
-                            const selectedOption = userData2.find(option => option.name === e.target.value);
+                            const selectedOption = userData2.find(option => option.productName === e.target.value);
                             setProductId(selectedOption.id);
                             setProductName(e.target.value);
                           }}
                           style={{ marginBottom: 10 }}
                         >
                           {userData2?.map((option) => (
-                            <MenuItem key={option.id} value={option.name}>
-                              {option.name}
+                            <MenuItem key={option.id} value={option.productName}>
+                              {option.productName}
                             </MenuItem>
                           ))}
                           </TextField>
@@ -720,6 +754,16 @@ height='50px'/>
                                 <div>{row.description}</div>
                               </TableCell>
                               <TableCell>
+                              <div>
+                                {(
+                                  ((row.quantity * row.price) +
+                                  ((row.quantity * row.price) * row.cgst/ 100) +
+                                  ((row.quantity * row.price) * row.igst / 100) +
+                                  ((row.quantity * row.price) * row.sgst / 100)).toFixed(2)
+                                )}
+                              </div>
+                              </TableCell>
+                              <TableCell>
                                 <IconButton onClick={() => handleEditRow(idx, row)}>
                                   <Icon>
                                     <EditIcon />
@@ -744,10 +788,8 @@ height='50px'/>
                 xs={12}
                 md={6}
               >
-              <label style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Total Amount :</label>
-              <TextField sx={{ height: 40 }}
-                  >
-              </TextField>
+              <label style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Total Amount : {totalAmount.toFixed(2)}</label>
+          
               </Grid>
               <Grid
                 xs={12}

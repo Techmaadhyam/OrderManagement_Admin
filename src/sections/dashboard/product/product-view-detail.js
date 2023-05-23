@@ -13,8 +13,10 @@ import {
   Link,
   SvgIcon,
   IconButton,
-  Grid
+  Grid,
+  Icon
 } from '@mui/material';
+import {Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { wait } from 'src/utils/wait';
 import {  Box, Stack } from '@mui/system';
 import { PropertyList } from 'src/components/property-list';
@@ -28,69 +30,98 @@ import { primaryColor } from 'src/primaryColor';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 import IconWithPopup from '../user/user-icon';
 import { useLocation } from 'react-router-dom';
+import EditIcon from '@mui/icons-material/Edit';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 const statusOptions = ['Canceled', 'Complete', 'Rejected'];
+  //get userid 
+  const userId = sessionStorage.getItem('user');
 
 export const ViewProductDetail = (props) => {
   const location = useLocation();
   const state = location.state;
-  console.log(state);
+
   const { customer, ...other } = props;
   const [status, setStatus] = useState(statusOptions[0]);
+  const [currentDate, setCurrentDate] = useState('');
 
-  const handleChange = useCallback((event) => {
-    setStatus(event.target.value);
-  }, []);
-  const align = 'horizontal' 
-  const formik = useFormik({
-    initialValues: {
-      address1: customer.address1 || '',
-      address2: customer.address2 || '',
-      country: customer.country || '',
-      email: customer.email || '',
-      hasDiscount: customer.hasDiscount || false,
-      isVerified: customer.isVerified || false,
-      name: customer.name || '',
-      phone: customer.phone || '',
-      state: customer.state || '',
-      submit: null
-    },
-    validationSchema: Yup.object({
-      address1: Yup.string().max(255),
-      address2: Yup.string().max(255),
-      country: Yup.string().max(255),
-      email: Yup
-        .string()
-        .email('Must be a valid email')
-        .max(255)
-        .required('Email is required'),
-      hasDiscount: Yup.bool(),
-      isVerified: Yup.bool(),
-      name: Yup
-        .string()
-        .max(255)
-        .required('Name is required'),
-      phone: Yup.string().max(15),
-      state: Yup.string().max(255)
-    }),
-    onSubmit: async (values, helpers) => {
-      try {
-        // NOTE: Make API request
-        await wait(500);
-        helpers.setStatus({ success: true });
-        helpers.setSubmitting(false);
-        toast.success('Customer updated');
-      } catch (err) {
-        console.error(err);
-        toast.error('Something went wrong!');
-        helpers.setStatus({ success: false });
-        helpers.setErrors({ submit: err.message });
-        helpers.setSubmitting(false);
-      }
-    }
+  const [editOpen, setEditOpen] = useState(false);
+  const [editedData, setEditedData] = useState({
+  name: state?.productName || state?.name,
+  category: state?.category?.name,
+  type: state?.type,
+  description: state?.category?.description
   });
 
+    //for sending response body via route
+    const navigate = useNavigate();
 
+  const handleEditOpen = () => {
+    setEditOpen(true);
+  };
+
+  const handleEditClose = () => {
+    setEditOpen(false);
+  };
+
+  const handleEditFieldChange = (field, value) => {
+    setEditedData((prevData) => ({
+      ...prevData,
+      [field]: value
+    }));
+  };
+
+   //  get date
+ useEffect(() => {
+  const today = new Date();
+  const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
+  const formattedDate = today.toLocaleDateString('IN', options);
+  setCurrentDate(formattedDate);
+}, []);
+
+
+
+  const handleSave = () => {
+
+    const responseBody ={
+        name: editedData?.category,
+        id: state?.category.id,
+        description: editedData?.description,
+        lastModifiedDate: currentDate,
+      }
+      console.log(JSON.stringify(responseBody))
+    
+    if (editedData?.category && editedData?.description) {
+        try {
+  
+          const response = fetch(`http://13.115.56.48:8080/techmadhyam/addCategory`, {
+            method: 'POST',
+            headers: {
+    
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(responseBody)
+          });
+   
+          if (response.ok || response === 200) {
+         
+           response.json().then(data => {
+           
+           });
+           navigate(`/dashboard/products`);
+          } 
+        } catch (error) {
+          console.error('API call failed:', error);
+        }
+      } 
+    
+    handleEditClose();
+  };
+ 
+  const align = 'horizontal' 
+  
 
   return (
     <div style={{minWidth: "100%", marginTop: "1rem"  }}>
@@ -123,16 +154,70 @@ export const ViewProductDetail = (props) => {
           label="Name"
         >
           <Typography variant="subtitle2">
+           
+            <div style={{gap: '30px', display: 'flex'}}>
             {state?.productName || state?.name}
+        
+
+          <Dialog open={editOpen} onClose={handleEditClose}>
+  <DialogTitle>Update Product</DialogTitle>
+  <DialogContent>
+  <Grid
+            container
+            spacing={0}
+          >
+  
+    <Grid
+        xs={12}
+        md={12}
+        >
+    <TextField
+      label="Category Name"
+      value={editedData.category}
+      onChange={(e) => handleEditFieldChange('category', e.target.value)}
+      fullWidth
+      style={{ marginBottom: 20 , marginTop: 10}}
+    />
+    </Grid>
+
+
+    <TextField
+      label="Description"
+      value={editedData.description}
+      onChange={(e) => handleEditFieldChange('description', e.target.value)}
+      fullWidth
+      multiline
+      rows={3}
+    />
+    </Grid>
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={handleEditClose} color="primary">
+      Cancel
+    </Button>
+    <Button onClick={handleSave} color="primary">
+      Save
+    </Button>
+  </DialogActions>
+</Dialog>
+            </div>
           </Typography>
+          
         </PropertyListItem>
         <Divider />
+        <div style={{ display: 'flex', alignItems: 'center' }}>
         <PropertyListItem
           align={align}
           label="Category"
           value={state?.category?.name}
         />
-        <Divider />
+        <IconButton onClick={handleEditOpen}>
+          <Icon>
+            <EditIcon />
+          </Icon>
+        </IconButton>
+      </div>
+      <Divider />
         <PropertyListItem
           align={align}
           label="Type"
@@ -142,7 +227,7 @@ export const ViewProductDetail = (props) => {
         <PropertyListItem
           align={align}
           label="Description"
-          value={state?.description}
+          value={state?.category?.description}
         />
       </PropertyList>
         <Divider/>
