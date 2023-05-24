@@ -35,6 +35,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
 
+
 const userId = parseInt(sessionStorage.getItem('user'))
 
 const userOptions = [
@@ -143,7 +144,7 @@ const [status, setStatus] = useState(state?.status || "");
 const [contactName,setContactName] = useState(state?.contactPerson||'')
 const [phone, setPhone] = useState(state?.contactPhone||'');
 const [address, setAddress] = useState(state?.deliveryAddress || "");
-const [tempId, setTempId] = useState();
+const [tempId, setTempId] = useState(state?.tempUserId);
 const [terms, setTerms] = useState(state?.termsAndCondition || '');
 const [comment, setComment] = useState(state?.comments||'');
 
@@ -232,6 +233,9 @@ const handleDateChange = (date) => {
         console.error(error);
       });
   }, []);
+
+  const formattedDate = moment(state?.deliveryDate, "DD/MM/YYYY").format("YYYY-MM-DD");
+  const dateValue = moment(formattedDate);
 
 const deliveryDateAntd = deliveryDate;
 const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
@@ -379,7 +383,9 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
   const updatedRows = rowData?.map(({ productName, ...rest }) => rest);
   //post request
   const handleClick = async (event) => {
-    let finalAmount = totalAmount.toFixed(2)
+    let finalAmount = parseFloat(totalAmount.toFixed(2))
+
+    let dddate= formattedDeliveryDate
     event.preventDefault();
 
     console.log({
@@ -391,7 +397,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
           contactPhone: phone,    
           status: status,
           paymentMode: null,
-          deliveryDate: formattedDeliveryDate,
+          deliveryDate: dddate,
           deliveryAddress: address,
           city: null,
           state:null,
@@ -483,14 +489,14 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
                 value={userName}
                 onChange={(e) => {
                   const selectedOption = userData?.find((option) => option.userName === e.target.value);
-                  setTempId(selectedOption?.productId || '');
+                  setTempId(selectedOption?.id || '');
                   setUserName(e.target.value);
                 }}
                 style={{ marginBottom: 10 }}
               >
                 {userData?.map((option) => (
                   option.userName && (
-                    <MenuItem key={option.productId } value={option.userName}>
+                    <MenuItem key={option.id } value={option.userName}>
                       {option.userName}
                     </MenuItem>
                   )
@@ -530,6 +536,9 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
             >
                 <DatePicker placeholder="Delivery Date"
                 onChange={handleDateChange}
+                defaultValue={dateValue}
+       
+                
              
 
 height='50px'/>
