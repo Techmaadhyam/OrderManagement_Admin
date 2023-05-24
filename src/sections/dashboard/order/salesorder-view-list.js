@@ -22,6 +22,7 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+
 const userId = sessionStorage.getItem('user');
 const SalesOrderViewList = () => {
   const [rows, setRows] = useState([{}]);
@@ -70,6 +71,10 @@ const handleRemoveRow = (id) => async () => {
   } catch (error) {
     console.error('Error deleting row:', error.message);
   }
+};
+
+const handleNavigation = record => {
+  navigate('/dashboard/orders/edit', { state: record });
 };
 
   const columns = [
@@ -125,14 +130,12 @@ const handleRemoveRow = (id) => async () => {
     {
       dataIndex: 'actionEdit',
       key: 'actionEdit',
-      render: () => (
-        <Link>
-          <IconButton>
-            <Icon>
-              <EditIcon />
-            </Icon>
-          </IconButton>
-        </Link>
+      render: (_, record) => (
+        <IconButton onClick={() => handleNavigation(record)}>
+          <Icon>
+            <EditIcon />
+          </Icon>
+        </IconButton>
       ),
     },
     {

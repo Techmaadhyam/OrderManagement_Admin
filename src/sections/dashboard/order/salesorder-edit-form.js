@@ -19,7 +19,7 @@ import {
 } from '@mui/material';
 import {Grid as AntGrid} from 'antd/es/card/Grid';
 import { DatePicker } from 'antd';
-import './purchase-order.css'
+import './sales-order.css'
 import IconWithPopup from '../user/user-icon';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -32,11 +32,7 @@ import React from 'react';
 import { Add, Delete } from '@mui/icons-material';
 import './customTable.css'
 import { useNavigate } from 'react-router-dom';
-
-
-
-
-
+import { useLocation } from 'react-router-dom';
 
 
 const userId = parseInt(sessionStorage.getItem('user'))
@@ -128,7 +124,12 @@ const tableHeader=[
   }
 ];
 
-export const PurchaseOrderCreateForm = (props) => {
+export const SalesOrderEditForm = (props) => {
+
+  const location = useLocation();
+  const state = location.state;
+console.log(state)
+
   const { customer, ...other } = props;
 
   const [userData, setUserData]= useState([])
@@ -138,13 +139,13 @@ const [userName, setUserName] = useState('');
 const [type, setType] = useState("");
 const [quotation, setQuotation] = useState('');
 const [deliveryDate, setDeliveryDate] = useState('');
-const [status, setStatus] = useState("");
-const [contactName,setContactName] = useState('')
-const [phone, setPhone] = useState('');
-const [address, setAddress] = useState("");
+const [status, setStatus] = useState(state?.status || "");
+const [contactName,setContactName] = useState(state?.contactPerson||'')
+const [phone, setPhone] = useState(state?.contactPhone||'');
+const [address, setAddress] = useState(state?.deliveryAddress || "");
 const [tempId, setTempId] = useState();
-const [terms, setTerms] = useState('');
-const [comment, setComment] = useState('');
+const [terms, setTerms] = useState(state?.termsAndCondition || '');
+const [comment, setComment] = useState(state?.comments||'');
 
 const [currentDate, setCurrentDate] = useState('');
 
@@ -166,6 +167,19 @@ const [productName, setProductName] = useState('');
   const [productId, setProductId] = useState()
 
   const [totalAmount, setTotalAmount] = useState(0);
+
+  const [rowData, setRowData] =useState()
+
+  useEffect(() => {
+    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllSalesOrderDetails/${state?.id || state?.soRecord?.id}`)
+      .then(response => {
+       setRowData(response.data)
+       setTotalAmount(state?.totalAmount)
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
 
   //currentdate
   useEffect(() => {
@@ -229,9 +243,12 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
   //add product//
   /////////////
 
+
+
+
   const handleRemoveRow = (idx) => () => {
-    const updatedRows = rows.filter((_, index) => index !== idx);
-    setRows(updatedRows);
+    const updatedRows = rowData?.filter((_, index) => index !== idx);
+    setRowData(updatedRows);
   
     const calculatedTotalAmount = updatedRows.reduce(
       (total, row) =>
@@ -257,6 +274,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
       toggleForm();
     }
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
   
@@ -292,12 +310,12 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
       let updatedRows;
   
       if (editIndex !== null) {
-        updatedRows = [...rows];
+        updatedRows = [...rowData];
         updatedRows[editIndex] = newRow;
-        setRows(updatedRows);
+        setRowData(updatedRows);
       } else {
-        updatedRows = [...rows, newRow];
-        setRows(updatedRows);
+        updatedRows = [...rowData, newRow];
+        setRowData(updatedRows);
       }
   
       clearFormFields();
@@ -317,6 +335,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
       setTotalAmount(calculatedTotalAmount);
     }
   };
+
 
   const handleEditRow = (idx, row) => {
   setProductName(row.productName);
@@ -350,7 +369,6 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllItem/${userId}`)
       .then(response => {
         setUserData2(response.data);
-        console.log(response.data)
       })
       .catch(error => {
         console.error(error);
@@ -358,24 +376,48 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
   }, []);
 
 
-  const updatedRows = rows.map(({ productName, ...rest }) => rest);
+  const updatedRows = rowData?.map(({ productName, ...rest }) => rest);
   //post request
   const handleClick = async (event) => {
-let finalAmount = totalAmount.toFixed(2)
+    let finalAmount = totalAmount.toFixed(2)
     event.preventDefault();
+
+    console.log({
+      salesOrder:{
+          quotationId:null,
+          userId: userId,
+          tempUserId :tempId,
+          contactPerson: contactName,
+          contactPhone: phone,    
+          status: status,
+          paymentMode: null,
+          deliveryDate: formattedDeliveryDate,
+          deliveryAddress: address,
+          city: null,
+          state:null,
+          country: null,
+          createdBy: userId,
+          createdDate: currentDate,
+          lastModifiedDate: currentDate,
+          comments : comment,
+          termsAndCondition: terms,
+          totalAmount: finalAmount,
+      },
+          salesOrderDetails: updatedRows
+  })
     
-      if (contactName && address && phone && status && address && comment && terms && updatedRows) {
+      if (contactName && address && userId && phone && status && address && comment && terms && updatedRows) {
         try {
-          const response = await fetch('http://13.115.56.48:8080/techmadhyam/createPurchaseOrder', {
+          const response = await fetch('http://13.115.56.48:8080/techmadhyam/createSalesOrd', {
             method: 'POST',
             headers: {
     
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              purchaseOrder:{
+              salesOrder:{
+                  id: state?.id,
                   quotationId:null,
-                  salesOrderId:null,
                   userId: userId,
                   tempUserId :tempId,
                   contactPerson: contactName,
@@ -388,13 +430,12 @@ let finalAmount = totalAmount.toFixed(2)
                   state:null,
                   country: null,
                   createdBy: userId,
-                  createdDate: currentDate,
                   lastModifiedDate: currentDate,
                   comments : comment,
                   termsAndCondition: terms,
                   totalAmount: finalAmount,
               },
-                  purchaseOrderDetails: updatedRows
+                  salesOrderDetails: updatedRows
           })
           });
           
@@ -402,9 +443,10 @@ let finalAmount = totalAmount.toFixed(2)
             // Redirect to home page upon successful submission
         
            response.json().then(data => {
-    
+
+          
+            navigate('/dashboard/orders/viewDetail', { state: data });
       
-             navigate('/dashboard/purchaseorder/viewDetail', { state: data });
     });
           } 
         } catch (error) {
@@ -415,11 +457,10 @@ let finalAmount = totalAmount.toFixed(2)
     };
 
 
-
   return (
     <div style={{minWidth: "100%" }}>
     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-      <h2>Create Purchase Order</h2>
+      <h2>Edit Sales Order</h2>
       <IconWithPopup/>
     </div>
     <form>
@@ -435,26 +476,26 @@ let finalAmount = totalAmount.toFixed(2)
               md={6}
             >
               <TextField
-                    fullWidth
-                    label="User"
-                    name="user"
-                    select
-                    value={userName}
-                    onChange={(e) => {
-                      const selectedOption = userData?.find((option) => option.userName === e.target.value);
-                      setTempId(selectedOption?.id || '');
-                      setUserName(e.target.value);
-                    }}
-                    style={{ marginBottom: 10 }}
-                  >
-                    {userData?.map((option) => (
-                      option.userName && (
-                        <MenuItem key={option.id} value={option.userName}>
-                          {option.userName}
-                        </MenuItem>
-                      )
-                    ))}
-                  </TextField>
+                fullWidth
+                label="User"
+                name="user"
+                select
+                value={userName}
+                onChange={(e) => {
+                  const selectedOption = userData?.find((option) => option.userName === e.target.value);
+                  setTempId(selectedOption?.productId || '');
+                  setUserName(e.target.value);
+                }}
+                style={{ marginBottom: 10 }}
+              >
+                {userData?.map((option) => (
+                  option.userName && (
+                    <MenuItem key={option.productId } value={option.userName}>
+                      {option.userName}
+                    </MenuItem>
+                  )
+                ))}
+              </TextField>
             </Grid>
             <Grid/>
             <Grid
@@ -489,6 +530,7 @@ let finalAmount = totalAmount.toFixed(2)
             >
                 <DatePicker placeholder="Delivery Date"
                 onChange={handleDateChange}
+             
 
 height='50px'/>
             </Grid>
@@ -736,7 +778,7 @@ height='50px'/>
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          {rows.map((row, idx) => (
+                          {rowData?.map((row, idx) => (
                             <TableRow hover key={idx}>
                               <TableCell>
                                 <div>{row.productName}</div>
@@ -801,7 +843,7 @@ height='50px'/>
                 md={6}
               >
               <label style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Total Amount : {totalAmount.toFixed(2)}</label>
-
+          
               </Grid>
               <Grid
                 xs={12}
@@ -856,6 +898,6 @@ height='50px'/>
   );
 };
 
-PurchaseOrderCreateForm.propTypes = {
+SalesOrderEditForm.propTypes = {
   customer: PropTypes.object.isRequired
 };

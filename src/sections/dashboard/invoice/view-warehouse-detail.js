@@ -135,7 +135,7 @@ export const ViewWarehouseDetail = (props) => {
           label="Name"
         >
           <Typography variant="subtitle2">
-            {state?.contactName}
+            {state?.name}
           </Typography>
         </PropertyListItem>
         <Divider />

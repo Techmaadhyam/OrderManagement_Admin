@@ -4,6 +4,7 @@ import { customersApi } from 'src/api/customers';
 import { useMounted } from 'src/hooks/use-mounted';
 import { usePageView } from 'src/hooks/use-page-view';
 import {EditSalesOrder } from 'src/sections/dashboard/order/salesorder-edit';
+import { SalesOrderEditForm } from 'src/sections/dashboard/order/salesorder-edit-form';
 
 const useCustomer = () => {
   const isMounted = useMounted();
@@ -50,7 +51,7 @@ const Page = () => {
       >
         <Container maxWidth="lg">
           <Stack spacing={4}>
-            <EditSalesOrder customer={customer}/>
+            <SalesOrderEditForm customer={customer}/>
           </Stack>
         </Container>
       </Box>

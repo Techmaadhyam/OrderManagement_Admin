@@ -108,7 +108,8 @@ export const useSections = () => {
               {
                 title: t(tokens.nav.invoice),
                 path: paths.dashboard.orders.invoice
-              }
+              },
+            
             ]
           },
           {

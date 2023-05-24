@@ -207,7 +207,7 @@ export const ViewProductDetail = (props) => {
         <Divider />
         <div style={{ display: 'flex', alignItems: 'center' }}>
         <PropertyListItem
-          align={align}
+  
           label="Category"
           value={state?.category?.name}
         />

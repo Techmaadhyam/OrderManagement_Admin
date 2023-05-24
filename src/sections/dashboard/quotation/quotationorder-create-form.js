@@ -232,6 +232,18 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
   const handleRemoveRow = (idx) => () => {
     const updatedRows = rows.filter((_, index) => index !== idx);
     setRows(updatedRows);
+  
+    const calculatedTotalAmount = updatedRows.reduce(
+      (total, row) =>
+        total +
+        row.quantity * row.price +
+        (row.quantity * row.price * row.cgst) / 100 +
+        (row.quantity * row.price * row.igst) / 100 +
+        (row.quantity * row.price * row.sgst) / 100,
+      0
+    );
+  
+    setTotalAmount(calculatedTotalAmount);
   };
 
   const toggleForm = () => {

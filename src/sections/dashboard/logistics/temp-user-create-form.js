@@ -246,7 +246,7 @@ setCurrentCity(event.target.value);
 
 //for sending response body via route
 const navigate = useNavigate();
-console.log(address, zipcode, currentCity, currentCountry, currentState)
+
 const handleClick = async (event) => {
 event.preventDefault();
 
