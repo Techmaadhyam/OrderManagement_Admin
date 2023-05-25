@@ -125,7 +125,7 @@ const tableHeader=[
   }
 ];
 
-export const PurchaseOrderEditForm = (props) => {
+export const QuotationOrderEditForm = (props) => {
 
   const location = useLocation();
   const state = location.state;
@@ -172,7 +172,7 @@ const [productName, setProductName] = useState('');
   const [rowData, setRowData] =useState()
   const [dDate, setDDate] =useState(state?.deliveryDate)
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllPurchaseOrderDetails/${state?.id || state?.purchaseOrderRec?.id}`)
+    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllQuotationDetails/${state?.id || state?.quotation?.id}`)
       .then(response => {
        setRowData(response.data)
        setTotalAmount(state?.totalAmount)
@@ -395,7 +395,7 @@ const [productName, setProductName] = useState('');
     event.preventDefault();
 
     console.log({
-      purchaseOrder:{
+      quotation:{
           quotationId:null,
           userId: userId,
           tempUserId :tempId,
@@ -415,19 +415,19 @@ const [productName, setProductName] = useState('');
           termsAndCondition: terms,
           totalAmount: finalAmount,
       },
-      purchaseOrderDetails: updatedRows
+      quotationDetails: updatedRows
   })
     
       if (contactName && address && userId && phone && status && address && comment && terms && updatedRows) {
         try {
-          const response = await fetch('http://13.115.56.48:8080/techmadhyam/createPurchaseOrder', {
+          const response = await fetch('http://13.115.56.48:8080/techmadhyam/addQuoatation', {
             method: 'POST',
             headers: {
     
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              purchaseOrder:{
+              quotation:{
                   id: state?.id,
                   quotationId:null,
                   userId: userId,
@@ -447,7 +447,7 @@ const [productName, setProductName] = useState('');
                   termsAndCondition: terms,
                   totalAmount: finalAmount,
               },
-              purchaseOrderDetails: updatedRows
+                  quotationDetails: updatedRows
           })
           });
           
@@ -457,7 +457,7 @@ const [productName, setProductName] = useState('');
            response.json().then(data => {
 
           
-            navigate('/dashboard/purchaseorder/viewDetail', { state: data });
+            navigate('/dashboard/quotation/viewDetail', { state: data });
       
     });
           } 
@@ -472,7 +472,7 @@ const [productName, setProductName] = useState('');
   return (
     <div style={{minWidth: "100%" }}>
     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-      <h2>Edit Purchase Order</h2>
+      <h2>Edit Quotation Order</h2>
       <IconWithPopup/>
     </div>
     <form>
@@ -913,6 +913,6 @@ height='50px'/>
   );
 };
 
-PurchaseOrderEditForm.propTypes = {
+QuotationOrderEditForm.propTypes = {
   customer: PropTypes.object.isRequired
 };

@@ -33,11 +33,11 @@ import { Add, Delete } from '@mui/icons-material';
 import './customTable.css'
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-
+import dayjs from 'dayjs';
 
 
 const userId = parseInt(sessionStorage.getItem('user'))
-
+const dateFormat = 'DD/MM/YYYY';
 const userOptions = [
   {
     label: 'Open',
@@ -139,7 +139,7 @@ console.log(state)
 const [userName, setUserName] = useState('');
 const [type, setType] = useState("");
 const [quotation, setQuotation] = useState('');
-const [deliveryDate, setDeliveryDate] = useState('');
+const [deliveryDate, setDeliveryDate] = useState(dayjs(state?.deliveryDate, dateFormat));
 const [status, setStatus] = useState(state?.status || "");
 const [contactName,setContactName] = useState(state?.contactPerson||'')
 const [phone, setPhone] = useState(state?.contactPhone||'');
@@ -170,7 +170,7 @@ const [productName, setProductName] = useState('');
   const [totalAmount, setTotalAmount] = useState(0);
 
   const [rowData, setRowData] =useState()
-
+  const [dDate, setDDate] =useState(state?.deliveryDate)
   useEffect(() => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllSalesOrderDetails/${state?.id || state?.soRecord?.id}`)
       .then(response => {
@@ -220,9 +220,7 @@ const [productName, setProductName] = useState('');
       break;
   }
 };
-const handleDateChange = (date) => {
-  setDeliveryDate(date);
-};
+
    //get temp user
   useEffect(() => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`)
@@ -234,14 +232,20 @@ const handleDateChange = (date) => {
       });
   }, []);
 
-  const formattedDate = moment(state?.deliveryDate, "DD/MM/YYYY").format("YYYY-MM-DD");
-  const dateValue = moment(formattedDate);
+ 
+  useEffect(() => {
+    if (deliveryDate) {
+      const deliveryDateJS = deliveryDate.toDate();
+      const formattedDeliveryDate = moment(deliveryDateJS).format('DD/MM/YYYY');
+      setDDate(formattedDeliveryDate);
+    } else {
+      setDDate('');
+    }
+  }, [deliveryDate]);
 
-const deliveryDateAntd = deliveryDate;
-const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
-const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD/MM/YYYY') : '';
-
-
+  const handleDateChange = (date) => {
+    setDeliveryDate(date);
+  };
 
   //////////////
   //add product//
@@ -380,12 +384,14 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
   }, []);
 
 
+  
   const updatedRows = rowData?.map(({ productName, ...rest }) => rest);
   //post request
   const handleClick = async (event) => {
     let finalAmount = parseFloat(totalAmount.toFixed(2))
 
-    let dddate= formattedDeliveryDate
+    
+    
     event.preventDefault();
 
     console.log({
@@ -397,7 +403,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
           contactPhone: phone,    
           status: status,
           paymentMode: null,
-          deliveryDate: dddate,
+          deliveryDate: dDate,
           deliveryAddress: address,
           city: null,
           state:null,
@@ -414,7 +420,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
     
       if (contactName && address && userId && phone && status && address && comment && terms && updatedRows) {
         try {
-          const response = await fetch('http://13.115.56.48:8080/techmadhyam/createSalesOrd', {
+          const response = await fetch('http://13.115.56.48:8080/techmadhyam/createSalesOrder', {
             method: 'POST',
             headers: {
     
@@ -430,7 +436,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
                   contactPhone: phone,    
                   status: status,
                   paymentMode: null,
-                  deliveryDate: formattedDeliveryDate,
+                  deliveryDate: dDate,
                   deliveryAddress: address,
                   city: null,
                   state:null,
@@ -452,7 +458,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
 
           
             navigate('/dashboard/orders/viewDetail', { state: data });
-      
+            console.log(data)
     });
           } 
         } catch (error) {
@@ -536,12 +542,12 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
             >
                 <DatePicker placeholder="Delivery Date"
                 onChange={handleDateChange}
-                defaultValue={dateValue}
-       
+                defaultValue={deliveryDate} format={dateFormat}
                 
              
 
 height='50px'/>
+
             </Grid>
             <Grid
               xs={12}

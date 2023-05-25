@@ -59,6 +59,10 @@ const userId = sessionStorage.getItem('user');
     }
   };
 
+  const handleNavigation = record => {
+    navigate('/dashboard/purchaseorder/edit', { state: record });
+  };
+
   //toast notification from toastify library
 const notify = (type, message) => {
   toast[type](message, {
@@ -126,14 +130,12 @@ const notify = (type, message) => {
     {
       dataIndex: 'actionEdit',
       key: 'actionEdit',
-      render: () => (
-        <Link>
-          <IconButton>
-            <Icon>
-              <EditIcon />
-            </Icon>
-          </IconButton>
-        </Link>
+      render: (_, record) => (
+        <IconButton onClick={() => handleNavigation(record)}>
+          <Icon>
+            <EditIcon />
+          </Icon>
+        </IconButton>
       ),
     },
     {

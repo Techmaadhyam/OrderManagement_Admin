@@ -70,6 +70,11 @@ const QuotationViewTable = () => {
       console.error('Error deleting row:', error.message);
     }
   };
+
+  const handleNavigation = record => {
+    navigate('/dashboard/quotation/edit', { state: record });
+  };
+
   const columns = [
     {
       title: 'Quotation Order Number',
@@ -128,14 +133,12 @@ const QuotationViewTable = () => {
     {
       dataIndex: 'actionEdit',
       key: 'actionEdit',
-      render: () => (
-        <Link>
-          <IconButton>
-            <Icon>
-              <EditIcon />
-            </Icon>
-          </IconButton>
-        </Link>
+       render: (_, record) => (
+        <IconButton onClick={() => handleNavigation(record)}>
+          <Icon>
+            <EditIcon />
+          </Icon>
+        </IconButton>
       ),
     },
     {
