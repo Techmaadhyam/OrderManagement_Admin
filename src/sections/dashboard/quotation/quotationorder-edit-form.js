@@ -138,15 +138,16 @@ console.log(state)
 //form state handeling
 const [userName, setUserName] = useState('');
 const [type, setType] = useState("");
-const [quotation, setQuotation] = useState('');
+
 const [deliveryDate, setDeliveryDate] = useState(dayjs(state?.deliveryDate, dateFormat));
 const [status, setStatus] = useState(state?.status || "");
-const [contactName,setContactName] = useState(state?.contactPerson||'')
-const [phone, setPhone] = useState(state?.contactPhone||'');
+const [contactName,setContactName] = useState(state?.contactPersonName ||'')
+const [phone, setPhone] = useState(state?.contactPhoneNumber ||'');
 const [address, setAddress] = useState(state?.deliveryAddress || "");
 const [tempId, setTempId] = useState(state?.tempUserId);
 const [terms, setTerms] = useState(state?.termsAndCondition || '');
 const [comment, setComment] = useState(state?.comments||'');
+const [user, setUser] = useState('')
 
 const [currentDate, setCurrentDate] = useState('');
 
@@ -171,6 +172,12 @@ const [productName, setProductName] = useState('');
 
   const [rowData, setRowData] =useState()
   const [dDate, setDDate] =useState(state?.deliveryDate)
+
+  const [Id, setId] = useState()
+
+      //deleted row
+  const [deletedRows, setDeletedRows] = useState([]);
+
   useEffect(() => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllQuotationDetails/${state?.id || state?.quotation?.id}`)
       .then(response => {
@@ -196,13 +203,10 @@ const [productName, setProductName] = useState('');
   switch (name) {
   
       case 'user':
-        setUserName(value);
+        setUser(value);
           break;
       case 'contactName':
         setContactName(value);
-        break;
-      case 'quotation':
-        setQuotation(value);
         break;
       case 'mobileno':
         setPhone(value);
@@ -226,6 +230,10 @@ const [productName, setProductName] = useState('');
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`)
       .then(response => {
         setUserData(response.data);
+
+        const selecteduserId = response.data.find((option) => option.id === state?.tempUserId);
+        const selecteduser = selecteduserId ? selecteduserId.userName :'';
+        setUser(selecteduser)
       })
       .catch(error => {
         console.error(error);
@@ -253,23 +261,26 @@ const [productName, setProductName] = useState('');
 
 
 
+  const handleRemoveRow = (idx, row) => () => {
 
-  const handleRemoveRow = (idx) => () => {
-    const updatedRows = rowData?.filter((_, index) => index !== idx);
-    setRowData(updatedRows);
+    const deletedRow = { ...row }; 
+    setDeletedRows((prevDeletedRows) => [...prevDeletedRows, deletedRow]);
   
-    const calculatedTotalAmount = updatedRows.reduce(
-      (total, row) =>
-        total +
-        row.quantity * row.price +
-        (row.quantity * row.price * row.cgst) / 100 +
-        (row.quantity * row.price * row.igst) / 100 +
-        (row.quantity * row.price * row.sgst) / 100,
-      0
-    );
-  
-    setTotalAmount(calculatedTotalAmount);
-  };
+      const updatedRows = rowData?.filter((_, index) => index !== idx);
+      setRowData(updatedRows);
+    
+      const calculatedTotalAmount = updatedRows.reduce(
+        (total, row) =>
+          total +
+          row.quantity * row.price +
+          (row.quantity * row.price * row.cgst) / 100 +
+          (row.quantity * row.price * row.igst) / 100 +
+          (row.quantity * row.price * row.sgst) / 100,
+        0
+      );
+    
+      setTotalAmount(calculatedTotalAmount);
+    };
 
   const toggleForm = () => {
     setShowForm((prevState) => !prevState);
@@ -298,6 +309,7 @@ const [productName, setProductName] = useState('');
       size
     ) {
       const newRow = {
+        id: Id,
         productId,
         productName,
         weight,
@@ -346,6 +358,12 @@ const [productName, setProductName] = useState('');
 
 
   const handleEditRow = (idx, row) => {
+
+    const selectedOption = userData2.find((option) => option.productName === row.productName);
+    const selectedProductId = selectedOption ? selectedOption.id : '';
+
+  setId(row.id)
+  setProductId(selectedProductId);
   setProductName(row.productName);
   setWeight(row.weight);
   setQuantity(row.quantity);
@@ -396,6 +414,7 @@ const [productName, setProductName] = useState('');
 
     console.log({
       quotation:{
+          id: state?.id,
           quotationId:null,
           userId: userId,
           tempUserId :tempId,
@@ -415,7 +434,8 @@ const [productName, setProductName] = useState('');
           termsAndCondition: terms,
           totalAmount: finalAmount,
       },
-      quotationDetails: updatedRows
+        quotationDetails: updatedRows,
+        deletedQuotationDetails: deletedRows
   })
     
       if (contactName && address && userId && phone && status && address && comment && terms && updatedRows) {
@@ -447,7 +467,8 @@ const [productName, setProductName] = useState('');
                   termsAndCondition: terms,
                   totalAmount: finalAmount,
               },
-                  quotationDetails: updatedRows
+                  quotationDetails: updatedRows,
+                  deletedQuotationDetails: deletedRows
           })
           });
           
@@ -455,8 +476,6 @@ const [productName, setProductName] = useState('');
             // Redirect to home page upon successful submission
         
            response.json().then(data => {
-
-          
             navigate('/dashboard/quotation/viewDetail', { state: data });
       
     });
@@ -492,11 +511,11 @@ const [productName, setProductName] = useState('');
                 label="User"
                 name="user"
                 select
-                value={userName}
+                value={user}
                 onChange={(e) => {
                   const selectedOption = userData?.find((option) => option.userName === e.target.value);
                   setTempId(selectedOption?.id || '');
-                  setUserName(e.target.value);
+                  setUser(e.target.value);
                 }}
                 style={{ marginBottom: 10 }}
               >
@@ -527,14 +546,7 @@ const [productName, setProductName] = useState('');
               xs={12}
               md={6}
             >
-               <TextField
-                    fullWidth
-                    label="Quotation"
-                    name="quotation"
-                    value={quotation}
-                    onChange={handleInputChange}
-                  >                 
-                  </TextField>
+       
             </Grid>
             <Grid
               xs={12}
@@ -618,9 +630,24 @@ height='50px'/>
     <>
       <Box sx={{ position: 'relative', overflowX: 'auto' }}>
         <div className='purchase-popup'>
-          <button className='add-purchase' style={{ background: `${primaryColor}` }} onClick={toggleForm}>
-            Add Product
-          </button>
+        <Grid
+            xs={12}
+            md={6}
+            >
+            <Box sx={{ mt: 2 , mb: 2}}
+            display="flex"
+            justifyContent="flex-end"
+            marginRight="12px">
+            <Button
+              color="primary"
+              variant="contained"
+              align="right"
+              onClick={toggleForm}
+            >
+              Add Product
+            </Button>
+          </Box>
+        </Grid>
 
           {showForm && (
             <div className='modal' onClick={handleModalClick}>
@@ -840,7 +867,7 @@ height='50px'/>
                                 </IconButton>
                               </TableCell>
                               <TableCell align='right'>
-                                <IconButton onClick={handleRemoveRow(idx)}>
+                                <IconButton onClick={handleRemoveRow(idx, row)}>
                                   <Icon>
                                     <Delete />
                                   </Icon>
@@ -895,7 +922,7 @@ height='50px'/>
             xs={12}
             md={6}
             >
-            <Box sx={{ mt: 2 }}
+            <Box sx={{ mt: 2 , mb: 2 }}
             display="flex"
             justifyContent="flex-end"
             marginRight="12px">

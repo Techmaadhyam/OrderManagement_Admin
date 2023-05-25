@@ -38,6 +38,7 @@ import dayjs from 'dayjs';
 
 const userId = parseInt(sessionStorage.getItem('user'))
 const dateFormat = 'DD/MM/YYYY';
+
 const userOptions = [
   {
     label: 'Open',
@@ -136,7 +137,7 @@ console.log(state)
   const [userData, setUserData]= useState([])
   const navigate = useNavigate();
 //form state handeling
-const [userName, setUserName] = useState('');
+
 const [type, setType] = useState("");
 const [quotation, setQuotation] = useState('');
 const [deliveryDate, setDeliveryDate] = useState(dayjs(state?.deliveryDate, dateFormat));
@@ -147,6 +148,8 @@ const [address, setAddress] = useState(state?.deliveryAddress || "");
 const [tempId, setTempId] = useState(state?.tempUserId);
 const [terms, setTerms] = useState(state?.termsAndCondition || '');
 const [comment, setComment] = useState(state?.comments||'');
+const [user, setUser] = useState('')
+
 
 const [currentDate, setCurrentDate] = useState('');
 
@@ -166,16 +169,21 @@ const [productName, setProductName] = useState('');
 
   const [userData2, setUserData2] = useState([])
   const [productId, setProductId] = useState()
+  const [Id, setId] = useState()
 
   const [totalAmount, setTotalAmount] = useState(0);
 
   const [rowData, setRowData] =useState()
   const [dDate, setDDate] =useState(state?.deliveryDate)
+  //deleted row
+  const [deletedRows, setDeletedRows] = useState([]);
+
   useEffect(() => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllSalesOrderDetails/${state?.id || state?.soRecord?.id}`)
       .then(response => {
        setRowData(response.data)
        setTotalAmount(state?.totalAmount)
+       console.log(response.data)
       })
       .catch(error => {
         console.error(error);
@@ -196,7 +204,7 @@ const [productName, setProductName] = useState('');
   switch (name) {
   
       case 'user':
-        setUserName(value);
+        setUser(value);
           break;
       case 'contactName':
         setContactName(value);
@@ -226,13 +234,18 @@ const [productName, setProductName] = useState('');
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`)
       .then(response => {
         setUserData(response.data);
+        console.log(response.data)
+
+        const selecteduserId = response.data.find((option) => option.id === state?.tempUserId);
+        const selecteduser = selecteduserId ? selecteduserId.userName :'';
+        setUser(selecteduser)
       })
       .catch(error => {
         console.error(error);
       });
   }, []);
 
- 
+
   useEffect(() => {
     if (deliveryDate) {
       const deliveryDateJS = deliveryDate.toDate();
@@ -252,9 +265,11 @@ const [productName, setProductName] = useState('');
   /////////////
 
 
+  const handleRemoveRow = (idx, row) => () => {
 
+  const deletedRow = { ...row }; 
+  setDeletedRows((prevDeletedRows) => [...prevDeletedRows, deletedRow]);
 
-  const handleRemoveRow = (idx) => () => {
     const updatedRows = rowData?.filter((_, index) => index !== idx);
     setRowData(updatedRows);
   
@@ -298,6 +313,7 @@ const [productName, setProductName] = useState('');
       size
     ) {
       const newRow = {
+        id: Id,
         productId,
         productName,
         weight,
@@ -346,6 +362,11 @@ const [productName, setProductName] = useState('');
 
 
   const handleEditRow = (idx, row) => {
+
+    const selectedOption = userData2.find((option) => option.productName === row.productName);
+    const selectedProductId = selectedOption ? selectedOption.id : '';
+  setId(row.id)
+  setProductId(selectedProductId);
   setProductName(row.productName);
   setWeight(row.weight);
   setQuantity(row.quantity);
@@ -396,6 +417,7 @@ const [productName, setProductName] = useState('');
 
     console.log({
       salesOrder:{
+          id: state?.id,
           quotationId:null,
           userId: userId,
           tempUserId :tempId,
@@ -415,7 +437,8 @@ const [productName, setProductName] = useState('');
           termsAndCondition: terms,
           totalAmount: finalAmount,
       },
-          salesOrderDetails: updatedRows
+          salesOrderDetails: updatedRows,
+          deletedSODetails: deletedRows
   })
     
       if (contactName && address && userId && phone && status && address && comment && terms && updatedRows) {
@@ -447,7 +470,8 @@ const [productName, setProductName] = useState('');
                   termsAndCondition: terms,
                   totalAmount: finalAmount,
               },
-                  salesOrderDetails: updatedRows
+                  salesOrderDetails: updatedRows,
+                  deletedSODetails: deletedRows
           })
           });
           
@@ -492,11 +516,11 @@ const [productName, setProductName] = useState('');
                 label="User"
                 name="user"
                 select
-                value={userName}
+                value={user}
                 onChange={(e) => {
                   const selectedOption = userData?.find((option) => option.userName === e.target.value);
                   setTempId(selectedOption?.id || '');
-                  setUserName(e.target.value);
+                  setUser(e.target.value);
                 }}
                 style={{ marginBottom: 10 }}
               >
@@ -618,9 +642,24 @@ height='50px'/>
     <>
       <Box sx={{ position: 'relative', overflowX: 'auto' }}>
         <div className='purchase-popup'>
-          <button className='add-purchase' style={{ background: `${primaryColor}` }} onClick={toggleForm}>
-            Add Product
-          </button>
+        <Grid
+            xs={12}
+            md={6}
+            >
+            <Box sx={{ mt: 2 , mb: 2}}
+            display="flex"
+            justifyContent="flex-end"
+            marginRight="12px">
+            <Button
+              color="primary"
+              variant="contained"
+              align="right"
+              onClick={toggleForm}
+            >
+              Add Product
+            </Button>
+          </Box>
+        </Grid>
 
           {showForm && (
             <div className='modal' onClick={handleModalClick}>
@@ -645,7 +684,7 @@ height='50px'/>
                           style={{ marginBottom: 10 }}
                         >
                           {userData2?.map((option) => (
-                            <MenuItem key={option.id} value={option.productName}>
+                            <MenuItem key={option.id} value={option.productName} >
                               {option.productName}
                             </MenuItem>
                           ))}
@@ -794,7 +833,7 @@ height='50px'/>
                         </TableHead>
                         <TableBody>
                           {rowData?.map((row, idx) => (
-                            <TableRow hover key={idx}>
+                            <TableRow hover key={idx.id}>
                               <TableCell>
                                 <div>{row.productName}</div>
                               </TableCell>
@@ -840,7 +879,7 @@ height='50px'/>
                                 </IconButton>
                               </TableCell>
                               <TableCell align='right'>
-                                <IconButton onClick={handleRemoveRow(idx)}>
+                                <IconButton onClick={handleRemoveRow(idx, row)}>
                                   <Icon>
                                     <Delete />
                                   </Icon>
@@ -895,7 +934,7 @@ height='50px'/>
             xs={12}
             md={6}
             >
-            <Box sx={{ mt: 2 }}
+            <Box sx={{ mt: 2 , mb: 2}}
             display="flex"
             justifyContent="flex-end"
             marginRight="12px">
