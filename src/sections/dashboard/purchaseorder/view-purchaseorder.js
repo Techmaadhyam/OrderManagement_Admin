@@ -92,7 +92,7 @@ export const ViewPurchaseOrder = (props) => {
   const location = useLocation();
   const state = location.state;
 
- 
+
 
  
 
@@ -275,9 +275,17 @@ export const ViewPurchaseOrder = (props) => {
             <Grid
               xs={12}
               md={6}
+              style={{marginTop: "20px"}}
+            >
+  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Terms &Conditions : {state?.termsAndCondition || state?.purchaseOrderRec?.termsAndCondition}</Typography>
+
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
               style={{marginTop: "20px", marginBottom: "30px"}}
             >
-  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Terms &Conditions :  This product can be sold on the said customer</Typography>
+  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Comments: {state?.comments || state?.purchaseOrderRec?.comments}</Typography>
 
             </Grid>
         <Divider/>

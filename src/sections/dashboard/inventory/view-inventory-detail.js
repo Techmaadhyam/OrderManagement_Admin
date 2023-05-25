@@ -155,13 +155,13 @@ export const ViewInventoryDetail = (props) => {
         <PropertyListItem
           align={align}
           label="Category"
-          value={state?.categoryName}
+          value={state?.categoryName ||state?.category?.name}
         />
          <Divider />
         <PropertyListItem
           align={align}
           label="Rack"
-          value={state?.rackName}
+          value={state?.rackName || state?.rack?.name}
         />
         <Divider />
         <PropertyListItem

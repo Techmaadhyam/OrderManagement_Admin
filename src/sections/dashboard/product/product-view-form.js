@@ -134,6 +134,7 @@ const handleSaveRecord = async (editedRecord) => {
       if (response.ok) {
        response.json().then(data => {
         console.log(data);
+        window.location.reload()
    
        
 });
@@ -287,7 +288,6 @@ const columns = [
             label="Category"
             name="category"
             value={editedRecord.category.name}
-            onChange={handleChange}
             style={{ marginBottom: 10 }}
           />
             </Grid>
@@ -312,7 +312,6 @@ const columns = [
             label="Description"
             name="description"
             value={editedRecord.category.description}
-            onChange={handleChange}
             style={{ marginBottom: 10 }}
           />
           </Grid>

@@ -35,6 +35,7 @@ const QuotationViewTable = () => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllQuotations/${userId}`)
       .then(response => {
         setUserData(response.data);
+ 
       })
       .catch(error => {
         console.error(error);

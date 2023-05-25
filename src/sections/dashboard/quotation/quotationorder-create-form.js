@@ -136,7 +136,6 @@ export const QuotationOrderCreateForm = (props) => {
 //form state handeling
 const [userName, setUserName] = useState('');
 const [type, setType] = useState("");
-const [quotation, setQuotation] = useState('');
 const [deliveryDate, setDeliveryDate] = useState('');
 const [status, setStatus] = useState("");
 const [contactName,setContactName] = useState('')
@@ -185,9 +184,6 @@ const [productName, setProductName] = useState('');
           break;
       case 'contactName':
         setContactName(value);
-        break;
-      case 'quotation':
-        setQuotation(value);
         break;
       case 'mobileno':
         setPhone(value);
@@ -384,6 +380,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
                   createdDate: currentDate,
                   lastModifiedDate: currentDate,
                   comments : comment,
+                  termsAndCondition: terms,
                   totalAmount: finalAmount,
         
               },
@@ -466,14 +463,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
               xs={12}
               md={6}
             >
-               <TextField
-                    fullWidth
-                    label="Quotation"
-                    name="quotation"
-                    value={quotation}
-                    onChange={handleInputChange}
-                  >                 
-                  </TextField>
+      
             </Grid>
             <Grid
               xs={12}
@@ -553,9 +543,24 @@ height='50px'/>
     <>
       <Box sx={{ position: 'relative', overflowX: 'auto' }}>
         <div className='purchase-popup'>
-          <button className='add-purchase' style={{ background: `${primaryColor}` }} onClick={toggleForm}>
-            Add Product
-          </button>
+        <Grid
+            xs={12}
+            md={6}
+            >
+            <Box sx={{ mt: 2 , mb: 2}}
+            display="flex"
+            justifyContent="flex-end"
+            marginRight="12px">
+            <Button
+              color="primary"
+              variant="contained"
+              align="right"
+              onClick={toggleForm}
+            >
+              Add Product
+            </Button>
+          </Box>
+        </Grid>
 
           {showForm && (
             <div className='modal' onClick={handleModalClick}>
@@ -830,7 +835,7 @@ height='50px'/>
             xs={12}
             md={6}
             >
-            <Box sx={{ mt: 2 }}
+            <Box sx={{ mt: 2, mb: 2 }}
             display="flex"
             justifyContent="flex-end"
             marginRight="12px">

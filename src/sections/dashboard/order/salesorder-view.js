@@ -92,6 +92,7 @@ export const ViewSalesOrder = (props) => {
   const location = useLocation();
   const state = location.state;
 
+
   const { customer, ...other } = props;
   const [status, setStatus] = useState(statusOptions[0]);
   const [tempuser, setTempuser] =useState([])
@@ -163,6 +164,7 @@ export const ViewSalesOrder = (props) => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllSalesOrderDetails/${state?.id || state?.soRecord?.id}`)
       .then(response => {
        setRowData(response.data)
+       console.log(response.data)
 
       })
       .catch(error => {
@@ -260,9 +262,17 @@ export const ViewSalesOrder = (props) => {
             <Grid
               xs={12}
               md={6}
+              style={{marginTop: "20px"}}
+            >
+  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Terms &Conditions : {state?.termsAndCondition || state?.soRecord?.termsAndCondition}</Typography>
+
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
               style={{marginTop: "20px", marginBottom: "30px"}}
             >
-  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Terms &Conditions :  This product can be sold on the said customer</Typography>
+  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Comments: {state?.comments  || state?.soRecord?.comments} </Typography>
 
             </Grid>
         <Divider/>

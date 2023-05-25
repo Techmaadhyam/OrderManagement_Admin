@@ -92,7 +92,7 @@ export const ViewQuotationDetail = (props) => {
   const location = useLocation();
   const state = location.state;
 
-  //console.log(state)
+  console.log(state)
 
  
 
@@ -168,6 +168,7 @@ export const ViewQuotationDetail = (props) => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllQuotationDetails/${state?.id || state?.quotation?.id}`)
       .then(response => {
        setRowData(response.data)
+       console.log(response.data)
      
       })
       .catch(error => {
@@ -229,18 +230,6 @@ export const ViewQuotationDetail = (props) => {
         <Divider />
         <PropertyListItem
           align={align}
-          label="Quotation"
-          value=''
-        />
-        <Divider />
-        <PropertyListItem
-          align={align}
-          label="Invoice"
-          value=''
-        />
-        <Divider />
-        <PropertyListItem
-          align={align}
           label="DeliveryDate"
           value={state?.deliveryDate || state?.quotation?.deliveryDate}
         />
@@ -281,9 +270,17 @@ export const ViewQuotationDetail = (props) => {
             <Grid
               xs={12}
               md={6}
+              style={{marginTop: "20px"}}
+            >
+  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Terms &Conditions : {state?.termsAndCondition || state?.quotation?.termsAndCondition}</Typography>
+
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
               style={{marginTop: "20px", marginBottom: "30px"}}
             >
-  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Terms &Conditions :  This product can be sold on the said customer</Typography>
+  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Comments: {state?.comments || state?.quotation?.comments} </Typography>
 
             </Grid>
         <Divider/>

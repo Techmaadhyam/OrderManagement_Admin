@@ -561,9 +561,24 @@ height='50px'/>
     <>
       <Box sx={{ position: 'relative', overflowX: 'auto' }}>
         <div className='purchase-popup'>
-          <button className='add-purchase' style={{ background: `${primaryColor}` }} onClick={toggleForm}>
-            Add Product
-          </button>
+        <Grid
+            xs={12}
+            md={6}
+            >
+            <Box sx={{ mt: 2 , mb: 2}}
+            display="flex"
+            justifyContent="flex-end"
+            marginRight="12px">
+            <Button
+              color="primary"
+              variant="contained"
+              align="right"
+              onClick={toggleForm}
+            >
+              Add Product
+            </Button>
+          </Box>
+        </Grid>
 
           {showForm && (
             <div className='modal' onClick={handleModalClick}>
@@ -838,7 +853,7 @@ height='50px'/>
             xs={12}
             md={6}
             >
-            <Box sx={{ mt: 2 }}
+            <Box sx={{ mt: 2 , mb: 2 }}
             display="flex"
             justifyContent="flex-end"
             marginRight="12px">

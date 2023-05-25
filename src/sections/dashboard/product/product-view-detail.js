@@ -206,18 +206,16 @@ export const ViewProductDetail = (props) => {
         </PropertyListItem>
         <Divider />
         <div style={{ display: 'flex', alignItems: 'center' }}>
-        <PropertyListItem
-  
-          label="Category"
-          value={state?.category?.name}
-        />
-        <IconButton onClick={handleEditOpen}>
-          <Icon>
-            <EditIcon />
-          </Icon>
-        </IconButton>
-      </div>
-      <Divider />
+  <div style={{ marginRight: '8px' }}>
+    <PropertyListItem align={align} label="Category" value={state?.category?.name} />
+  </div>
+  <IconButton onClick={handleEditOpen}>
+    <Icon>
+      <EditIcon />
+    </Icon>
+  </IconButton>
+</div>
+<Divider />
         <PropertyListItem
           align={align}
           label="Type"
