@@ -542,7 +542,7 @@ const [productName, setProductName] = useState('');
             >
                 <TextField
                     fullWidth
-                    label="Type"
+                    label="Payment Type"
                     name="type"
                     value={type}
                     onChange={handleInputChange}

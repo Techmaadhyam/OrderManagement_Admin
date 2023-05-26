@@ -533,7 +533,7 @@ const [productName, setProductName] = useState('');
             >
                 <TextField
                     fullWidth
-                    label="Type"
+                    label="Payment Type"
                     name="type"
                     value={type}
                     onChange={handleInputChange}
@@ -930,7 +930,7 @@ height='50px'/>
               align="right"
               onClick={handleClick}
             >
-              Place Order
+              Place Quotation
             </Button>
           </Box>
         </Grid>

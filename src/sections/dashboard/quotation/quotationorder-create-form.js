@@ -142,6 +142,7 @@ const [contactName,setContactName] = useState('')
 const [phone, setPhone] = useState('');
 const [address, setAddress] = useState("");
 const [tempId, setTempId] = useState();
+const [userState, setUserState] = useState();
 const [terms, setTerms] = useState('');
 const [comment, setComment] = useState('');
 
@@ -205,10 +206,20 @@ const handleDateChange = (date) => {
   setDeliveryDate(date);
 };
    //get temp user
-  useEffect(() => {
+   useEffect(() => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`)
       .then(response => {
-        setUserData(response.data);
+        setUserData(prevData => [...prevData, ...response.data]);
+     
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  
+    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllUsersBasedOnType/${userId}`)
+      .then(response => {
+        setUserData(prevData => [...prevData, ...response.data]);
+
       })
       .catch(error => {
         console.error(error);
@@ -424,26 +435,32 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
               md={6}
             >
               <TextField
-                    fullWidth
-                    label="User"
-                    name="user"
-                    select
-                    value={userName}
+                fullWidth
+                label="User"
+                name="user"
+                select
+                value={userName}
                 onChange={(e) => {
-                  const selectedOption = userData?.find((option) => option.userName === e.target.value);
-                  setTempId(selectedOption?.id || '');
+                  const selectedOption = userData.find((option) => option.userName === e.target.value);
+                  if (selectedOption) {
+                    if (selectedOption.hasOwnProperty('createdByUser')) {
+                      setUserState(selectedOption.id || '');
+                    } else {
+                      setTempId(selectedOption.id || '');
+                    }
+                  }
                   setUserName(e.target.value);
                 }}
                 style={{ marginBottom: 10 }}
               >
-                {userData?.map((option) => (
+                {userData.map((option) => (
                   option.userName && (
                     <MenuItem key={option.id} value={option.userName}>
                       {option.userName}
                     </MenuItem>
                   )
                 ))}
-                  </TextField>
+              </TextField>
             </Grid>
             <Grid/>
             <Grid
@@ -452,7 +469,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
             >
                 <TextField
                     fullWidth
-                    label="Type"
+                    label="Payment Type"
                     name="type"
                     value={type}
                     onChange={handleInputChange}
@@ -845,7 +862,7 @@ height='50px'/>
               align="right"
               onClick={handleClick}
             >
-              Place Order
+              Place Quotation
             </Button>
           </Box>
         </Grid>
