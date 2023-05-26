@@ -27,6 +27,7 @@ const InvoiceViewPage = lazy(() => import('src/pages/dashboard/invoices/viewDeta
 //inventory (do not delete)
 const InventoryCreatePage = lazy(()=> import('src/pages/dashboard/inventory/create'))
 const InventoryViewPage = lazy(()=> import('src/pages/dashboard/inventory/view'))
+const InventoryEditPage = lazy(()=> import('src/pages/dashboard/inventory/edit'))
 const InventoryDetailPage = lazy(()=> import('src/pages/dashboard/inventory/viewDetail'))
 
 // Temporary User (do not delete)
@@ -188,6 +189,11 @@ export const dashboardRoutes = [
           {
             path: 'create',
             element: <InventoryCreatePage />
+          },
+          {
+            
+            path: 'edit',
+            element: <InventoryEditPage />
           },
           {
             path: 'viewDetail',

@@ -103,6 +103,7 @@ export const paths = {
     inventory: {
       index: '/dashboard/inventory',
       view: '/dashboard/inventory/view',
+      edit: '/dashboard/inventory/edit',
       create: '/dashboard/inventory/create',
       viewDetail: '/dashboard/inventory/viewDetail',
     },

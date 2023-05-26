@@ -20,6 +20,7 @@ import IconWithPopup from '../user/user-icon';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const userId = sessionStorage.getItem('user');
 
@@ -34,7 +35,13 @@ const userOptions = [
   },
   
 ];
-export const CreateInventory = (props) => {
+export const EditInventory = (props) => {
+
+    const location = useLocation();
+    const state = location.state;
+  console.log(state)
+
+
   const { customer, ...other } = props;
   const [showAdditionalFields, setShowAdditionalFields] = useState(false);
 //warehouse
@@ -54,19 +61,19 @@ export const CreateInventory = (props) => {
   const [product, setProduct]=useState([])
   //remaining form states
 
-  const [hsnCode, setHsnCode] = useState('');
-  const [size, setSize] = useState("");
-  const [rack,  setRack]= useState('')
-  const [weight, setWeight] = useState('');
+  const [hsnCode, setHsnCode] = useState(state.hsncode||'');
+  const [size, setSize] = useState(state.size||"");
+  const [rack,  setRack]= useState(state.rackId||'')
+  const [weight, setWeight] = useState(state.weight||'');
   const [createdDate, setCreatedDate] = useState('');
-  const [quantity, setQuantity] = useState('');
-  const [cost,setCost] = useState('')
-  const [sgst, setSgst] = useState('');
-  const [igst, setIgst] = useState('');
-  const [cgst, setCgst] = useState('');
-  const [description, setDescription] = useState('');
+  const [quantity, setQuantity] = useState(state.quantity||'');
+  const [cost,setCost] = useState(state.price||'')
+  const [sgst, setSgst] = useState(state.sgst||'');
+  const [igst, setIgst] = useState(state.igst||'');
+  const [cgst, setCgst] = useState(state.cgst||'');
+  const [description, setDescription] = useState(state.description||'');
 
-  const [rackName, setRackName] =useState('')
+  const [rackName, setRackName] =useState(state.rackName||'')
   const [rackDesc, setRackDesc] =useState('')
 
   const [userData, setUserData]= useState([])
@@ -127,7 +134,11 @@ export const CreateInventory = (props) => {
       .then(response => {
 
         setWarehouse(response.data)
-        console.log(response.data)
+
+
+        const selectedWarehouseId = response.data.find((option) => option.id === state?.warehouseId);
+        const selectedWarehouse = selectedWarehouseId ? selectedWarehouseId.id :'';
+       setWarehouseId(selectedWarehouse)
 
       })
       .catch(error => {
@@ -141,7 +152,10 @@ export const CreateInventory = (props) => {
       .then(response => {
 
         setPurchaseOrder(response.data)
-        console.log(response.data)
+
+        const selectedPurchaseId = response.data.find((option) => option.id === state?.purchaseOrderId);
+        const selectedPurchase = selectedPurchaseId ? selectedPurchaseId.id :'';
+       setPurchaseId(selectedPurchase)
       })
       .catch(error => {
         console.error(error);
@@ -153,6 +167,10 @@ export const CreateInventory = (props) => {
       .then(response => {
         setCategory(response.data);
         console.log(response.data);
+
+        const selectedPurchaseId = response.data.find((option) => option.id === state?.categoryId);
+        const selectedPurchase = selectedPurchaseId ? selectedPurchaseId.id :'';
+       setCategoryId(selectedPurchase)
       })
       .catch(error => {
         console.error(error);
@@ -165,6 +183,10 @@ export const CreateInventory = (props) => {
       .then(response => {
         setProduct(response.data);
         console.log(response.data);
+
+           const selectedPurchaseId = response.data.find((option) => option.id === state?.productId);
+        const selectedPurchase = selectedPurchaseId ? selectedPurchaseId.id :'';
+       setSelectedId(selectedPurchase)
       })
       .catch(error => {
         console.error(error);
@@ -230,14 +252,19 @@ useEffect(() => {
     }
   };
 
+
+
   //handle rack change
   const handleCategoryChange = (event) => {
 
-    const selectedCategory = event.target.value;
+    const selectedValue = event.target.value;
+    const selectedOption = updatedUserOptions.find(option => option.value === selectedValue);
+    const selectedLabel = selectedOption ? selectedOption.label : '';
+  
+    setRack(selectedValue);
+    setRackName(selectedLabel);
 
-    setRack(selectedCategory)
-
-    if (selectedCategory && selectedCategory !== 'none' && selectedCategory !== 'other' && isNaN(Number(selectedCategory))) {
+    if (selectedValue && selectedValue !== 'none' && selectedValue !== 'other' && isNaN(Number(selectedValue))) {
       setShowAdditionalFields(true);
 
     } else {
@@ -256,6 +283,7 @@ useEffect(() => {
     label: rackName,
     value: rackId
   }));
+
 
   const updatedUserOptions = userOptions.concat(mappedOptions);
   const handleSave=async ()=>{
@@ -282,6 +310,7 @@ useEffect(() => {
     let inventory={
       inventory:{
           
+        id: state?.inventoryId,
         quantity:parseFloat(quantity),
         weight:weight,
         size:size,
@@ -295,9 +324,11 @@ useEffect(() => {
         sgst:parseFloat(sgst),
         cgst:parseFloat(cgst),
         igst:parseFloat(igst),
+        lastModifiedDate: createdDate
       },
 
       rack:{
+            id: rack,
             name: rackName,
             description: rackDesc,
             createdBy:parseFloat(userId),
@@ -342,7 +373,7 @@ useEffect(() => {
   return (
     <div style={{minWidth: "100%", marginBottom: '1rem' }}>
    <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-      <h2>Create Inventory</h2>
+      <h2>Edit Inventory</h2>
       <IconWithPopup/>
     </div>
     <form
@@ -416,17 +447,17 @@ useEffect(() => {
                     label="Category"
                     name="category"
                     select
-                    value={categoryName? categoryName: ''}
+                    value={categoryId? categoryId: ''}
                     onChange={(e) => {
-                      const selectedOption = category?.find((option) => option.name === e.target.value);
+                      const selectedOption = category?.find((option) => option.id === e.target.value);
                       setCategoryId(selectedOption?.id || '');
-                      setCategoryName(e.target.value);
+                     
                     }}
                     style={{ marginBottom: 10 }}
                   >
                     {category?.map((option) => (
-                      option.name && (
-                        <MenuItem key={option.id} value={option.name}>
+                      option.id && (
+                        <MenuItem key={option.id} value={option.id}>
                           {option.name}
                         </MenuItem>
                       )
@@ -669,6 +700,6 @@ useEffect(() => {
   );
 };
 
-CreateInventory.propTypes = {
+EditInventory.propTypes = {
   customer: PropTypes.object.isRequired
 };

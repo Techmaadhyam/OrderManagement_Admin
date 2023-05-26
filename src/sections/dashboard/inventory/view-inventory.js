@@ -62,7 +62,7 @@ const notify = (type, message) => {
 const handleRemoveRow = (id) => async () => {
   try {
     await axios.delete(`http://13.115.56.48:8080/techmadhyam/deleteInventoryById/${id}`);
-    const updatedRows = userData.filter(item => item.id !== id);
+    const updatedRows = userData.filter(item => item.inventoryId  !== id);
     setUserData(updatedRows);
     notify(
       "success",
@@ -72,6 +72,11 @@ const handleRemoveRow = (id) => async () => {
     console.error('Error deleting row:', error.message);
   }
 };
+
+const handleNavigation = record => {
+  navigate('/dashboard/inventory/edit', { state: record });
+};
+
  
   const columns = [
     {
@@ -121,21 +126,19 @@ const handleRemoveRow = (id) => async () => {
     {
       dataIndex: 'actionEdit',
       key: 'actionEdit',
-      render: () => (
-        <Link>
-          <IconButton>
-            <Icon>
-              <EditIcon />
-            </Icon>
-          </IconButton>
-        </Link>
+      render: (_, record) => (
+        <IconButton onClick={() => handleNavigation(record)}>
+          <Icon>
+            <EditIcon />
+          </Icon>
+        </IconButton>
       ),
     },
     {
       dataIndex: 'actionDelete',
       key: 'actionDelete',
       render: (_, row) => (
-        <IconButton onClick={handleRemoveRow(row.id)}>
+        <IconButton onClick={handleRemoveRow(row.inventoryId)}>
           <Icon>
             <Delete />
           </Icon>
