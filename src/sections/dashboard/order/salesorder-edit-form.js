@@ -54,7 +54,7 @@ const userOptions = [
   },
   {
     label: 'Cancelled',
-    value: 'Canclled'
+    value: 'Cancelled'
   },
   {
     label: 'Delivered',
@@ -407,6 +407,7 @@ const [productName, setProductName] = useState('');
 
   
   const updatedRows = rowData?.map(({ productName, ...rest }) => rest);
+  const deleteRows= deletedRows?.map(({ productName, ...rest }) => rest);
   //post request
   const handleClick = async (event) => {
     let finalAmount = parseFloat(totalAmount.toFixed(2))
@@ -438,7 +439,7 @@ const [productName, setProductName] = useState('');
           totalAmount: finalAmount,
       },
           salesOrderDetails: updatedRows,
-          deletedSODetails: deletedRows
+          deletedSODetails: deleteRows
   })
     
       if (contactName && address && userId && phone && status && address && comment && terms && updatedRows) {
@@ -471,13 +472,12 @@ const [productName, setProductName] = useState('');
                   totalAmount: finalAmount,
               },
                   salesOrderDetails: updatedRows,
-                  deletedSODetails: deletedRows
+                  deletedSODetails: deleteRows
           })
           });
           
           if (response.ok) {
             // Redirect to home page upon successful submission
-        
            response.json().then(data => {
 
           
