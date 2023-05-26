@@ -32,6 +32,8 @@ import React from 'react';
 import { Add, Delete } from '@mui/icons-material';
 import './customTable.css'
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -175,6 +177,20 @@ const [productName, setProductName] = useState('');
     setCurrentDate(formattedDate);
   }, []);
 
+      //toast notification from toastify library
+const notify = (type, message) => {
+  toast[type](message, {
+    position: "top-right",
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
+};
+
  const handleInputChange = (event) => {
   const { name, value } = event.target;
 
@@ -261,6 +277,16 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
   const handleSubmit = (e) => {
     e.preventDefault();
   
+    const selectedOption = userData2.find((option) => option.productName === productName);
+  
+    if (parseInt(quantity) > selectedOption.quantity) {
+      notify(
+        "error",
+        `Insufficient Quantity in Inventory. Quantity must be below ${selectedOption.quantity}`
+      );
+      return;
+    }
+  
     if (
       quantity &&
       price &&
@@ -318,6 +344,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
       setTotalAmount(calculatedTotalAmount);
     }
   };
+  
 
 
   const handleEditRow = (idx, row) => {
@@ -349,9 +376,10 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
 
   //
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllItem/${userId}`)
+    axios.get(`http://13.115.56.48:8080/techmadhyam/getInventoryByUserId/${userId}`)
       .then(response => {
         setUserData2(response.data);
+        console.log(JSON.stringify(response.data))
       })
       .catch(error => {
         console.error(error);
@@ -418,6 +446,17 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
 
   return (
     <div style={{minWidth: "100%" }}>
+       <ToastContainer
+                     position="top-right"
+                     autoClose={4000}
+                     hideProgressBar={false}
+                     newestOnTop={false}
+                     closeOnClick
+                     rtl={false}
+                     pauseOnFocusLoss
+                     draggable
+                     pauseOnHover
+                     theme="light"/>
     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
       <h2>Create Sales Order</h2>
       <IconWithPopup/>
@@ -589,25 +628,34 @@ height='50px'/>
                   <div className='form-row'>
                     <div className='popup-left'>
                       <Grid xs={12} md={6}>
-                        <TextField
-                          fullWidth
-                          label='Name'
-                          name='name'
-                          select
-                          value={productName}
-                          onChange={(e) => {
-                            const selectedOption = userData2.find(option => option.productName === e.target.value);
-                            setProductId(selectedOption.id);
-                            setProductName(e.target.value);
-                          }}
-                          style={{ marginBottom: 10 }}
-                        >
-                          {userData2?.map((option) => (
-                            <MenuItem key={option.id} value={option.productName}>
-                              {option.productName}
-                            </MenuItem>
-                          ))}
-                          </TextField>
+                      <TextField
+  fullWidth
+  label='Name'
+  name='name'
+  select
+  value={productName}
+  onChange={(e) => {
+    const selectedOption = userData2.find(option => option.productName === e.target.value && option.inventoryId);
+    if (selectedOption) {
+      setProductId(selectedOption.productId);
+      setProductName(e.target.value);
+      setWeight(selectedOption.weight);
+      setSgst(selectedOption.sgst);
+      setCgst(selectedOption.cgst);
+      setIgst(selectedOption.igst);
+      setQuantity(selectedOption.quantity);
+      setSize(selectedOption.size);
+      setPrice(selectedOption.price);
+    }
+  }}
+  style={{ marginBottom: 10 }}
+>
+  {userData2.map((option) => (
+    <MenuItem key={option.inventoryId} value={option.productName}>
+      {option.productName}
+    </MenuItem>
+  ))}
+</TextField>
                           </Grid>
                           <Grid
                           xs={12}
@@ -632,7 +680,7 @@ height='50px'/>
                               name="sgst"
                               type='number'
                               value={sgst}
-                              onChange={(e) => setSgst(e.target.value)}
+                
                               style={{ marginBottom: 10 }}
                           
                               />
@@ -741,6 +789,7 @@ height='50px'/>
 
                     <Scrollbar>
                       <Table sx={{ minWidth: 800, overflowX: 'auto' }}>
+                     
                         <TableHead>
                           <TableRow>
                             {tableHeader.map((item, idx) => (
