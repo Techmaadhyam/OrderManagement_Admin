@@ -373,7 +373,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
               quotation:{
                   tempUserId :tempId,
                   contactPersonName: contactName,
-                  contactPhoneNumber: phone,    
+                  contactPhoneNumber: phone,   
                   status: status,
                   deliveryDate: formattedDeliveryDate,
                   createdBy: userId,

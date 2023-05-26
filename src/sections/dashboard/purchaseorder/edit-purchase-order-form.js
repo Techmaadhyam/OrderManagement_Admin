@@ -409,6 +409,7 @@ const [productName, setProductName] = useState('');
 
   
   const updatedRows = rowData?.map(({ productName, ...rest }) => rest);
+  const deleteRows= deletedRows?.map(({ productName, ...rest }) => rest);
   //post request
   const handleClick = async (event) => {
     let finalAmount = parseFloat(totalAmount.toFixed(2))
@@ -417,7 +418,7 @@ const [productName, setProductName] = useState('');
     
     event.preventDefault();
 
-    console.log(JSON.stringify({
+    console.log({
       purchaseOrder:{
           id: state?.id,
           quotationId:null,
@@ -439,8 +440,8 @@ const [productName, setProductName] = useState('');
           totalAmount: finalAmount,
       },
           purchaseOrderDetails: updatedRows,
-          deletePODetails: deletedRows
-  }))
+          deletedPODetails: deleteRows
+  })
     
       if (contactName && address && userId && phone && status && address && comment && terms && updatedRows) {
         try {
@@ -472,7 +473,7 @@ const [productName, setProductName] = useState('');
                   totalAmount: finalAmount,
               },
                   purchaseOrderDetails: updatedRows,
-                  deletePODetails: deletedRows
+                  deletedPODetails: deleteRows
           })
           });
           
@@ -834,7 +835,7 @@ height='50px'/>
                         </TableHead>
                         <TableBody>
                           {rowData?.map((row, idx) => (
-                            <TableRow hover key={idx}>
+                            <TableRow hover key={idx.id}>
                               <TableCell>
                                 <div>{row.productName}</div>
                               </TableCell>

@@ -174,6 +174,7 @@ const [productName, setProductName] = useState('');
   const [dDate, setDDate] =useState(state?.deliveryDate)
 
   const [Id, setId] = useState()
+  const [qId, setQId] = useState()
 
       //deleted row
   const [deletedRows, setDeletedRows] = useState([]);
@@ -295,6 +296,7 @@ const [productName, setProductName] = useState('');
   };
 
   const handleSubmit = (e) => {
+    console.log(Id)
     e.preventDefault();
   
     if (
@@ -313,7 +315,6 @@ const [productName, setProductName] = useState('');
         productId,
         productName,
         weight,
-        quotationId: null,
         quantity: parseFloat(quantity),
         price: parseFloat(price),
         cgst: parseFloat(cgst),
@@ -359,10 +360,14 @@ const [productName, setProductName] = useState('');
 
   const handleEditRow = (idx, row) => {
 
+    console.log(rowData)
+    console.log(idx, row)
+
     const selectedOption = userData2.find((option) => option.productName === row.productName);
     const selectedProductId = selectedOption ? selectedOption.id : '';
 
   setId(row.id)
+  setQId(row.quotationId)
   setProductId(selectedProductId);
   setProductName(row.productName);
   setWeight(row.weight);
@@ -404,6 +409,8 @@ const [productName, setProductName] = useState('');
 
   
   const updatedRows = rowData?.map(({ productName, ...rest }) => rest);
+  const deleteRows= deletedRows?.map(({ productName, ...rest }) => rest);
+
   //post request
   const handleClick = async (event) => {
     let finalAmount = parseFloat(totalAmount.toFixed(2))
@@ -415,7 +422,6 @@ const [productName, setProductName] = useState('');
     console.log({
       quotation:{
           id: state?.id,
-          quotationId:null,
           userId: userId,
           tempUserId :tempId,
           contactPerson: contactName,
@@ -428,17 +434,16 @@ const [productName, setProductName] = useState('');
           state:null,
           country: null,
           createdBy: userId,
-          createdDate: currentDate,
           lastModifiedDate: currentDate,
           comments : comment,
           termsAndCondition: terms,
           totalAmount: finalAmount,
       },
         quotationDetails: updatedRows,
-        deletedQuotationDetails: deletedRows
+        deletedQuotationDetails: deleteRows
   })
     
-      if (contactName && address && userId && phone && status && address && comment && terms && updatedRows) {
+      if (contactName) {
         try {
           const response = await fetch('http://13.115.56.48:8080/techmadhyam/addQuoatation', {
             method: 'POST',
@@ -449,26 +454,19 @@ const [productName, setProductName] = useState('');
             body: JSON.stringify({
               quotation:{
                   id: state?.id,
-                  quotationId:null,
-                  userId: userId,
-                  tempUserId :tempId,
-                  contactPerson: contactName,
-                  contactPhone: phone,    
-                  status: status,
-                  paymentMode: null,
-                  deliveryDate: dDate,
-                  deliveryAddress: address,
-                  city: null,
-                  state:null,
-                  country: null,
                   createdBy: userId,
+                  tempUserId :tempId,
+                  contactPersonName: contactName,
+                  contactPhoneNumber: phone,    
+                  status: status,
+                  deliveryDate: dDate,
                   lastModifiedDate: currentDate,
                   comments : comment,
                   termsAndCondition: terms,
                   totalAmount: finalAmount,
               },
                   quotationDetails: updatedRows,
-                  deletedQuotationDetails: deletedRows
+                  deletedQuotationDetails: deleteRows
           })
           });
           
@@ -821,7 +819,7 @@ height='50px'/>
                         </TableHead>
                         <TableBody>
                           {rowData?.map((row, idx) => (
-                            <TableRow hover key={idx}>
+                            <TableRow hover key={idx?.id}>
                               <TableCell>
                                 <div>{row.productName}</div>
                               </TableCell>

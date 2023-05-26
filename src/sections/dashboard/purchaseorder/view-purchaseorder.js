@@ -167,6 +167,7 @@ export const ViewPurchaseOrder = (props) => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllPurchaseOrderDetails/${state?.id || state?.purchaseOrderRec?.id}`)
       .then(response => {
        setRowData(response.data)
+       console.log(rowData)
 
       })
       .catch(error => {
