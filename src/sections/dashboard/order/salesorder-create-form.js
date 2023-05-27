@@ -729,7 +729,12 @@ height='50px'/>
                               name="quantity"
                               type='number'
                               value={quantity}
-                              onChange={(e) => setQuantity(e.target.value)}
+                              onChange={(e) => {
+                                const inputValue = e.target.value;
+                                if (inputValue >= 0) {
+                                  setQuantity(inputValue);
+                                }
+                              }}
                               style={{ marginBottom: 15 }}
                               />
                             </Grid>

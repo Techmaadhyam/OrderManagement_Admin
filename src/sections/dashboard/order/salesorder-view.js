@@ -151,7 +151,7 @@ export const ViewSalesOrder = (props) => {
   });
 
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getTempUserById/${state?.tempUserId || state?.soRecord?.tempUserId}`)
+    axios.get(`http://13.115.56.48:8080/techmadhyam/getTempUserById/${state?.tempUserId || state?.soRecord?.tempUserId || state?.userId}`)
       .then(response => {
        setTempuser(response.data)
       })

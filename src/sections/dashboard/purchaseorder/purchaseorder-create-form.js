@@ -165,6 +165,7 @@ const [productName, setProductName] = useState('');
 
   const [userData2, setUserData2] = useState([])
   const [productId, setProductId] = useState()
+  const [salesUser, setSalesUser] =useState()
 
   const [totalAmount, setTotalAmount] = useState(0);
 
@@ -213,7 +214,9 @@ const handleDateChange = (date) => {
    useEffect(() => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`)
       .then(response => {
+      
         setUserData(prevData => [...prevData, ...response.data]);
+       
      
       })
       .catch(error => {
@@ -230,7 +233,7 @@ const handleDateChange = (date) => {
       });
   }, []);
 
-
+console.log(salesUser)
 
 const deliveryDateAntd = deliveryDate;
 const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
@@ -366,6 +369,12 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
       .then(response => {
         setUserData2(response.data);
         console.log(response.data)
+        if (response.data.length > 0) {
+          const loginUser = response.data[0].createdByUser.userName;
+          const loginPhone = response.data[0].createdByUser.mobile;
+          setSalesUser({loginUser: loginUser, loginPhone: loginPhone})
+        }
+        
       })
       .catch(error => {
         console.error(error);
@@ -373,15 +382,65 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
   }, []);
 
 
-  const updatedRows = rows.map(({ productName, ...rest }) => rest);
+
+
+const updatedRows = rows.map(({ productName, ...rest }) => rest);
+
   //post request
-  const handleClick = async (event) => {
+const handleClick = async (event) => {
 let finalAmount = totalAmount.toFixed(2)
     event.preventDefault();
+
+    console.log({
+      purchaseOrder:{
+          quotationId:null,
+          salesOrderId:null,
+          userId: userState,
+          tempUserId :tempId,
+          contactPerson: contactName,
+          contactPhone: phone,    
+          status: status,
+          paymentMode: type,
+          deliveryDate: formattedDeliveryDate,
+          deliveryAddress: address,
+          city: null,
+          state:null,
+          country: null,
+          createdBy: userId,
+          createdDate: currentDate,
+          lastModifiedDate: currentDate,
+          comments : comment,
+          termsAndCondition: terms,
+          totalAmount: finalAmount,
+      },
+          purchaseOrderDetails: updatedRows,
+
+          salesOrder:{
+            quotationId:null,
+            salesOrderId:null,
+            userId: userId,
+            contactPerson: salesUser.loginUser,
+            contactPhone: salesUser.loginPhone,    
+            status: status,
+            paymentMode: type,
+            deliveryDate: formattedDeliveryDate,
+            deliveryAddress: address,
+            city: null,
+            state:null,
+            country: null,
+            createdBy: userId,
+            createdDate: currentDate,
+            lastModifiedDate: currentDate,
+            comments : comment,
+            termsAndCondition: terms,
+            totalAmount: finalAmount,
+        },
+            salesOrderDetails: updatedRows
+  })
     
       if (contactName && address && phone && status && address && comment && terms && updatedRows) {
         try {
-          const response = await fetch('http://13.115.56.48:8080/techmadhyam/createPurchaseOrder', {
+          const response = await fetch('http://13.115.56.48:8080/techmadhyam/createSalesPurchaseOrder', {
             method: 'POST',
             headers: {
     
@@ -391,12 +450,12 @@ let finalAmount = totalAmount.toFixed(2)
               purchaseOrder:{
                   quotationId:null,
                   salesOrderId:null,
-                  userId: userId,
+                  userId: userState,
                   tempUserId :tempId,
                   contactPerson: contactName,
                   contactPhone: phone,    
                   status: status,
-                  paymentMode: null,
+                  paymentMode: type,
                   deliveryDate: formattedDeliveryDate,
                   deliveryAddress: address,
                   city: null,
@@ -409,7 +468,28 @@ let finalAmount = totalAmount.toFixed(2)
                   termsAndCondition: terms,
                   totalAmount: finalAmount,
               },
-                  purchaseOrderDetails: updatedRows
+                  purchaseOrderDetails: updatedRows,
+
+                  salesOrder:{
+                    quotationId:null,
+                    userId: userId,
+                    contactPerson: salesUser.loginUser,
+                    contactPhone: salesUser.loginPhone,     
+                    status: status,
+                    paymentMode: type,
+                    deliveryDate: formattedDeliveryDate,
+                    deliveryAddress: address,
+                    city: null,
+                    state:null,
+                    country: null,
+                    createdBy: userId,
+                    createdDate: currentDate,
+                    lastModifiedDate: currentDate,
+                    comments : comment,
+                    termsAndCondition: terms,
+                    totalAmount: finalAmount,
+                },
+                    salesOrderDetails: updatedRows
           })
           });
           
@@ -460,8 +540,10 @@ let finalAmount = totalAmount.toFixed(2)
                   if (selectedOption) {
                     if (selectedOption.hasOwnProperty('createdByUser')) {
                       setUserState(selectedOption.id || '');
+                      setTempId(null)
                     } else {
                       setTempId(selectedOption.id || '');
+                      setUserState(null)
                     }
                   }
                   setUserName(e.target.value);

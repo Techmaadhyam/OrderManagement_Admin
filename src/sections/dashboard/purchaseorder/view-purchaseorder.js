@@ -154,7 +154,7 @@ export const ViewPurchaseOrder = (props) => {
   });
 
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getTempUserById/${state?.tempUserId || state?.purchaseOrderRec?.tempUserId}`)
+    axios.get(`http://13.115.56.48:8080/techmadhyam/getTempUserById/${state?.tempUserId || state?.purchaseOrderRec?.tempUserId || state?.userId}`)
       .then(response => {
        setTempuser(response.data)
       })
