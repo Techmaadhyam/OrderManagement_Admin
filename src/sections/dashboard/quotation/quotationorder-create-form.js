@@ -383,6 +383,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
             body: JSON.stringify({
               quotation:{
                   tempUserId :tempId,
+                  userId: userState,
                   contactPersonName: contactName,
                   contactPhoneNumber: phone,   
                   status: status,
@@ -406,6 +407,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
     
       
           navigate('/dashboard/quotation/viewDetail', { state: data });
+          console.log(data)
     });
           } 
         } catch (error) {
@@ -445,8 +447,10 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
                   if (selectedOption) {
                     if (selectedOption.hasOwnProperty('createdByUser')) {
                       setUserState(selectedOption.id || '');
+                      setTempId(null)
                     } else {
                       setTempId(selectedOption.id || '');
+                      setUserState(null)
                     }
                   }
                   setUserName(e.target.value);

@@ -404,7 +404,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
     let finalAmount = totalAmount.toFixed(2)
     event.preventDefault();
     
-      if (contactName && address && userId && phone && status && address && comment && terms && updatedRows) {
+      if (contactName) {
         try {
           const response = await fetch('http://13.115.56.48:8080/techmadhyam/createSalesOrder', {
             method: 'POST',
@@ -415,7 +415,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
             body: JSON.stringify({
               salesOrder:{
                   quotationId:null,
-                  userId: userId,
+                  userId: userState,
                   tempUserId :tempId,
                   contactPerson: contactName,
                   contactPhone: phone,    
@@ -495,8 +495,10 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
                   if (selectedOption) {
                     if (selectedOption.hasOwnProperty('createdByUser')) {
                       setUserState(selectedOption.id || '');
+                      setTempId(null)
                     } else {
                       setTempId(selectedOption.id || '');
+                      setUserState(null)
                     }
                   }
                   setUserName(e.target.value);
