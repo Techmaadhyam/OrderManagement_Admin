@@ -246,13 +246,23 @@ const [productName, setProductName] = useState('');
 };
 
    //get temp user
-  useEffect(() => {
+   useEffect(() => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`)
       .then(response => {
-        setUserData(response.data);
-        console.log(response.data)
+   
+        setUserData(prevData => [...prevData, ...response.data]);
+  
+        
+      })
+      .catch(error => {
+        console.error(error);
+      });
 
-        const selecteduserId = response.data.find((option) => option.id === state?.tempUserId);
+      axios.get(`http://13.115.56.48:8080/techmadhyam/getAllUsersBasedOnType/${userId}`)
+      .then(response => {
+        setUserData(prevData => [...prevData, ...response.data]);
+
+        const selecteduserId = response.data.find((option) => option.id === state?.tempUserId || state?.userId);
         const selecteduser = selecteduserId ? selecteduserId.userName :'';
         setUser(selecteduser)
       })

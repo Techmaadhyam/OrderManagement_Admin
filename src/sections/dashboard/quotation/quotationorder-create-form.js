@@ -231,7 +231,7 @@ const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
 const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD/MM/YYYY') : '';
 
 
-
+console.log(tempId, userState)
   //////////////
   //add product//
   /////////////
@@ -374,7 +374,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
     
       if (contactName && address && userId && phone && status && address && comment && terms && updatedRows) {
         try {
-          const response = await fetch('http://13.115.56.48:8080/techmadhyam/addQuoatation', {
+          const response = await fetch('http://13.115.56.48:8080/techmadhyam/addQuoatatio', {
             method: 'POST',
             headers: {
     
