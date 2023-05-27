@@ -446,11 +446,11 @@ console.log(tempId, userState)
                   const selectedOption = userData.find((option) => option.userName === e.target.value);
                   if (selectedOption) {
                     if (selectedOption.hasOwnProperty('createdByUser')) {
-                      setUserState(selectedOption.id || '');
-                      setTempId(null)
-                    } else {
                       setTempId(selectedOption.id || '');
                       setUserState(null)
+                    } else {
+                      setUserState(selectedOption.id || '');
+                      setTempId(null)
                     }
                   }
                   setUserName(e.target.value);

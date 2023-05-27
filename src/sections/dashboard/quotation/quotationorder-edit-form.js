@@ -145,6 +145,7 @@ const [contactName,setContactName] = useState(state?.contactPersonName ||'')
 const [phone, setPhone] = useState(state?.contactPhoneNumber ||'');
 const [address, setAddress] = useState(state?.deliveryAddress || "");
 const [tempId, setTempId] = useState(state?.tempUserId);
+const [userState, setUserState] = useState(state?.userId);
 const [terms, setTerms] = useState(state?.termsAndCondition || '');
 const [comment, setComment] = useState(state?.comments||'');
 const [user, setUser] = useState('')
@@ -184,6 +185,7 @@ const [productName, setProductName] = useState('');
       .then(response => {
        setRowData(response.data)
        setTotalAmount(state?.totalAmount)
+      
       })
       .catch(error => {
         console.error(error);
@@ -227,24 +229,20 @@ const [productName, setProductName] = useState('');
 };
 
    //get temp user
-  useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`)
-      .then(response => {
-        setUserData(prevData => [...prevData, ...response.data]);
+   useEffect(() => {
+    const request1 = axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`);
+    const request2 = axios.get(`http://13.115.56.48:8080/techmadhyam/getAllUsersBasedOnType/${userId}`);
   
-        
-      })
-      .catch(error => {
-        console.error(error);
-      });
-
-      axios.get(`http://13.115.56.48:8080/techmadhyam/getAllUsersBasedOnType/${userId}`)
-      .then(response => {
-        setUserData(prevData => [...prevData, ...response.data]);
-
-        const selecteduserId = response.data.find((option) => option.id === state?.tempUserId || state?.userId);
-        const selecteduser = selecteduserId ? selecteduserId.userName :'';
-        setUser(selecteduser)
+    Promise.all([request1, request2])
+      .then(([response1, response2]) => {
+        const tempUsersData = response1.data;
+        const usersData = response2.data;
+        const combinedData = [...tempUsersData, ...usersData];
+        setUserData(combinedData);
+  
+        const selecteduserId = combinedData.find((option) => (option.id !== 0 && option.id === state?.tempUserId) || option.id === state?.userId);
+        const selecteduser = selecteduserId ? selecteduserId.userName : '';
+        setUser(selecteduser);
       })
       .catch(error => {
         console.error(error);
@@ -432,7 +430,7 @@ const [productName, setProductName] = useState('');
     console.log({
       quotation:{
           id: state?.id,
-          userId: userId,
+          userId: userState,
           tempUserId :tempId,
           contactPerson: contactName,
           contactPhone: phone,    
@@ -522,7 +520,15 @@ const [productName, setProductName] = useState('');
                 value={user}
                 onChange={(e) => {
                   const selectedOption = userData?.find((option) => option.userName === e.target.value);
-                  setTempId(selectedOption?.id || '');
+                  if (selectedOption) {
+                    if (selectedOption.hasOwnProperty('createdByUser')) {
+                      setTempId(selectedOption.id || '');
+                      setUserState(null)
+                    } else {
+                      setUserState(selectedOption.id || '');
+                      setTempId(null)
+                    }
+                  }
                   setUser(e.target.value);
                 }}
                 style={{ marginBottom: 10 }}

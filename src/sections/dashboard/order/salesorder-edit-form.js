@@ -247,24 +247,19 @@ const [productName, setProductName] = useState('');
 
    //get temp user
    useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`)
-      .then(response => {
-   
-        setUserData(prevData => [...prevData, ...response.data]);
+    const request1 = axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`);
+    const request2 = axios.get(`http://13.115.56.48:8080/techmadhyam/getAllUsersBasedOnType/${userId}`);
   
-        
-      })
-      .catch(error => {
-        console.error(error);
-      });
-
-      axios.get(`http://13.115.56.48:8080/techmadhyam/getAllUsersBasedOnType/${userId}`)
-      .then(response => {
-        setUserData(prevData => [...prevData, ...response.data]);
-
-        const selecteduserId = response.data.find((option) => option.id === state?.tempUserId || state?.userId);
-        const selecteduser = selecteduserId ? selecteduserId.userName :'';
-        setUser(selecteduser)
+    Promise.all([request1, request2])
+      .then(([response1, response2]) => {
+        const tempUsersData = response1.data;
+        const usersData = response2.data;
+        const combinedData = [...tempUsersData, ...usersData];
+        setUserData(combinedData);
+  
+        const selecteduserId = combinedData.find((option) => (option.id !== 0 && option.id === state?.tempUserId) || option.id === state?.userId);
+        const selecteduser = selecteduserId ? selecteduserId.userName : '';
+        setUser(selecteduser);
       })
       .catch(error => {
         console.error(error);
