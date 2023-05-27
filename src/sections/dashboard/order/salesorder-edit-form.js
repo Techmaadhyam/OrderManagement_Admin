@@ -34,6 +34,9 @@ import './customTable.css'
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 
 const userId = parseInt(sessionStorage.getItem('user'))
@@ -178,12 +181,25 @@ const [productName, setProductName] = useState('');
   //deleted row
   const [deletedRows, setDeletedRows] = useState([]);
 
+  const [inventoryData, setInventoryData] =useState()
+
   useEffect(() => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllSalesOrderDetails/${state?.id || state?.soRecord?.id}`)
       .then(response => {
        setRowData(response.data)
        setTotalAmount(state?.totalAmount)
        console.log(response.data)
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+//inventory 
+  useEffect(() => {
+    axios.get(`http://13.115.56.48:8080/techmadhyam/getInventoryByUserId/${userId}`)
+      .then(response => {
+        setInventoryData(response.data);
+        console.log(response.data);
       })
       .catch(error => {
         console.error(error);
@@ -298,6 +314,20 @@ const [productName, setProductName] = useState('');
     }
   };
 
+        //toast notification from toastify library
+const notify = (type, message) => {
+  toast[type](message, {
+    position: "top-right",
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
+};
+
   const handleSubmit = (e) => {
     e.preventDefault();
   
@@ -312,6 +342,15 @@ const [productName, setProductName] = useState('');
       weight &&
       size
     ) {
+      const matchingInventory = inventoryData?.find(item => item.productId === productId);
+      if (matchingInventory && quantity > matchingInventory.quantity) {
+        notify(
+          "error",
+          `Insufficient Quantity in Inventory. Quantity must be below ${matchingInventory.quantity}`
+        );
+        return; 
+      }
+
       const newRow = {
         id: Id,
         productId,
@@ -341,6 +380,8 @@ const [productName, setProductName] = useState('');
         updatedRows = [...rowData, newRow];
         setRowData(updatedRows);
       }
+
+    
   
       clearFormFields();
       setShowForm(false);
@@ -495,6 +536,17 @@ const [productName, setProductName] = useState('');
 
   return (
     <div style={{minWidth: "100%" }}>
+      <ToastContainer
+                     position="top-right"
+                     autoClose={4000}
+                     hideProgressBar={false}
+                     newestOnTop={false}
+                     closeOnClick
+                     rtl={false}
+                     pauseOnFocusLoss
+                     draggable
+                     pauseOnHover
+                     theme="light"/>
     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
       <h2>Edit Sales Order</h2>
       <IconWithPopup/>
