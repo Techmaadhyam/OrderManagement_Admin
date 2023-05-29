@@ -43,6 +43,26 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const userId = parseInt(sessionStorage.getItem('user'))
 
+const customerType = [
+   
+  {
+    label: 'Distributor',
+    value: 'Distributor'
+  },
+  {
+    label: 'Retailer',
+    value: 'Retailer'
+  },
+  {
+    label: 'Manufacturer',
+    value: 'Manufacturer'
+  },
+  {
+    label: 'Customer',
+    value: 'Customer'
+  }
+];
+
 const userOptions = [
   {
     label: 'Open',
@@ -148,6 +168,7 @@ const [tempId, setTempId] = useState();
 const [userState, setUserState] = useState();
 const [terms, setTerms] = useState('');
 const [comment, setComment] = useState('');
+const [payment, setPayment] =useState('')
 
 const [currentDate, setCurrentDate] = useState('');
 
@@ -167,6 +188,7 @@ const [productName, setProductName] = useState('');
 
   const [userData2, setUserData2] = useState([])
   const [productId, setProductId] = useState()
+  const [inventoryId, setInventoryId] = useState()
 
   const [totalAmount, setTotalAmount] = useState(0);
 
@@ -212,6 +234,9 @@ const notify = (type, message) => {
       case 'type':
         setType(value);
         break;
+      case 'payment':
+        setPayment(value);
+          break;
       case 'status':
         setStatus(value);
         break;
@@ -225,7 +250,7 @@ const notify = (type, message) => {
 const handleDateChange = (date) => {
   setDeliveryDate(date);
 };
-   //get temp user
+   //get user
    useEffect(() => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`)
       .then(response => {
@@ -246,11 +271,12 @@ const handleDateChange = (date) => {
       });
   }, []);
 
+  console.log(userData)
+
 const deliveryDateAntd = deliveryDate;
 const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
 const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD/MM/YYYY') : '';
 
-console.log(userData)
 
 
   //////////////
@@ -311,6 +337,7 @@ console.log(userData)
       size
     ) {
       const newRow = {
+        inventoryId: inventoryId,
         productId,
         productName,
         weight,
@@ -421,7 +448,8 @@ console.log(userData)
                   contactPerson: contactName,
                   contactPhone: phone,    
                   status: status,
-                  paymentMode: null,
+                  paymentMode: payment,
+                  type: type,
                   deliveryDate: formattedDeliveryDate,
                   deliveryAddress: address,
                   city: null,
@@ -485,49 +513,71 @@ console.log(userData)
               xs={12}
               md={6}
             >
-              <TextField
-                fullWidth
-                label="User"
-                name="user"
-                select
-                value={userName}
-                onChange={(e) => {
-                  const selectedOption = userData.find((option) => option.userName === e.target.value);
-                  if (selectedOption) {
-                    if (selectedOption.hasOwnProperty('createdByUser')) {
-                      setTempId(selectedOption.id || '');
-                      setUserState(null)
-                    } else {
-                      setUserState(selectedOption.id || '');
-                      setTempId(null)
-                    }
-                  }
-                  setUserName(e.target.value);
-                }}
-                style={{ marginBottom: 10 }}
-              >
-                {userData.map((option) => (
-                  option.userName && (
-                    <MenuItem key={option.id} value={option.userName}>
-                      {option.userName}
-                    </MenuItem>
-                  )
-                ))}
-              </TextField>
+         <TextField
+                    fullWidth
+                    label="Type"
+                    name="type"
+                    select
+                    value={type}
+                    onChange={handleInputChange}
+                  >
+                     {customerType.map((option) => (
+                      <MenuItem
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
             </Grid>
-            <Grid/>
             <Grid
               xs={12}
               md={6}
             >
-                <TextField
-                    fullWidth
-                    label="Payment Type"
-                    name="type"
-                    value={type}
-                    onChange={handleInputChange}
-                  >
-                  </TextField>
+              <TextField
+                fullWidth
+                label="Payment Mode"
+                name="payment"
+                value={payment}
+                onChange={handleInputChange}
+              />
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
+            >      <TextField
+            fullWidth
+            label="Company Name"
+            name="user"
+            select
+            value={userName}
+            onChange={(e) => {
+              const selectedOption = userData.find((option) => option.userName === e.target.value);
+              if (selectedOption) {
+                if (selectedOption.hasOwnProperty('createdByUser')) {
+                  setTempId(selectedOption.id || '');
+                  setUserState(null)
+                } else {
+                  setUserState(selectedOption.id || '');
+                  setTempId(null)
+                }
+              }
+              setUserName(e.target.value);
+            }}
+            style={{ marginBottom: 10 }}
+          >
+           {userData
+          .filter((option) => option.type === type) 
+          .map((option) => (
+            option.userName && (
+              <MenuItem key={option.id} value={option.userName}>
+                {option.userName}
+              </MenuItem>
+            )
+          ))}
+          </TextField>
+               
             </Grid>
             <Grid
               xs={12}
@@ -574,6 +624,7 @@ height='50px'/>
                     ))}
                   </TextField>
             </Grid>
+           
             <Grid
               xs={12}
               md={6}
@@ -663,9 +714,10 @@ height='50px'/>
       setSgst(selectedOption.sgst);
       setCgst(selectedOption.cgst);
       setIgst(selectedOption.igst);
-      setQuantity(selectedOption.quantity);
+      setQuantity(1);
       setSize(selectedOption.size);
       setPrice(selectedOption.price);
+      setInventoryId(selectedOption.inventoryId)
     }
   }}
   style={{ marginBottom: 10 }}

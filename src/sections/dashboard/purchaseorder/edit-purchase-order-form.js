@@ -38,6 +38,27 @@ import dayjs from 'dayjs';
 
 const userId = parseInt(sessionStorage.getItem('user'))
 const dateFormat = 'DD/MM/YYYY';
+
+const customerType = [
+   
+  {
+    label: 'Distributor',
+    value: 'Distributor'
+  },
+  {
+    label: 'Retailer',
+    value: 'Retailer'
+  },
+  {
+    label: 'Manufacturer',
+    value: 'Manufacturer'
+  },
+  {
+    label: 'Customer',
+    value: 'Customer'
+  }
+];
+
 const userOptions = [
   {
     label: 'Open',
@@ -137,7 +158,7 @@ console.log(state)
   const navigate = useNavigate();
 //form state handeling
 const [userName, setUserName] = useState('');
-const [type, setType] = useState("");
+const [type, setType] = useState(state?.type||"");
 const [quotation, setQuotation] = useState('');
 const [deliveryDate, setDeliveryDate] = useState(dayjs(state?.deliveryDate, dateFormat));
 const [status, setStatus] = useState(state?.status || "");
@@ -148,6 +169,7 @@ const [tempId, setTempId] = useState(state?.tempUserId);
 const [terms, setTerms] = useState(state?.termsAndCondition || '');
 const [comment, setComment] = useState(state?.comments||'');
 const [user, setUser] = useState('')
+const [payment, setPayment]=useState(state?.paymentMode||"")
 
 const [currentDate, setCurrentDate] = useState('');
 
@@ -164,6 +186,7 @@ const [productName, setProductName] = useState('');
   const [rows, setRows] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
+
 
   const [userData2, setUserData2] = useState([])
   const [productId, setProductId] = useState()
@@ -217,6 +240,9 @@ const [productName, setProductName] = useState('');
       case 'type':
         setType(value);
         break;
+      case 'payment':
+        setPayment(value);
+            break;
       case 'status':
         setStatus(value);
         break;
@@ -433,7 +459,8 @@ const [productName, setProductName] = useState('');
           contactPerson: contactName,
           contactPhone: phone,    
           status: status,
-          paymentMode: null,
+          paymentMode: payment,
+          type: type,
           deliveryDate: dDate,
           deliveryAddress: address,
           city: null,
@@ -466,7 +493,8 @@ const [productName, setProductName] = useState('');
                   contactPerson: contactName,
                   contactPhone: phone,    
                   status: status,
-                  paymentMode: null,
+                  paymentMode: payment,
+                  type: type,
                   deliveryDate: dDate,
                   deliveryAddress: address,
                   city: null,
@@ -519,41 +547,63 @@ const [productName, setProductName] = useState('');
               xs={12}
               md={6}
             >
-              <TextField
-                fullWidth
-                label="User"
-                name="user"
-                select
-                value={user}
-                onChange={(e) => {
-                  const selectedOption = userData?.find((option) => option.userName === e.target.value);
-                  setTempId(selectedOption?.id || '');
-                  setUser(e.target.value);
-                }}
-                style={{ marginBottom: 10 }}
-              >
-                {userData?.map((option) => (
-                  option.userName && (
-                    <MenuItem key={option.id } value={option.userName}>
-                      {option.userName}
-                    </MenuItem>
-                  )
-                ))}
-              </TextField>
+             <TextField
+                    fullWidth
+                    label="Type"
+                    name="type"
+                    select
+                    value={type}
+                    onChange={handleInputChange}
+                  >
+                        {customerType.map((option) => (
+                      <MenuItem
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))} 
+                  </TextField>
             </Grid>
-            <Grid/>
             <Grid
               xs={12}
               md={6}
             >
-                <TextField
-                    fullWidth
-                    label="Payment Type"
-                    name="type"
-                    value={type}
-                    onChange={handleInputChange}
-                  >
-                  </TextField>
+              <TextField
+                fullWidth
+                label="Payment Mode"
+                name="payment"
+                value={payment}
+                onChange={handleInputChange}
+              />
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
+            > <TextField
+            fullWidth
+            label="Company Name"
+            name="user"
+            select
+            value={user}
+            onChange={(e) => {
+              const selectedOption = userData?.find((option) => option.userName === e.target.value);
+              setTempId(selectedOption?.id || '');
+              setUser(e.target.value);
+            }}
+            style={{ marginBottom: 10 }}
+          >
+                  {userData
+          .filter((option) => option.type === type) 
+          .map((option) => (
+            option.userName && (
+              <MenuItem key={option.id} value={option.userName}>
+                {option.userName}
+              </MenuItem>
+            )
+          ))}
+          </TextField>
+                
             </Grid>
             <Grid
               xs={12}

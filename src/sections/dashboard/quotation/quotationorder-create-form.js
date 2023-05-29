@@ -41,6 +41,26 @@ import { useNavigate } from 'react-router-dom';
 
 const userId = parseInt(sessionStorage.getItem('user'))
 
+const customerType = [
+   
+  {
+    label: 'Distributor',
+    value: 'Distributor'
+  },
+  {
+    label: 'Retailer',
+    value: 'Retailer'
+  },
+  {
+    label: 'Manufacturer',
+    value: 'Manufacturer'
+  },
+  {
+    label: 'Customer',
+    value: 'Customer'
+  }
+];
+
 const userOptions = [
   {
     label: 'Open',
@@ -387,6 +407,7 @@ console.log(tempId, userState)
                   contactPersonName: contactName,
                   contactPhoneNumber: phone,   
                   status: status,
+                  type: type,
                   deliveryDate: formattedDeliveryDate,
                   createdBy: userId,
                   createdDate: currentDate,
@@ -436,9 +457,32 @@ console.log(tempId, userState)
               xs={12}
               md={6}
             >
-              <TextField
+            <TextField
+                    fullWidth
+                    label="Type"
+                    name="type"
+                    select
+                    value={type}
+                    onChange={handleInputChange}
+                  >
+                     {customerType.map((option) => (
+                      <MenuItem
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+            </Grid>
+            <Grid/>
+            <Grid
+              xs={12}
+              md={6}
+            >
+                 <TextField
                 fullWidth
-                label="User"
+                label="Company Name"
                 name="user"
                 select
                 value={userName}
@@ -457,28 +501,17 @@ console.log(tempId, userState)
                 }}
                 style={{ marginBottom: 10 }}
               >
-                {userData.map((option) => (
-                  option.userName && (
-                    <MenuItem key={option.id} value={option.userName}>
-                      {option.userName}
-                    </MenuItem>
-                  )
-                ))}
+                {userData
+              .filter((option) => option.type === type) 
+              .map((option) => (
+                option.userName && (
+                  <MenuItem key={option.id} value={option.userName}>
+                    {option.userName}
+                  </MenuItem>
+                )
+              ))}
               </TextField>
-            </Grid>
-            <Grid/>
-            <Grid
-              xs={12}
-              md={6}
-            >
-                <TextField
-                    fullWidth
-                    label="Payment Type"
-                    name="type"
-                    value={type}
-                    onChange={handleInputChange}
-                  >
-                  </TextField>
+               
             </Grid>
             <Grid
               xs={12}

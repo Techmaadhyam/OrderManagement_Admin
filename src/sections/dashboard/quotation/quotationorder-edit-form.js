@@ -38,6 +38,27 @@ import dayjs from 'dayjs';
 
 const userId = parseInt(sessionStorage.getItem('user'))
 const dateFormat = 'DD/MM/YYYY';
+
+const customerType = [
+   
+  {
+    label: 'Distributor',
+    value: 'Distributor'
+  },
+  {
+    label: 'Retailer',
+    value: 'Retailer'
+  },
+  {
+    label: 'Manufacturer',
+    value: 'Manufacturer'
+  },
+  {
+    label: 'Customer',
+    value: 'Customer'
+  }
+];
+
 const userOptions = [
   {
     label: 'Open',
@@ -137,7 +158,7 @@ console.log(state)
   const navigate = useNavigate();
 //form state handeling
 const [userName, setUserName] = useState('');
-const [type, setType] = useState("");
+const [type, setType] = useState(state?.type||"");
 
 const [deliveryDate, setDeliveryDate] = useState(dayjs(state?.deliveryDate, dateFormat));
 const [status, setStatus] = useState(state?.status || "");
@@ -436,6 +457,7 @@ const [productName, setProductName] = useState('');
           contactPhone: phone,    
           status: status,
           paymentMode: null,
+          type: type,
           deliveryDate: dDate,
           deliveryAddress: address,
           city: null,
@@ -468,6 +490,7 @@ const [productName, setProductName] = useState('');
                   contactPersonName: contactName,
                   contactPhoneNumber: phone,    
                   status: status,
+                  type: type,
                   deliveryDate: dDate,
                   lastModifiedDate: currentDate,
                   comments : comment,
@@ -513,49 +536,60 @@ const [productName, setProductName] = useState('');
               xs={12}
               md={6}
             >
-              <TextField
-                fullWidth
-                label="User"
-                name="user"
-                select
-                value={user}
-                onChange={(e) => {
-                  const selectedOption = userData?.find((option) => option.userName === e.target.value);
-                  if (selectedOption) {
-                    if (selectedOption.hasOwnProperty('createdByUser')) {
-                      setTempId(selectedOption.id || '');
-                      setUserState(null)
-                    } else {
-                      setUserState(selectedOption.id || '');
-                      setTempId(null)
-                    }
-                  }
-                  setUser(e.target.value);
-                }}
-                style={{ marginBottom: 10 }}
-              >
-                {userData?.map((option) => (
-                  option.userName && (
-                    <MenuItem key={option.id } value={option.userName}>
-                      {option.userName}
-                    </MenuItem>
-                  )
-                ))}
-              </TextField>
+          <TextField
+                    fullWidth
+                    label="Type"
+                    name="type"
+                    select
+                    value={type}
+                    onChange={handleInputChange}
+                  >
+                    {customerType.map((option) => (
+                      <MenuItem
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))} 
+                  </TextField>
             </Grid>
             <Grid/>
             <Grid
               xs={12}
               md={6}
-            >
-                <TextField
-                    fullWidth
-                    label="Payment Type"
-                    name="type"
-                    value={type}
-                    onChange={handleInputChange}
-                  >
-                  </TextField>
+            >    <TextField
+            fullWidth
+            label="Company Name"
+            name="user"
+            select
+            value={user}
+            onChange={(e) => {
+              const selectedOption = userData?.find((option) => option.userName === e.target.value);
+              if (selectedOption) {
+                if (selectedOption.hasOwnProperty('createdByUser')) {
+                  setTempId(selectedOption.id || '');
+                  setUserState(null)
+                } else {
+                  setUserState(selectedOption.id || '');
+                  setTempId(null)
+                }
+              }
+              setUser(e.target.value);
+            }}
+            style={{ marginBottom: 10 }}
+          >
+               {userData
+          .filter((option) => option.type === type) 
+          .map((option) => (
+            option.userName && (
+              <MenuItem key={option.id} value={option.userName}>
+                {option.userName}
+              </MenuItem>
+            )
+          ))}
+          </TextField>
+                
             </Grid>
             <Grid
               xs={12}

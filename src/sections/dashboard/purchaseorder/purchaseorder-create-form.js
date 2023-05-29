@@ -41,6 +41,26 @@ import { useNavigate } from 'react-router-dom';
 
 const userId = parseInt(sessionStorage.getItem('user'))
 
+const customerType = [
+   
+  {
+    label: 'Distributor',
+    value: 'Distributor'
+  },
+  {
+    label: 'Retailer',
+    value: 'Retailer'
+  },
+  {
+    label: 'Manufacturer',
+    value: 'Manufacturer'
+  },
+  {
+    label: 'Customer',
+    value: 'Customer'
+  }
+];
+
 const userOptions = [
   {
     label: 'Open',
@@ -162,6 +182,7 @@ const [productName, setProductName] = useState('');
   const [rows, setRows] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
+  const [payment, setPayment] =useState('')
 
   const [userData2, setUserData2] = useState([])
   const [productId, setProductId] = useState()
@@ -197,6 +218,9 @@ const [productName, setProductName] = useState('');
       case 'type':
         setType(value);
         break;
+      case 'payment':
+        setPayment(value);
+          break;
       case 'status':
         setStatus(value);
         break;
@@ -400,7 +424,8 @@ let finalAmount = totalAmount.toFixed(2)
           contactPerson: contactName,
           contactPhone: phone,    
           status: status,
-          paymentMode: type,
+          paymentMode: payment,
+          type: type,
           deliveryDate: formattedDeliveryDate,
           deliveryAddress: address,
           city: null,
@@ -422,7 +447,8 @@ let finalAmount = totalAmount.toFixed(2)
             contactPerson: salesUser.loginUser,
             contactPhone: salesUser.loginPhone,    
             status: status,
-            paymentMode: type,
+            paymentMode: payment,
+            type: type,
             deliveryDate: formattedDeliveryDate,
             deliveryAddress: address,
             city: null,
@@ -455,7 +481,8 @@ let finalAmount = totalAmount.toFixed(2)
                   contactPerson: contactName,
                   contactPhone: phone,    
                   status: status,
-                  paymentMode: type,
+                  paymentMode: payment,
+                  type: type,
                   deliveryDate: formattedDeliveryDate,
                   deliveryAddress: address,
                   city: null,
@@ -476,7 +503,8 @@ let finalAmount = totalAmount.toFixed(2)
                     contactPerson: salesUser.loginUser,
                     contactPhone: salesUser.loginPhone,     
                     status: status,
-                    paymentMode: type,
+                    paymentMode:payment,
+                    type: type,
                     deliveryDate: formattedDeliveryDate,
                     deliveryAddress: address,
                     city: null,
@@ -500,6 +528,7 @@ let finalAmount = totalAmount.toFixed(2)
     
       
              navigate('/dashboard/purchaseorder/viewDetail', { state: data });
+             console.log(data)
     });
           } 
         } catch (error) {
@@ -528,10 +557,44 @@ let finalAmount = totalAmount.toFixed(2)
             <Grid
               xs={12}
               md={6}
+            > <TextField
+            fullWidth
+            label="Type"
+            name="type"
+            select
+            value={type}
+            onChange={handleInputChange}
+          >
+             {customerType.map((option) => (
+              <MenuItem
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+             
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
             >
               <TextField
                 fullWidth
-                label="User"
+                label="Payment Mode"
+                name="payment"
+                value={payment}
+                onChange={handleInputChange}
+              />
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
+            >
+                <TextField
+                fullWidth
+                label="Company Name"
                 name="user"
                 select
                 value={userName}
@@ -550,28 +613,16 @@ let finalAmount = totalAmount.toFixed(2)
                 }}
                 style={{ marginBottom: 10 }}
               >
-                {userData.map((option) => (
-                  option.userName && (
-                    <MenuItem key={option.id} value={option.userName}>
-                      {option.userName}
-                    </MenuItem>
-                  )
-                ))}
+                  {userData
+              .filter((option) => option.type === type) 
+              .map((option) => (
+                option.userName && (
+                  <MenuItem key={option.id} value={option.userName}>
+                    {option.userName}
+                  </MenuItem>
+                )
+              ))}
               </TextField>
-            </Grid>
-            <Grid/>
-            <Grid
-              xs={12}
-              md={6}
-            >
-                <TextField
-                    fullWidth
-                    label="Payment Type"
-                    name="type"
-                    value={type}
-                    onChange={handleInputChange}
-                  >
-                  </TextField>
             </Grid>
             <Grid
               xs={12}
