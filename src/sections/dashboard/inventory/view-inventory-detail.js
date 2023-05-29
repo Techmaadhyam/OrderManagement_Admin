@@ -13,7 +13,8 @@ import {
   Link,
   SvgIcon,
   IconButton,
-  Grid
+  Grid,
+  CardContent
 } from '@mui/material';
 import { wait } from 'src/utils/wait';
 import {  Box, Stack } from '@mui/system';
@@ -134,90 +135,161 @@ export const ViewInventoryDetail = (props) => {
         <IconWithPopup/>
       </div>
  <h2>Inventory</h2>
-      <Card style={{marginBottom: "12px" }}>
+ <Card>
         <CardHeader title="Inventory Detail" />
-        <PropertyList>
-        <PropertyListItem
+        <CardContent sx={{ pt: 0 , mt: 5}}>
+          <Grid
+            container
+            spacing={3}
+          >
+            <Grid
+              xs={12}
+              md={6}
+            >
+                    <PropertyListItem
           align={align}
           label="Warehouse"
-        >
-          <Typography variant="subtitle2">
-            {state?.warehouseName}
-          </Typography>
-        </PropertyListItem>
-        <Divider />
-        <PropertyListItem
+          value={state?.warehouseName}
+        />     <Divider />
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
+            >
+             <PropertyListItem
           align={align}
           label="Purchase Order"
           value={state?.purchaseOrderId}
         />
-        <Divider />
-        <PropertyListItem
+         <Divider />
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
+            >
+            <PropertyListItem
           align={align}
           label="Category"
           value={state?.categoryName ||state?.category?.name}
         />
          <Divider />
-        <PropertyListItem
+            </Grid>
+            
+            <Grid
+              xs={12}
+              md={6}
+            >
+                     <PropertyListItem
           align={align}
           label="Rack"
           value={state?.rackName || state?.rack?.name}
         />
         <Divider />
-        <PropertyListItem
+            </Grid>
+           
+        <Grid
+              xs={12}
+              md={6}
+            >
+           <PropertyListItem
           align={align}
           label="Product"
           value={state?.productName}
         />
          <Divider />
+          </Grid>
+          <Grid
+              xs={12}
+              md={6}
+            >
         <PropertyListItem
           align={align}
           label="HSN Code"
           value={state?.hsncode}
         />
-         <Divider />
-        <PropertyListItem
+        <Divider />
+          </Grid>
+  
+    
+            <Grid
+              xs={12}
+              md={6}
+            >
+              <PropertyListItem
           align={align}
           label="Size"
           value={state?.size}
         />
          <Divider />
-        <PropertyListItem
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
+            >
+             <PropertyListItem
           align={align}
           label="Weight"
           value={state?.weight}
         />
          <Divider />
-        <PropertyListItem
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
+            >
+                <PropertyListItem
           align={align}
-          label="Quantity"
+          label="Available Stock"
           value={state?.quantity}
         />
          <Divider />
-        <PropertyListItem
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
+            >
+               <PropertyListItem
           align={align}
           label="CGST"
           value={state?.cgst}
         />
          <Divider />
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
+            >
+              <PropertyListItem
+          align={align}
+          label="IGST"
+          value={state?.igst}
+        />
+         <Divider />
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
+            >
         <PropertyListItem
           align={align}
           label="SGST"
           value={state?.cgst}
         />
          <Divider />
-         <PropertyListItem
-          align={align}
-          label="IGST"
-          value={state?.igst}
-        />
-         <Divider />
-        <PropertyListItem
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
+            >
+              <PropertyListItem
           align={align}
           label="Description"
           value={state?.description}
         />
-      </PropertyList>
+            </Grid>
+          </Grid>
+         
+        </CardContent>
         <Divider/>
       </Card>
     </div>
