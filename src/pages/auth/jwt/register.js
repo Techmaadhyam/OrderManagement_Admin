@@ -32,7 +32,25 @@ import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutl
 import { includes } from 'lodash';
 
 
-
+const customerType = [
+   
+  {
+    label: 'Distributor',
+    value: 'Distributor'
+  },
+  {
+    label: 'Retailer',
+    value: 'Retailer'
+  },
+  {
+    label: 'Manufacturer',
+    value: 'Manufacturer'
+  },
+  {
+    label: 'Customer',
+    value: 'Customer'
+  }
+];
 
 const Register = () => {
   //image carousel state handeling
@@ -613,6 +631,14 @@ const handleCities = async (event) => {
                     value={type}
                     onChange={handleInputChange}
                   >
+                    {customerType.map((option) => (
+                      <MenuItem
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))}
                   </TextField>
             </Grid>
             <Grid
