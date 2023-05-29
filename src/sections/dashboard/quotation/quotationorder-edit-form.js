@@ -464,6 +464,7 @@ const [productName, setProductName] = useState('');
                   id: state?.id,
                   createdBy: userId,
                   tempUserId :tempId,
+                  userId: userState,
                   contactPersonName: contactName,
                   contactPhoneNumber: phone,    
                   status: status,

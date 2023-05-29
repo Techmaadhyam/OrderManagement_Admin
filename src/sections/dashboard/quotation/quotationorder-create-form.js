@@ -374,7 +374,7 @@ console.log(tempId, userState)
     
       if (contactName && address && userId && phone && status && address && comment && terms && updatedRows) {
         try {
-          const response = await fetch('http://13.115.56.48:8080/techmadhyam/addQuoatatio', {
+          const response = await fetch('http://13.115.56.48:8080/techmadhyam/addQuoatation', {
             method: 'POST',
             headers: {
     
