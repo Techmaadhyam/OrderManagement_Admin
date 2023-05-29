@@ -32,7 +32,7 @@ export const en = {
   [tokens.nav.kanban]: 'Kanban',
   [tokens.nav.create]: 'Create',
   [tokens.nav.login]: 'Login',
-  [tokens.nav.user]: 'Temporary Users',
+  [tokens.nav.user]: 'Add Customer',
   [tokens.nav.mail]: 'Mail',
   [tokens.nav.management]: 'Management',
   [tokens.nav.orderList]: 'Sales Order',
