@@ -461,6 +461,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
                   comments : comment,
                   termsAndCondition: terms,
                   totalAmount: finalAmount,
+                  lastModifiedByUser: {id: userId},
               },
                   salesOrderDetails: updatedRows
           })

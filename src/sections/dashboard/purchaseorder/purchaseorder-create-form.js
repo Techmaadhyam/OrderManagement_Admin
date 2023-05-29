@@ -506,6 +506,7 @@ let finalAmount = totalAmount.toFixed(2)
                     paymentMode:payment,
                     type: type,
                     deliveryDate: formattedDeliveryDate,
+                    lastModifiedByUser: {id: userId},
                     deliveryAddress: address,
                     city: null,
                     state:null,

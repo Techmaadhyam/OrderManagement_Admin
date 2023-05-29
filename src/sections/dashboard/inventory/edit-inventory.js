@@ -324,7 +324,8 @@ useEffect(() => {
         sgst:parseFloat(sgst),
         cgst:parseFloat(cgst),
         igst:parseFloat(igst),
-        lastModifiedDate: createdDate
+        lastModifiedDate: createdDate,
+        lastModifiedByUser: {id: userId},
       },
 
       rack:{

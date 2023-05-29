@@ -121,7 +121,8 @@ const handleSaveRecord = async (editedRecord) => {
             productName: editedRecord.productName,
             type: editedRecord.type,
             createdBy: editedRecord.createdBy,
-            lastModifiedDate: currentDate
+            lastModifiedDate: currentDate,
+            lastModifiedByUser: {id: userId},
             
           },
           category: {

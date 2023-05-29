@@ -295,6 +295,7 @@ useEffect(() => {
         sgst:parseFloat(sgst),
         cgst:parseFloat(cgst),
         igst:parseFloat(igst),
+        lastModifiedByUser: {id: userId},
       },
 
       rack:{

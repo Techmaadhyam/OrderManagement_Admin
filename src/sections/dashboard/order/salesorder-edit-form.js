@@ -507,6 +507,7 @@ const notify = (type, message) => {
           comments : comment,
           termsAndCondition: terms,
           totalAmount: finalAmount,
+          lastModifiedByUser: {id: userId},
       },
           salesOrderDetails: updatedRows,
           deletedSODetails: deleteRows

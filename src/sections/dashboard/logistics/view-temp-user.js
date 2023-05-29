@@ -122,6 +122,7 @@ const handleSaveRecord = async (editedRecord) => {
     type: editedRecord.type,
     pincode: editedRecord.pincode,
     city: editedRecord.city,
+    gstNumber: editedRecord.gstNumber,
     state: editedRecord.state,
     country: editedRecord.country,
     createdBy: editedRecord.createdBy,
@@ -144,6 +145,7 @@ const handleSaveRecord = async (editedRecord) => {
           userName: editedRecord.userName,
           companyName: editedRecord.companyName,
           emailId: editedRecord.emailId,
+          gstNumber: editedRecord.gstNumber,
           mobile: editedRecord.mobile,
           address: editedRecord.address,
           type: editedRecord.type,
@@ -152,7 +154,8 @@ const handleSaveRecord = async (editedRecord) => {
           state: editedRecord.state,
           country: editedRecord.country,
           createdBy: editedRecord.createdBy,
-          lastModifiedDate: currentDate
+          lastModifiedDate: currentDate,
+          lastModifiedByUser: {id: userId},
         })
       });
       
@@ -331,6 +334,18 @@ useEffect(() => {
             label="Company"
             name="companyName"
             value={editedRecord.companyName}
+            onChange={handleChange}
+            style={{ marginBottom: 10 }}
+          />
+          </Grid>
+          <Grid
+              xs={12}
+              md={6}
+            >
+          <TextField
+            label="GST Number"
+            name="gstn"
+            value={editedRecord.gstNumber}
             onChange={handleChange}
             style={{ marginBottom: 10 }}
           />

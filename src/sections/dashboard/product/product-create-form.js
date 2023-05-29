@@ -175,7 +175,8 @@ export const CreateProduct = (props) => {
           description: desc2,
           createdBy: userId,
           createdDate: currentDate,
-          lastModifiedDate: currentDate
+          lastModifiedDate: currentDate,
+          lastModifiedByUser: {id: userId},
  
         },
         category: {
@@ -193,7 +194,8 @@ export const CreateProduct = (props) => {
           description: desc2,
           createdBy: userId,
           createdDate: currentDate,
-          lastModifiedDate: currentDate
+          lastModifiedDate: currentDate,
+          lastModifiedByUser: {id: userId},
           
         },
         category: {

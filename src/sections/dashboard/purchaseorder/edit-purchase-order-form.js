@@ -505,6 +505,7 @@ const [productName, setProductName] = useState('');
                   comments : comment,
                   termsAndCondition: terms,
                   totalAmount: finalAmount,
+                  lastModifiedByUser: {id: userId},
               },
                   purchaseOrderDetails: updatedRows,
                   deletedPODetails: deleteRows
