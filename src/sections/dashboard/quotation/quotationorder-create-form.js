@@ -61,6 +61,18 @@ const customerType = [
   }
 ];
 
+const categoryBuySell = [
+   
+  {
+    label: 'Buyer',
+    value: 'Buyer'
+  },
+  {
+    label: 'Seller',
+    value: 'Seller'
+  },
+];
+
 const userOptions = [
   {
     label: 'Open',
@@ -165,6 +177,7 @@ const [tempId, setTempId] = useState();
 const [userState, setUserState] = useState();
 const [terms, setTerms] = useState('');
 const [comment, setComment] = useState('');
+const [category, setCategory] = useState('');
 
 const [currentDate, setCurrentDate] = useState('');
 
@@ -202,6 +215,9 @@ const [productName, setProductName] = useState('');
   
       case 'user':
         setUserName(value);
+          break;
+      case 'category':
+        setCategory(value);
           break;
       case 'contactName':
         setContactName(value);
@@ -251,7 +267,7 @@ const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
 const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD/MM/YYYY') : '';
 
 
-console.log(tempId, userState)
+
   //////////////
   //add product//
   /////////////
@@ -413,6 +429,8 @@ console.log(tempId, userState)
                   createdDate: currentDate,
                   lastModifiedDate: currentDate,
                   comments : comment,
+                  category: category,
+                  lastModifiedByUser: {id: userId},
                   termsAndCondition: terms,
                   totalAmount: finalAmount,
         
@@ -517,7 +535,24 @@ console.log(tempId, userState)
               xs={12}
               md={6}
             >
-      
+              <TextField
+
+                    fullWidth
+                    label="Category"
+                    name="category"
+                    value={category}
+                    onChange={handleInputChange}
+                    select
+                  >
+                    {categoryBuySell.map((option) => (
+                      <MenuItem
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
             </Grid>
             <Grid
               xs={12}

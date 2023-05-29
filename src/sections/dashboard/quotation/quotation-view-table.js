@@ -4,7 +4,9 @@ import {
   Typography,
   IconButton,
   Icon,
-  Link
+  Link,
+  MenuItem,
+  TextField
 } from '@mui/material';
 import { Table } from 'antd';
 import './purchase-order.css'
@@ -23,9 +25,23 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const userId = sessionStorage.getItem('user');
+
+const categoryBuySell = [
+   
+  {
+    label: 'Buyer',
+    value: 'Buyer'
+  },
+  {
+    label: 'Seller',
+    value: 'Seller'
+  },
+];
+
 const QuotationViewTable = () => {
   const [rows, setRows] = useState([{}]);
   const [userData, setUserData]= useState([])
+  const [selectedCategory, setSelectedCategory] = useState('');
 
 
   const navigate = useNavigate();
@@ -43,6 +59,14 @@ const QuotationViewTable = () => {
   }, []);
 
   const dataWithKeys = userData?.map((item) => ({ ...item, key: item.id }));
+
+  const filteredData = selectedCategory
+  ? dataWithKeys.filter((item) => item.category === selectedCategory)
+  : dataWithKeys;
+
+const handleCategoryChange = (event) => {
+  setSelectedCategory(event.target.value);
+};
 
   //toast notification from toastify library
   const notify = (type, message) => {
@@ -155,6 +179,9 @@ const QuotationViewTable = () => {
     },
   ];
 
+
+   
+
   return (
     <div style={{ minWidth: '100%' }}>
       <div
@@ -167,12 +194,36 @@ const QuotationViewTable = () => {
         <h2>View Quotation Order</h2>
         <IconWithPopup/>
       </div>
-      <Box sx={{ position: 'relative', overflowX: 'auto' }}>
+      
+      <TextField
+
+      label="Category"
+      name="category"
+      sx={{ minWidth: 250 }}
+      value={selectedCategory}
+      onChange={handleCategoryChange}
+
+
+      select
+      >
+      {categoryBuySell.map((option) => (
+        <MenuItem
+          key={option.value}
+          value={option.value}
+        >
+          {option.label}
+        </MenuItem>
+      ))}
+      </TextField>
+      
+      <Box sx={{  position: 'relative' , overflowX: "auto", marginTop:'30px'}}>
+ 
+           
         <Scrollbar>
           <Table
             sx={{ minWidth: 800, overflowX: 'auto' }}
             columns={columns}
-            dataSource={dataWithKeys}
+            dataSource={filteredData}
             ></Table>
             </Scrollbar>
             <ToastContainer

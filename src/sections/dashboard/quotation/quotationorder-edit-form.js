@@ -59,6 +59,18 @@ const customerType = [
   }
 ];
 
+const categoryBuySell = [
+   
+  {
+    label: 'Buyer',
+    value: 'Buyer'
+  },
+  {
+    label: 'Seller',
+    value: 'Seller'
+  },
+];
+
 const userOptions = [
   {
     label: 'Open',
@@ -170,6 +182,7 @@ const [userState, setUserState] = useState(state?.userId);
 const [terms, setTerms] = useState(state?.termsAndCondition || '');
 const [comment, setComment] = useState(state?.comments||'');
 const [user, setUser] = useState('')
+const [category, setCategory] = useState(state?.category || '');
 
 const [currentDate, setCurrentDate] = useState('');
 
@@ -232,6 +245,9 @@ const [productName, setProductName] = useState('');
       case 'contactName':
         setContactName(value);
         break;
+      case 'category':
+          setCategory(value);
+            break;
       case 'mobileno':
         setPhone(value);
         break;
@@ -355,6 +371,7 @@ const [productName, setProductName] = useState('');
         comments: comment,
         createdDate: currentDate,
         lastModifiedDate: currentDate,
+   
       };
   
       let updatedRows;
@@ -456,15 +473,12 @@ const [productName, setProductName] = useState('');
           contactPerson: contactName,
           contactPhone: phone,    
           status: status,
-          paymentMode: null,
           type: type,
           deliveryDate: dDate,
           deliveryAddress: address,
-          city: null,
-          state:null,
-          country: null,
           createdBy: userId,
           lastModifiedDate: currentDate,
+
           comments : comment,
           termsAndCondition: terms,
           totalAmount: finalAmount,
@@ -490,9 +504,11 @@ const [productName, setProductName] = useState('');
                   contactPersonName: contactName,
                   contactPhoneNumber: phone,    
                   status: status,
+                  category: category,
                   type: type,
                   deliveryDate: dDate,
                   lastModifiedDate: currentDate,
+                  lastModifiedByUser: {id: userId},
                   comments : comment,
                   termsAndCondition: terms,
                   totalAmount: finalAmount,
@@ -507,6 +523,7 @@ const [productName, setProductName] = useState('');
         
            response.json().then(data => {
             navigate('/dashboard/quotation/viewDetail', { state: data });
+            console.log(data)
       
     });
           } 
@@ -595,7 +612,24 @@ const [productName, setProductName] = useState('');
               xs={12}
               md={6}
             >
-       
+              <TextField
+
+                    fullWidth
+                    label="Category"
+                    name="category"
+                    value={category}
+                    onChange={handleInputChange}
+                    select
+                  >
+                    {categoryBuySell.map((option) => (
+                      <MenuItem
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
             </Grid>
             <Grid
               xs={12}
