@@ -478,7 +478,7 @@ const notify = (type, message) => {
           state:null,
           country: null,
           createdBy: userId,
-          createdDate: currentDate,
+          createdDate: state?.createdDate,
           lastModifiedDate: currentDate,
           comments : comment,
           termsAndCondition: terms,

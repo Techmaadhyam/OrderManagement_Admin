@@ -53,7 +53,7 @@ const userOptions = [
   },
   {
     label: 'Cancelled',
-    value: 'Canclled'
+    value: 'Cancelled'
   },
   {
     label: 'Delivered',
