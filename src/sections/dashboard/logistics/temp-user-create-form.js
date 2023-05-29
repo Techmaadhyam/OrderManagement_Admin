@@ -23,6 +23,26 @@ import { useNavigate } from 'react-router-dom';
   //get userid 
   const userId = sessionStorage.getItem('user');
 
+  const customerType = [
+   
+    {
+      label: 'Distributor',
+      value: 'Distributor'
+    },
+    {
+      label: 'Retailer',
+      value: 'Retailer'
+    },
+    {
+      label: 'Manufacturer',
+      value: 'Manufacturer'
+    },
+    {
+      label: 'Customer',
+      value: 'Customer'
+    }
+  ];
+
 
 export const TempUserCreateForm = (props) => {
   const { customer, ...other } = props;
@@ -300,12 +320,12 @@ event.preventDefault();
   return (
     <div style={{minWidth: "100%" , marginBottom: '1rem' }}>
     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-      <h2>Create Temporary User</h2>
+      <h2>Create Customer</h2>
       <IconWithPopup/>
     </div>
     <form>
       <Card>
-        <CardHeader title="New Temporary User" />
+        <CardHeader title="New Customer" />
         <CardContent sx={{ pt: 0 }}>
           <Grid
             container
@@ -388,11 +408,19 @@ event.preventDefault();
                 fullWidth
                 label="Type"
                 name="type"
+                select
                 value={type}
                 onChange={handleInputChange}
 
               >
-              
+              {customerType.map((option) => (
+                      <MenuItem
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))}
               </TextField>
             </Grid>
 

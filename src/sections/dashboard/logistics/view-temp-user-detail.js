@@ -122,14 +122,14 @@ export const ViewTemporaryUserDetail = (props) => {
             <ArrowCircleLeftOutlinedIcon/>
           </SvgIcon>
           <Typography variant="subtitle2">
-             Back To <span style={{color: `${primaryColor}` , fontWeight: 600}}>Temporary User List</span> 
+             Back To <span style={{color: `${primaryColor}` , fontWeight: 600}}>Customer List</span> 
           </Typography>
         </Link>
         <IconWithPopup/>
       </div>
- <h2>Temporary User</h2>
+ <h2>Customer</h2>
       <Card style={{marginBottom: "12px" }}>
-        <CardHeader title="Temporary User Detail" />
+        <CardHeader title="Customer Detail" />
         <PropertyList>
         <PropertyListItem
           align={align}
