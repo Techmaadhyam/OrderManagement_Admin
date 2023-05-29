@@ -122,12 +122,12 @@ const QuotationViewTable = () => {
       dataIndex: 'deliveryDate',
     },
     {
-      title: 'Created Date',
+      title: 'Order Date',
       key: 'createdDate',
       dataIndex: 'createdDate',
     },
     {
-      title: 'Last Modified Date',
+      title: 'Order Modified Date',
       key: 'lastModifiedDate',
       dataIndex: 'lastModifiedDate',
     },
