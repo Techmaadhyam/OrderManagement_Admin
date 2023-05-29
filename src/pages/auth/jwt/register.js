@@ -81,6 +81,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [currentDate, setCurrentDate] = useState('');
+  const [gstn, setGstn]= useState('')
 
 
   //updating form state
@@ -106,6 +107,9 @@ const Register = () => {
       case 'company':
         setCompany(value);
         break;
+      case 'gstn':
+          setGstn(value);
+          break;
       case 'type':
         setType(value);
           break;
@@ -342,6 +346,7 @@ const handleCities = async (event) => {
               state: currentState,
               country: currentCountry,
               type: type,
+              gstNumber: gstn,
               createdDate:currentDate,
               unpdatedDate:currentDate
             })
@@ -616,6 +621,19 @@ const handleCities = async (event) => {
                     label="Company"
                     name="company"
                     value={company}
+                    onChange={handleInputChange}
+                  >
+                  </TextField>
+            </Grid>
+            <Grid
+              xs={12}
+              md={12}
+            >
+              <TextField
+                    fullWidth
+                    label="GST Number"
+                    name="gstn"
+                    value={gstn}
                     onChange={handleInputChange}
                   >
                   </TextField>

@@ -72,7 +72,8 @@ const [type, setType] = useState("");
 const [address, setAddress] = useState("");
 const [zipcode, setZipcode] = useState("");
 const [currentDate, setCurrentDate] = useState('');
-
+const [gstn, setGstn]= useState('')
+console.log(gstn)
  ////
  const handleInputChange = (event) => {
   const { name, value } = event.target;
@@ -99,6 +100,9 @@ const [currentDate, setCurrentDate] = useState('');
         break;
       case 'company':
         setCompany(value);
+        break;
+      case 'gstn':
+        setGstn(value);
         break;
     case 'address':
       setAddress(value);
@@ -288,13 +292,15 @@ event.preventDefault();
           mobile: phone,
           address: address,
           type: type,
+          gstNumber: gstn,
           pincode: zipcode,
           city: currentCity,
           state: currentState,
           country: currentCountry,
           createdBy: userId,
           createdDate:currentDate,
-          lastModifiedDate:currentDate
+          lastModifiedDate:currentDate,
+          lastModifiedByUser: {id: userId},
         })
       });
       
@@ -438,7 +444,20 @@ event.preventDefault();
 
               />
             </Grid>
-            <Grid/>
+            <Grid
+              xs={12}
+              md={6}
+            >
+              <TextField
+                fullWidth
+                label="GST Number"
+                name="gstn"
+                value={gstn}
+                onChange={handleInputChange}
+
+
+              />
+            </Grid>
             <Grid
               xs={12}
               md={6}
