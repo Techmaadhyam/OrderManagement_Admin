@@ -4,7 +4,8 @@ import {
   Typography,
   IconButton,
   Icon,
-  Link
+  Link,
+  InputBase
 } from '@mui/material';
 import { Table } from 'antd';
 import { Box } from '@mui/system';
@@ -20,6 +21,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import SearchIcon from '@mui/icons-material/Search';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
   //get userid 
   const userId = sessionStorage.getItem('user');
@@ -27,6 +30,17 @@ import 'react-toastify/dist/ReactToastify.css';
 const ViewInventory = () => {
   const [rows, setRows] = useState([{}]);
   const [userData, setUserData]= useState([])
+  //product
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchText, setSearchText] = useState('');
+  //warehouse
+  const [isSearchingWarehouse, setIsSearchingWarehouse] = useState(false);
+  const [warehouseText, setWarehouseText] = useState('');
+  //category
+  const [isSearchingCategory, setIsSearchingCategory] = useState(false);
+  const [categoryText, setCategoryText] = useState('');
+
+
 
 
   const navigate = useNavigate();
@@ -77,10 +91,87 @@ const handleNavigation = record => {
   navigate('/dashboard/inventory/edit', { state: record });
 };
 
+//product search
+const handleProductClick = () => {
+  setIsSearching(true);
+};
+
+const handleProductInputChange = event => {
+  setSearchText(event.target.value);
+};
+
+const handleProductCancel = () => {
+  setIsSearching(false);
+  setSearchText('');
+};
+//warehouse search
+const handleWarehouseClick = () => {
+  setIsSearchingWarehouse(true);
+};
+
+const handleWarehouseInputChange = event => {
+  setWarehouseText(event.target.value);
+};
+
+const handleWarehouseCancel = () => {
+  setIsSearchingWarehouse(false);
+  setWarehouseText('');
+};
+
+//category search
+const handleCategoryClick = () => {
+  setIsSearchingCategory(true);
+};
+
+const handleCategoryInputChange = event => {
+  setCategoryText(event.target.value);
+};
+
+const handleCategoryCancel = () => {
+  setIsSearchingCategory(false);
+  setCategoryText('');
+};
+
+const filteredProducts = dataWithKeys.filter(product => {
+  const productNameMatch = product.productName.toLowerCase().includes(searchText.toLowerCase());
+  const warehouseNameMatch = product.warehouseName.toLowerCase().includes(warehouseText.toLowerCase());
+  const categoryNameMatch = product.categoryName.toLowerCase().includes(categoryText.toLowerCase());
+
+  return (
+    (searchText === '' || productNameMatch) &&
+    (warehouseText === '' || warehouseNameMatch) &&
+    (categoryText === '' || categoryNameMatch)
+  );
+});
  
+
   const columns = [
     {
-      title: 'Product',
+      title: (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          {!isSearching ? (
+            <>
+              <Typography variant="subtitle1">Product</Typography>
+              <IconButton onClick={handleProductClick}>
+                <SearchIcon />
+              </IconButton>
+            </>
+          ) : (
+            <>
+              <InputBase
+                value={searchText}
+                onChange={handleProductInputChange}
+                placeholder="Search product..."
+              />
+              <IconButton onClick={handleProductCancel}>
+                <Icon>
+                  <HighlightOffIcon />
+                </Icon>
+              </IconButton>
+            </>
+          )}
+        </div>
+    ),
       dataIndex: 'productName',
       key: 'productName',
       render: (name, record) => {
@@ -99,12 +190,42 @@ const handleNavigation = record => {
             underline="hover"
           >
             <Typography variant="subtitle2">{name}</Typography>
+         
           </Link>
         );
       },
     },
     {
-      title: 'Quantity',
+      title: (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          {!isSearchingWarehouse? (
+            <>
+              <Typography variant="subtitle1">Warehouse</Typography>
+              <IconButton onClick={handleWarehouseClick}>
+                <SearchIcon />
+              </IconButton>
+            </>
+          ) : (
+            <>
+              <InputBase
+                value={warehouseText}
+                onChange={handleWarehouseInputChange}
+                placeholder="Search Warehouse..."
+              />
+              <IconButton onClick={handleWarehouseCancel}>
+                <Icon>
+                  <HighlightOffIcon />
+                </Icon>
+              </IconButton>
+            </>
+          )}
+        </div>
+    ),
+      key: 'warehouseName',
+      dataIndex: 'warehouseName',
+    },
+    {
+      title: 'Available Stock',
       key: 'quantity',
       dataIndex: 'quantity',
     },
@@ -114,7 +235,31 @@ const handleNavigation = record => {
       dataIndex: 'price',
     },
     {
-      title: 'Category',
+      title: (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          {!isSearchingCategory ? (
+            <>
+              <Typography variant="subtitle1">Category</Typography>
+              <IconButton onClick={handleCategoryClick}>
+                <SearchIcon />
+              </IconButton>
+            </>
+          ) : (
+            <>
+              <InputBase
+                value={categoryText}
+                onChange={handleCategoryInputChange}
+                placeholder="Search Category..."
+              />
+              <IconButton onClick={handleCategoryCancel}>
+                <Icon>
+                  <HighlightOffIcon />
+                </Icon>
+              </IconButton>
+            </>
+          )}
+        </div>
+    ),
       key: 'categoryName',
       dataIndex: 'categoryName',
     },
@@ -164,7 +309,7 @@ const handleNavigation = record => {
           <Table
             sx={{ minWidth: 800, overflowX: 'auto' }}
             columns={columns}
-            dataSource={dataWithKeys}
+            dataSource={filteredProducts}
             ></Table>
             </Scrollbar>
             <ToastContainer
