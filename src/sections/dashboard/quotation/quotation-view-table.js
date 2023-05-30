@@ -6,7 +6,8 @@ import {
   Icon,
   Link,
   MenuItem,
-  TextField
+  TextField,
+  InputBase
 } from '@mui/material';
 import { Table } from 'antd';
 import './purchase-order.css'
@@ -23,6 +24,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import SearchIcon from '@mui/icons-material/Search';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 const userId = sessionStorage.getItem('user');
 
@@ -42,6 +45,9 @@ const QuotationViewTable = () => {
   const [rows, setRows] = useState([{}]);
   const [userData, setUserData]= useState([])
   const [selectedCategory, setSelectedCategory] = useState('');
+
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchText, setSearchText] = useState('');
 
 
   const navigate = useNavigate();
@@ -100,6 +106,26 @@ const handleCategoryChange = (event) => {
     navigate('/dashboard/quotation/edit', { state: record });
   };
 
+  //company search
+const handleCompanyClick = () => {
+  setIsSearching(true);
+};
+
+const handleCompanyInputChange = event => {
+  setSearchText(event.target.value);
+};
+
+const handleCompanyCancel = () => {
+  setIsSearching(false);
+  setSearchText('');
+};
+
+  const filteredList = filteredData.filter(product => {
+    const companyMatch = product.contactPersonName.toLowerCase().includes(searchText.toLowerCase());
+   
+    return companyMatch
+  });
+
   const columns = [
     {
       title: 'Quotation Order Number',
@@ -136,7 +162,31 @@ const handleCategoryChange = (event) => {
       dataIndex: 'type',
     },
     {
-      title: 'User',
+      title: (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          {!isSearching ? (
+            <>
+              <Typography variant="subtitle1">Company Name</Typography>
+              <IconButton onClick={handleCompanyClick}>
+                <SearchIcon />
+              </IconButton>
+            </>
+          ) : (
+            <>
+              <InputBase
+                value={searchText}
+                onChange={handleCompanyInputChange}
+                placeholder="Search company..."
+              />
+              <IconButton onClick={handleCompanyCancel}>
+                <Icon>
+                  <HighlightOffIcon />
+                </Icon>
+              </IconButton>
+            </>
+          )}
+        </div>
+    ),
       key: 'contactPersonName',
       dataIndex: 'contactPersonName',
     },
@@ -206,14 +256,12 @@ const handleCategoryChange = (event) => {
 
       select
       >
-      {categoryBuySell.map((option) => (
-        <MenuItem
-          key={option.value}
-          value={option.value}
-        >
-          {option.label}
-        </MenuItem>
-      ))}
+     <MenuItem value="">All</MenuItem>
+        {categoryBuySell.map((option) => (
+          <MenuItem key={option.value} value={option.value}>
+            {option.label}
+          </MenuItem>
+        ))}
       </TextField>
       
       <Box sx={{  position: 'relative' , overflowX: "auto", marginTop:'30px'}}>
@@ -223,7 +271,7 @@ const handleCategoryChange = (event) => {
           <Table
             sx={{ minWidth: 800, overflowX: 'auto' }}
             columns={columns}
-            dataSource={filteredData}
+            dataSource={filteredList}
             ></Table>
             </Scrollbar>
             <ToastContainer

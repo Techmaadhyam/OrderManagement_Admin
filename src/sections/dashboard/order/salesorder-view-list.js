@@ -4,7 +4,10 @@ import {
   Typography,
   IconButton,
   Icon,
-  Link
+  Link,
+  InputBase,
+  TextField,
+  MenuItem
 } from '@mui/material';
 import { Table } from 'antd';
 import './sales-order.css'
@@ -21,12 +24,40 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import SearchIcon from '@mui/icons-material/Search';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 
 const userId = sessionStorage.getItem('user');
+
+const customerType = [
+   
+  {
+    label: 'Distributor',
+    value: 'Distributor'
+  },
+  {
+    label: 'Retailer',
+    value: 'Retailer'
+  },
+  {
+    label: 'Manufacturer',
+    value: 'Manufacturer'
+  },
+  {
+    label: 'Customer',
+    value: 'Customer'
+  }
+];
+
 const SalesOrderViewList = () => {
   const [rows, setRows] = useState([{}]);
   const [userData, setUserData]= useState([])
+
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchText, setSearchText] = useState('');
+
+  const [selectedType, setSelectedType] = useState('');
 
 
   const navigate = useNavigate();
@@ -77,6 +108,36 @@ const handleNavigation = record => {
   navigate('/dashboard/orders/edit', { state: record });
 };
 
+//company search
+const handleCompanyClick = () => {
+  setIsSearching(true);
+};
+
+const handleCompanyInputChange = event => {
+  setSearchText(event.target.value);
+};
+
+const handleCompanyCancel = () => {
+  setIsSearching(false);
+  setSearchText('');
+};
+
+  const filteredList = dataWithKeys.filter(product => {
+    const companyMatch = product.contactPerson.toLowerCase().includes(searchText.toLowerCase());
+   
+    return companyMatch
+  });
+
+  const filteredData = selectedType
+? filteredList.filter((item) => item.type === selectedType)
+: filteredList;
+
+const handleTypeChange = (event) => {
+  setSelectedType(event.target.value);
+};
+
+  
+
   const columns = [
     {
       title: 'Sales Order Number',
@@ -103,12 +164,60 @@ const handleNavigation = record => {
       },
     },
     {
+      title: (
+        <TextField
+
+        label="Type"
+        name="type"
+        sx={{ minWidth: 150 }}
+        value={selectedType}
+        onChange={handleTypeChange}
+  
+  
+        select
+        >
+       <MenuItem value="">All</MenuItem>
+          {customerType.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </TextField>
+      ),
+      key: 'type',
+      dataIndex: 'type',
+    },
+    {
       title: 'Status',
       key: 'status',
       dataIndex: 'status',
     },
     {
-      title: 'Name',
+      title: (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          {!isSearching ? (
+            <>
+              <Typography variant="subtitle1">Company Name</Typography>
+              <IconButton onClick={handleCompanyClick}>
+                <SearchIcon />
+              </IconButton>
+            </>
+          ) : (
+            <>
+              <InputBase
+                value={searchText}
+                onChange={handleCompanyInputChange}
+                placeholder="Search company..."
+              />
+              <IconButton onClick={handleCompanyCancel}>
+                <Icon>
+                  <HighlightOffIcon />
+                </Icon>
+              </IconButton>
+            </>
+          )}
+        </div>
+    ),
       key: 'contactPerson',
       dataIndex: 'contactPerson',
     },
@@ -168,7 +277,7 @@ const handleNavigation = record => {
           <Table
             sx={{ minWidth: 800, overflowX: 'auto' }}
             columns={columns}
-            dataSource={dataWithKeys}
+            dataSource={filteredData}
             ></Table>
             </Scrollbar>
             <ToastContainer

@@ -162,13 +162,13 @@ const [type, setType] = useState(state?.type||"");
 const [quotation, setQuotation] = useState('');
 const [deliveryDate, setDeliveryDate] = useState(dayjs(state?.deliveryDate, dateFormat));
 const [status, setStatus] = useState(state?.status || "");
-const [contactName,setContactName] = useState(state?.contactPerson||'')
+const [contactName,setContactName] = useState(state?.contactPerson ||'')
 const [phone, setPhone] = useState(state?.contactPhone||'');
 const [address, setAddress] = useState(state?.deliveryAddress || "");
 const [tempId, setTempId] = useState(state?.tempUserId);
 const [terms, setTerms] = useState(state?.termsAndCondition || '');
 const [comment, setComment] = useState(state?.comments||'');
-const [user, setUser] = useState('')
+const [user, setUser] = useState(state?.companyName || '')
 const [payment, setPayment]=useState(state?.paymentMode||"")
 
 const [currentDate, setCurrentDate] = useState('');
@@ -588,7 +588,7 @@ const [productName, setProductName] = useState('');
             select
             value={user}
             onChange={(e) => {
-              const selectedOption = userData?.find((option) => option.userName === e.target.value);
+              const selectedOption = userData?.find((option) => option.companyName === e.target.value);
               setTempId(selectedOption?.id || '');
               setUser(e.target.value);
             }}
@@ -597,9 +597,9 @@ const [productName, setProductName] = useState('');
                   {userData
           .filter((option) => option.type === type) 
           .map((option) => (
-            option.userName && (
-              <MenuItem key={option.id} value={option.userName}>
-                {option.userName}
+            option.companyName && (
+              <MenuItem key={option.id} value={option.companyName}>
+                {option.companyName}
               </MenuItem>
             )
           ))}

@@ -4,7 +4,8 @@ import {
   Typography,
   IconButton,
   Icon,
-  Link
+  Link,
+  InputBase,
 } from '@mui/material';
 import { Table } from 'antd';
 import { Box } from '@mui/system';
@@ -20,6 +21,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import SearchIcon from '@mui/icons-material/Search';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, MenuItem } from '@mui/material';
 
@@ -56,6 +59,11 @@ const ViewTemporaryUser = () => {
   const [editRecord, setEditRecord] = useState(null);
   const [currentDate, setCurrentDate] = useState('');
 
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchText, setSearchText] = useState('');
+
+  const [selectedType, setSelectedType] = useState('');
+
   const navigate = useNavigate();
   
  
@@ -71,6 +79,21 @@ const ViewTemporaryUser = () => {
   }, []);
 
   const dataWithKeys = userData.map((item) => ({ ...item, key: item.id }));
+
+
+const filteredList = dataWithKeys.filter(product => {
+    const companyMatch = product.companyName.toLowerCase().includes(searchText.toLowerCase());
+   
+    return companyMatch
+});
+
+const filteredData = selectedType
+? filteredList.filter((item) => item.type === selectedType)
+: filteredList;
+
+const handleTypeChange = (event) => {
+  setSelectedType(event.target.value);
+};
 
     //toast notification from toastify library
 const notify = (type, message) => {
@@ -182,6 +205,24 @@ useEffect(() => {
   setCurrentDate(formattedDate);
 }, []);
 
+
+
+//company search
+const handleCompanyClick = () => {
+  setIsSearching(true);
+};
+
+const handleCompanyInputChange = event => {
+  setSearchText(event.target.value);
+};
+
+const handleCompanyCancel = () => {
+  setIsSearching(false);
+  setSearchText('');
+};
+
+
+  
  
   const columns = [
     {
@@ -214,12 +255,55 @@ useEffect(() => {
       dataIndex: 'emailId',
     },
     {
-      title: 'Type',
+      title: (
+        <TextField
+
+        label="Type"
+        name="type"
+        sx={{ minWidth: 150 }}
+        value={selectedType}
+        onChange={handleTypeChange}
+  
+  
+        select
+        >
+       <MenuItem value="">All</MenuItem>
+          {customerType.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </TextField>
+      ),
       key: 'type',
       dataIndex: 'type',
     },
     {
-      title: 'Company',
+      title:  (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          {!isSearching ? (
+            <>
+              <Typography variant="subtitle1">Company Name</Typography>
+              <IconButton onClick={handleCompanyClick}>
+                <SearchIcon />
+              </IconButton>
+            </>
+          ) : (
+            <>
+              <InputBase
+                value={searchText}
+                onChange={handleCompanyInputChange}
+                placeholder="Search company..."
+              />
+              <IconButton onClick={handleCompanyCancel}>
+                <Icon>
+                  <HighlightOffIcon />
+                </Icon>
+              </IconButton>
+            </>
+          )}
+        </div>
+    ),
       key: 'companyName',
       dataIndex: 'companyName',
     },
@@ -425,7 +509,7 @@ useEffect(() => {
           <Table
             sx={{ minWidth: 800, overflowX: 'auto' }}
             columns={columns}
-            dataSource={dataWithKeys}
+            dataSource={filteredData}
             ></Table>
             </Scrollbar>
             <ToastContainer
