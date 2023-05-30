@@ -60,7 +60,7 @@ const customerType = [
 ];
 
 const categoryBuySell = [
-   
+
   {
     label: 'Buyer',
     value: 'Buyer'
