@@ -257,7 +257,7 @@ const handleDateChange = (date) => {
       });
   }, []);
 
-console.log(salesUser)
+console.log(userData)
 
 const deliveryDateAntd = deliveryDate;
 const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
@@ -479,7 +479,7 @@ let finalAmount = totalAmount.toFixed(2)
                   userId: userState,
                   tempUserId :tempId,
                   contactPerson: contactName,
-                  contactPhone: phone,    
+                  contactPhone: phone,
                   status: status,
                   paymentMode: payment,
                   type: type,
@@ -600,7 +600,7 @@ let finalAmount = totalAmount.toFixed(2)
                 select
                 value={userName}
                 onChange={(e) => {
-                  const selectedOption = userData.find((option) => option.userName === e.target.value);
+                  const selectedOption = userData.find((option) => option.companyName === e.target.value);
                   if (selectedOption) {
                     if (selectedOption.hasOwnProperty('createdByUser')) {
                       setTempId(selectedOption.id || '');
@@ -617,9 +617,9 @@ let finalAmount = totalAmount.toFixed(2)
                   {userData
               .filter((option) => option.type === type) 
               .map((option) => (
-                option.userName && (
-                  <MenuItem key={option.id} value={option.userName}>
-                    {option.userName}
+                option.companyName && (
+                  <MenuItem key={option.id} value={option.companyName}>
+                    {option.companyName}
                   </MenuItem>
                 )
               ))}
