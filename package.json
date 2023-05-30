@@ -1,12 +1,12 @@
 {
-  "name": "@devias-kit-pro/react",
-  "version": "6.1.0",
+  "name": "material-kit-react",
+  "version": "3.0.0",
   "author": "Devias",
   "homepage": "https://devias.io",
   "private": true,
   "scripts": {
-    "start": "react-scripts --max_old_space_size=4096 start",
-    "build": "react-scripts --max_old_space_size=4096 build",
+    "start": "PORT=3001 react-scripts --max_old_space_size=8128 start",
+    "build": "react-scripts build",
     "lint": "eslint ./src",
     "lint-fix": "eslint --fix ./src"
   },
