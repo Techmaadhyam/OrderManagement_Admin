@@ -5,7 +5,7 @@
   "homepage": "https://devias.io",
   "private": true,
   "scripts": {
-    "start": "PORT=3001 react-scripts --max_old_space_size=8128 start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "lint": "eslint ./src",
     "lint-fix": "eslint --fix ./src"

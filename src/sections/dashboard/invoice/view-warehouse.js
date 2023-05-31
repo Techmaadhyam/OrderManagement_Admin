@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+
 import {
   Unstable_Grid2 as Grid,
   Typography,
@@ -12,8 +12,6 @@ import React from 'react';
 import { Scrollbar } from 'src/components/scrollbar';
 import EditIcon from '@mui/icons-material/Edit';
 import {  Delete } from '@mui/icons-material';
-import { RouterLink } from 'src/components/router-link';
-import { paths } from 'src/paths';
 import IconWithPopup from '../user/user-icon';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -27,7 +25,7 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } 
   const userId = sessionStorage.getItem('user');
 
 const ViewWarehouse = () => {
-  const [rows, setRows] = useState([{}]);
+
   const [userData, setUserData]= useState([])
 
   const [isPopupVisible, setPopupVisible] = useState(false);
@@ -235,7 +233,8 @@ const columns = [
     };
 
     return (
-      <Dialog open={true} onClose={onClose}>
+      <Dialog open={true} 
+      onClose={onClose}>
         <DialogTitle>Edit Warehouse</DialogTitle>
         <DialogContent>
         <Grid
@@ -332,10 +331,12 @@ const columns = [
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose} color="primary">
+          <Button onClick={onClose} 
+          color="primary">
             Cancel
           </Button>
-          <Button onClick={handleSave} color="primary">
+          <Button onClick={handleSave} 
+          color="primary">
             Save
           </Button>
         </DialogActions>

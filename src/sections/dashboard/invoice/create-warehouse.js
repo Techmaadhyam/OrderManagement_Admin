@@ -1,7 +1,4 @@
 import PropTypes from 'prop-types';
-import toast from 'react-hot-toast';
-import * as Yup from 'yup';
-import { useFormik } from 'formik';
 import {
   Button,
   Card,
@@ -12,8 +9,6 @@ import {
   MenuItem,
   Unstable_Grid2 as Grid
 } from '@mui/material';
-import { DatePicker } from 'antd';
-import { wait } from 'src/utils/wait';
 import './warehouse.css'
 import { Box } from '@mui/system';
 import IconWithPopup from '../user/user-icon';
@@ -27,7 +22,7 @@ const userId = sessionStorage.getItem('user');
 export const CreateWarehouse = (props) => {
     // country, state, city API access token
     const [accessToken, setAccessToken] = useState(null);
-    const [error, setError] = useState(null);
+
   
   
     //state management for countries,states and cities
@@ -49,7 +44,7 @@ export const CreateWarehouse = (props) => {
 
 
 
-  const { customer, ...other } = props;
+
  
   ////
   const handleInputChange = (event) => {
@@ -98,10 +93,10 @@ export const CreateWarehouse = (props) => {
         const data = await response.json();
 
         setAccessToken(data.auth_token);
-        setError(null);
+
       } catch (error) {
         console.error(error);
-        setError('Failed to fetch access token');
+
       }
     };
 

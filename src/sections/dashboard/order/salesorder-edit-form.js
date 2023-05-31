@@ -17,19 +17,18 @@ import {
   MenuItem,
   Unstable_Grid2 as Grid
 } from '@mui/material';
-import {Grid as AntGrid} from 'antd/es/card/Grid';
+
 import { DatePicker } from 'antd';
 import './sales-order.css'
 import IconWithPopup from '../user/user-icon';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import moment from 'moment/moment';
-import { useSelector } from 'react-redux';
 import { primaryColor } from 'src/primaryColor';
 import EditIcon from '@mui/icons-material/Edit';
 import { Scrollbar } from 'src/components/scrollbar';
 import React from 'react';
-import { Add, Delete } from '@mui/icons-material';
+import { Delete } from '@mui/icons-material';
 import './customTable.css'
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
@@ -155,7 +154,6 @@ export const SalesOrderEditForm = (props) => {
   const state = location.state;
 console.log(state)
 
-  const { customer, ...other } = props;
 
   const [userData, setUserData]= useState([])
   const navigate = useNavigate();
@@ -187,7 +185,6 @@ const [productName, setProductName] = useState('');
   const [cgst, setCgst] = useState();
   const [size, setSize] = useState();
   const [description, setDescription] = useState('');
-  const [rows, setRows] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
 
@@ -214,7 +211,7 @@ const [productName, setProductName] = useState('');
       .catch(error => {
         console.error(error);
       });
-  }, []);
+  }, [state?.id, state?.soRecord?.id, state?.totalAmount]);
 //inventory 
   useEffect(() => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getInventoryByUserId/${userId}`)
@@ -288,7 +285,7 @@ const [productName, setProductName] = useState('');
       .catch(error => {
         console.error(error);
       });
-  }, []);
+  }, [state?.tempUserId, state?.userId]);
 
 
   useEffect(() => {
@@ -644,7 +641,8 @@ const notify = (type, message) => {
           .filter((option) => option.type === type) 
           .map((option) => (
             option.userName && (
-              <MenuItem key={option.id} value={option.userName}>
+              <MenuItem key={option.id} 
+              value={option.userName}>
                 {option.userName}
               </MenuItem>
             )
@@ -671,7 +669,8 @@ const notify = (type, message) => {
             >
                 <DatePicker placeholder="Delivery Date"
                 onChange={handleDateChange}
-                defaultValue={deliveryDate} format={dateFormat}
+                defaultValue={deliveryDate} 
+                format={dateFormat}
                 
              
 
@@ -767,14 +766,17 @@ height='50px'/>
         </Grid>
 
           {showForm && (
-            <div className='modal' onClick={handleModalClick}>
+            <div className='modal' 
+            onClick={handleModalClick}>
               <div className='modal-content'>
                 <h5 className='product-detail-heading'>Add Product Details</h5>
                 <form className='form'>
                   {/* Form fields */}
                   <div className='form-row'>
                     <div className='popup-left'>
-                      <Grid xs={12} md={6}>
+                      <Grid 
+                      xs={12} 
+                      md={6}>
                         <TextField
                           fullWidth
                           label='Name'
@@ -789,7 +791,8 @@ height='50px'/>
                           style={{ marginBottom: 10 }}
                         >
                           {userData2?.map((option) => (
-                            <MenuItem key={option.id} value={option.productName} >
+                            <MenuItem key={option.id} 
+                            value={option.productName} >
                               {option.productName}
                             </MenuItem>
                           ))}
@@ -920,7 +923,10 @@ height='50px'/>
                         />
                         </Grid>
                             <div className='submit-purchase'>
-                              <button style={{ background: `${primaryColor}` }} className='submit' type='submit' onClick={handleSubmit}>
+                              <button style={{ background: `${primaryColor}` }} 
+                              className='submit' 
+                              type='submit' 
+                              onClick={handleSubmit}>
                                 Save
                               </button>
                             </div>
@@ -935,7 +941,8 @@ height='50px'/>
                         <TableHead>
                           <TableRow>
                             {tableHeader.map((item, idx) => (
-                              <TableCell sx={{ width: item.width }} key={idx}>
+                              <TableCell sx={{ width: item.width }} 
+                              key={idx}>
                                 {item.name}
                               </TableCell>
                             ))}
@@ -943,7 +950,8 @@ height='50px'/>
                         </TableHead>
                         <TableBody>
                           {rowData?.map((row, idx) => (
-                            <TableRow hover key={idx.id}>
+                            <TableRow hover 
+                            key={idx.id}>
                               <TableCell>
                                 <div>{row.productName}</div>
                               </TableCell>

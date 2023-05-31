@@ -1,10 +1,7 @@
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { useMounted } from 'src/hooks/use-mounted';
-import { useSearchParams } from 'src/hooks/use-search-params';
-import ArrowLeftIcon from '@untitled-ui/icons-react/build/esm/ArrowLeft';
-import { Box, Button, Link, Stack, SvgIcon, TextField, Typography } from '@mui/material';
-import { RouterLink } from 'src/components/router-link';
+import { Box, Button, Link, Stack,TextField, Typography } from '@mui/material';
 import { Seo } from 'src/components/seo';
 import { paths } from 'src/paths';
 
@@ -28,8 +25,7 @@ const validationSchema = Yup.object({
 
 const Page = () => {
   const isMounted = useMounted();
-  const searchParams = useSearchParams();
-  const returnTo = searchParams.get('returnTo');
+
   const formik = useFormik({
     initialValues,
     validationSchema,

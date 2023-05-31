@@ -1,7 +1,6 @@
-import * as Yup from 'yup';
+
 import { useFormik } from 'formik';
 import {
-  Alert,
   Button,
   Card,
   CardContent,
@@ -22,7 +21,7 @@ import { paths } from 'src/paths';
 import { AuthIssuer } from 'src/sections/auth/auth-issuer';
 import { primaryColor } from 'src/primaryColor'; 
 import { ToastContainer, toast } from 'react-toastify';
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 
 const initialValues = {

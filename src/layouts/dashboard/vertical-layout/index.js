@@ -3,7 +3,6 @@ import { useMediaQuery } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { MobileNav } from '../mobile-nav';
 import { SideNav } from './side-nav';
-import { TopNav } from './top-nav';
 import { useMobileNav } from './use-mobile-nav';
 
 const SIDE_NAV_WIDTH = 280;

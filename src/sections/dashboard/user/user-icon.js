@@ -11,7 +11,9 @@ const User = () => {
     <Link style={{color: '#111927'}}
     component={RouterLink}
     href= {paths.dashboard.social.profile}>
-      <Box className="popup-container" sx={{backgroundColor: `${primaryColor}`}}
+      <Box className="popup-container" 
+      sx={{backgroundColor: `${primaryColor}`
+    }}
         >
         <ButtonBase className="popup-trigger">
           <SvgIcon >

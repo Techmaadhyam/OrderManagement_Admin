@@ -1,6 +1,5 @@
-import PropTypes from 'prop-types';
+
 import {
-  Unstable_Grid2 as Grid,
   Typography,
   IconButton,
   Icon,
@@ -16,8 +15,6 @@ import React from 'react';
 import { Scrollbar } from 'src/components/scrollbar';
 import EditIcon from '@mui/icons-material/Edit';
 import {  Delete } from '@mui/icons-material';
-import { RouterLink } from 'src/components/router-link';
-import { paths } from 'src/paths';
 import IconWithPopup from '../user/user-icon';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -42,7 +39,6 @@ const categoryBuySell = [
 ];
 
 const QuotationViewTable = () => {
-  const [rows, setRows] = useState([{}]);
   const [userData, setUserData]= useState([])
   const [selectedCategory, setSelectedCategory] = useState('');
 
@@ -258,7 +254,8 @@ const handleCompanyCancel = () => {
       >
      <MenuItem value="">All</MenuItem>
         {categoryBuySell.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
+          <MenuItem key={option.value} 
+          value={option.value}>
             {option.label}
           </MenuItem>
         ))}

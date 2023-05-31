@@ -1,13 +1,12 @@
-import { createResourceId } from 'src/utils/create-resource-id';
-import { decode, JWT_EXPIRES_IN, JWT_SECRET, sign } from 'src/utils/jwt';
-import { wait } from 'src/utils/wait';
+
+import {  JWT_EXPIRES_IN, JWT_SECRET, sign } from 'src/utils/jwt';
 //import { users } from './data';
 import axios from 'axios';
 
 const STORAGE_KEY = 'users';
 
 var users = {};
-var errorMesz = '';
+
 
 // NOTE: We use sessionStorage since memory storage is lost after page reload.
 //  This should be replaced with a server call that returns DB persisted data.
@@ -86,7 +85,7 @@ class AuthApi {
   }
 
   async signUp(request) {
-    const { email, name, password } = request;
+    const { email, password } = request;
     await axios
       .get(`http://13.115.56.48:8080/techmadhyam/getUserByUsername/${email}`)
       .then((response) => {
@@ -141,12 +140,12 @@ class AuthApi {
   }
 
   me(request) {
-    const { accessToken } = request;
+    //const { accessToken } = request;
 
     return new Promise((resolve, reject) => {
       try {
         // Decode access token
-        const decodedToken = decode(accessToken);
+        //const decodedToken = decode(accessToken);
 
         // Merge static users (data file) with persisted users (browser storage)
         /*const mergedUsers = [
@@ -155,7 +154,7 @@ class AuthApi {
         ];*/
 
         // Find the user
-        const { userId } = decodedToken;
+        /* const { userId } = decodedToken;*/
         //const user = mergedUsers.find((user) => users.id === userId);
 
         if (!users) {

@@ -1,14 +1,9 @@
 import { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import File04Icon from '@untitled-ui/icons-react/build/esm/File04';
-import { Box, Button, Drawer, Stack, SvgIcon, Typography } from '@mui/material';
+import { Box,  Drawer, Stack, } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { Logo } from 'src/components/logo';
-import { RouterLink } from 'src/components/router-link';
 import { Scrollbar } from 'src/components/scrollbar';
 import { usePathname } from 'src/hooks/use-pathname';
-import { paths } from 'src/paths';
-import { TenantSwitch } from '../tenant-switch';
 import { MobileNavSection } from './mobile-nav-section';
 
 const MOBILE_NAV_WIDTH = 280;

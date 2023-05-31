@@ -1,7 +1,5 @@
 import PropTypes from 'prop-types';
-import toast from 'react-hot-toast';
-import * as Yup from 'yup';
-import { useFormik } from 'formik';
+
 import {
   Button,
   Card,
@@ -12,8 +10,6 @@ import {
   MenuItem,
   Unstable_Grid2 as Grid
 } from '@mui/material';
-import { DatePicker } from 'antd';
-import { wait } from 'src/utils/wait';
 import './inventory.css'
 import { Box } from '@mui/system';
 import IconWithPopup from '../user/user-icon';
@@ -35,7 +31,7 @@ const userOptions = [
   
 ];
 export const CreateInventory = (props) => {
-  const { customer, ...other } = props;
+
   const [showAdditionalFields, setShowAdditionalFields] = useState(false);
 //warehouse
   const [warehouse, setWarehouse]= useState()
@@ -73,53 +69,7 @@ export const CreateInventory = (props) => {
 
   const navigate = useNavigate();
   
-  const formik = useFormik({
-    initialValues: {
-      address1: customer.address1 || '',
-      address2: customer.address2 || '',
-      country: customer.country || '',
-      email: customer.email || '',
-      hasDiscount: customer.hasDiscount || false,
-      isVerified: customer.isVerified || false,
-      name: customer.name || '',
-      phone: customer.phone || '',
-      state: customer.state || '',
-      submit: null
-    },
-    validationSchema: Yup.object({
-      address1: Yup.string().max(255),
-      address2: Yup.string().max(255),
-      country: Yup.string().max(255),
-      email: Yup
-        .string()
-        .email('Must be a valid email')
-        .max(255)
-        .required('Email is required'),
-      hasDiscount: Yup.bool(),
-      isVerified: Yup.bool(),
-      name: Yup
-        .string()
-        .max(255)
-        .required('Name is required'),
-      phone: Yup.string().max(15),
-      state: Yup.string().max(255)
-    }),
-    onSubmit: async (values, helpers) => {
-      try {
-        // NOTE: Make API request
-        await wait(500);
-        helpers.setStatus({ success: true });
-        helpers.setSubmitting(false);
-        toast.success('Customer updated');
-      } catch (err) {
-        console.error(err);
-        toast.error('Something went wrong!');
-        helpers.setStatus({ success: false });
-        helpers.setErrors({ submit: err.message });
-        helpers.setSubmitting(false);
-      }
-    }
-  });
+console.log(selectedName, createdDate)
 
   //get warehouse data
   useEffect(() => {
@@ -346,9 +296,7 @@ useEffect(() => {
       <h2>Create Inventory</h2>
       <IconWithPopup/>
     </div>
-    <form
-      onSubmit={formik.handleSubmit}
-      {...other}>
+    <form>
       <Card>
         <CardHeader title="Inventory Detail" />
         <CardContent sx={{ pt: 0 }}>
@@ -375,7 +323,8 @@ useEffect(() => {
                   >
                     {warehouse?.map((option) => (
                       option.id && (
-                        <MenuItem key={option.id} value={option.id}>
+                        <MenuItem key={option.id} 
+                        value={option.id}>
                           {option.name}
                         </MenuItem>
                       )
@@ -401,7 +350,8 @@ useEffect(() => {
                   >
                     {purchaseOrder?.map((option) => (
                       option.id && (
-                        <MenuItem key={option.id} value={option.id}>
+                        <MenuItem key={option.id} 
+                        value={option.id}>
                           {option.id}
                         </MenuItem>
                       )
@@ -427,7 +377,8 @@ useEffect(() => {
                   >
                     {category?.map((option) => (
                       option.name && (
-                        <MenuItem key={option.id} value={option.name}>
+                        <MenuItem key={option.id} 
+                        value={option.name}>
                           {option.name}
                         </MenuItem>
                       )
@@ -463,7 +414,8 @@ useEffect(() => {
                   {product
                     .filter((option) => option.category.id === categoryId)
                     .map((option) => (
-                      <MenuItem key={option.id} value={option.id}>
+                      <MenuItem key={option.id} 
+                      value={option.id}>
                         {option.productName}
                       </MenuItem>
                     ))}

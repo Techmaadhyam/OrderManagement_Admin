@@ -1,8 +1,5 @@
 import PropTypes from 'prop-types';
-import toast from 'react-hot-toast';
-import * as Yup from 'yup';
-import { useFormik } from 'formik';
-import ArrowLeftIcon from '@untitled-ui/icons-react/build/esm/ArrowLeft';
+
 import {
   Button,
   Card,
@@ -17,15 +14,11 @@ import {
   Icon
 } from '@mui/material';
 import {Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
-import { wait } from 'src/utils/wait';
-import {  Box, Stack } from '@mui/system';
 import { PropertyList } from 'src/components/property-list';
 import { PropertyListItem } from 'src/components/property-list-item';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { RouterLink } from 'src/components/router-link';
 import { paths } from 'src/paths';
-import { Scrollbar } from 'src/components/scrollbar';
-import { Table } from 'antd';
 import { primaryColor } from 'src/primaryColor';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 import IconWithPopup from '../user/user-icon';
@@ -35,16 +28,11 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 
-const statusOptions = ['Canceled', 'Complete', 'Rejected'];
-  //get userid 
-  const userId = sessionStorage.getItem('user');
-
 export const ViewProductDetail = (props) => {
   const location = useLocation();
   const state = location.state;
 
-  const { customer, ...other } = props;
-  const [status, setStatus] = useState(statusOptions[0]);
+
   const [currentDate, setCurrentDate] = useState('');
 
   const [editOpen, setEditOpen] = useState(false);
@@ -159,7 +147,8 @@ export const ViewProductDetail = (props) => {
             {state?.productName || state?.name}
         
 
-          <Dialog open={editOpen} onClose={handleEditClose}>
+          <Dialog open={editOpen} 
+          onClose={handleEditClose}>
   <DialogTitle>Update Product</DialogTitle>
   <DialogContent>
   <Grid
@@ -192,10 +181,12 @@ export const ViewProductDetail = (props) => {
     </Grid>
   </DialogContent>
   <DialogActions>
-    <Button onClick={handleEditClose} color="primary">
+    <Button onClick={handleEditClose} 
+    color="primary">
       Cancel
     </Button>
-    <Button onClick={handleSave} color="primary">
+    <Button onClick={handleSave} 
+    color="primary">
       Save
     </Button>
   </DialogActions>
@@ -207,7 +198,9 @@ export const ViewProductDetail = (props) => {
         <Divider />
         <div style={{ display: 'flex', alignItems: 'center' }}>
   <div style={{ marginRight: '8px' }}>
-    <PropertyListItem align={align} label="Category" value={state?.category?.name} />
+    <PropertyListItem align={align} 
+    label="Category" 
+    value={state?.category?.name} />
   </div>
   <IconButton onClick={handleEditOpen}>
     <Icon>

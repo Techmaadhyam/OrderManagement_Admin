@@ -1,6 +1,5 @@
-import PropTypes from 'prop-types';
+
 import {
-  Unstable_Grid2 as Grid,
   Typography,
   IconButton,
   Icon,
@@ -13,8 +12,6 @@ import React from 'react';
 import { Scrollbar } from 'src/components/scrollbar';
 import EditIcon from '@mui/icons-material/Edit';
 import {  Delete } from '@mui/icons-material';
-import { RouterLink } from 'src/components/router-link';
-import { paths } from 'src/paths';
 import IconWithPopup from '../user/user-icon';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -28,7 +25,7 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
   const userId = sessionStorage.getItem('user');
 
 const ViewInventory = () => {
-  const [rows, setRows] = useState([{}]);
+
   const [userData, setUserData]= useState([])
   //product
   const [isSearching, setIsSearching] = useState(false);

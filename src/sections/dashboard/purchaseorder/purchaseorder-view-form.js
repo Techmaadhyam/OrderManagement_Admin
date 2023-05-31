@@ -1,6 +1,5 @@
-import PropTypes from 'prop-types';
+
 import {
-  Unstable_Grid2 as Grid,
   Typography,
   IconButton,
   Icon,
@@ -17,10 +16,7 @@ import React from 'react';
 import { Scrollbar } from 'src/components/scrollbar';
 import EditIcon from '@mui/icons-material/Edit';
 import {  Delete } from '@mui/icons-material';
-import { RouterLink } from 'src/components/router-link';
-import { paths } from 'src/paths';
 import IconWithPopup from '../user/user-icon';
-import { PurchaseOrderCreateForm } from './purchaseorder-create-form';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -53,7 +49,7 @@ const customerType = [
 
 const userId = sessionStorage.getItem('user');
   const PurchaseOrderViewForm = () => {
-  const [rows, setRows] = useState([{}]);
+
   const [userData, setUserData]= useState([])
 
   const [isSearching, setIsSearching] = useState(false);
@@ -186,7 +182,8 @@ const handleTypeChange = (event) => {
         >
        <MenuItem value="">All</MenuItem>
           {customerType.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
+            <MenuItem key={option.value} 
+            value={option.value}>
               {option.label}
             </MenuItem>
           ))}

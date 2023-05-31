@@ -1,26 +1,19 @@
 import PropTypes from 'prop-types';
-import toast from 'react-hot-toast';
-import * as Yup from 'yup';
-import { useFormik } from 'formik';
-import ArrowLeftIcon from '@untitled-ui/icons-react/build/esm/ArrowLeft';
 import {
-  Button,
   Card,
   CardHeader,
   Divider,
-  TextField,
   Typography,
   Link,
   SvgIcon,
-  IconButton,
   Grid
 } from '@mui/material';
-import { wait } from 'src/utils/wait';
+
 import './purchase-order.css'
-import {  Box, Stack } from '@mui/system';
+import {  Box } from '@mui/system';
 import { PropertyList } from 'src/components/property-list';
 import { PropertyListItem } from 'src/components/property-list-item';
-import { useCallback, useState } from 'react';
+import {  useState } from 'react';
 import { RouterLink } from 'src/components/router-link';
 import { paths } from 'src/paths';
 import { Scrollbar } from 'src/components/scrollbar';
@@ -34,8 +27,6 @@ import { useEffect } from 'react';
 
 
 
-
-const statusOptions = ['Canceled', 'Complete', 'Rejected'];
 const columns = [
   {
     title: 'Name',
@@ -96,63 +87,12 @@ export const ViewPurchaseOrder = (props) => {
 
  
 
-  const { customer, ...other } = props;
-  const [status, setStatus] = useState(statusOptions[0]);
   const [tempuser, setTempuser] =useState([])
   const [rowData, setRowData] =useState()
 
-  const handleChange = useCallback((event) => {
-    setStatus(event.target.value);
-  }, []);
-  const align = 'horizontal' 
-  const formik = useFormik({
-    initialValues: {
-      address1: customer.address1 || '',
-      address2: customer.address2 || '',
-      country: customer.country || '',
-      email: customer.email || '',
-      hasDiscount: customer.hasDiscount || false,
-      isVerified: customer.isVerified || false,
-      name: customer.name || '',
-      phone: customer.phone || '',
-      state: customer.state || '',
-      submit: null
-    },
-    validationSchema: Yup.object({
-      address1: Yup.string().max(255),
-      address2: Yup.string().max(255),
-      country: Yup.string().max(255),
-      email: Yup
-        .string()
-        .email('Must be a valid email')
-        .max(255)
-        .required('Email is required'),
-      hasDiscount: Yup.bool(),
-      isVerified: Yup.bool(),
-      name: Yup
-        .string()
-        .max(255)
-        .required('Name is required'),
-      phone: Yup.string().max(15),
-      state: Yup.string().max(255)
-    }),
-    onSubmit: async (values, helpers) => {
-      try {
-        // NOTE: Make API request
-        await wait(500);
-        helpers.setStatus({ success: true });
-        helpers.setSubmitting(false);
-        toast.success('Customer updated');
-      } catch (err) {
-        console.error(err);
-        toast.error('Something went wrong!');
-        helpers.setStatus({ success: false });
-        helpers.setErrors({ submit: err.message });
-        helpers.setSubmitting(false);
-      }
-    }
-  });
 
+  const align = 'horizontal' 
+ 
   useEffect(() => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getTempUserById/${state?.tempUserId || state?.purchaseOrderRec?.tempUserId || state?.userId}`)
       .then(response => {
@@ -161,31 +101,19 @@ export const ViewPurchaseOrder = (props) => {
       .catch(error => {
         console.error(error);
       });
-  }, []);
+  }, [state?.tempUserId, state?.purchaseOrderRec?.tempUserId, state?.userId]);
 
   useEffect(() => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllPurchaseOrderDetails/${state?.id || state?.purchaseOrderRec?.id}`)
       .then(response => {
        setRowData(response.data)
-       console.log(rowData)
 
       })
       .catch(error => {
         console.error(error);
       });
-  }, []);
+  }, [state?.id, state?.purchaseOrderRec?.id]);
 
-  const rowDat1a = [
-    {
-      name: '',
-      quantity: '',
-      weight: "56kg",
-      cost: '45689',
-      gst:'10',
-      cgst:'6',
-      description: 'Handle with care',
-    },
-  ];
 
   return (
     <div style={{minWidth: "100%", marginTop: "1rem"  }}>
@@ -264,7 +192,10 @@ export const ViewPurchaseOrder = (props) => {
       <Card style={{marginBottom: "40px" }}>
       <Box sx={{  position: 'relative' , overflowX: "auto", marginBottom: '30px'}}>    
       <Scrollbar>
-        <Table sx={{ minWidth: 800,overflowX: "auto" }} pagination={false} columns={columns} dataSource={rowData}></Table>
+        <Table sx={{ minWidth: 800,overflowX: "auto" }} 
+        pagination={false} 
+        columns={columns} 
+        dataSource={rowData}></Table>
       </Scrollbar>
     </Box>
      <Grid

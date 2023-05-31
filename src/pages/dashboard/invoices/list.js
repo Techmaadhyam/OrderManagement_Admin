@@ -1,10 +1,8 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import PlusIcon from '@untitled-ui/icons-react/build/esm/Plus';
-import { Box, Button, Container, Divider, Stack, SvgIcon, Typography } from '@mui/material';
-import { ordersApi } from 'src/api/orders';
+import { useCallback, useEffect, useState } from 'react';
+
+import { Box,  Container, Stack } from '@mui/material';
 import { customersApi } from 'src/api/customers';
 import { Seo } from 'src/components/seo';
-import { useDialog } from 'src/hooks/use-dialog';
 import { useMounted } from 'src/hooks/use-mounted';
 import { usePageView } from 'src/hooks/use-page-view';
 import { CreateWarehouse } from 'src/sections/dashboard/invoice/create-warehouse';

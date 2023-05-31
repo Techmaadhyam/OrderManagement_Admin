@@ -1,27 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import {
-  Avatar,
   Box,
   Button,
-  Container,
   Divider,
-  IconButton,
-  Stack,
-  SvgIcon,
-  Tab,
-  Tabs,
-  Tooltip,
   Card,
   CardHeader,
-  TextField,
   Typography,
-  Link,
-  Grid
 } from '@mui/material';
-import { blueGrey } from '@mui/material/colors';
+
 import { socialApi } from 'src/api/social';
-import { RouterLink } from 'src/components/router-link';
 import { Seo } from 'src/components/seo';
 import { useMounted } from 'src/hooks/use-mounted';
 import { usePageView } from 'src/hooks/use-page-view';
@@ -30,10 +18,7 @@ import { PropertyList } from 'src/components/property-list';
 import { PropertyListItem } from 'src/components/property-list-item';
 
 
-const tabs = [
-  { label: 'Timeline', value: 'timeline' },
-  { label: 'Connections', value: 'connections' }
-];
+
 
 const useProfile = () => {
   const isMounted = useMounted();
@@ -60,61 +45,9 @@ const useProfile = () => {
   return profile;
 };
 
-const usePosts = () => {
-  const isMounted = useMounted();
-  const [posts, setPosts] = useState([]);
-
-  const handlePostsGet = useCallback(async () => {
-    try {
-      const response = await socialApi.getPosts();
-
-      if (isMounted()) {
-        setPosts(response);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }, [isMounted]);
-
-  useEffect(() => {
-      handlePostsGet();
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []);
-
-  return posts;
-};
-
-const useConnections = (search = '') => {
-  const [connections, setConnections] = useState([]);
-  const isMounted = useMounted();
-
-  const handleConnectionsGet = useCallback(async () => {
-    const response = await socialApi.getConnections();
-
-    if (isMounted()) {
-      setConnections(response);
-    }
-  }, [isMounted]);
-
-  useEffect(() => {
-      handleConnectionsGet();
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [search]);
-
-  return connections.filter((connection) => {
-    return connection.name?.toLowerCase().includes(search);
-  });
-};
 
 export const Page = () => {
   const profile = useProfile();
-  const [currentTab, setCurrentTab] = useState('timeline');
-  const [status, setStatus] = useState('not_connected');
-  const posts = usePosts();
-  const [connectionsQuery, setConnectionsQuery] = useState('');
-  const connections = useConnections(connectionsQuery);
 
   usePageView();
 

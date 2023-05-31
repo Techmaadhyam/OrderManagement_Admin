@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+
 import {
   Unstable_Grid2 as Grid,
   Typography,
@@ -13,8 +13,6 @@ import React from 'react';
 import { Scrollbar } from 'src/components/scrollbar';
 import EditIcon from '@mui/icons-material/Edit';
 import {  Delete } from '@mui/icons-material';
-import { RouterLink } from 'src/components/router-link';
-import { paths } from 'src/paths';
 import IconWithPopup from '../user/user-icon';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -52,7 +50,7 @@ const customerType = [
 
 
 const ViewTemporaryUser = () => {
-  const [rows, setRows] = useState([{}]);
+
   const [userData, setUserData]= useState([])
 
   const [isPopupVisible, setPopupVisible] = useState(false);
@@ -269,7 +267,8 @@ const handleCompanyCancel = () => {
         >
        <MenuItem value="">All</MenuItem>
           {customerType.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
+            <MenuItem key={option.value} 
+            value={option.value}>
               {option.label}
             </MenuItem>
           ))}
@@ -356,7 +355,8 @@ const handleCompanyCancel = () => {
     };
 
     return (
-      <Dialog open={true} onClose={onClose}>
+      <Dialog open={true} 
+      onClose={onClose}>
         <DialogTitle>Edit Customer</DialogTitle>
         <DialogContent>
         <Grid
@@ -481,10 +481,12 @@ const handleCompanyCancel = () => {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose} color="primary">
+          <Button onClick={onClose} 
+          color="primary">
             Cancel
           </Button>
-          <Button onClick={handleSave} color="primary">
+          <Button onClick={handleSave} 
+          color="primary">
             Save
           </Button>
         </DialogActions>

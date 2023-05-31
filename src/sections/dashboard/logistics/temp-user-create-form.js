@@ -1,7 +1,4 @@
 import PropTypes from 'prop-types';
-import toast from 'react-hot-toast';
-import * as Yup from 'yup';
-import { useFormik } from 'formik';
 import {
   Button,
   Card,
@@ -12,8 +9,6 @@ import {
   MenuItem,
   Unstable_Grid2 as Grid
 } from '@mui/material';
-import { DatePicker } from 'antd';
-import { wait } from 'src/utils/wait';
 import { Box } from '@mui/system';
 import IconWithPopup from '../user/user-icon';
 import { useState, useEffect, useCallback, useMemo } from 'react';
@@ -45,11 +40,11 @@ import { useNavigate } from 'react-router-dom';
 
 
 export const TempUserCreateForm = (props) => {
-  const { customer, ...other } = props;
+
 
   // country, state, city API access token
   const [accessToken, setAccessToken] = useState(null);
-  const [error, setError] = useState(null);
+
 
 
   //state management for countries,states and cities
@@ -73,7 +68,7 @@ const [address, setAddress] = useState("");
 const [zipcode, setZipcode] = useState("");
 const [currentDate, setCurrentDate] = useState('');
 const [gstn, setGstn]= useState('')
-console.log(gstn)
+
  ////
  const handleInputChange = (event) => {
   const { name, value } = event.target;
@@ -142,10 +137,10 @@ useEffect(() => {
       const data = await response.json();
 
       setAccessToken(data.auth_token);
-      setError(null);
+
     } catch (error) {
       console.error(error);
-      setError('Failed to fetch access token');
+
     }
   };
 

@@ -1,5 +1,4 @@
-import * as Yup from 'yup';
-import { useFormik } from 'formik';
+
 import './register.css'
 import {
   Button,
@@ -17,19 +16,13 @@ import {
   Link
 } from '@mui/material';
 import { RouterLink } from 'src/components/router-link';
-import { Seo } from 'src/components/seo';
-import { useAuth } from 'src/hooks/use-auth';
-import { useMounted } from 'src/hooks/use-mounted';
-import { usePageView } from 'src/hooks/use-page-view';
-import { useSearchParams } from 'src/hooks/use-search-params';
 import { paths } from 'src/paths';
-import { AuthIssuer } from 'src/sections/auth/auth-issuer';
-import React, { useState, useEffect, useCallback, useMemo , useContext } from 'react';
+import React, { useState, useEffect, useCallback, useMemo  } from 'react';
 import { primaryColor } from 'src/primaryColor'; 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
-import { includes } from 'lodash';
+
 
 
 const customerType = [
@@ -57,7 +50,7 @@ const Register = () => {
   const [currentImage, setCurrentImage] = useState(0);
   // country, state, city API access token
   const [accessToken, setAccessToken] = useState(null);
-  const [error, setError] = useState(null);
+
 
 
   //state management for countries,states and cities
@@ -157,10 +150,10 @@ const Register = () => {
         const data = await response.json();
 
         setAccessToken(data.auth_token);
-        setError(null);
+
       } catch (error) {
         console.error(error);
-        setError('Failed to fetch access token');
+
       }
     };
 
@@ -647,6 +640,7 @@ const handleCities = async (event) => {
                     label="Type"
                     name="type"
                     value={type}
+                    select
                     onChange={handleInputChange}
                   >
                     {customerType.map((option) => (

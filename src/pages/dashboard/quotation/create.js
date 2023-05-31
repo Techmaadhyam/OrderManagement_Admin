@@ -1,12 +1,8 @@
-import ArrowRightIcon from '@untitled-ui/icons-react/build/esm/ArrowRight';
+
 import {
   Box,
-  Button,
   Container,
   Stack,
-  SvgIcon,
-  Typography,
-  Unstable_Grid2 as Grid
 } from '@mui/material';
 import { Seo } from 'src/components/seo';
 import { usePageView } from 'src/hooks/use-page-view';

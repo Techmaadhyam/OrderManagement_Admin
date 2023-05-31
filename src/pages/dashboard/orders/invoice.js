@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import {  Box, Container, Stack } from '@mui/material';
 import { customersApi } from 'src/api/customers';
-import { Seo } from 'src/components/seo';
 import { useMounted } from 'src/hooks/use-mounted';
 import { usePageView } from 'src/hooks/use-page-view';
 import  SalesOrderInvoice from 'src/sections/dashboard/order/salesorder-invoice';
