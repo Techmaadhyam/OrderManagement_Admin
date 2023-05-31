@@ -1,24 +1,23 @@
-import PropTypes, { string } from 'prop-types';
+
 import {
-  Unstable_Grid2 as Grid,
+
   Typography,
   IconButton,
   Icon,
-  Link
+
 } from '@mui/material';
 import { Table } from 'antd';
 import './sales-order.css'
-import { Box, border } from '@mui/system';
+import { Box } from '@mui/system';
 import React from 'react';
 import { Scrollbar } from 'src/components/scrollbar';
 import DownloadIcon from '@mui/icons-material/Download';
-import { RouterLink } from 'src/components/router-link';
-import { paths } from 'src/paths';
+
 import IconWithPopup from '../user/user-icon';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+
+import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
@@ -28,16 +27,16 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const userId = sessionStorage.getItem('user');
 const SalesOrderInvoice = (props) => {
-  const [rows, setRows] = useState([{}]);
+
   const [userData, setUserData]= useState([])
   const [invoiceData, setInvoiceData]= useState([])
    const [tempGstNumber, setTempGstNumber] = useState(null)
   const [mainGstNumber, setmainGstNumber] = useState(null)
   const [userMain, setUserMain] = useState(true);
   const [hsnRes, setHsnRes] = useState([]);
-  const { customer, ...other } = props;
-  const navigate = useNavigate();
-  
+
+
+  console.log(invoiceData)
  
   useEffect(() => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllSalesOrderDetailByUser/${userId}`)
@@ -50,21 +49,8 @@ const SalesOrderInvoice = (props) => {
       });
   }, []);
 
-  const dataWithKeys = userData?.map((item) => ({ ...item, key: item.id }));
+const dataWithKeys = userData?.map((item) => ({ ...item, key: item.id }));
  
-    //toast notification from toastify library
-const notify = (type, message) => {
-  toast[type](message, {
-    position: "top-right",
-    autoClose: 2000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "light",
-  });
-};
 
 const handleInvoicePdf = async (record) => {
         try{
