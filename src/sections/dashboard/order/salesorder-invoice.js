@@ -31,6 +31,10 @@ const SalesOrderInvoice = (props) => {
   const [rows, setRows] = useState([{}]);
   const [userData, setUserData]= useState([])
   const [invoiceData, setInvoiceData]= useState([])
+   const [tempGstNumber, setTempGstNumber] = useState(null)
+  const [mainGstNumber, setmainGstNumber] = useState(null)
+  const [userMain, setUserMain] = useState(true);
+  const [hsnRes, setHsnRes] = useState([]);
   const { customer, ...other } = props;
   const navigate = useNavigate();
   
@@ -39,7 +43,7 @@ const SalesOrderInvoice = (props) => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllSalesOrderDetailByUser/${userId}`)
       .then(response => {
         setUserData(response.data);
-        console.log(response.data)
+        console.log(response.data);
       })
       .catch(error => {
         console.error(error);
@@ -67,8 +71,51 @@ const handleInvoicePdf = async (record) => {
               const response = await axios.get(`http://13.115.56.48:8080/techmadhyam/getAllSalesOrderDetails/${record.id}`)
                 setInvoiceData(response.data);
                 console.log(response.data)
+                 const handleTempGst = async (tempId) =>{
+                        try{
+                            const tempGst = await axios.get(`http://13.115.56.48:8080/techmadhyam/getTempUserById/${tempId}`)
+                            setTempGstNumber(tempGst.data.gstNumber);
+                        }
+                        catch(error){
+                            console.log(error);
+                        }
+                    }
+                        const handleGst = async (Id) =>{
+                        try{
+                            const Gst = await axios.get(`http://13.115.56.48:8080/techmadhyam/getUserById/${Id}`)
+                            setmainGstNumber(Gst.data.gstNumber);
+                        }
+                        catch(error){
+                            console.log(error);
+                        }
+                    }
+                    if (record.tempUserId) {
+                        setUserMain(false);
+                        const tempId = record.tempUserId;
+                        handleTempGst(tempId);
+                    } else {
+                        handleGst(record.userId)
+                    }
+            const handleHsn = (invId) => {
+                let users = [];
+                let promises = [];
+                for (let i = 0; i < invId.length; i++) {
+                    promises.push(
+                        axios.get('http://13.115.56.48:8080/techmadhyam/getInventoryById/' + invId[i]).then(response => {
+                            users.push(response.data.hsncode);
+                        })
+                    )
+                }
+                Promise.all(promises).then(() =>  setHsnRes(users));
+            }
+           
+                    const hsnIds = response.data.map((item)=>{
+                        return item.inventoryId;
+                    })
+                    
+                   handleHsn(hsnIds);
                 const rowData = response.data.map((product,index) => {
-                    return [index+1, product.productName, "-", product.price, product.quantity, product.price*product.quantity, "-", product.price*product.quantity, product.cgst, product.sgst, product.igst, product.price*product.quantity+product.igst]
+                    return [index+1, product.productName, hsnRes[index], product.price, product.quantity, product.price*product.quantity, product.discountAmount, product.price*product.quantity, product.cgst, product.sgst, product.igst, product.price*product.quantity+product.igst]
                     });
                 const docDefinition = {
                     pageOrientation: 'landscape',
@@ -81,8 +128,8 @@ const handleInvoicePdf = async (record) => {
                         
                       { text: 'TAX INVOICE', style: 'header', alignment: 'right' },
                         ]},
-                        { text: `${record.createdByUser.address}, ${record.createdByUser.city}, ${record.createdByUser.pincode}, ${record.createdByUser.state}, ${record.createdByUser.country}`, style: 'subheader', alignment: 'left', margin: [0, 0, 450, 10] },
-                      { text: 'GSTIN: 24AAGFT5872R1ZC', style: 'subheader', alignment: 'left' },
+                        { text: `${record.createdByUser.address}, ${record.createdByUser.city}, ${record.createdByUser.pincode}, ${record.createdByUser.state}, ${record.createdByUser.country}`, style: 'subheader', alignment: 'left', margin: [0, 0, 450, 5] },
+                      { text: `GSTIN: ${record.createdByUser.gstNumber}`, style: 'subheader', alignment: 'left' },
                       { text: 'PAN: AAGFT5872R', style: 'subheader', alignment: 'left' },
                       {
                         style: 'newTable',
@@ -99,7 +146,7 @@ const handleInvoicePdf = async (record) => {
                             [
                               { text: record.id, style: 'tableCell',border: [true, false, true, false] },
                               { text: record.createdByUser.createdDate, style: 'tableCell', border: [true, false, true, false] },
-                              { text: record.tempUserId, style: 'tableCell',border: [true, false, true, false] },
+                              { text: record.tempUserId || record.userId, style: 'tableCell',border: [true, false, true, false] },
                               { text: record.contactPhone, style: 'tableCell',border: [true, false, true, false] },
                             ],
                           ],
@@ -113,13 +160,13 @@ const handleInvoicePdf = async (record) => {
                             [
                               { text: `Bill To: ${record.contactPerson}`, style: 'tableLabel', border: [true, true, true, false]},
                               { text: `Ship To: ${record.contactPerson}`, style: 'tableLabel', border: [true, true, true, false] },
-                              { text: 'Delivery Status:', style: 'tableLabel' },
+                              { text: 'Customer GST Registration information', style: 'tableLabel' },
                               { text: 'Payment Mode:', style: 'tableLabel' },
                             ],
                             [
                               { text: `${record.deliveryAddress}\n${record.city} - ${record.pinCode}\n${record.state}\n${record.country}`, style: 'tableCell',border: [true, false, true, false] },
                               { text: `${record.deliveryAddress}\n${record.city} - ${record.pinCode}\n${record.state}\n${record.country}`, style: 'tableCell', border: [true, false, true, false] },
-                              { text: `${record.status}`, style: 'tableCell',border: [true, false, true, false] },
+                              { text: `${userMain ? tempGstNumber : mainGstNumber}`, style: 'tableCell',border: [true, false, true, false] },
                               { text: `${record.paymentMode}`, style: 'tableCell',border: [true, false, true, false] },
                             ],
                           ],
@@ -128,7 +175,7 @@ const handleInvoicePdf = async (record) => {
                       {
                         style: 'table',
                         table: {
-                            heights:['auto', 150],
+                            heights:['auto', 'auto'],
                             widths: ['auto',300,'auto','auto','auto','auto','auto','auto','auto','auto','auto','auto'],
                           body: [
                             
@@ -156,18 +203,51 @@ const handleInvoicePdf = async (record) => {
                           ],
                         },
                       },
+                      {
+                        table: {
+                          widths: ['*','*','*'],
+                          body: [
+                            [
+                                  {
+                                    stack:[
+                                        { text: 'Terms & Conditions',bold: true, style: 'tableLabel'},
+                                        { text: `${record.termsAndCondition}`, style:'tableLabel'}
+                                
+                                ],
+                                border: [true, false, false, true]
+                            },
+                                
+                                {
+                                    stack:[
+                                        { text: `Received In Good Condition`,bold:true, style: 'tableLabel'},
+                                        { text: `Customer Signature`, margin:[0,10,0,0], style: 'tableLabel'},
+                                    ],
+                                    border: [false, false, false, true] 
+                                },
+                                {
+                                    stack:[
+                                        { text: `${record.createdByUser.companyName}`,bold:true, style: 'tableLabel'},
+                                        { text: `Authorize Signature`, margin:[0,10,0,0], style: 'tableLabel'},
+                                    ],
+                                    border: [false, false, true, true] 
+                                },
+                            ],
+                            
+                          ],
+                        },
+                      },
                       
                     ],
                     styles: {
                         header: {
-                          fontSize: 18,
+                          fontSize: 16,
                           bold: true,
-                          margin: [0, 0, 0, 10],
+                          margin: [0, 0, 0, 5],
                         },
                         subheader: {
-                            fontSize: 16,
+                            fontSize: 14,
                             bold: true,
-                            marginBottom: 10,
+                            marginBottom: 5,
                             },
                         tableLabel: {
                           bold: true,
