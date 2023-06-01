@@ -132,7 +132,7 @@ export const CreateProduct = (props) => {
         product: {
           productName: product,
           type: type,
-          partNumber: partNumber,
+          partnumber: partNumber,
           description: desc2,
           createdBy: userId,
           createdDate: currentDate,
@@ -151,7 +151,7 @@ export const CreateProduct = (props) => {
       requestBody = {
         product: {
           productName: product,
-          partNumber: partNumber,
+          partnumber: partNumber,
           type: type,
           description: desc2,
           createdBy: userId,
@@ -239,7 +239,7 @@ export const CreateProduct = (props) => {
               <TextField
 
                     fullWidth
-                    label={type === "Spare Parts" ? "Spare Part Number" : "Part Number"}
+                    label={type === "Spare Parts" ? "Spare Part Name" : "Part Name"}
                     name="name"
                     value={product}
                     onChange={handleProduct} 
@@ -256,7 +256,7 @@ export const CreateProduct = (props) => {
               <TextField
 
                     fullWidth
-                    label={type === "Spare Parts" ? "Spare Part Name" : "Part Name"}
+                    label={type === "Spare Parts" ? "Spare Part Number" : "Part Number"}
                     name="partNumber"
                     value={partNumber}
                     onChange={handlePart} 

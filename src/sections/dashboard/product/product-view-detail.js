@@ -196,6 +196,12 @@ export const ViewProductDetail = (props) => {
           
         </PropertyListItem>
         <Divider />
+        <PropertyListItem
+          align={align}
+          label={state?.type === "Spare Parts" ? "Spare Part Number" : "Part Number"}
+          value={state?.partnumber}
+        />
+        <Divider />
         <div style={{ display: 'flex', alignItems: 'center' }}>
   <div style={{ marginRight: '8px' }}>
     <PropertyListItem align={align} 

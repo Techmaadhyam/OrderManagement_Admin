@@ -17,8 +17,10 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import SearchIcon from '@mui/icons-material/Search';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, MenuItem } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, MenuItem, InputBase } from '@mui/material';
 
   //get userid 
   const userId = sessionStorage.getItem('user');
@@ -44,6 +46,18 @@ const ViewProduct = () => {
   const [editRecord, setEditRecord] = useState(null);
   const [currentDate, setCurrentDate] = useState('');
 
+  const [selectedCategory, setSelectedCategory] = useState('');
+
+    //product
+    const [isSearching, setIsSearching] = useState(false);
+    const [searchText, setSearchText] = useState('');
+    //warehouse
+    const [isSearchingWarehouse, setIsSearchingWarehouse] = useState(false);
+    const [warehouseText, setWarehouseText] = useState('');
+    //category
+    const [isSearchingCategory, setIsSearchingCategory] = useState(false);
+    const [categoryText, setCategoryText] = useState('');
+
   const navigate = useNavigate();
   
  
@@ -59,6 +73,16 @@ const ViewProduct = () => {
   }, []);
 
   const dataWithKeys = userData.map((item) => ({ ...item, key: item.id }));
+
+
+  const filteredData = selectedCategory
+  ? dataWithKeys.filter((item) => item.type === selectedCategory)
+  : dataWithKeys;
+
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);
+  };
+  
 
     //toast notification from toastify library
 const notify = (type, message) => {
@@ -157,6 +181,7 @@ const handleSaveRecord = async (editedRecord) => {
 
 };
 
+console.log(selectedCategory)
 //Get date
 useEffect(() => {
   const today = new Date();
@@ -165,10 +190,86 @@ useEffect(() => {
   setCurrentDate(formattedDate);
 }, []);
 
- 
+ //product search
+const handleProductClick = () => {
+  setIsSearching(true);
+};
+
+const handleProductInputChange = event => {
+  setSearchText(event.target.value);
+};
+
+const handleProductCancel = () => {
+  setIsSearching(false);
+  setSearchText('');
+};
+//warehouse search
+const handleWarehouseClick = () => {
+  setIsSearchingWarehouse(true);
+};
+
+const handleWarehouseInputChange = event => {
+  setWarehouseText(event.target.value);
+};
+
+const handleWarehouseCancel = () => {
+  setIsSearchingWarehouse(false);
+  setWarehouseText('');
+};
+
+//category search
+const handleCategoryClick = () => {
+  setIsSearchingCategory(true);
+};
+
+const handleCategoryInputChange = event => {
+  setCategoryText(event.target.value);
+};
+
+const handleCategoryCancel = () => {
+  setIsSearchingCategory(false);
+  setCategoryText('');
+};
+
+const filteredProducts = filteredData.filter(product => {
+  const productNameMatch = product.productName?.toLowerCase().includes(searchText.toLowerCase());
+  const warehouseNameMatch = product.partnumber?.toLowerCase().includes(warehouseText.toLowerCase());
+  const categoryNameMatch = product.category.name?.toLowerCase().includes(categoryText.toLowerCase());
+
+  return (
+    (searchText === '' || productNameMatch) &&
+    (warehouseText === '' || warehouseNameMatch) &&
+    (categoryText === '' || categoryNameMatch)
+  );
+});
+
 const columns = [
   {
-    title: 'Part Name',
+    title: (
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        {!isSearching ? (
+          <>
+            <Typography variant="subtitle1">Part Name</Typography>
+            <IconButton onClick={handleProductClick}>
+              <SearchIcon />
+            </IconButton>
+          </>
+        ) : (
+          <>
+            <InputBase
+              value={searchText}
+              onChange={handleProductInputChange}
+              placeholder="Search product..."
+            />
+            <IconButton onClick={handleProductCancel}>
+              <Icon>
+                <HighlightOffIcon />
+              </Icon>
+            </IconButton>
+          </>
+        )}
+      </div>
+  ),
     dataIndex: 'productName',
     key: 'productName',
     render: (name, record) => {
@@ -193,12 +294,60 @@ const columns = [
     }
   },
   {
-    title: 'Part Number',
-    key: '',
-    dataIndex: '',
+    title: (
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        {!isSearchingWarehouse? (
+          <>
+            <Typography variant="subtitle1">Part Number</Typography>
+            <IconButton onClick={handleWarehouseClick}>
+              <SearchIcon />
+            </IconButton>
+          </>
+        ) : (
+          <>
+            <InputBase
+              value={warehouseText}
+              onChange={handleWarehouseInputChange}
+              placeholder="Search Warehouse..."
+            />
+            <IconButton onClick={handleWarehouseCancel}>
+              <Icon>
+                <HighlightOffIcon />
+              </Icon>
+            </IconButton>
+          </>
+        )}
+      </div>
+  ),
+    key: 'partnumber',
+    dataIndex: 'partnumber',
   },
   {
-    title: 'Model',
+    title: (
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        {!isSearchingCategory ? (
+          <>
+            <Typography variant="subtitle1">Model</Typography>
+            <IconButton onClick={handleCategoryClick}>
+              <SearchIcon />
+            </IconButton>
+          </>
+        ) : (
+          <>
+            <InputBase
+              value={categoryText}
+              onChange={handleCategoryInputChange}
+              placeholder="Search Category..."
+            />
+            <IconButton onClick={handleCategoryCancel}>
+              <Icon>
+                <HighlightOffIcon />
+              </Icon>
+            </IconButton>
+          </>
+        )}
+      </div>
+  ),
     key: 'category',
     dataIndex: 'category',
     render: (category) => category?.name
@@ -274,6 +423,7 @@ const columns = [
       onSave(editedRecord);
       onClose();
     };
+
 
     return (
       <Dialog open={true} 
@@ -358,6 +508,9 @@ const columns = [
     );
   };
 
+
+
+
   return (
     <div style={{ minWidth: '100%' }}>
       <div
@@ -370,12 +523,29 @@ const columns = [
         <h2>View Parts & Spare Parts</h2>
         <IconWithPopup/>
       </div>
-      <Box sx={{ position: 'relative', overflowX: 'auto' }}>
+      <TextField
+
+      label="Type"
+      name="type"
+      sx={{ minWidth: 250 }}
+      value={selectedCategory}
+      onChange={handleCategoryChange}
+      select
+      >
+     <MenuItem value="">All</MenuItem>
+        {typeDropdown.map((option) => (
+          <MenuItem key={option.value} 
+          value={option.value}>
+            {option.label}
+          </MenuItem>
+        ))}
+      </TextField>
+      <Box sx={{ position: 'relative', overflowX: 'auto', marginTop:'30px' }}>
         <Scrollbar>
           <Table
             sx={{ minWidth: 800, overflowX: 'auto' }}
             columns={columns}
-            dataSource={dataWithKeys}
+            dataSource={filteredProducts}
             ></Table>
             </Scrollbar>
             <ToastContainer
