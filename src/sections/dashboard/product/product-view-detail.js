@@ -128,18 +128,18 @@ export const ViewProductDetail = (props) => {
             <ArrowCircleLeftOutlinedIcon/>
           </SvgIcon>
           <Typography variant="subtitle2">
-            Back To <span style={{color: `${primaryColor}` , fontWeight: 600}}>Product List</span> 
+            Back To <span style={{color: `${primaryColor}` , fontWeight: 600}}>Parts & Spare Parts</span> 
           </Typography>
         </Link>
         <IconWithPopup/>
       </div>
- <h2>Product</h2>
+ <h2>Parts & Spare Parts</h2>
       <Card style={{marginBottom: "12px" }}>
-        <CardHeader title="Product Detail" />
+        <CardHeader title="Part Detail" />
         <PropertyList>
         <PropertyListItem
           align={align}
-          label="Name"
+          label={state?.type === "Spare Parts" ? "Spare Part Name" : "Part Name"}
         >
           <Typography variant="subtitle2">
            
@@ -161,7 +161,7 @@ export const ViewProductDetail = (props) => {
         md={12}
         >
     <TextField
-      label="Category Name"
+      label="Model Name"
       value={editedData.category}
       onChange={(e) => handleEditFieldChange('category', e.target.value)}
       fullWidth
@@ -199,7 +199,7 @@ export const ViewProductDetail = (props) => {
         <div style={{ display: 'flex', alignItems: 'center' }}>
   <div style={{ marginRight: '8px' }}>
     <PropertyListItem align={align} 
-    label="Category" 
+    label="Model" 
     value={state?.category?.name} />
   </div>
   <IconButton onClick={handleEditOpen}>

@@ -32,7 +32,7 @@ export const CreateProduct = (props) => {
   const [desc2, setDesc2]= useState('')
   const [currentDate, setCurrentDate] = useState('');
   const [data, setData]= useState([])
-
+  const [partNumber, setpartNumber]= useState('')
   
   
 //handle category change
@@ -81,6 +81,18 @@ export const CreateProduct = (props) => {
     
   ];
 
+  const typeDropdown = [
+    {
+      label: 'Parts',
+      value: 'Parts'
+    },
+    {
+      label: 'Spare Parts',
+      value: 'Spare Parts'
+    },
+    
+  ];
+
   const mappedOptions = data.map(({ id, name }) => ({
     label: name,
     value: id
@@ -105,6 +117,9 @@ export const CreateProduct = (props) => {
   const handleDescription2 = (event) => {
     setDesc2(event.target.value);
   };
+  const handlePart = (event) => {
+    setpartNumber(event.target.value);
+  };
   //for sending response body via route
   const navigate = useNavigate();
   //handle save
@@ -117,6 +132,7 @@ export const CreateProduct = (props) => {
         product: {
           productName: product,
           type: type,
+          partNumber: partNumber,
           description: desc2,
           createdBy: userId,
           createdDate: currentDate,
@@ -135,6 +151,7 @@ export const CreateProduct = (props) => {
       requestBody = {
         product: {
           productName: product,
+          partNumber: partNumber,
           type: type,
           description: desc2,
           createdBy: userId,
@@ -181,25 +198,48 @@ export const CreateProduct = (props) => {
   return (
     <div style={{minWidth: "100%", marginBottom: '1rem' }}>
 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-      <h2>Create Product</h2>
+      <h2>Create Parts & Spare Parts</h2>
       <IconWithPopup/>
     </div>
     <form>
       <Card>
-        <CardHeader title="Product Detail" />
+        <CardHeader title="Part Detail" />
         <CardContent sx={{ pt: 0 }}>
           <Grid
             container
             spacing={3}
-          >
-            <Grid
+          > <Grid
+          xs={12}
+          md={6}
+        >
+          <TextField
+        
+                fullWidth
+                label="Type"
+                name="type"
+                select
+                value={type}
+                onChange={handleType} 
+            >
+               {typeDropdown.map((option) => (
+                  <MenuItem
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </MenuItem>
+                ))}
+            </TextField>
+        </Grid>
+        <Grid/>
+        <Grid
               xs={12}
               md={6}
             >
               <TextField
 
                     fullWidth
-                    label="Name"
+                    label={type === "Spare Parts" ? "Spare Part Number" : "Part Number"}
                     name="name"
                     value={product}
                     onChange={handleProduct} 
@@ -209,8 +249,24 @@ export const CreateProduct = (props) => {
                   </TextField>
       
             </Grid>
-            <Grid/>
+            <Grid
+              xs={12}
+              md={6}
+            >
+              <TextField
+
+                    fullWidth
+                    label={type === "Spare Parts" ? "Spare Part Name" : "Part Name"}
+                    name="partNumber"
+                    value={partNumber}
+                    onChange={handlePart} 
+                   
             
+                  >
+                  </TextField>
+      
+            </Grid>
+      
             <Grid
               xs={12}
               md={6}
@@ -218,7 +274,7 @@ export const CreateProduct = (props) => {
                 <TextField
                
                     fullWidth
-                    label="Category"
+                    label="Model"
                     name="category"
                     select
                     value={category}
@@ -245,7 +301,7 @@ export const CreateProduct = (props) => {
           <TextField
 
             fullWidth
-            label="New Category"
+            label="New Model"
             name="new category"
             value={newCategory}
             onChange={handleNewCategory} 
@@ -268,20 +324,7 @@ export const CreateProduct = (props) => {
           </Grid>
         </>
       )}
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-            
-                    fullWidth
-                    label="Type"
-                    name="type"
-                    value={type}
-                    onChange={handleType} 
-                >
-                </TextField>
-            </Grid>
+           
           
           </Grid>
           <Grid

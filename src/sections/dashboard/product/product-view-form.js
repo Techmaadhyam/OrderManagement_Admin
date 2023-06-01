@@ -18,10 +18,23 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, MenuItem } from '@mui/material';
 
   //get userid 
   const userId = sessionStorage.getItem('user');
+
+  
+  const typeDropdown = [
+    {
+      label: 'Parts',
+      value: 'Parts'
+    },
+    {
+      label: 'Spare Parts',
+      value: 'Spare Parts'
+    },
+    
+  ];
 
 const ViewProduct = () => {
 
@@ -155,7 +168,7 @@ useEffect(() => {
  
 const columns = [
   {
-    title: 'Name',
+    title: 'Part Name',
     dataIndex: 'productName',
     key: 'productName',
     render: (name, record) => {
@@ -180,7 +193,12 @@ const columns = [
     }
   },
   {
-    title: 'Category',
+    title: 'Part Number',
+    key: '',
+    dataIndex: '',
+  },
+  {
+    title: 'Model',
     key: 'category',
     dataIndex: 'category',
     render: (category) => category?.name
@@ -260,7 +278,7 @@ const columns = [
     return (
       <Dialog open={true} 
       onClose={onClose}>
-        <DialogTitle>Edit Product</DialogTitle>
+        <DialogTitle>Edit Parts & Spare Parts</DialogTitle>
         <DialogContent>
         <Grid
             container
@@ -272,7 +290,7 @@ const columns = [
               md={6}
             >
           <TextField
-            label="Product Name"
+            label="Part Name"
             name="productName"
             value={editedRecord.productName}
             onChange={handleChange}
@@ -284,24 +302,33 @@ const columns = [
               md={6}
             >
           <TextField
-            label="Category"
+            label="Model"
             name="category"
             value={editedRecord.category.name}
             style={{ marginBottom: 10 }}
           />
             </Grid>
             <Grid
-              xs={12}
+              xs={6}
               md={6}
             >
           <TextField
             label="Type"
             name="type"
-           
+            select
             value={editedRecord.type}
             onChange={handleChange}
             style={{ marginBottom: 10 }}
-          />
+          >
+             {typeDropdown.map((option) => (
+                  <MenuItem
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </MenuItem>
+                ))}
+          </TextField>
           </Grid>
           <Grid
               xs={12}
@@ -340,7 +367,7 @@ const columns = [
           alignItems: 'center',
         }}
       >
-        <h2>View Product</h2>
+        <h2>View Parts & Spare Parts</h2>
         <IconWithPopup/>
       </div>
       <Box sx={{ position: 'relative', overflowX: 'auto' }}>
