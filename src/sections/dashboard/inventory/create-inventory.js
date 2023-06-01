@@ -207,7 +207,16 @@ useEffect(() => {
     value: rackId
   }));
 
-  const updatedUserOptions = userOptions.concat(mappedOptions);
+  const rackIdSet = new Set(); 
+  const updatedUserOptions = userOptions.concat(mappedOptions.filter(newOption => {
+    if (rackIdSet.has(newOption.value)) {
+      return false; 
+    } else {
+      rackIdSet.add(newOption.value); 
+      return true; 
+    }
+  }));
+
   const handleSave=async ()=>{
 
     // let inventory ={
@@ -228,7 +237,7 @@ useEffect(() => {
     //   createdDate: createdDate,
     //   lastModifiedDate: createdDate
     // }
-
+   
     let inventory={
       inventory:{
           
@@ -260,9 +269,40 @@ useEffect(() => {
 
       
   }
+  let inventoryWithRack={
+
+    inventory:{
+        
+      quantity:parseFloat(quantity),
+      weight:weight,
+      size:size,
+      hsncode:hsnCode,
+      price:parseFloat(cost),
+      description:description,
+      createdBy: parseFloat(userId),
+      productId: selectedId,
+      purchaseOrderId:purchaseId,
+      warehouseId:warehouseId,
+      sgst:parseFloat(sgst),
+      cgst:parseFloat(cgst),
+      igst:parseFloat(igst),
+      lastModifiedByUser: {id: userId},
+    },
+
+    rack:{
+          id: rack
+       
+    },
+
+    category:{
+        id: categoryId
+    }
+
+    
+}
   console.log(JSON.stringify(inventory))
 
-    if (  purchaseId && warehouseId && quantity && weight && size && hsnCode && rack && cost && description && userId) {
+    if ( showAdditionalFields && purchaseId && warehouseId && quantity && weight && size && hsnCode && cost && userId) {
       try {
         const response = await fetch('http://13.115.56.48:8080/techmadhyam/addInventory', {
           method: 'POST',
@@ -285,10 +325,35 @@ useEffect(() => {
       } catch (error) {
         console.error('API call failed:', error);
       }
-    } 
+    } else if (showAdditionalFields === false){
+      try {
+        const response = await fetch('http://13.115.56.48:8080/techmadhyam/addInventory', {
+          method: 'POST',
+          headers: {
+  
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(inventoryWithRack)
+        });
+        
+        if (response.ok) {
+          // Redirect to home page upon successful submission
+      
+         response.json().then(data => {
+  
+          console.log(data)
+          navigate('/dashboard/inventory/viewDetail', { state: data });
+        });
+        } 
+      } catch (error) {
+        console.error('API call failed:', error);
+      }
+    }
+
   }
 
 
+console.log(updatedUserOptions)
 
   return (
     <div style={{minWidth: "100%", marginBottom: '1rem' }}>
