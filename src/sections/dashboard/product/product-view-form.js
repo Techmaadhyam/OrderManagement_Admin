@@ -249,7 +249,7 @@ const columns = [
       <div style={{ display: 'flex', alignItems: 'center' }}>
         {!isSearching ? (
           <>
-            <Typography variant="subtitle1">Part Name</Typography>
+            <Typography variant="subtitle1">Part & Spare Part Name</Typography>
             <IconButton onClick={handleProductClick}>
               <SearchIcon />
             </IconButton>
@@ -259,7 +259,7 @@ const columns = [
             <InputBase
               value={searchText}
               onChange={handleProductInputChange}
-              placeholder="Search product..."
+              placeholder="Search Name..."
             />
             <IconButton onClick={handleProductCancel}>
               <Icon>
@@ -298,7 +298,7 @@ const columns = [
       <div style={{ display: 'flex', alignItems: 'center' }}>
         {!isSearchingWarehouse? (
           <>
-            <Typography variant="subtitle1">Part Number</Typography>
+            <Typography variant="subtitle1">Part & Spare Part Number</Typography>
             <IconButton onClick={handleWarehouseClick}>
               <SearchIcon />
             </IconButton>
@@ -308,7 +308,7 @@ const columns = [
             <InputBase
               value={warehouseText}
               onChange={handleWarehouseInputChange}
-              placeholder="Search Warehouse..."
+              placeholder="Search Number..."
             />
             <IconButton onClick={handleWarehouseCancel}>
               <Icon>
@@ -337,7 +337,7 @@ const columns = [
             <InputBase
               value={categoryText}
               onChange={handleCategoryInputChange}
-              placeholder="Search Category..."
+              placeholder="Search Model..."
             />
             <IconButton onClick={handleCategoryCancel}>
               <Icon>
