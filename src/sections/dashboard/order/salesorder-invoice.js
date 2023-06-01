@@ -36,7 +36,6 @@ const SalesOrderInvoice = (props) => {
   const [hsnRes, setHsnRes] = useState([]);
 
 
-  console.log(invoiceData)
  
   useEffect(() => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllSalesOrderDetailByUser/${userId}`)
@@ -82,24 +81,25 @@ const handleInvoicePdf = async (record) => {
                     } else {
                         handleGst(record.userId)
                     }
-            const handleHsn = (invId) => {
+            const handleHsn = async (invId) => {
                 let users = [];
                 let promises = [];
                 for (let i = 0; i < invId.length; i++) {
                     promises.push(
                         axios.get('http://13.115.56.48:8080/techmadhyam/getInventoryById/' + invId[i]).then(response => {
+                          console.log(response.data); 
                             users.push(response.data.hsncode);
                         })
                     )
                 }
-                Promise.all(promises).then(() =>  setHsnRes(users));
+                await Promise.all(promises).then(() =>  setHsnRes(users));
             }
            
                     const hsnIds = response.data.map((item)=>{
                         return item.inventoryId;
                     })
                     
-                   handleHsn(hsnIds);
+                   await handleHsn(hsnIds);
                 const rowData = response.data.map((product,index) => {
                     return [index+1, product.productName, hsnRes[index], product.price, product.quantity, product.price*product.quantity, product.discountAmount, product.price*product.quantity, product.cgst, product.sgst, product.igst, product.price*product.quantity+product.igst]
                     });
