@@ -275,7 +275,7 @@ const [productName, setProductName] = useState('');
         setUserData(combinedData);
   
         const selecteduserId = combinedData.find((option) => (option.id !== 0 && option.id === state?.tempUserId) || option.id === state?.userId);
-        const selecteduser = selecteduserId ? selecteduserId.userName : '';
+        const selecteduser = selecteduserId ? selecteduserId.companyName : '';
         setUser(selecteduser);
       })
       .catch(error => {
@@ -577,7 +577,7 @@ const [productName, setProductName] = useState('');
             select
             value={user}
             onChange={(e) => {
-              const selectedOption = userData?.find((option) => option.userName === e.target.value);
+              const selectedOption = userData?.find((option) => option.companyName === e.target.value);
               if (selectedOption) {
                 if (selectedOption.hasOwnProperty('createdByUser')) {
                   setTempId(selectedOption.id || '');
@@ -594,11 +594,11 @@ const [productName, setProductName] = useState('');
                {userData
           .filter((option) => option.type === type) 
           .map((option) => (
-            option.userName && (
+            option.companyName && (
               <MenuItem 
               key={option.id}
-               value={option.userName}>
-                {option.userName}
+               value={option.companyName}>
+                {option.companyName}
               </MenuItem>
             )
           ))}

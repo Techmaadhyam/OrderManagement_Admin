@@ -548,7 +548,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
             select
             value={userName}
             onChange={(e) => {
-              const selectedOption = userData.find((option) => option.userName === e.target.value);
+              const selectedOption = userData.find((option) => option.companyName === e.target.value);
               if (selectedOption) {
                 if (selectedOption.hasOwnProperty('createdByUser')) {
                   setTempId(selectedOption.id || '');
@@ -565,10 +565,10 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
            {userData
           .filter((option) => option.type === type) 
           .map((option) => (
-            option.userName && (
+            option.companyName && (
               <MenuItem key={option.id} 
-              value={option.userName}>
-                {option.userName}
+              value={option.companyName}>
+                {option.companyName}
               </MenuItem>
             )
           ))}

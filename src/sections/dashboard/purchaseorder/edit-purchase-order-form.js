@@ -152,6 +152,7 @@ export const PurchaseOrderEditForm = (props) => {
 
 
 
+
   const [userData, setUserData]= useState([])
   const navigate = useNavigate();
 //form state handeling
@@ -166,7 +167,7 @@ const [address, setAddress] = useState(state?.deliveryAddress || "");
 const [tempId, setTempId] = useState(state?.tempUserId);
 const [terms, setTerms] = useState(state?.termsAndCondition || '');
 const [comment, setComment] = useState(state?.comments||'');
-const [user, setUser] = useState(state?.companyName || '')
+const [user, setUser] = useState('')
 const [payment, setPayment]=useState(state?.paymentMode||"")
 
 const [currentDate, setCurrentDate] = useState('');
@@ -264,7 +265,7 @@ const [productName, setProductName] = useState('');
         setUserData(combinedData);
   
         const selecteduserId = combinedData.find((option) => (option.id !== 0 && option.id === state?.tempUserId) || option.id === state?.userId);
-        const selecteduser = selecteduserId ? selecteduserId.userName : '';
+        const selecteduser = selecteduserId ? selecteduserId.companyName : '';
         setUser(selecteduser);
       })
       .catch(error => {
@@ -526,7 +527,7 @@ const [productName, setProductName] = useState('');
     
     };
 
-
+console.log(userData)
   return (
     <div style={{minWidth: "100%" }}>
     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>

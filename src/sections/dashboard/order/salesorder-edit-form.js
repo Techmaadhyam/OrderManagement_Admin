@@ -152,7 +152,7 @@ export const SalesOrderEditForm = (props) => {
 
   const location = useLocation();
   const state = location.state;
-console.log(state)
+
 
 
   const [userData, setUserData]= useState([])
@@ -279,7 +279,7 @@ const [productName, setProductName] = useState('');
         setUserData(combinedData);
   
         const selecteduserId = combinedData.find((option) => (option.id !== 0 && option.id === state?.tempUserId) || option.id === state?.userId);
-        const selecteduser = selecteduserId ? selecteduserId.userName : '';
+        const selecteduser = selecteduserId ? selecteduserId.companyName : '';
         setUser(selecteduser);
       })
       .catch(error => {
@@ -631,7 +631,7 @@ const notify = (type, message) => {
             select
             value={user}
             onChange={(e) => {
-              const selectedOption = userData?.find((option) => option.userName === e.target.value);
+              const selectedOption = userData?.find((option) => option.companyName === e.target.value);
               setTempId(selectedOption?.id || '');
               setUser(e.target.value);
             }}
@@ -640,10 +640,10 @@ const notify = (type, message) => {
             {userData
           .filter((option) => option.type === type) 
           .map((option) => (
-            option.userName && (
+            option.companyName && (
               <MenuItem key={option.id} 
-              value={option.userName}>
-                {option.userName}
+              value={option.companyName}>
+                {option.companyName}
               </MenuItem>
             )
           ))}
