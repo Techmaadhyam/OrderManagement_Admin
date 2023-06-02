@@ -15,14 +15,84 @@ import { primaryColor } from 'src/primaryColor';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 import IconWithPopup from '../user/user-icon';
 import { useLocation } from 'react-router-dom';
+import {  Box } from '@mui/system';
+import { Scrollbar } from 'src/components/scrollbar';
+import { Table } from 'antd';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 
 
+
+
+const columns = [
+  {
+    title: 'Part or Spare Part Name',
+    dataIndex: 'productName',
+    key: 'productName',
+  },
+  {
+      title: 'Quantity',
+      dataIndex: 'quantity',
+      key: 'quantity',
+    },
+  {
+    title: 'Weight',
+    dataIndex: 'weight',
+    key: 'weight',
+  },
+  {
+    title: 'Size',
+    dataIndex: 'size',
+    key: 'size',
+  },
+  
+  {
+    title: 'Cost',
+    key: 'price',
+    dataIndex: 'price',
+  },
+    {
+      title: 'CGST',
+      key: 'cgst',
+      dataIndex: 'cgst',
+    },
+    {
+      title: 'SGST',
+      key: 'sgst',
+      dataIndex: 'sgst',
+    },
+    {
+      title: 'IGST',
+      key: 'igst',
+      dataIndex: 'igst',
+    },
+    {
+      title: 'Description',
+      key: 'description',
+      dataIndex: 'description',
+    },
+];
 
 export const ViewWarehouseDetail = (props) => {
 
   const location = useLocation();
   const state = location.state;
   console.log(state)
+  const [rowData, setRowData] =useState()
+
+
+  useEffect(() => {
+    axios.get(`http://13.115.56.48:8080/techmadhyam/getInventoryByWareHouseId/${state?.id}`)
+      .then(response => {
+       setRowData(response.data)
+
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, [state?.id]);
+
+
 
 
   const align = 'horizontal' 
@@ -82,7 +152,17 @@ export const ViewWarehouseDetail = (props) => {
       </PropertyList>
         <Divider/>
       </Card>
-   
+      <Card style={{marginBottom: "40px" }}>
+      <Box sx={{  position: 'relative' , overflowX: "auto", marginBottom: '30px'}}>    
+      <Scrollbar>
+        <Table sx={{ minWidth: 800,overflowX: "auto" }} 
+        pagination={false} 
+        columns={columns} 
+        dataSource={rowData}></Table>
+      </Scrollbar>
+    </Box>
+        <Divider/>
+      </Card>
     </div>
   );
 };
