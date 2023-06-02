@@ -73,7 +73,7 @@ const ViewInventory = () => {
   const dataWithKeys = userData.map((item) => ({ ...item, key: item.inventoryId }));
 
   const filteredData = selectedCategory
-  ? dataWithKeys.filter((item) => item.type === selectedCategory)
+  ? dataWithKeys.filter((item) => item.productType === selectedCategory)
   : dataWithKeys;
 
   const handleCategoryChange = (event) => {
