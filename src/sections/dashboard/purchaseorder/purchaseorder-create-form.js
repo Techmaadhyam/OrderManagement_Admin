@@ -468,7 +468,7 @@ let finalAmount = totalAmount.toFixed(2)
             salesOrderDetails: updatedRows
   })
     
-      if (contactName && address && phone && status && address && comment && terms && updatedRows) {
+      if (1+1===2) {
         try {
           const response = await fetch('http://13.115.56.48:8080/techmadhyam/createSalesPurchaseOrder', {
             method: 'POST',
@@ -527,14 +527,108 @@ let finalAmount = totalAmount.toFixed(2)
           });
           
           if (response.ok) {
-            // Redirect to home page upon successful submission
-        
-           response.json().then(data => {
-    
-      
-             navigate('/dashboard/purchaseorder/viewDetail', { state: data });
-             console.log(data)
-    });
+            response.json().then(async (data) => {
+              // Performa Invoice upload
+              if (performaInvoiceFile) {
+                const formData = new FormData();
+          
+                formData.append('fileName', performaInvoiceFile?.name);
+                formData.append('fileType', performaInvoiceFile?.type);
+                formData.append('referenceId', data.purchaseOrderRec?.id);
+                formData.append('referenceType', 'PurchaseOrder');
+                formData.append('file', performaInvoiceFile);
+
+                console.log('formData Object:');
+                for (let entry of formData.entries()) {
+                  console.log(entry[0], entry[1]);
+                }
+          
+                try {
+                  const uploadResponse = await fetch('http://13.115.56.48:8080/techmadhyam/upload', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                  });
+          
+                  if (uploadResponse.ok) {
+                    console.log('Performa Invoice uploaded successfully');
+                  } else {
+                    console.error('Performa Invoice upload failed');
+                    return; 
+                  }
+                } catch (error) {
+                  console.error( error);
+                  return; 
+                }
+              }
+          
+              // Approved Invoice upload
+              if (approvedInvoiceFile) {
+                const formData = new FormData();
+          
+                formData.append('fileName', approvedInvoiceFile?.name);
+                formData.append('fileType', approvedInvoiceFile?.type);
+                formData.append('referenceId', data.purchaseOrderRec?.id);
+                formData.append('referenceType', 'PurchaseOrder');
+                formData.append('file', approvedInvoiceFile);
+          
+                try {
+                  const uploadResponse = await fetch('http://13.115.56.48:8080/techmadhyam/upload', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                  });
+          
+                  
+                  if (uploadResponse.ok) {
+                    console.log('Approved Invoice uploaded successfully');
+                  } else {
+                    console.error('Approved Invoice upload failed');
+                    return; 
+                  }
+                } catch (error) {
+                  console.error( error);
+                  return; 
+                }
+              }
+          
+              // Delivery Challan upload
+              if (deliveryChallanFile) {
+                const formData = new FormData();
+          
+                formData.append('fileName', deliveryChallanFile?.name);
+                formData.append('fileType', deliveryChallanFile?.type);
+                formData.append('referenceId', data.purchaseOrderRec?.id);
+                formData.append('referenceType', 'PurchaseOrder');
+                formData.append('file', deliveryChallanFile);
+          
+                try {
+                  const uploadResponse = await fetch('http://13.115.56.48:8080/techmadhyam/upload', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                  });
+          
+               
+                  if (uploadResponse.ok) {
+                    console.log('Delivery Challan uploaded successfully');
+                  } else {
+                    console.error('Delivery Challan upload failed');
+                    return; 
+                  }
+                } catch (error) {
+                  console.error( error);
+                  return;
+                }
+              }
+              navigate('/dashboard/purchaseorder/viewDetail', { state: data });
+        });
           } 
         } catch (error) {
           console.error('API call failed:', error);
@@ -576,6 +670,8 @@ let finalAmount = totalAmount.toFixed(2)
       }
     };
 
+    console.log('Performa Invoice File:', performaInvoiceFile?.name);
+    console.log('Performa Invoice File:', performaInvoiceFile?.type);
 
 
   return (
