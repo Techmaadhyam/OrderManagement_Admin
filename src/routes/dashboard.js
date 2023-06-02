@@ -16,7 +16,6 @@ const QuotationEditPage = lazy(() => import('src/pages/dashboard/quotation/edit'
 // PurchaseOrder (do not delete)
 const PurchaseOrderCreatePage = lazy(() => import('src/pages/dashboard/purchaseorder/create'));
 const PurchaseOrderViewPage = lazy(() => import('src/pages/dashboard/purchaseorder/view'));
-const PurchaseOrderInvoicePage = lazy(() => import('src/pages/dashboard/purchaseorder/invoice'));
 const PurchaseOrderViewDetailPage = lazy(() => import('src/pages/dashboard/purchaseorder/viewDetail'));
 const PurchaseOrderEdit = lazy(() => import('src/pages/dashboard/purchaseorder/edit'));
 // Invoice (do not delete)
@@ -103,10 +102,6 @@ export const dashboardRoutes = [
           {
             path: ':customerId',
             element: <PurchaseOrderViewPage />
-          },
-          {
-            path: ':customerId/edit',
-            element: <PurchaseOrderInvoicePage />
           },
           {
             path: 'viewDetail',

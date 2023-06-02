@@ -82,10 +82,7 @@ export const useSections = () => {
                 title: t(tokens.nav.view),
                 path: paths.dashboard.purchaseorder.view
               },
-              {
-                title: t(tokens.nav.invoice),
-                path: paths.dashboard.purchaseorder.invoice
-              }
+           
             ]
           },
           {
