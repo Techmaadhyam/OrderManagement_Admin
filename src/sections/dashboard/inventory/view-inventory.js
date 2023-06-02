@@ -4,7 +4,9 @@ import {
   IconButton,
   Icon,
   Link,
-  InputBase
+  InputBase,
+  TextField,
+  MenuItem
 } from '@mui/material';
 import { Table } from 'antd';
 import { Box } from '@mui/system';
@@ -24,6 +26,18 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
   //get userid 
   const userId = sessionStorage.getItem('user');
 
+  const typeDropdown = [
+    {
+      label: 'Parts',
+      value: 'Parts'
+    },
+    {
+      label: 'Spare Parts',
+      value: 'Spare Parts'
+    },
+    
+  ];
+
 const ViewInventory = () => {
 
   const [userData, setUserData]= useState([])
@@ -36,6 +50,8 @@ const ViewInventory = () => {
   //category
   const [isSearchingCategory, setIsSearchingCategory] = useState(false);
   const [categoryText, setCategoryText] = useState('');
+
+  const [selectedCategory, setSelectedCategory] = useState('');
 
 
 
@@ -55,6 +71,15 @@ const ViewInventory = () => {
   }, []);
 
   const dataWithKeys = userData.map((item) => ({ ...item, key: item.inventoryId }));
+
+  const filteredData = selectedCategory
+  ? dataWithKeys.filter((item) => item.type === selectedCategory)
+  : dataWithKeys;
+
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);
+  };
+  
 
     //toast notification from toastify library
 const notify = (type, message) => {
@@ -129,7 +154,7 @@ const handleCategoryCancel = () => {
   setCategoryText('');
 };
 
-const filteredProducts = dataWithKeys.filter(product => {
+const filteredProducts = filteredData.filter(product => {
   const productNameMatch = product.productName.toLowerCase().includes(searchText.toLowerCase());
   const warehouseNameMatch = product.warehouseName.toLowerCase().includes(warehouseText.toLowerCase());
   const categoryNameMatch = product.categoryName.toLowerCase().includes(categoryText.toLowerCase());
@@ -301,7 +326,23 @@ const filteredProducts = dataWithKeys.filter(product => {
         <h2>View Inventory</h2>
         <IconWithPopup/>
       </div>
-      <Box sx={{ position: 'relative', overflowX: 'auto' }}>
+      <TextField
+      label="Type"
+      name="type"
+      sx={{ minWidth: 250 }}
+      value={selectedCategory}
+      onChange={handleCategoryChange}
+      select
+      >
+      <MenuItem value="">All</MenuItem>
+        {typeDropdown.map((option) => (
+          <MenuItem key={option.value} 
+          value={option.value}>
+            {option.label}
+          </MenuItem>
+        ))}
+      </TextField>
+      <Box sx={{ position: 'relative', overflowX: 'auto', marginTop:'30px' }}>
         <Scrollbar>
           <Table
             sx={{ minWidth: 800, overflowX: 'auto' }}
