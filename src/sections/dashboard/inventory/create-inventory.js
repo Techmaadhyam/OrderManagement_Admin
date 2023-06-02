@@ -429,7 +429,7 @@ console.log(updatedUserOptions)
             >
             <TextField
                     fullWidth
-                    label="Category"
+                    label="Model"
                     name="category"
                     select
                     value={categoryName? categoryName: ''}
@@ -457,7 +457,7 @@ console.log(updatedUserOptions)
             >
                  <TextField
                   fullWidth
-                  label="Product"
+                  label="Part or Spare Part Name"
                   name="product"
                   select
                   value={selectedId ? selectedId : ''}

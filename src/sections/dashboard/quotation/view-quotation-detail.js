@@ -29,7 +29,7 @@ import { useEffect } from 'react';
 
 const columns = [
   {
-    title: 'Name',
+    title: 'Part or Spare Part Name',
     dataIndex: 'productName',
     key: 'productName',
   },

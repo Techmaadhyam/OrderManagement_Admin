@@ -87,8 +87,8 @@ const userOptions = [
 const tableHeader=[
   {
       id:'product_name',
-      name:'Name',
-      width: 200,
+      name:'Part or Spare Part Name',
+      width: 300,
       
   },
   {
@@ -760,7 +760,7 @@ height='50px'/>
               align="right"
               onClick={toggleForm}
             >
-              Add Product
+              Add Parts
             </Button>
           </Box>
         </Grid>
@@ -769,7 +769,7 @@ height='50px'/>
             <div className='modal' 
             onClick={handleModalClick}>
               <div className='modal-content'>
-                <h5 className='product-detail-heading'>Add Product Details</h5>
+                <h5 className='product-detail-heading'>Add Part & Spare Part Details</h5>
                 <form className='form'>
                   {/* Form fields */}
                   <div className='form-row'>
@@ -779,7 +779,7 @@ height='50px'/>
                       md={6}>
                         <TextField
                           fullWidth
-                          label='Name'
+                          label='Part or Spare Part'
                           name='name'
                           select
                           value={productName}

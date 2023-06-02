@@ -87,7 +87,7 @@ export const ViewInventoryDetail = (props) => {
             >
             <PropertyListItem
           align={align}
-          label="Category"
+          label="Model"
           value={state?.categoryName ||state?.category?.name}
         />
          <Divider />
@@ -111,7 +111,7 @@ export const ViewInventoryDetail = (props) => {
             >
            <PropertyListItem
           align={align}
-          label="Product"
+          label="Part or Spare Part Name"
           value={state?.productName}
         />
          <Divider />

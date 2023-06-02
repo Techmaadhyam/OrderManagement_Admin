@@ -148,7 +148,7 @@ const filteredProducts = dataWithKeys.filter(product => {
         <div style={{ display: 'flex', alignItems: 'center' }}>
           {!isSearching ? (
             <>
-              <Typography variant="subtitle1">Product</Typography>
+              <Typography variant="subtitle1">Part & Spare Part Name</Typography>
               <IconButton onClick={handleProductClick}>
                 <SearchIcon />
               </IconButton>
@@ -158,7 +158,7 @@ const filteredProducts = dataWithKeys.filter(product => {
               <InputBase
                 value={searchText}
                 onChange={handleProductInputChange}
-                placeholder="Search product..."
+                placeholder="Search Name..."
               />
               <IconButton onClick={handleProductCancel}>
                 <Icon>
@@ -236,7 +236,7 @@ const filteredProducts = dataWithKeys.filter(product => {
         <div style={{ display: 'flex', alignItems: 'center' }}>
           {!isSearchingCategory ? (
             <>
-              <Typography variant="subtitle1">Category</Typography>
+              <Typography variant="subtitle1">Model</Typography>
               <IconButton onClick={handleCategoryClick}>
                 <SearchIcon />
               </IconButton>
