@@ -50,6 +50,7 @@ const customerType = [
 const SalesOrderViewList = () => {
 
   const [userData, setUserData]= useState([])
+  const [userData1, setUserData1]= useState([])
 
   const [isSearching, setIsSearching] = useState(false);
   const [searchText, setSearchText] = useState('');
@@ -119,20 +120,51 @@ const handleCompanyCancel = () => {
   setSearchText('');
 };
 
-  const filteredList = dataWithKeys.filter(product => {
-    const companyMatch = product.contactPerson.toLowerCase().includes(searchText.toLowerCase());
-   
-    return companyMatch
-  });
+ 
+useEffect(() => {
+  const request1 = axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`);
+  const request2 = axios.get(`http://13.115.56.48:8080/techmadhyam/getAllUsersBasedOnType/${userId}`);
 
-  const filteredData = selectedType
+  Promise.all([request1, request2])
+    .then(([response1, response2]) => {
+      const tempUsersData = response1.data;
+      const usersData1 = response2.data;
+      const combinedData = [...tempUsersData, ...usersData1];
+      setUserData1(combinedData);
+     
+    })
+    .catch(error => {
+      console.error(error);
+    });
+}, []);
+
+const updatedUser = dataWithKeys?.map((item) => {
+  if (item.tempUserId !== 0) {
+    const matchedCompany = userData1.find(
+      (u) => u.id === item.tempUserId || u.id === item.userId
+    );
+    if (matchedCompany) {
+      return { ...item, companyName: matchedCompany.companyName };
+    }
+  }
+  return item;
+});
+const filteredList = updatedUser.filter(product => {
+  const companyMatch = product.companyName?.toLowerCase().includes(searchText.toLowerCase());
+ 
+  return companyMatch || !product.hasOwnProperty('companyName');
+});
+
+
+console.log(updatedUser)
+
+const filteredData = selectedType
 ? filteredList.filter((item) => item.type === selectedType)
 : filteredList;
 
 const handleTypeChange = (event) => {
   setSelectedType(event.target.value);
 };
-
   
 
   const columns = [
@@ -216,8 +248,8 @@ const handleTypeChange = (event) => {
           )}
         </div>
     ),
-      key: 'contactPerson',
-      dataIndex: 'contactPerson',
+      key: 'companyName',
+      dataIndex: 'companyName',
     },
     {
       title: 'Delivery Date',
