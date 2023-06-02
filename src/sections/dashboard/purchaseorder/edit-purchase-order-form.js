@@ -196,6 +196,12 @@ const [productName, setProductName] = useState('');
 
   const [Id, setId] = useState()
 
+
+    //handle file uploads
+    const [performaInvoiceFile, setPerformaInvoiceFile] = useState(null);
+    const [approvedInvoiceFile, setApprovedInvoiceFile] = useState(null);
+    const [deliveryChallanFile, setDeliveryChallanFile] = useState(null);
+
     //deleted row
   const [deletedRows, setDeletedRows] = useState([]);
 
@@ -527,7 +533,49 @@ const [productName, setProductName] = useState('');
     
     };
 
-console.log(userData)
+    const handlePerformaInvoiceFileChange = (event) => {
+      const file = event.target.files[0];
+      setPerformaInvoiceFile(file);
+    };
+    
+    const handleApprovedInvoiceFileChange = (event) => {
+      const file = event.target.files[0];
+      setApprovedInvoiceFile(file);
+    };
+    
+    const handleDeliveryChallanFileChange = (event) => {
+      const file = event.target.files[0];
+      setDeliveryChallanFile(file);
+    };
+    
+    
+    const handleDeleteFile = (fileType) => {
+      switch (fileType) {
+        case 'performaInvoice':
+          setPerformaInvoiceFile(null);
+          break;
+        case 'approvedInvoice':
+          setApprovedInvoiceFile(null);
+          break;
+        case 'deliveryChallan':
+          setDeliveryChallanFile(null);
+          break;
+        default:
+          break;
+      }
+    };
+
+
+    useEffect(() => {
+      axios.get(`http://13.115.56.48:8080/techmadhyam//getAllFiles/PurchaseOrder/${state?.id || state?.purchaseOrderRec?.id}`)
+        .then(response => {
+         console.log(response.data)
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }, [state?.id, state?.purchaseOrderRec?.id]);
+
   return (
     <div style={{minWidth: "100%" }}>
     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
@@ -1000,8 +1048,104 @@ height='50px'/>
           <Grid
             xs={12}
             md={6}
-            >
+            style={{marginTop: "20px"}}
+            >  
+            <label style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Upload Documents: </label>
             <Box sx={{ mt: 2 , mb: 2}}
+            display="flex"
+            justifyContent="start"
+            marginRight="12px">
+        <div>
+          <div style={{ display: 'inline-block' }}>
+            <Button
+              color="primary"
+              variant="contained"
+              align="right"
+              onClick={() => document.getElementById('performaInvoiceInput').click()}
+            >
+              Performa Invoice
+            </Button>
+            {performaInvoiceFile && (
+              <Button
+                color="secondary"
+                onClick={() => handleDeleteFile('performaInvoice')}
+                startIcon={<Delete />}
+                sx={{ color: 'grey' }}
+              >
+                Delete
+              </Button>
+            )}
+          </div>
+          <input
+            type="file"
+            id="performaInvoiceInput"
+            onChange={handlePerformaInvoiceFileChange}
+            style={{ display: 'none' }}
+          />
+        </div>
+
+        <div>
+          <div style={{ display: 'inline-block' }}>
+            <Button
+              sx={{ ml: 2 }}
+              color="primary"
+              variant="contained"
+              align="right"
+              onClick={() => document.getElementById('approvedInvoiceInput').click()}
+            >
+              Approved Invoice
+            </Button>
+            {approvedInvoiceFile && (
+              <Button
+                color="secondary"
+                onClick={() => handleDeleteFile('approvedInvoice')}
+                startIcon={<Delete />}
+                sx={{ color: 'grey' }}
+              >
+                Delete
+              </Button>
+            )}
+          </div>
+          <input
+            type="file"
+            id="approvedInvoiceInput"
+            onChange={handleApprovedInvoiceFileChange}
+            style={{ display: 'none' }}
+          />
+        </div>
+
+        <div>
+          <div style={{ display: 'inline-block' }}>
+            <Button
+              sx={{ ml: 2 }}
+              color="primary"
+              variant="contained"
+              align="right"
+              onClick={() => document.getElementById('deliveryChallanInput').click()}
+            >
+              Delivery Challan
+            </Button>
+            {deliveryChallanFile && (
+              <Button
+                color="secondary"
+                onClick={() => handleDeleteFile('deliveryChallan')}
+                startIcon={<Delete />}
+                sx={{ color: 'grey' }}
+              >
+                Delete
+              </Button>
+            )}
+          </div>
+          <input
+            type="file"
+            id="deliveryChallanInput"
+            onChange={handleDeliveryChallanFileChange}
+            style={{ display: 'none' }}
+          />
+        </div>
+          </Box>
+       
+            <Box sx={{ mt: 3 , mb: 2 }}
             display="flex"
             justifyContent="flex-end"
             marginRight="12px">
