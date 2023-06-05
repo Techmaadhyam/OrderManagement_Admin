@@ -87,8 +87,8 @@ const userOptions = [
 const tableHeader=[
   {
       id:'product_name',
-      name:'Part or Spare Part Name',
-      width: 300,
+      name:'Part Description',
+      width: 200,
       
   },
   {
@@ -127,11 +127,6 @@ const tableHeader=[
     width: 150,
 },
   {
-      id:'description',
-      name:'Description',
-      width: 350,
-  },
-  {
     id:'amount',
     name:'Net Amount',
     width: 150,
@@ -153,6 +148,8 @@ export const SalesOrderEditForm = (props) => {
   const location = useLocation();
   const state = location.state;
 
+  console.log(state)
+
 
 
   const [userData, setUserData]= useState([])
@@ -160,7 +157,7 @@ export const SalesOrderEditForm = (props) => {
 //form state handeling
 
 const [type, setType] = useState(state?.type||"");
-const [quotation, setQuotation] = useState('');
+const [quotation, setQuotation] = useState(state?.quotationId ||'');
 const [deliveryDate, setDeliveryDate] = useState(dayjs(state?.deliveryDate, dateFormat));
 const [status, setStatus] = useState(state?.status || "");
 const [contactName,setContactName] = useState(state?.contactPerson||'')
@@ -201,6 +198,10 @@ const [productName, setProductName] = useState('');
 
   const [inventoryData, setInventoryData] =useState()
 
+  const [inventoryId, setInventoryId] = useState()
+  const [productDescription, setProductDescription] = useState('');
+  const [allQuotation, setAllQuotation] = useState([])
+
   useEffect(() => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllSalesOrderDetails/${state?.id || state?.soRecord?.id}`)
       .then(response => {
@@ -223,6 +224,8 @@ const [productName, setProductName] = useState('');
         console.error(error);
       });
   }, []);
+
+  console.log(inventoryData)
 
   //currentdate
   useEffect(() => {
@@ -298,6 +301,22 @@ const [productName, setProductName] = useState('');
     }
   }, [deliveryDate]);
 
+  useEffect(() => {
+    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllQuotations/${userId}`)
+      .then(response => {
+        const filteredQuotations = response.data.filter(item => item.status === "Delivered");
+        setAllQuotation(filteredQuotations);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+  
+  const approvedQuotation = allQuotation.map(item => ({
+    value: item.id,
+    label: item.contactPersonName
+  }));
+
   const handleDateChange = (date) => {
     setDeliveryDate(date);
   };
@@ -368,17 +387,20 @@ const notify = (type, message) => {
       weight &&
       size
     ) {
-      const matchingInventory = inventoryData?.find(item => item.productId === productId);
-      if (matchingInventory && quantity > matchingInventory.quantity) {
-        notify(
-          "error",
-          `Insufficient Quantity in Inventory. Quantity must be below ${matchingInventory.quantity}`
-        );
-        return; 
-      }
+     const selectedOption = inventoryData.find((option) => option.inventoryId === inventoryId);
+  
+    if (parseInt(quantity) > selectedOption.quantity) {
+      notify(
+        "error",
+        `Insufficient Quantity in Inventory. Quantity must be below ${selectedOption.quantity}`
+      );
+      return;
+    }
 
       const newRow = {
         id: Id,
+        inventory: {id: inventoryId},
+        productDescription,
         productId,
         productName,
         weight,
@@ -430,8 +452,11 @@ const notify = (type, message) => {
 
   const handleEditRow = (idx, row) => {
 
-    const selectedOption = userData2.find((option) => option.productName === row.productName);
-    const selectedProductId = selectedOption ? selectedOption.id : '';
+
+  const selectedOption = inventoryData.find((option) => option.productName === row.productName);
+  const selectedProductId = selectedOption ? selectedOption.productId : '';
+
+
   setId(row.id)
   setProductId(selectedProductId);
   setProductName(row.productName);
@@ -458,9 +483,10 @@ const notify = (type, message) => {
     setIgst('')
     setSgst('')
     setDescription('');
+    setId(undefined)
   };
 
-  //
+  //get all parts
   useEffect(() => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllItem/${userId}`)
       .then(response => {
@@ -473,8 +499,8 @@ const notify = (type, message) => {
 
 
   
-  const updatedRows = rowData?.map(({ productName, ...rest }) => rest);
-  const deleteRows= deletedRows?.map(({ productName, ...rest }) => rest);
+  const updatedRows = rowData?.map(({ productName, productDescription, ...rest }) => rest);
+  const deleteRows= deletedRows?.map(({ productName, productDescription, ...rest }) => rest);
   //post request
   const handleClick = async (event) => {
     let finalAmount = parseFloat(totalAmount.toFixed(2))
@@ -539,6 +565,7 @@ const notify = (type, message) => {
                   comments : comment,
                   termsAndCondition: terms,
                   totalAmount: finalAmount,
+                  lastModifiedByUser: {id: userId},
               },
                   salesOrderDetails: updatedRows,
                   deletedSODetails: deleteRows
@@ -561,6 +588,8 @@ const notify = (type, message) => {
     
     };
 
+    console.log(rowData)
+    console.log(inventoryData)
 
   return (
     <div style={{minWidth: "100%" }}>
@@ -654,13 +683,21 @@ const notify = (type, message) => {
               xs={12}
               md={6}
             >
-               <TextField
+            <TextField
                     fullWidth
                     label="Quotation"
                     name="quotation"
                     value={quotation}
+                    select
                     onChange={handleInputChange}
-                  >                 
+                  >    
+                    {approvedQuotation.map((option) => (
+                  <MenuItem 
+                  key={option.value} 
+                  value={option.value}>
+                    {option.label}
+                  </MenuItem>
+  ))}             
                   </TextField>
             </Grid>
             <Grid
@@ -769,7 +806,7 @@ height='50px'/>
             <div className='modal' 
             onClick={handleModalClick}>
               <div className='modal-content'>
-                <h5 className='product-detail-heading'>Add Part & Spare Part Details</h5>
+                <h5 className='product-detail-heading'>Add Part Details</h5>
                 <form className='form'>
                   {/* Form fields */}
                   <div className='form-row'>
@@ -778,24 +815,36 @@ height='50px'/>
                       xs={12} 
                       md={6}>
                         <TextField
-                          fullWidth
-                          label='Part or Spare Part'
-                          name='name'
-                          select
-                          value={productName}
-                          onChange={(e) => {
-                            const selectedOption = userData2.find(option => option.productName === e.target.value);
-                            setProductId(selectedOption.id);
-                            setProductName(e.target.value);
-                          }}
-                          style={{ marginBottom: 10 }}
-                        >
-                          {userData2?.map((option) => (
-                            <MenuItem key={option.id} 
-                            value={option.productName} >
-                              {option.productName}
-                            </MenuItem>
-                          ))}
+                            fullWidth
+                            label='Part Name'
+                            name='name'
+                            select
+                            value={productName}
+                            onChange={(e) => {
+                              const selectedOption = inventoryData.find(option => option.inventoryId === e.target.value);
+                              if (selectedOption) {
+                                setProductId(selectedOption.productId);
+                                setProductName(e.target.value);
+                                setWeight(selectedOption.weight);
+                                setSgst(selectedOption.sgst);
+                                setCgst(selectedOption.cgst);
+                                setIgst(selectedOption.igst);
+                                setQuantity(1);
+                                setSize(selectedOption.size);
+                                setPrice(selectedOption.price);
+                                setInventoryId(selectedOption.inventoryId)
+                                setDescription(selectedOption.productDescription);
+                                setProductDescription(selectedOption.productDescription)
+                              }
+                            }}
+                            style={{ marginBottom: 10 }}
+                          >
+                            {inventoryData.map((option) => (
+                              <MenuItem key={option.inventoryId} 
+                              value={option.inventoryId}>
+                                {option.productName}
+                              </MenuItem>
+                            ))}
                           </TextField>
                           </Grid>
                           <Grid
@@ -918,7 +967,7 @@ height='50px'/>
                           multiline
                           rows={4}
                           value={description}
-                          onChange={(e) => setDescription(e.target.value)}
+
                           style={{ marginBottom: 10 }}
                         />
                         </Grid>
@@ -953,7 +1002,7 @@ height='50px'/>
                             <TableRow hover 
                             key={idx.id}>
                               <TableCell>
-                                <div>{row.productName}</div>
+                                <div>{row.description}</div>
                               </TableCell>
                               <TableCell>
                                  <div>{row.quantity}</div>
@@ -975,9 +1024,6 @@ height='50px'/>
                               </TableCell>
                               <TableCell>
                                 <div>{row.igst}</div>
-                              </TableCell>
-                              <TableCell>
-                                <div>{row.description}</div>
                               </TableCell>
                               <TableCell>
                               <div>
