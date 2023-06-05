@@ -83,8 +83,8 @@ const userOptions = [
 const tableHeader=[
   {
       id:'product_name',
-      name:'Part or Spare Part Name',
-      width: 300,
+      name:'Part Description',
+      width: 200,
       
   },
   {
@@ -122,11 +122,7 @@ const tableHeader=[
     name:'IGST',
     width: 150,
 },
-  {
-      id:'description',
-      name:'Description',
-      width: 350,
-  },
+
   {
     id:'amount',
     name:'Net Amount',
@@ -176,6 +172,7 @@ const [productName, setProductName] = useState('');
   const [cgst, setCgst] = useState();
   const [size, setSize] = useState();
   const [description, setDescription] = useState('');
+
   const [rows, setRows] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
@@ -183,8 +180,10 @@ const [productName, setProductName] = useState('');
   const [userData2, setUserData2] = useState([])
   const [productId, setProductId] = useState()
   const [inventoryId, setInventoryId] = useState()
+  const [productDescription, setProductDescription] = useState('');
 
   const [totalAmount, setTotalAmount] = useState(0);
+  const [allQuotation, setAllQuotation] = useState([])
 
   //currentdate
   useEffect(() => {
@@ -265,7 +264,22 @@ const handleDateChange = (date) => {
       });
   }, []);
 
-  console.log(userData)
+  useEffect(() => {
+    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllQuotations/${userId}`)
+      .then(response => {
+        const filteredQuotations = response.data.filter(item => item.status === "Delivered");
+        setAllQuotation(filteredQuotations);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+  
+  const approvedQuotation = allQuotation.map(item => ({
+    value: item.id,
+    label: item.contactPersonName
+  }));
+
 
 const deliveryDateAntd = deliveryDate;
 const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
@@ -309,7 +323,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
   const handleSubmit = (e) => {
     e.preventDefault();
   
-    const selectedOption = userData2.find((option) => option.productName === productName);
+    const selectedOption = userData2.find((option) => option.inventoryId === inventoryId);
   
     if (parseInt(quantity) > selectedOption.quantity) {
       notify(
@@ -331,7 +345,9 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
       size
     ) {
       const newRow = {
-        inventoryId: inventoryId,
+        //inventoryId: inventoryId,
+        inventory: {id: inventoryId},
+        productDescription,
         productId,
         productName,
         weight,
@@ -339,7 +355,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
         quantity: parseFloat(quantity),
         price: parseFloat(price),
         cgst: parseFloat(cgst),
-        description,
+        description: description,
         createdBy: userId,
         size: size,
         sgst: parseFloat(sgst),
@@ -377,7 +393,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
       setTotalAmount(calculatedTotalAmount);
     }
   };
-  
+
 
 
   const handleEditRow = (idx, row) => {
@@ -389,7 +405,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
   setIgst(row.igst)
   setSgst(row.sgst)
   setSize(row.size)
-  setDescription(row.description);
+  setDescription(row.productDescription);
   setEditIndex(idx);
   setShowForm(true);
 };
@@ -412,7 +428,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
     axios.get(`http://13.115.56.48:8080/techmadhyam/getInventoryByUserId/${userId}`)
       .then(response => {
         setUserData2(response.data);
-        console.log(JSON.stringify(response.data))
+        console.log(response.data)
       })
       .catch(error => {
         console.error(error);
@@ -420,7 +436,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
   }, []);
 
 
-  const updatedRows = rows.map(({ productName, ...rest }) => rest);
+  const updatedRows = rows.map(({ productName, productDescription, ...rest }) => rest);
   //post request
   const handleClick = async (event) => {
     let finalAmount = totalAmount.toFixed(2)
@@ -478,7 +494,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
     
     };
 
-
+console.log(rows)
   return (
     <div style={{minWidth: "100%" }}>
        <ToastContainer
@@ -579,13 +595,21 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
               xs={12}
               md={6}
             >
-               <TextField
+             <TextField
                     fullWidth
                     label="Quotation"
                     name="quotation"
                     value={quotation}
+                    select
                     onChange={handleInputChange}
-                  >                 
+                  >    
+                    {approvedQuotation.map((option) => (
+                  <MenuItem 
+                  key={option.value} 
+                  value={option.value}>
+                    {option.label}
+                  </MenuItem>
+  ))}             
                   </TextField>
             </Grid>
             <Grid
@@ -690,7 +714,7 @@ height='50px'/>
             <div className='modal' 
             onClick={handleModalClick}>
               <div className='modal-content'>
-                <h5 className='product-detail-heading'>Add Part & Spare Part Details</h5>
+                <h5 className='product-detail-heading'>Add Part Details</h5>
                 <form className='form'>
                   {/* Form fields */}
                   <div className='form-row'>
@@ -699,12 +723,12 @@ height='50px'/>
                       md={6}>
                       <TextField
   fullWidth
-  label='Part or Spare Part'
+  label='Part Name'
   name='name'
   select
   value={productName}
   onChange={(e) => {
-    const selectedOption = userData2.find(option => option.productName === e.target.value && option.inventoryId);
+    const selectedOption = userData2.find(option => option.inventoryId === e.target.value);
     if (selectedOption) {
       setProductId(selectedOption.productId);
       setProductName(e.target.value);
@@ -716,13 +740,15 @@ height='50px'/>
       setSize(selectedOption.size);
       setPrice(selectedOption.price);
       setInventoryId(selectedOption.inventoryId)
+      setDescription(selectedOption.productDescription);
+      setProductDescription(selectedOption.productDescription)
     }
   }}
   style={{ marginBottom: 10 }}
 >
   {userData2.map((option) => (
     <MenuItem key={option.inventoryId} 
-    value={option.productName}>
+    value={option.inventoryId}>
       {option.productName}
     </MenuItem>
   ))}
@@ -884,7 +910,7 @@ height='50px'/>
                             <TableRow hover 
                             key={idx}>
                               <TableCell>
-                                <div>{row.productName}</div>
+                                <div>{row.productDescription}</div>
                               </TableCell>
                               <TableCell>
                                  <div>{row.quantity}</div>
@@ -907,9 +933,7 @@ height='50px'/>
                               <TableCell>
                                 <div>{row.igst}</div>
                               </TableCell>
-                              <TableCell>
-                                <div>{row.description}</div>
-                              </TableCell>
+                          
                               <TableCell>
                               <div>
                                 {(
