@@ -347,11 +347,11 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
       const newRow = {
         //inventoryId: inventoryId,
         inventory: {id: inventoryId},
+        quotationId: quotation,
         productDescription,
         productId,
         productName,
         weight,
-        quotationId: null,
         quantity: parseFloat(quantity),
         price: parseFloat(price),
         cgst: parseFloat(cgst),
@@ -452,7 +452,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
             },
             body: JSON.stringify({
               salesOrder:{
-                  quotationId:null,
+                  quotationId: quotation,
                   userId: userState,
                   tempUserId :tempId,
                   contactPerson: contactName,

@@ -154,7 +154,7 @@ export const PurchaseOrderEditForm = (props) => {
 //form state handeling
 
 const [type, setType] = useState(state?.type||"");
-const [quotation, setQuotation] = useState('');
+const [quotation, setQuotation] = useState(state?.quotationId ||'');
 const [deliveryDate, setDeliveryDate] = useState(dayjs(state?.deliveryDate, dateFormat));
 const [status, setStatus] = useState(state?.status || "");
 const [contactName,setContactName] = useState(state?.contactPerson ||'')

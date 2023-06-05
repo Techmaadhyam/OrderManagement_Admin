@@ -155,7 +155,7 @@ export const ViewSalesOrder = (props) => {
         <PropertyListItem
           align={align}
           label="Quotation"
-          value={state?.quotation || state?.soRecord?.quotation}
+          value={state?.quotationId || state?.soRecord?.quotationId}
         />
         <Divider />
         <PropertyListItem
