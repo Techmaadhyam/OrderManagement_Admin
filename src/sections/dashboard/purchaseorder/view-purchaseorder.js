@@ -27,54 +27,7 @@ import { useEffect } from 'react';
 
 
 
-const columns = [
-  {
-    title: 'Part or Spare Part Name',
-    dataIndex: 'productName',
-    key: 'productName',
-  },
-  {
-      title: 'Quantity',
-      dataIndex: 'quantity',
-      key: 'quantity',
-    },
-  {
-    title: 'Weight',
-    dataIndex: 'weight',
-    key: 'weight',
-  },
-  {
-    title: 'Size',
-    dataIndex: 'size',
-    key: 'size',
-  },
-  
-  {
-    title: 'Cost',
-    key: 'price',
-    dataIndex: 'price',
-  },
-    {
-      title: 'CGST',
-      key: 'cgst',
-      dataIndex: 'cgst',
-    },
-    {
-      title: 'SGST',
-      key: 'sgst',
-      dataIndex: 'sgst',
-    },
-    {
-      title: 'IGST',
-      key: 'igst',
-      dataIndex: 'igst',
-    },
-    {
-      title: 'Description',
-      key: 'description',
-      dataIndex: 'description',
-    },
-];
+
 
 
 
@@ -84,8 +37,51 @@ export const ViewPurchaseOrder = (props) => {
   const state = location.state;
 
 
+  const columns = [
 
- 
+    {
+      title: 'Part Description',
+      dataIndex: 'description',
+      key: 'description',
+    },
+    {
+        title: 'Quantity',
+        dataIndex: 'quantity',
+        key: 'quantity',
+      },
+    {
+      title: 'Weight',
+      dataIndex: 'weight',
+      key: 'weight',
+    },
+    {
+      title: 'Size',
+      dataIndex: 'size',
+      key: 'size',
+    },
+    
+    {
+      title: 'Cost',
+      key: 'price',
+      dataIndex: 'price',
+    },
+      {
+        title: 'CGST',
+        key: 'cgst',
+        dataIndex: 'cgst',
+      },
+      {
+        title: 'SGST',
+        key: 'sgst',
+        dataIndex: 'sgst',
+      },
+      {
+        title: 'IGST',
+        key: 'igst',
+        dataIndex: 'igst',
+      },
+  
+  ]
 
   const [tempuser, setTempuser] =useState([])
   const [rowData, setRowData] =useState()
@@ -153,7 +149,7 @@ export const ViewPurchaseOrder = (props) => {
         <PropertyListItem
           align={align}
           label="Purchase Order Number"
-          value={state?.id || state?.purchaseOrderRec?.id}
+          value={String(state?.id || state?.purchaseOrderRec?.id)}
         />
         <Divider />
         <PropertyListItem
@@ -199,22 +195,21 @@ export const ViewPurchaseOrder = (props) => {
       </Scrollbar>
     </Box>
      <Grid
-              xs={12}
-              md={6}
+             
             >
   <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Total Amount : {state?.totalAmount || state?.purchaseOrderRec?.totalAmount }</Typography>
             </Grid>
             <Grid
-              xs={12}
-              md={6}
+          
+            
               style={{marginTop: "20px"}}
             >
   <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Terms &Conditions : {state?.termsAndCondition || state?.purchaseOrderRec?.termsAndCondition}</Typography>
 
             </Grid>
             <Grid
-              xs={12}
-              md={6}
+             
+ 
               style={{marginTop: "20px", marginBottom: "30px"}}
             >
   <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Comments: {state?.comments || state?.purchaseOrderRec?.comments}</Typography>
