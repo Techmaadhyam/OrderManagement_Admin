@@ -128,18 +128,18 @@ export const ViewProductDetail = (props) => {
             <ArrowCircleLeftOutlinedIcon/>
           </SvgIcon>
           <Typography variant="subtitle2">
-            Back To <span style={{color: `${primaryColor}` , fontWeight: 600}}>Parts & Spare Parts</span> 
+            Back To <span style={{color: `${primaryColor}` , fontWeight: 600}}>Parts</span> 
           </Typography>
         </Link>
         <IconWithPopup/>
       </div>
- <h2>Parts & Spare Parts</h2>
+ <h2>Parts</h2>
       <Card style={{marginBottom: "12px" }}>
         <CardHeader title="Part Detail" />
         <PropertyList>
         <PropertyListItem
           align={align}
-          label={state?.type === "Spare Parts" ? "Spare Part Name" : "Part Name"}
+          label="Part Name"
         >
           <Typography variant="subtitle2">
            
@@ -198,7 +198,7 @@ export const ViewProductDetail = (props) => {
         <Divider />
         <PropertyListItem
           align={align}
-          label={state?.type === "Spare Parts" ? "Spare Part Number" : "Part Number"}
+          label="Part Number"
           value={state?.partnumber}
         />
         <Divider />
@@ -215,12 +215,7 @@ export const ViewProductDetail = (props) => {
   </IconButton>
 </div>
 <Divider />
-        <PropertyListItem
-          align={align}
-          label="Type"
-          value={state?.type}
-        />
-        <Divider />
+        
         <PropertyListItem
           align={align}
           label="Description"

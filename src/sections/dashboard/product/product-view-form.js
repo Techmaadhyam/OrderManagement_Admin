@@ -249,7 +249,7 @@ const columns = [
       <div style={{ display: 'flex', alignItems: 'center' }}>
         {!isSearching ? (
           <>
-            <Typography variant="subtitle1">Part & Spare Part Name</Typography>
+            <Typography variant="subtitle1">Part Name</Typography>
             <IconButton onClick={handleProductClick}>
               <SearchIcon />
             </IconButton>
@@ -298,7 +298,7 @@ const columns = [
       <div style={{ display: 'flex', alignItems: 'center' }}>
         {!isSearchingWarehouse? (
           <>
-            <Typography variant="subtitle1">Part & Spare Part Number</Typography>
+            <Typography variant="subtitle1">Part Number</Typography>
             <IconButton onClick={handleWarehouseClick}>
               <SearchIcon />
             </IconButton>
@@ -351,11 +351,6 @@ const columns = [
     key: 'category',
     dataIndex: 'category',
     render: (category) => category?.name
-  },
-  {
-    title: 'Type',
-    key: 'type',
-    dataIndex: 'type',
   },
   {
     title: 'Description',
@@ -428,7 +423,7 @@ const columns = [
     return (
       <Dialog open={true} 
       onClose={onClose}>
-        <DialogTitle>Edit Parts & Spare Parts</DialogTitle>
+        <DialogTitle>Edit Parts</DialogTitle>
         <DialogContent>
         <Grid
             container
@@ -458,7 +453,7 @@ const columns = [
             style={{ marginBottom: 10 }}
           />
             </Grid>
-            <Grid
+            {/* <Grid
               xs={6}
               md={6}
             >
@@ -479,7 +474,7 @@ const columns = [
                   </MenuItem>
                 ))}
           </TextField>
-          </Grid>
+          </Grid> */}
           <Grid
               xs={12}
               md={6}
@@ -520,10 +515,10 @@ const columns = [
           alignItems: 'center',
         }}
       >
-        <h2>View Parts & Spare Parts</h2>
+        <h2>View Parts</h2>
         <IconWithPopup/>
       </div>
-      <TextField
+      {/* <TextField
 
       label="Type"
       name="type"
@@ -539,7 +534,7 @@ const columns = [
             {option.label}
           </MenuItem>
         ))}
-      </TextField>
+      </TextField> */}
       <Box sx={{ position: 'relative', overflowX: 'auto', marginTop:'30px' }}>
         <Scrollbar>
           <Table

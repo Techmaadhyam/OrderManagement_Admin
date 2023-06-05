@@ -27,7 +27,7 @@ export const CreateProduct = (props) => {
   const [product, setProduct]= useState('')
   const [category, setCategory]= useState('')
   const [newCategory, setNewCategory]= useState('')
-  const [type, setType]= useState('Parts')
+  // const [type, setType]= useState('Parts')
   const [desc1, setDesc1]= useState('')
   const [desc2, setDesc2]= useState('')
   const [currentDate, setCurrentDate] = useState('');
@@ -81,17 +81,17 @@ export const CreateProduct = (props) => {
     
   ];
 
-  const typeDropdown = [
-    {
-      label: 'Parts',
-      value: 'Parts'
-    },
-    {
-      label: 'Spare Parts',
-      value: 'Spare Parts'
-    },
+  // const typeDropdown = [
+  //   {
+  //     label: 'Parts',
+  //     value: 'Parts'
+  //   },
+  //   {
+  //     label: 'Spare Parts',
+  //     value: 'Spare Parts'
+  //   },
     
-  ];
+  // ];
 
   const mappedOptions = data.map(({ id, name }) => ({
     label: name,
@@ -108,9 +108,9 @@ export const CreateProduct = (props) => {
   const handleNewCategory = (event) => {
     setNewCategory(event.target.value);
   };
-  const handleType = (event) => {
-    setType(event.target.value);
-  };
+  // const handleType = (event) => {
+  //   setType(event.target.value);
+  // };
   const handleDescription1 = (event) => {
     setDesc1(event.target.value);
   };
@@ -131,7 +131,7 @@ export const CreateProduct = (props) => {
       requestBody = {
         product: {
           productName: product,
-          type: type,
+          //type: type,
           partnumber: partNumber,
           description: desc2,
           createdBy: userId,
@@ -147,12 +147,12 @@ export const CreateProduct = (props) => {
           createdDate: currentDate
         }
       };
-    } else if(showAdditionalFields===false && product && type && desc2 && userId && currentDate && category){
+    } else if(showAdditionalFields===false && product && desc2 && userId && currentDate && category){
       requestBody = {
         product: {
           productName: product,
           partnumber: partNumber,
-          type: type,
+          //type: type,
           description: desc2,
           createdBy: userId,
           createdDate: currentDate,
@@ -198,7 +198,7 @@ export const CreateProduct = (props) => {
   return (
     <div style={{minWidth: "100%", marginBottom: '1rem' }}>
 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-      <h2>Create Parts & Spare Parts</h2>
+      <h2>Create Parts</h2>
       <IconWithPopup/>
     </div>
     <form>
@@ -208,7 +208,7 @@ export const CreateProduct = (props) => {
           <Grid
             container
             spacing={3}
-          > <Grid
+          > {/*<Grid
           xs={12}
           md={6}
         >
@@ -230,8 +230,8 @@ export const CreateProduct = (props) => {
                   </MenuItem>
                 ))}
             </TextField>
-        </Grid>
-        <Grid/>
+               </Grid>*/}
+    
         <Grid
               xs={12}
               md={6}
@@ -239,7 +239,7 @@ export const CreateProduct = (props) => {
               <TextField
 
                     fullWidth
-                    label={type === "Spare Parts" ? "Spare Part Name" : "Part Name"}
+                    label="Part Name"
                     name="name"
                     value={product}
                     onChange={handleProduct} 
@@ -256,7 +256,7 @@ export const CreateProduct = (props) => {
               <TextField
 
                     fullWidth
-                    label={type === "Spare Parts" ? "Spare Part Number" : "Part Number"}
+                    label="Part Number"
                     name="partNumber"
                     value={partNumber}
                     onChange={handlePart} 
