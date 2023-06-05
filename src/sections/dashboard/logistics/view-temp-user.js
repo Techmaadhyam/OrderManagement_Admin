@@ -35,14 +35,6 @@ const customerType = [
     value: 'Distributor'
   },
   {
-    label: 'Retailer',
-    value: 'Retailer'
-  },
-  {
-    label: 'Manufacturer',
-    value: 'Manufacturer'
-  },
-  {
     label: 'Customer',
     value: 'Customer'
   }
@@ -174,7 +166,7 @@ const handleSaveRecord = async (editedRecord) => {
           city: editedRecord.city,
           state: editedRecord.state,
           country: editedRecord.country,
-          createdBy: editedRecord.createdBy,
+          createdByUser: {id: editedRecord.createdByUser.id},
           lastModifiedDate: currentDate,
           lastModifiedByUser: {id: userId},
         })

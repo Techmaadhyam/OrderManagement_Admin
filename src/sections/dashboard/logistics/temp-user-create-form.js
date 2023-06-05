@@ -25,14 +25,6 @@ import { useNavigate } from 'react-router-dom';
       value: 'Distributor'
     },
     {
-      label: 'Retailer',
-      value: 'Retailer'
-    },
-    {
-      label: 'Manufacturer',
-      value: 'Manufacturer'
-    },
-    {
       label: 'Customer',
       value: 'Customer'
     }
@@ -292,7 +284,7 @@ event.preventDefault();
           city: currentCity,
           state: currentState,
           country: currentCountry,
-          createdBy: userId,
+          createdByUser: {id: userId},
           createdDate:currentDate,
           lastModifiedDate:currentDate,
           lastModifiedByUser: {id: userId},
