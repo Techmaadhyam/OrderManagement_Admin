@@ -27,7 +27,7 @@ export const CreateProduct = (props) => {
   const [product, setProduct]= useState('')
   const [category, setCategory]= useState('')
   const [newCategory, setNewCategory]= useState('')
-  const [type, setType]= useState('')
+  const [type, setType]= useState('Parts')
   const [desc1, setDesc1]= useState('')
   const [desc2, setDesc2]= useState('')
   const [currentDate, setCurrentDate] = useState('');
