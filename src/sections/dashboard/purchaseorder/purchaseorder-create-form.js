@@ -85,8 +85,8 @@ const userOptions = [
 const tableHeader=[
   {
       id:'product_name',
-      name:'Part or Spare Part Name',
-      width: 300,
+      name:'Part Description',
+      width: 200,
       
   },
   {
@@ -124,11 +124,7 @@ const tableHeader=[
     name:'IGST',
     width: 150,
 },
-  {
-      id:'description',
-      name:'Description',
-      width: 350,
-  },
+
   {
     id:'amount',
     name:'Net Amount',
@@ -186,6 +182,8 @@ const [productName, setProductName] = useState('');
   const [userData2, setUserData2] = useState([])
   const [productId, setProductId] = useState()
   const [salesUser, setSalesUser] =useState()
+
+  const [allQuotation, setAllQuotation] = useState([])
 
   const [totalAmount, setTotalAmount] = useState(0);
 
@@ -261,7 +259,21 @@ const handleDateChange = (date) => {
       });
   }, []);
 
-console.log(userData)
+  useEffect(() => {
+    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllQuotations/${userId}`)
+      .then(response => {
+        const filteredQuotations = response.data.filter(item => item.status === "Delivered");
+        setAllQuotation(filteredQuotations);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+  
+  const approvedQuotation = allQuotation.map(item => ({
+    value: item.id,
+    label: item.contactPersonName
+  }));
 
 const deliveryDateAntd = deliveryDate;
 const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
@@ -658,12 +670,15 @@ let finalAmount = totalAmount.toFixed(2)
       switch (fileType) {
         case 'performaInvoice':
           setPerformaInvoiceFile(null);
+          document.getElementById('performaInvoiceInput').value = '';
           break;
         case 'approvedInvoice':
           setApprovedInvoiceFile(null);
+          document.getElementById('approvedInvoiceInput').value = '';
           break;
         case 'deliveryChallan':
           setDeliveryChallanFile(null);
+          document.getElementById('deliveryChallanInput').value = '';
           break;
         default:
           break;
@@ -672,6 +687,7 @@ let finalAmount = totalAmount.toFixed(2)
 
     console.log('Performa Invoice File:', performaInvoiceFile?.name);
     console.log('Performa Invoice File:', performaInvoiceFile?.type);
+    console.log(quotation)
 
 
   return (
@@ -768,8 +784,16 @@ let finalAmount = totalAmount.toFixed(2)
                     label="Quotation"
                     name="quotation"
                     value={quotation}
+                    select
                     onChange={handleInputChange}
-                  >                 
+                  >    
+                    {approvedQuotation.map((option) => (
+                  <MenuItem 
+                  key={option.value} 
+                  value={option.value}>
+                    {option.label}
+                  </MenuItem>
+  ))}             
                   </TextField>
             </Grid>
             <Grid
@@ -873,7 +897,7 @@ height='50px'/>
             <div className='modal' 
             onClick={handleModalClick}>
               <div className='modal-content'>
-                <h5 className='product-detail-heading'>Add Part & Spare Part Details</h5>
+                <h5 className='product-detail-heading'>Add Part Details</h5>
                 <form className='form'>
                   {/* Form fields */}
                   <div className='form-row'>
@@ -882,7 +906,7 @@ height='50px'/>
                       md={6}>
                         <TextField
                           fullWidth
-                          label='Part or Spare Part'
+                          label='Part Name'
                           name='name'
                           select
                           value={productName}
@@ -890,6 +914,7 @@ height='50px'/>
                             const selectedOption = userData2.find(option => option.productName === e.target.value);
                             setProductId(selectedOption.id);
                             setProductName(e.target.value);
+                            setDescription(selectedOption.description)
                           }}
                           style={{ marginBottom: 10 }}
                         >
@@ -1051,7 +1076,7 @@ height='50px'/>
                             <TableRow hover 
                             key={idx}>
                               <TableCell>
-                                <div>{row.productName}</div>
+                                <div>{row.description}</div>
                               </TableCell>
                               <TableCell>
                                  <div>{row.quantity}</div>
@@ -1074,9 +1099,7 @@ height='50px'/>
                               <TableCell>
                                 <div>{row.igst}</div>
                               </TableCell>
-                              <TableCell>
-                                <div>{row.description}</div>
-                              </TableCell>
+                              
                               <TableCell>
                               <div>
                                 {(
