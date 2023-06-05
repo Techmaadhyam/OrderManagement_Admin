@@ -6,6 +6,9 @@ handlers:
   - url: /(.*\.(json|ico|js))$
     static_files: build/\1
     upload: build/.*\.(json|ico|js)$
+  - url: /media/(.*\.(jpg|png|gif))$
+    static_files: media/\1
+    upload: media/.*\.(jpg|png|gif)$
   - url: /.*
     static_files: build/index.html
     upload: build/index.html
