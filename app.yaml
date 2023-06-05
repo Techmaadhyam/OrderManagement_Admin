@@ -3,6 +3,9 @@ service: default
 env_variables:
   PORT: 8080
 handlers:
+  - url: /.*
+    script: auto
+    secure: always
   - url: /static
     static_dir: build/static
   - url: /(.*\.(json|ico|js))$
