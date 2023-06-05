@@ -273,7 +273,8 @@ useEffect(() => {
         price:parseFloat(cost),
         description:description,
         createdBy: parseFloat(userId),
-        productId: selectedId,
+        //productId: selectedId,
+        product: {id: selectedId},
         purchaseOrderId:purchaseId,
         warehouseId:warehouseId,
         sgst:parseFloat(sgst),
@@ -308,7 +309,8 @@ useEffect(() => {
       price:parseFloat(cost),
       description:description,
       createdBy: parseFloat(userId),
-      productId: selectedId,
+      //productId: selectedId,
+      product: {id: selectedId},
       purchaseOrderId:purchaseId,
       warehouseId:warehouseId,
       sgst:parseFloat(sgst),
@@ -484,7 +486,7 @@ useEffect(() => {
             >
                  <TextField
                   fullWidth
-                  label="Part or Spare Part Name"
+                  label="Part Name"
                   name="product"
                   select
                   value={selectedId ? selectedId : ''}

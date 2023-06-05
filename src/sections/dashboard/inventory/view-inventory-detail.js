@@ -17,18 +17,41 @@ import { primaryColor } from 'src/primaryColor';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 import IconWithPopup from '../user/user-icon';
 import { useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
-
+const userId = sessionStorage.getItem('user');
 
 
 export const ViewInventoryDetail = (props) => {
 
   const location = useLocation();
   const state = location.state;
+  const [userData, setUserData]= useState([])
+
   console.log(state)
 
 
+
   const align = 'horizontal' 
+
+  useEffect(() => {
+    axios.get(`http://13.115.56.48:8080/techmadhyam/getInventoryByUserId/${userId}`)
+      .then(response => {
+        setUserData(response.data);
+    
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+
+  console.log(userData);
+
+  const matchingObject = userData.find(item => item.inventoryId === state?.id);
+  const warehouseName = matchingObject?.warehouseName;
+  const productName = matchingObject?.productName;
+
  
   return (
     <div style={{minWidth: "100%", marginTop: "1rem" ,marginBottom: "1rem"  }}>
@@ -67,7 +90,7 @@ export const ViewInventoryDetail = (props) => {
                     <PropertyListItem
           align={align}
           label="Warehouse"
-          value={state?.warehouseName}
+          value={state?.warehouseName || warehouseName}
         />     <Divider />
             </Grid>
             <Grid
@@ -111,8 +134,8 @@ export const ViewInventoryDetail = (props) => {
             >
            <PropertyListItem
           align={align}
-          label="Part or Spare Part Name"
-          value={state?.productName}
+          label="Part Name"
+          value={state?.productName || productName}
         />
          <Divider />
           </Grid>
