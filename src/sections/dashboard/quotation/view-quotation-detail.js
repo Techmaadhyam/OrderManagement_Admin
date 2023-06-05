@@ -29,9 +29,9 @@ import { useEffect } from 'react';
 
 const columns = [
   {
-    title: 'Part or Spare Part Name',
-    dataIndex: 'productName',
-    key: 'productName',
+    title: 'Part Description',
+    dataIndex: 'description',
+    key: 'description',
   },
   {
       title: 'Quantity',
@@ -69,11 +69,7 @@ const columns = [
       key: 'igst',
       dataIndex: 'igst',
     },
-    {
-      title: 'Description',
-      key: 'description',
-      dataIndex: 'description',
-    },
+ 
 ];
 
 

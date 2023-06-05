@@ -95,8 +95,8 @@ const userOptions = [
 const tableHeader=[
   {
       id:'product_name',
-      name:'Part or Spare Part Name',
-      width: 300,
+      name:'Part Description',
+      width: 200,
       
   },
   {
@@ -134,11 +134,7 @@ const tableHeader=[
     name:'IGST',
     width: 150,
 },
-  {
-      id:'description',
-      name:'Description',
-      width: 350,
-  },
+
   {
     id:'amount',
     name:'Net Amount',
@@ -338,7 +334,7 @@ const [productName, setProductName] = useState('');
   };
 
   const handleSubmit = (e) => {
-    console.log(Id)
+
     e.preventDefault();
   
     if (
@@ -399,6 +395,8 @@ const [productName, setProductName] = useState('');
       setTotalAmount(calculatedTotalAmount);
     }
   };
+
+  
 
 
   const handleEditRow = (idx, row) => {
@@ -734,7 +732,7 @@ height='50px'/>
             <div className='modal' 
             onClick={handleModalClick}>
               <div className='modal-content'>
-                <h5 className='product-detail-heading'>Add Part & Spare Part Details</h5>
+                <h5 className='product-detail-heading'>Add Part Details</h5>
                 <form className='form'>
                   {/* Form fields */}
                   <div className='form-row'>
@@ -743,7 +741,7 @@ height='50px'/>
                             md={6}>
                         <TextField
                           fullWidth
-                          label='Part or Spare Part'
+                          label='Part Name'
                           name='name'
                           select
                           value={productName}
@@ -751,6 +749,7 @@ height='50px'/>
                             const selectedOption = userData2.find(option => option.productName === e.target.value);
                             setProductId(selectedOption.id);
                             setProductName(e.target.value);
+                            setDescription(selectedOption.description)
                           }}
                           style={{ marginBottom: 10 }}
                         >
@@ -912,7 +911,7 @@ height='50px'/>
                             <TableRow hover 
                             key={idx?.id}>
                               <TableCell>
-                                <div>{row.productName}</div>
+                                <div>{row.description}</div>
                               </TableCell>
                               <TableCell>
                                  <div>{row.quantity}</div>
@@ -935,9 +934,7 @@ height='50px'/>
                               <TableCell>
                                 <div>{row.igst}</div>
                               </TableCell>
-                              <TableCell>
-                                <div>{row.description}</div>
-                              </TableCell>
+                           
                               <TableCell>
                               <div>
                                 {(
