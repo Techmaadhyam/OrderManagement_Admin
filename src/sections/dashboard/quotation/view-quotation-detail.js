@@ -147,7 +147,7 @@ export const ViewQuotationDetail = (props) => {
         <PropertyListItem
           align={align}
           label="Quotation Order Number"
-          value={state?.id || state?.quotation?.id}
+          value={String(state?.id || state?.quotation?.id)}
         />
         <Divider />
         <PropertyListItem
@@ -182,29 +182,26 @@ export const ViewQuotationDetail = (props) => {
       <Scrollbar>
         <Table 
         sx={{ minWidth: 800,overflowX: "auto" }}
-         pagination={false} 
+         pagination={false}
          columns={columns} 
-         dataSource={rowData}>
+         dataSource={rowData?.map(row => ({ ...row, key: row.id }))} >
          </Table>
       </Scrollbar>
     </Box>
      <Grid
-              xs={12}
-              md={6}
+           
             >
   <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Total Amount : {state?.totalAmount || state?.quotation?.totalAmount }</Typography>
             </Grid>
             <Grid
-              xs={12}
-              md={6}
+       
               style={{marginTop: "20px"}}
             >
   <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Terms &Conditions : {state?.termsAndCondition || state?.quotation?.termsAndCondition}</Typography>
 
             </Grid>
             <Grid
-              xs={12}
-              md={6}
+ 
               style={{marginTop: "20px", marginBottom: "30px"}}
             >
   <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Comments: {state?.comments || state?.quotation?.comments} </Typography>
