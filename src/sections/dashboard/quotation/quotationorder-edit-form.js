@@ -627,6 +627,8 @@ const [productName, setProductName] = useState('');
                 onChange={handleDateChange}
                 defaultValue={deliveryDate} 
                 format={dateFormat}
+                className="css-dev-only-do-not-override-htwhyh"
+                style={{ height: '58px', width: '250px' , color: 'red'}}
                 
              
 
