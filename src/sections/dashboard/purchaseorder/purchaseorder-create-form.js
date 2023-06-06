@@ -574,9 +574,7 @@ let finalAmount = totalAmount.toFixed(2)
                     type: 'application/json'
                   })
                 );
-
-                
-                
+  
                 console.log('formData Object:');
                 for (let entry of formData.entries()) {
                   console.log(entry[0], entry[1]);
@@ -589,7 +587,7 @@ let finalAmount = totalAmount.toFixed(2)
                     body: formData,
                     mode: 'no-cors',
                     headers: {
-                      'Content-Type': 'multipart/form-data',
+                      'Content-Type': `multipart/form-data; boundary=${formData}`,
                       //'Access-Control-Allow-Origin':'*',
                     },
                   });
