@@ -33,14 +33,7 @@ const customerType = [
     label: 'Distributor',
     value: 'Distributor'
   },
-  {
-    label: 'Retailer',
-    value: 'Retailer'
-  },
-  {
-    label: 'Manufacturer',
-    value: 'Manufacturer'
-  },
+
   {
     label: 'Customer',
     value: 'Customer'

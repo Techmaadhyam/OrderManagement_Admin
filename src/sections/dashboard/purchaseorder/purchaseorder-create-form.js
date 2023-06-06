@@ -46,14 +46,7 @@ const customerType = [
     label: 'Distributor',
     value: 'Distributor'
   },
-  {
-    label: 'Retailer',
-    value: 'Retailer'
-  },
-  {
-    label: 'Manufacturer',
-    value: 'Manufacturer'
-  },
+
   {
     label: 'Customer',
     value: 'Customer'
@@ -343,7 +336,8 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
         productId,
         productName,
         weight,
-        quotationId: null,
+        quotationId: quotation,
+        inventory: null,
         quantity: parseFloat(quantity),
         price: parseFloat(price),
         cgst: parseFloat(cgst),
@@ -352,7 +346,6 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
         size: size,
         sgst: parseFloat(sgst),
         igst: parseFloat(igst),
-        comments: comment,
         createdDate: currentDate,
         lastModifiedDate: currentDate,
       };
@@ -435,7 +428,13 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
 
 
 //exclude productName. updatedRow is sent to API
-const updatedRows = rows.map(({ productName, ...rest }) => rest);
+const updatedRows = rows.map(({ productName, ...rest }) => ({
+  ...rest,
+  comments : comment,
+  
+}));
+
+//const salesOrder= rows.map(({ productName, inventory, ...rest})=> rest)
 
 //handle API post request
 const handleClick = async (event) => {
@@ -444,7 +443,7 @@ let finalAmount = totalAmount.toFixed(2)
 
     console.log({
       purchaseOrder:{
-          quotationId:null,
+          quotationId:quotation,
           salesOrderId:null,
           userId: userState,
           tempUserId :tempId,
@@ -467,33 +466,33 @@ let finalAmount = totalAmount.toFixed(2)
       },
           purchaseOrderDetails: updatedRows,
 
-          salesOrder:{
-            quotationId:null,
-            salesOrderId:null,
-            userId: userId,
-            contactPerson: salesUser.loginUser,
-            contactPhone: salesUser.loginPhone,    
-            status: status,
-            paymentMode: payment,
-            type: type,
-            deliveryDate: formattedDeliveryDate,
-            deliveryAddress: address,
-            city: null,
-            state:null,
-            country: null,
-            createdBy: userId,
-            createdDate: currentDate,
-            lastModifiedDate: currentDate,
-            comments : comment,
-            termsAndCondition: terms,
-            totalAmount: finalAmount,
-        },
-            salesOrderDetails: updatedRows
+        //   salesOrder:{
+        //     quotationId:null,
+        //     salesOrderId:null,
+        //     userId: userId,
+        //     contactPerson: salesUser.loginUser,
+        //     contactPhone: salesUser.loginPhone,    
+        //     status: status,
+        //     paymentMode: payment,
+        //     type: type,
+        //     deliveryDate: formattedDeliveryDate,
+        //     deliveryAddress: address,
+        //     city: null,
+        //     state:null,
+        //     country: null,
+        //     createdBy: userId,
+        //     createdDate: currentDate,
+        //     lastModifiedDate: currentDate,
+        //     comments : comment,
+        //     termsAndCondition: terms,
+        //     totalAmount: finalAmount,
+        // },
+        //     salesOrderDetails: updatedRows
   })
     
       if (1+1===2) {
         try {
-          const response = await fetch('http://13.115.56.48:8080/techmadhyam/createSalesPurchaseOrder', {
+          const response = await fetch('http://13.115.56.48:8080/techmadhyam/createPurchaseOrder', {
             method: 'POST',
             headers: {
     
@@ -501,7 +500,7 @@ let finalAmount = totalAmount.toFixed(2)
             },
             body: JSON.stringify({
               purchaseOrder:{
-                  quotationId:null,
+                  quotationId: quotation,
                   salesOrderId:null,
                   userId: userState,
                   tempUserId :tempId,
@@ -522,30 +521,30 @@ let finalAmount = totalAmount.toFixed(2)
                   termsAndCondition: terms,
                   totalAmount: finalAmount,
               },
-                  purchaseOrderDetails: updatedRows,
+                  purchaseOrderDetails: updatedRows
 
-                  salesOrder:{
-                    quotationId:null,
-                    userId: userId,
-                    contactPerson: salesUser.loginUser,
-                    contactPhone: salesUser.loginPhone,     
-                    status: status,
-                    paymentMode:payment,
-                    type: type,
-                    deliveryDate: formattedDeliveryDate,
-                    lastModifiedByUser: {id: userId},
-                    deliveryAddress: address,
-                    city: null,
-                    state:null,
-                    country: null,
-                    createdBy: userId,
-                    createdDate: currentDate,
-                    lastModifiedDate: currentDate,
-                    comments : comment,
-                    termsAndCondition: terms,
-                    totalAmount: finalAmount,
-                },
-                    salesOrderDetails: updatedRows
+                //   salesOrder:{
+                //     quotationId: quotation,
+                //     userId: userId,
+                //     contactPerson: salesUser.loginUser,
+                //     contactPhone: salesUser.loginPhone,     
+                //     status: status,
+                //     paymentMode:payment,
+                //     type: type,
+                //     deliveryDate: formattedDeliveryDate,
+                //     lastModifiedByUser: {id: userId},
+                //     deliveryAddress: address,
+                //     city: null,
+                //     state:null,
+                //     country: null,
+                //     createdBy: userId,
+                //     createdDate: currentDate,
+                //     lastModifiedDate: currentDate,
+                //     comments : comment,
+                //     termsAndCondition: terms,
+                //     totalAmount: finalAmount,
+                // },
+                //     salesOrderDetails: updatedRows
           })
           });
           
@@ -554,24 +553,44 @@ let finalAmount = totalAmount.toFixed(2)
               // Performa Invoice upload
               if (performaInvoiceFile) {
                 const formData = new FormData();
-          
-                formData.append('fileName', performaInvoiceFile?.name);
-                formData.append('fileType', performaInvoiceFile?.type);
-                formData.append('referenceId', data.purchaseOrderRec?.id);
-                formData.append('referenceType', 'PurchaseOrder');
-                formData.append('file', performaInvoiceFile);
 
+                
+                let jsonBodyData = {};
+
+               
+                jsonBodyData.fileId = 0;
+                jsonBodyData.fileName = performaInvoiceFile?.name;
+                jsonBodyData.fileType = performaInvoiceFile?.type;
+                jsonBodyData.referenceId = data.purchaseOrderRec?.id;
+                jsonBodyData.referenceType = 'PurchaseOrder';
+                
+                formData.append(
+                  'file',
+                  performaInvoiceFile
+                );
+                formData.append(
+                  'jsonBodyData',
+                  new Blob([JSON.stringify(jsonBodyData)], {
+                    type: 'application/json'
+                  })
+                );
+
+                
+                
                 console.log('formData Object:');
                 for (let entry of formData.entries()) {
                   console.log(entry[0], entry[1]);
                 }
+                console.log(jsonBodyData);
           
                 try {
                   const uploadResponse = await fetch('http://13.115.56.48:8080/techmadhyam/upload', {
                     method: 'POST',
                     body: formData,
+                    mode: 'no-cors',
                     headers: {
-                      'Content-Type': 'application/json'
+                      'Content-Type': 'multipart/form-data',
+                      //'Access-Control-Allow-Origin':'*',
                     },
                   });
           
@@ -602,7 +621,7 @@ let finalAmount = totalAmount.toFixed(2)
                     method: 'POST',
                     body: formData,
                     headers: {
-                      'Content-Type': 'application/json'
+                      'Content-Type': 'multipart/form-data'
                     },
                   });
           
@@ -634,7 +653,7 @@ let finalAmount = totalAmount.toFixed(2)
                     method: 'POST',
                     body: formData,
                     headers: {
-                      'Content-Type': 'application/json'
+                      'Content-Type': 'multipart/form-data'
                     },
                   });
           

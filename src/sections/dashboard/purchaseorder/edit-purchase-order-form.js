@@ -43,14 +43,7 @@ const customerType = [
     label: 'Distributor',
     value: 'Distributor'
   },
-  {
-    label: 'Retailer',
-    value: 'Retailer'
-  },
-  {
-    label: 'Manufacturer',
-    value: 'Manufacturer'
-  },
+
   {
     label: 'Customer',
     value: 'Customer'
@@ -366,7 +359,7 @@ const [productName, setProductName] = useState('');
         productId,
         productName,
         weight,
-        quotationId: null,
+        quotationId: quotation,
         quantity: parseFloat(quantity),
         price: parseFloat(price),
         cgst: parseFloat(cgst),
@@ -470,7 +463,7 @@ const [productName, setProductName] = useState('');
     console.log({
       purchaseOrder:{
           id: state?.id,
-          quotationId:null,
+          quotationId: quotation,
           userId: userId,
           tempUserId :tempId,
           contactPerson: contactName,
@@ -504,7 +497,7 @@ const [productName, setProductName] = useState('');
             body: JSON.stringify({
               purchaseOrder:{
                   id: state?.id,
-                  quotationId:null,
+                  quotationId: quotation,
                   userId: userId,
                   tempUserId :tempId,
                   contactPerson: contactName,
