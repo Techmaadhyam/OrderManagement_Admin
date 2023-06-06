@@ -158,7 +158,7 @@ export const ViewWarehouseDetail = (props) => {
         <Table sx={{ minWidth: 800,overflowX: "auto" }} 
         pagination={false} 
         columns={columns} 
-        dataSource={rowData}></Table>
+        dataSource={rowData?.map(row => ({ ...row, key: row.inventoryId }))} ></Table>
       </Scrollbar>
     </Box>
         <Divider/>

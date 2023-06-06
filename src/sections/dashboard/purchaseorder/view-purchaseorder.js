@@ -155,7 +155,7 @@ export const ViewPurchaseOrder = (props) => {
         <PropertyListItem
           align={align}
           label="Quotation"
-          value={state?.quotationId || state?.purchaseOrderRec?.quotationId}
+          value={String(state?.quotationId || state?.purchaseOrderRec?.quotationId)}
         />
         <Divider />
         <PropertyListItem
@@ -191,20 +191,22 @@ export const ViewPurchaseOrder = (props) => {
         <Table sx={{ minWidth: 800,overflowX: "auto" }} 
         pagination={false} 
         columns={columns} 
-        dataSource={rowData}></Table>
+        dataSource={rowData?.map(row => ({ ...row, key: row.id }))} >
+
+        </Table>
       </Scrollbar>
     </Box>
      <Grid
              
             >
-  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Total Amount : {state?.totalAmount || state?.purchaseOrderRec?.totalAmount }</Typography>
+  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginLeft: '10px', color:'black', fontWeight:"bold"}}>Total Amount : {state?.totalAmount || state?.purchaseOrderRec?.totalAmount }</Typography>
             </Grid>
             <Grid
           
             
               style={{marginTop: "20px"}}
             >
-  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Terms &Conditions : {state?.termsAndCondition || state?.purchaseOrderRec?.termsAndCondition}</Typography>
+  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginLeft: '10px', color:'black', fontWeight:"bold"}}>Terms &Conditions : {state?.termsAndCondition || state?.purchaseOrderRec?.termsAndCondition}</Typography>
 
             </Grid>
             <Grid
@@ -212,7 +214,7 @@ export const ViewPurchaseOrder = (props) => {
  
               style={{marginTop: "20px", marginBottom: "30px"}}
             >
-  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Comments: {state?.comments || state?.purchaseOrderRec?.comments}</Typography>
+  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginLeft: '10px', color:'black', fontWeight:"bold"}}>Comments: {state?.comments || state?.purchaseOrderRec?.comments}</Typography>
 
             </Grid>
         <Divider/>

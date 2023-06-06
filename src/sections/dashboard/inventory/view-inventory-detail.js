@@ -84,6 +84,7 @@ export const ViewInventoryDetail = (props) => {
             spacing={3}
           >
             <Grid
+            item
               xs={12}
               md={6}
             >
@@ -94,17 +95,19 @@ export const ViewInventoryDetail = (props) => {
         />     <Divider />
             </Grid>
             <Grid
+            item
               xs={12}
               md={6}
             >
              <PropertyListItem
           align={align}
           label="Purchase Order"
-          value={state?.purchaseOrderId}
+          value={String(state?.purchaseOrderId)}
         />
          <Divider />
             </Grid>
             <Grid
+            item
               xs={12}
               md={6}
             >
@@ -117,6 +120,7 @@ export const ViewInventoryDetail = (props) => {
             </Grid>
             
             <Grid
+            item
               xs={12}
               md={6}
             >
@@ -129,6 +133,7 @@ export const ViewInventoryDetail = (props) => {
             </Grid>
            
         <Grid
+        item
               xs={12}
               md={6}
             >
@@ -140,6 +145,7 @@ export const ViewInventoryDetail = (props) => {
          <Divider />
           </Grid>
           <Grid
+          item
               xs={12}
               md={6}
             >
@@ -153,6 +159,7 @@ export const ViewInventoryDetail = (props) => {
   
     
             <Grid
+            item
               xs={12}
               md={6}
             >
@@ -164,6 +171,7 @@ export const ViewInventoryDetail = (props) => {
          <Divider />
             </Grid>
             <Grid
+            item
               xs={12}
               md={6}
             >
@@ -175,50 +183,55 @@ export const ViewInventoryDetail = (props) => {
          <Divider />
             </Grid>
             <Grid
+            item
               xs={12}
               md={6}
             >
                 <PropertyListItem
           align={align}
           label="Available Stock"
-          value={state?.quantity}
+          value={String(state?.quantity)}
         />
          <Divider />
             </Grid>
             <Grid
+            item
               xs={12}
               md={6}
             >
                <PropertyListItem
           align={align}
           label="CGST"
-          value={state?.cgst}
+          value={String(state?.cgst)}
         />
          <Divider />
             </Grid>
             <Grid
+            item
               xs={12}
               md={6}
             >
               <PropertyListItem
           align={align}
           label="IGST"
-          value={state?.igst}
+          value={String(state?.igst)}
         />
          <Divider />
             </Grid>
             <Grid
+            item
               xs={12}
               md={6}
             >
         <PropertyListItem
           align={align}
           label="SGST"
-          value={state?.cgst}
+          value={String(state?.sgst)}
         />
          <Divider />
             </Grid>
             <Grid
+              item
               xs={12}
               md={6}
             >

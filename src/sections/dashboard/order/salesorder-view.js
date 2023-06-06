@@ -149,13 +149,13 @@ export const ViewSalesOrder = (props) => {
         <PropertyListItem
           align={align}
           label="Sales Order Number"
-          value={state?.id || state?.soRecord?.id}
+          value={String(state?.id || state?.soRecord?.id)}
         />
         <Divider />
         <PropertyListItem
           align={align}
           label="Quotation"
-          value={state?.quotationId || state?.soRecord?.quotationId}
+          value={String(state?.quotationId || state?.soRecord?.quotationId)}
         />
         <Divider />
         <PropertyListItem
@@ -191,29 +191,26 @@ export const ViewSalesOrder = (props) => {
         <Table sx={{ minWidth: 800,overflowX: "auto" }} 
         pagination={false} 
         columns={columns} 
-        dataSource={rowData}></Table>
+        dataSource={rowData?.map(row => ({ ...row, key: row.id }))} ></Table>
       </Scrollbar>
     </Box>
      <Grid
-              xs={12}
-              md={6}
+       
             >
-  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Total Amount : {state?.totalAmount || state?.soRecord?.totalAmount}</Typography>
+  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginLeft: '10px', color:'black', fontWeight:"bold"}}>Total Amount : {state?.totalAmount || state?.soRecord?.totalAmount}</Typography>
             </Grid>
             <Grid
-              xs={12}
-              md={6}
+           
               style={{marginTop: "20px"}}
             >
-  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Terms &Conditions : {state?.termsAndCondition || state?.soRecord?.termsAndCondition}</Typography>
+  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginLeft: '10px', color:'black', fontWeight:"bold"}}>Terms &Conditions : {state?.termsAndCondition || state?.soRecord?.termsAndCondition}</Typography>
 
             </Grid>
             <Grid
-              xs={12}
-              md={6}
+           
               style={{marginTop: "20px", marginBottom: "30px"}}
             >
-  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Comments: {state?.comments  || state?.soRecord?.comments} </Typography>
+  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginLeft: '10px', color:'black', fontWeight:"bold"}}>Comments: {state?.comments  || state?.soRecord?.comments} </Typography>
 
             </Grid>
         <Divider/>
