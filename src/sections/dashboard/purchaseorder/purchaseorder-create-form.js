@@ -553,28 +553,34 @@ let finalAmount = totalAmount.toFixed(2)
               // Performa Invoice upload
               if (performaInvoiceFile) {
                 const formData = new FormData();
+
                 
-                formData.append('file',performaInvoiceFile);
-                formData.append('fileId',0);
-                formData.append('fileName', performaInvoiceFile?.name);
-                formData.append('fileType', performaInvoiceFile?.type);
-                formData.append('referenceId', data.purchaseOrderRec?.id);
-                formData.append('referenceType', 'PurchaseOrder');
-  
+                let jsonBodyData = {};
+
+               let file = performaInvoiceFile;
+                jsonBodyData.fileId = 0;
+                jsonBodyData.fileName = performaInvoiceFile?.name;
+                jsonBodyData.fileType = performaInvoiceFile?.type;
+                jsonBodyData.referenceId = data.purchaseOrderRec?.id;
+                jsonBodyData.referenceType = 'PurchaseOrder';
+                
+                formData.append(
+                  'file',
+                  file
+                );
+                formData.append('fileWrapper',JSON.stringify(jsonBodyData));
+                      
+
                 console.log('formData Object:');
                 for (let entry of formData.entries()) {
                   console.log(entry[0], entry[1]);
                 }
+                console.log(jsonBodyData);
           
                 try {
                   const uploadResponse = await fetch('http://13.115.56.48:8080/techmadhyam/upload', {
                     method: 'POST',
-                    body: formData,
-                    mode: 'no-cors',
-                    headers: {
-                      'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
-                      //'Access-Control-Allow-Origin':'*',
-                    },
+                    body: formData
                   });
           
                   if (uploadResponse.ok) {
@@ -815,9 +821,6 @@ let finalAmount = totalAmount.toFixed(2)
             >
                 <DatePicker placeholder="Delivery Date"
                 onChange={handleDateChange}
-                className="css-dev-only-do-not-override-htwhyh"
-                style={{ height: '58px', width: '250px' , color: 'red'}}
-
 
 height='50px'/>
             </Grid>
