@@ -205,9 +205,26 @@ const [productName, setProductName] = useState('');
   useEffect(() => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllSalesOrderDetails/${state?.id || state?.soRecord?.id}`)
       .then(response => {
-       setRowData(response.data)
-       setTotalAmount(state?.totalAmount)
-       console.log(response.data)
+        const updatedData = response.data.map(obj => {
+          let parsedInventoryId;
+          try {
+            const parsedInventory = JSON.parse(obj.inventory);
+            parsedInventoryId = parsedInventory.id;
+          } catch (error) {
+            console.error("Error parsing inventory JSON for object:", obj, error);
+            parsedInventoryId = null;
+          }
+  
+          return {
+            ...obj,
+            inventory: { id: parsedInventoryId }
+          };
+        });
+  
+        setRowData(updatedData);
+        setTotalAmount(state?.totalAmount);
+  
+        console.log(updatedData);
       })
       .catch(error => {
         console.error(error);
@@ -226,6 +243,9 @@ const [productName, setProductName] = useState('');
   }, []);
 
   console.log(inventoryData)
+  // const parsedInventory = JSON.parse(rowData.inventory);
+
+
 
   //currentdate
   useEffect(() => {
@@ -457,9 +477,11 @@ const notify = (type, message) => {
   const selectedProductId = selectedOption ? selectedOption.productId : '';
 
 
+
   setId(row.id)
   setProductId(selectedProductId);
-  setProductName(row.productName);
+  setInventoryId(row.inventory.id)
+  setProductName(row.inventory.id);
   setWeight(row.weight);
   setQuantity(row.quantity);
   setPrice(row.price);

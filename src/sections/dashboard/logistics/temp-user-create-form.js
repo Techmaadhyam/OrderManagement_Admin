@@ -471,7 +471,7 @@ event.preventDefault();
                     label="Country"
                     name="country"
                     select
-                    defaultValue=''
+                    defaultValue=""
                     value={currentCountry}
                     onChange={handleCountry}
                   >
