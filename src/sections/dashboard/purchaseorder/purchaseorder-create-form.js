@@ -36,9 +36,10 @@ import { useNavigate } from 'react-router-dom';
 
 
 
-
+//get userId from session storage
 const userId = parseInt(sessionStorage.getItem('user'))
 
+//type dropdown
 const customerType = [
    
   {
@@ -58,7 +59,7 @@ const customerType = [
     value: 'Customer'
   }
 ];
-
+//status dropdown
 const userOptions = [
   {
     label: 'Open',
@@ -82,6 +83,7 @@ const userOptions = [
   },
 ];
 
+//parts row heading and width
 const tableHeader=[
   {
       id:'product_name',
@@ -145,27 +147,31 @@ const tableHeader=[
 
 export const PurchaseOrderCreateForm = (props) => {
 
-
+  //used to store company names from 2 diffrent API's
   const [userData, setUserData]= useState([])
+  //store parts name from API
+  const [userData2, setUserData2] = useState([])
+
+  //used to navigate to diffrent section via react router and pass state
   const navigate = useNavigate();
-//form state handeling
-const [userName, setUserName] = useState('');
-const [type, setType] = useState("");
-const [quotation, setQuotation] = useState('');
-const [deliveryDate, setDeliveryDate] = useState('');
-const [status, setStatus] = useState("");
-const [contactName,setContactName] = useState('')
-const [phone, setPhone] = useState('');
-const [address, setAddress] = useState("");
-const [tempId, setTempId] = useState();
-const [userState, setUserState] = useState();
-const [terms, setTerms] = useState('');
-const [comment, setComment] = useState('');
 
-const [currentDate, setCurrentDate] = useState('');
+  //form state managment
+  const [userName, setUserName] = useState('');
+  const [type, setType] = useState("");
+  const [quotation, setQuotation] = useState('');
+  const [deliveryDate, setDeliveryDate] = useState('');
+  const [status, setStatus] = useState("");
+  const [contactName,setContactName] = useState('')
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState("");
+  const [tempId, setTempId] = useState();
+  const [userState, setUserState] = useState();
+  const [terms, setTerms] = useState('');
+  const [comment, setComment] = useState('');
+  const [currentDate, setCurrentDate] = useState('');
 
-//add product state
-const [productName, setProductName] = useState('');
+  //add parts state managment
+  const [productName, setProductName] = useState('');
   const [weight, setWeight] = useState('');
   const [sgst, setSgst] = useState();
   const [igst, setIgst] = useState();
@@ -179,12 +185,13 @@ const [productName, setProductName] = useState('');
   const [editIndex, setEditIndex] = useState(null);
   const [payment, setPayment] =useState('')
 
-  const [userData2, setUserData2] = useState([])
+
   const [productId, setProductId] = useState()
   const [salesUser, setSalesUser] =useState()
-
   const [allQuotation, setAllQuotation] = useState([])
 
+
+  //store total amount
   const [totalAmount, setTotalAmount] = useState(0);
 
   //handle file uploads
@@ -192,7 +199,7 @@ const [productName, setProductName] = useState('');
   const [approvedInvoiceFile, setApprovedInvoiceFile] = useState(null);
   const [deliveryChallanFile, setDeliveryChallanFile] = useState(null);
 
-  //currentdate
+  //get currentdate
   useEffect(() => {
     const today = new Date();
     const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
@@ -200,6 +207,7 @@ const [productName, setProductName] = useState('');
     setCurrentDate(formattedDate);
   }, []);
 
+  //handle form fields state update
  const handleInputChange = (event) => {
   const { name, value } = event.target;
 
@@ -233,10 +241,11 @@ const [productName, setProductName] = useState('');
       break;
   }
 };
+
 const handleDateChange = (date) => {
   setDeliveryDate(date);
 };
-   //get temp user
+   //get temporary user data
    useEffect(() => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`)
       .then(response => {
@@ -248,7 +257,7 @@ const handleDateChange = (date) => {
       .catch(error => {
         console.error(error);
       });
-  
+    //get user data
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllUsersBasedOnType/${userId}`)
       .then(response => {
         setUserData(prevData => [...prevData, ...response.data]);
@@ -259,6 +268,7 @@ const handleDateChange = (date) => {
       });
   }, []);
 
+//get quotation data
   useEffect(() => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllQuotations/${userId}`)
       .then(response => {
@@ -269,24 +279,21 @@ const handleDateChange = (date) => {
         console.error(error);
       });
   }, []);
-  
+  //only show quotations that have status: delivered
   const approvedQuotation = allQuotation.map(item => ({
     value: item.id,
     label: item.contactPersonName
   }));
 
+  //format date
 const deliveryDateAntd = deliveryDate;
 const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
 const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD/MM/YYYY') : '';
 
 
 
-  //////////////
-  //add product//
-  /////////////
 
-
-
+  //handle delete row 
   const handleRemoveRow = (idx) => () => {
     const updatedRows = rows.filter((_, index) => index !== idx);
     setRows(updatedRows);
@@ -304,6 +311,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
     setTotalAmount(calculatedTotalAmount);
   };
 
+  //handle show hide popup form
   const toggleForm = () => {
     setShowForm((prevState) => !prevState);
     setEditIndex(null);
@@ -315,6 +323,8 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
       toggleForm();
     }
   };
+
+  //handle popup submission
   const handleSubmit = (e) => {
     e.preventDefault();
   
@@ -361,7 +371,8 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
       clearFormFields();
       setShowForm(false);
       setEditIndex(null);
-  
+
+      //calculate total everytime form is updated and saved
       const calculatedTotalAmount = updatedRows.reduce(
         (total, row) =>
           total +
@@ -375,7 +386,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
       setTotalAmount(calculatedTotalAmount);
     }
   };
-
+//handle editing of row
   const handleEditRow = (idx, row) => {
   setProductName(row.productName);
   setWeight(row.weight);
@@ -390,7 +401,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
   setShowForm(true);
 };
   
-
+//clear popup field on save, close.
   const clearFormFields = () => {
     setProductName('');
     setWeight('');
@@ -403,7 +414,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
     setDescription('');
   };
 
-  //
+  //get all parts details
   useEffect(() => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllItem/${userId}`)
       .then(response => {
@@ -423,10 +434,10 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
 
 
 
-
+//exclude productName. updatedRow is sent to API
 const updatedRows = rows.map(({ productName, ...rest }) => rest);
 
-  //post request
+//handle API post request
 const handleClick = async (event) => {
 let finalAmount = totalAmount.toFixed(2)
     event.preventDefault();
@@ -649,7 +660,7 @@ let finalAmount = totalAmount.toFixed(2)
     
     };
 
-
+//set uploaded files to state
     const handlePerformaInvoiceFileChange = (event) => {
       const file = event.target.files[0];
       setPerformaInvoiceFile(file);
@@ -665,7 +676,7 @@ let finalAmount = totalAmount.toFixed(2)
       setDeliveryChallanFile(file);
     };
   
-  
+//delete uploaded files from state
     const handleDeleteFile = (fileType) => {
       switch (fileType) {
         case 'performaInvoice':
