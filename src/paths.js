@@ -69,6 +69,7 @@ export const paths = {
       view: '/dashboard/purchaseorder/:customerId',
       viewDetail: '/dashboard/purchaseorder/viewDetail',
       edit: '/dashboard/purchaseorder/edit',
+      invoice: '/dashboard/purchaseorder/invoice',
     },
     ecommerce: '/dashboard/ecommerce',
     fileManager: '/dashboard/file-manager',
