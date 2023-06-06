@@ -1,5 +1,4 @@
 
-import './register.css'
 import {
   Button,
   Card,
@@ -387,35 +386,40 @@ const handleCities = async (event) => {
   return (
    <>
     <Box
-      sx={{
-        backgroundColor: 'background.default',
-        display: 'flex',
-        flex: '1 1 auto',
-        flexDirection: {
-          xs: 'column-reverse',
-          md: 'row'
-        }
-      }}
+    sx={{
+      backgroundColor: 'background.default',
+      display: 'flex',
+      flex: '1 1 auto',
+      flexDirection: {
+        xs: 'column-reverse',
+        md: 'row'
+      }
+    }}
     >   
       <Box
-        sx={{
-          alignItems: 'center',
-          backgroundColor: 'neutral.800',
-          backgroundImage: 'url("/assets/gradient-bg.svg")',
-          backgroundPosition: 'top center',
-          backgroundRepeat: 'no-repeat',
-          color: 'common.white',
-          display: 'flex',
-          flex: {
-            xs: '0 0 auto',
-            md: '1 1 auto'
-          },
-          justifyContent: 'center',
-          p: {
-            xs: 4,
-            md: 8
-          }
-        }}
+  sx={{
+    alignItems: 'center',
+    backgroundColor: 'neutral.800',
+    backgroundImage: 'url("/assets/gradient-bg.svg")',
+    backgroundPosition: 'top center',
+    backgroundRepeat: 'no-repeat',
+    color: 'common.white',
+    display: 'flex',
+    flex: {
+      xs: '0 0 auto',
+      md: '1 1 auto'
+    },
+    justifyContent: 'center',
+    p: {
+      xs: 4,
+      md: 8
+    },
+    position: 'sticky', 
+    top: 0, 
+    height: '100vh', 
+    maxHeight: '100vh', 
+    overflowY: 'auto' 
+  }}
       >
         <Box maxWidth="md">
           <Stack
@@ -444,7 +448,7 @@ const handleCities = async (event) => {
      
 
       <Box
-        sx={{
+         sx={{
           backgroundColor: 'background.paper',
           display: 'flex',
           flex: {
@@ -452,7 +456,6 @@ const handleCities = async (event) => {
             md: '0 0 auto'
           },
           flexDirection: 'column',
-        
           maxWidth: '100%',
           p: {
             xs: 4,
@@ -460,7 +463,8 @@ const handleCities = async (event) => {
           },
           width: {
             md: 750
-          }
+          },
+          overflowY: 'auto' // Add overflowY property to enable vertical scrolling
         }}
       >
      
