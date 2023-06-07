@@ -297,7 +297,7 @@ const [productName, setProductName] = useState('');
   
   const approvedQuotation = allQuotation.map(item => ({
     value: item.id,
-    label: item.contactPersonName
+    label: item.id
   }));
 
   const handleDateChange = (date) => {
@@ -719,17 +719,17 @@ const [productName, setProductName] = useState('');
           if (fileResponse.ok) {
             const fileData = await fileResponse.json();
             console.log(fileData);
-            const extractedFileData = fileData[0].fileData;
-            const extractedFileData2 =fileData[1].fileData
-            const extractedFileData3 =fileData[2].fileData
+            const extractedFileData = fileData[0]?.fileData;
+            const extractedFileData2 =fileData[1]?.fileData
+            const extractedFileData3 =fileData[2]?.fileData
             setPerformaInvoiceFile(extractedFileData)
             setApprovedInvoiceFile(extractedFileData2)
             setDeliveryChallanFile(extractedFileData3)
 
             setPerformaInvoiceId({
-              perfoma: fileData[0].id,
-              approved: fileData[1].id,
-              delivery: fileData[2].id
+              perfoma: fileData[0]?.id,
+              approved: fileData[1]?.id,
+              delivery: fileData[2]?.id
             });
           } else {
             console.error('Unable to fetch the file');
@@ -801,7 +801,7 @@ console.log(performaInvoiceId)
   return (
     <div style={{minWidth: "100%" }}>
     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-    <button onClick={handleOpenFile}>Open File</button>
+    {/* <button onClick={handleOpenFile}>Open File</button> */}
       <h2>Edit Purchase Order</h2>
       <IconWithPopup/>
     </div>
@@ -892,7 +892,7 @@ console.log(performaInvoiceId)
                   <MenuItem 
                   key={option.value} 
                   value={option.value}>
-                      {option.value}
+                      {option.label}
                   </MenuItem>
   ))}             
                   </TextField>
