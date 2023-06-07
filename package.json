@@ -50,6 +50,7 @@
     "moment": "^2.29.4",
     "mui-one-time-password-input": "1.0.4",
     "nprogress": "0.2.0",
+    "number-to-words": "^1.2.4",
     "numeral": "2.0.6",
     "pdfmake": "^0.2.7",
     "prop-types": "15.8.1",
