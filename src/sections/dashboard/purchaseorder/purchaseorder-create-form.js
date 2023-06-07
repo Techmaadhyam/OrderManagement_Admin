@@ -821,6 +821,8 @@ let finalAmount = totalAmount.toFixed(2)
             >
                 <DatePicker placeholder="Delivery Date"
                 onChange={handleDateChange}
+                className="css-dev-only-do-not-override-htwhyh"
+                style={{ height: '58px', width: '250px' , color: 'red'}}
 
 height='50px'/>
             </Grid>
