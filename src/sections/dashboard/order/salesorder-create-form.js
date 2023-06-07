@@ -600,7 +600,7 @@ console.log(rows)
                   <MenuItem 
                   key={option.value} 
                   value={option.value}>
-                    {option.label}
+                     {option.value}
                   </MenuItem>
   ))}             
                   </TextField>

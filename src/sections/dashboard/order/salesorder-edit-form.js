@@ -710,7 +710,7 @@ const notify = (type, message) => {
                   <MenuItem 
                   key={option.value} 
                   value={option.value}>
-                    {option.label}
+                    {option.value}
                   </MenuItem>
   ))}             
                   </TextField>
