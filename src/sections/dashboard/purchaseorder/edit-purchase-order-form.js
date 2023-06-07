@@ -192,6 +192,10 @@ const [productName, setProductName] = useState('');
     const [approvedInvoiceFile, setApprovedInvoiceFile] = useState(null);
     const [deliveryChallanFile, setDeliveryChallanFile] = useState(null);
 
+    const [performaInvoiceId, setPerformaInvoiceId] = useState({ perfoma: null, approved: null, delivery: null });
+    const [approvedInvoiceId, setApprovedInvoiceId] = useState(null);
+    const [deliveryChallanId, setDeliveryChallanId] = useState(null);
+
     //deleted row
   const [deletedRows, setDeletedRows] = useState([]);
 
@@ -716,8 +720,17 @@ const [productName, setProductName] = useState('');
             const fileData = await fileResponse.json();
             console.log(fileData);
             const extractedFileData = fileData[0].fileData;
+            const extractedFileData2 =fileData[1].fileData
+            const extractedFileData3 =fileData[2].fileData
             setPerformaInvoiceFile(extractedFileData)
-        
+            setApprovedInvoiceFile(extractedFileData2)
+            setDeliveryChallanFile(extractedFileData3)
+
+            setPerformaInvoiceId({
+              perfoma: fileData[0].id,
+              approved: fileData[1].id,
+              delivery: fileData[2].id
+            });
           } else {
             console.error('Unable to fetch the file');
           }
@@ -753,7 +766,7 @@ const handleOpenFile = () => {
   window.open(fileURL);
 };
     
-
+console.log(performaInvoiceId)
     
     // useEffect(() => {
     //   const downloadFile = async () => {
@@ -782,13 +795,13 @@ const handleOpenFile = () => {
     //   downloadFile();
     // }, [state?.id, state?.purchaseOrderRec?.id]);
 
-    console.log('Performa Invoice File:', performaInvoiceFile);
+
     console.log('Performa Invoice File:', performaInvoiceFile?.type);
 
   return (
     <div style={{minWidth: "100%" }}>
     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-    
+    <button onClick={handleOpenFile}>Open File</button>
       <h2>Edit Purchase Order</h2>
       <IconWithPopup/>
     </div>
@@ -879,7 +892,7 @@ const handleOpenFile = () => {
                   <MenuItem 
                   key={option.value} 
                   value={option.value}>
-                    {option.label}
+                      {option.value}
                   </MenuItem>
   ))}             
                   </TextField>
