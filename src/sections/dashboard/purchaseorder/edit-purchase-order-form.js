@@ -523,16 +523,125 @@ const [productName, setProductName] = useState('');
           });
           
           if (response.ok) {
-            // Redirect to home page upon successful submission
-        
-           response.json().then(data => {
+            response.json().then(async (data) => {
+              // Performa Invoice upload
+              if (performaInvoiceFile) {
+                const formData = new FormData();
 
+                
+                let jsonBodyData = {};
+
+               let file = performaInvoiceFile;
+                jsonBodyData.fileId = 0;
+                jsonBodyData.fileName = performaInvoiceFile?.name;
+                jsonBodyData.fileType = performaInvoiceFile?.type;
+                jsonBodyData.referenceId = data.purchaseOrderRec?.id;
+                jsonBodyData.referenceType = 'PurchaseOrder';
+                
+                formData.append(
+                  'file',
+                  file
+                );
+                formData.append('fileWrapper',JSON.stringify(jsonBodyData));
+
+                try {
+                  const uploadResponse = await fetch('http://13.115.56.48:8080/techmadhyam/upload', {
+                    method: 'POST',
+                    body: formData
+                  });
           
-            navigate('/dashboard/purchaseorder/viewDetail', { state: data });
-      
-    });
+                  if (uploadResponse.ok) {
+                    console.log('Performa Invoice uploaded successfully');
+                  } else {
+                    console.error('Performa Invoice upload failed');
+              
+                  }
+                } catch (error) {
+                  console.error( error);
+                
+                }
+              }
+          
+              // Approved Invoice upload
+              if (approvedInvoiceFile) {
+                const formData = new FormData();
+
+                
+                let jsonBodyData = {};
+
+               let file = approvedInvoiceFile;
+                jsonBodyData.fileId = 0;
+                jsonBodyData.fileName = approvedInvoiceFile?.name;
+                jsonBodyData.fileType = approvedInvoiceFile?.type;
+                jsonBodyData.referenceId = data.purchaseOrderRec?.id;
+                jsonBodyData.referenceType = 'PurchaseOrder';
+                
+                formData.append(
+                  'file',
+                  file
+                );
+                formData.append('fileWrapper',JSON.stringify(jsonBodyData));
+
+                try {
+                  const uploadResponse = await fetch('http://13.115.56.48:8080/techmadhyam/upload', {
+                    method: 'POST',
+                    body: formData
+                  });
+          
+                  if (uploadResponse.ok) {
+                    console.log('approved Invoice File uploaded successfully');
+                  } else {
+                    console.error('approved Invoice File upload failed');
+                  
+                  }
+                } catch (error) {
+                  console.error( error);
+                
+                }
+              }
+          
+              // Delivery Challan upload
+              if (deliveryChallanFile) {
+                const formData = new FormData();
+
+                
+                let jsonBodyData = {};
+
+               let file = deliveryChallanFile;
+                jsonBodyData.fileId = 0;
+                jsonBodyData.fileName = deliveryChallanFile?.name;
+                jsonBodyData.fileType = deliveryChallanFile?.type;
+                jsonBodyData.referenceId = data.purchaseOrderRec?.id;
+                jsonBodyData.referenceType = 'PurchaseOrder';
+                
+                formData.append(
+                  'file',
+                  file
+                );
+                formData.append('fileWrapper',JSON.stringify(jsonBodyData));
+
+                try {
+                  const uploadResponse = await fetch('http://13.115.56.48:8080/techmadhyam/upload', {
+                    method: 'POST',
+                    body: formData
+                  });
+          
+                  if (uploadResponse.ok) {
+                    console.log('delivery Challan File uploaded successfully');
+                  } else {
+                    console.error('delivery Challan File upload failed');
+                    return;
+                  }
+                } catch (error) {
+                  console.error( error);
+                  return;
+                }
+              }
+          
+              navigate('/dashboard/purchaseorder/viewDetail', { state: data });
+        });
           } 
-        } catch (error) {
+        }  catch (error) {
           console.error('API call failed:', error);
         }
       } 
@@ -574,16 +683,82 @@ const [productName, setProductName] = useState('');
       }
     };
 
-
     useEffect(() => {
-      axios.get(`http://13.115.56.48:8080/techmadhyam//getAllFiles/PurchaseOrder/${state?.id || state?.purchaseOrderRec?.id}`)
-        .then(response => {
-         console.log(response.data)
-        })
-        .catch(error => {
+      const getFileAndData = async () => {
+        try {
+          const apiUrl = `http://13.115.56.48:8080/techmadhyam/getAllFiles/PurchaseOrder/${state?.id || state?.purchaseOrderRec?.id}`;
+    
+          const response = await axios.get(apiUrl, {
+            responseType: 'arraybuffer' 
+          });
+    
+          const fileData = response.data; 
+          const metadata = response.headers['x-metadata']; 
+    
+
+          console.log('File data:', fileData);
+          console.log('Metadata:', metadata);
+        } catch (error) {
+    
           console.error(error);
-        });
+        }
+      };
+    
+
+      getFileAndData();
+    }, []);
+
+    // useEffect(() => {
+    //   const getFile = async () => {
+    //     try {
+    //       const fileResponse = await fetch(`http://13.115.56.48:8080/techmadhyam/getAllFiles/PurchaseOrder/${state?.id || state?.purchaseOrderRec?.id}`);
+    //       if (fileResponse.ok) {
+    //         const fileData = await fileResponse.json();
+    //         console.log(fileData);
+        
+    //       } else {
+    //         console.error('Unable to fetch the file');
+    //       }
+    //     } catch (error) {
+    //       console.error(error);
+      
+    //     }
+    //   };
+    
+    //   getFile();
+    // },  [state?.id, state?.purchaseOrderRec?.id]);
+    
+
+    
+    useEffect(() => {
+      const downloadFile = async () => {
+        try {
+          const downloadResponse = await fetch(`http://13.115.56.48:8080/techmadhyam/getAllFiles/PurchaseOrder/${state?.id || state?.purchaseOrderRec?.id}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/octet-stream', 
+            },
+          });
+        
+          if (downloadResponse.ok) {
+            
+            const blob = await downloadResponse.blob();
+            console.log('Response Blob:', blob);
+
+            setPerformaInvoiceFile(blob);
+          } else {
+            console.error('File download failed');
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      };
+    
+      downloadFile();
     }, [state?.id, state?.purchaseOrderRec?.id]);
+
+    console.log('Performa Invoice File:', performaInvoiceFile?.name);
+    console.log('Performa Invoice File:', performaInvoiceFile?.type);
 
   return (
     <div style={{minWidth: "100%" }}>
@@ -956,8 +1131,9 @@ height='50px'/>
                     <Scrollbar>
                       <Table sx={{ minWidth: 800, overflowX: 'auto' }}>
                         <TableHead>
-                          <TableRow>
+                          <TableRow >
                             {tableHeader.map((item, idx) => (
+                            
                               <TableCell sx={{ width: item.width }} 
                               key={idx}>
                                 {item.name}
@@ -968,7 +1144,7 @@ height='50px'/>
                         <TableBody>
                           {rowData?.map((row, idx) => (
                             <TableRow hover 
-                            key={idx.id}>
+                            key={row.id}>
                               <TableCell>
                                 <div>{row.description}</div>
                               </TableCell>

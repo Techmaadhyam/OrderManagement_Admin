@@ -192,6 +192,7 @@ export const PurchaseOrderCreateForm = (props) => {
   const [approvedInvoiceFile, setApprovedInvoiceFile] = useState(null);
   const [deliveryChallanFile, setDeliveryChallanFile] = useState(null);
 
+
   //get currentdate
   useEffect(() => {
     const today = new Date();
@@ -440,55 +441,6 @@ const updatedRows = rows.map(({ productName, ...rest }) => ({
 const handleClick = async (event) => {
 let finalAmount = totalAmount.toFixed(2)
     event.preventDefault();
-
-    console.log({
-      purchaseOrder:{
-          quotationId:quotation,
-          salesOrderId:null,
-          userId: userState,
-          tempUserId :tempId,
-          contactPerson: contactName,
-          contactPhone: phone,    
-          status: status,
-          paymentMode: payment,
-          type: type,
-          deliveryDate: formattedDeliveryDate,
-          deliveryAddress: address,
-          city: null,
-          state:null,
-          country: null,
-          createdBy: userId,
-          createdDate: currentDate,
-          lastModifiedDate: currentDate,
-          comments : comment,
-          termsAndCondition: terms,
-          totalAmount: finalAmount,
-      },
-          purchaseOrderDetails: updatedRows,
-
-        //   salesOrder:{
-        //     quotationId:null,
-        //     salesOrderId:null,
-        //     userId: userId,
-        //     contactPerson: salesUser.loginUser,
-        //     contactPhone: salesUser.loginPhone,    
-        //     status: status,
-        //     paymentMode: payment,
-        //     type: type,
-        //     deliveryDate: formattedDeliveryDate,
-        //     deliveryAddress: address,
-        //     city: null,
-        //     state:null,
-        //     country: null,
-        //     createdBy: userId,
-        //     createdDate: currentDate,
-        //     lastModifiedDate: currentDate,
-        //     comments : comment,
-        //     termsAndCondition: terms,
-        //     totalAmount: finalAmount,
-        // },
-        //     salesOrderDetails: updatedRows
-  })
     
       if (1+1===2) {
         try {
@@ -550,6 +502,11 @@ let finalAmount = totalAmount.toFixed(2)
           
           if (response.ok) {
             response.json().then(async (data) => {
+
+              let performaInvoiceData = null;
+              let approvedInvoiceData = null;
+              let deliveryChallanData = null;
+
               // Performa Invoice upload
               if (performaInvoiceFile) {
                 const formData = new FormData();
@@ -569,14 +526,7 @@ let finalAmount = totalAmount.toFixed(2)
                   file
                 );
                 formData.append('fileWrapper',JSON.stringify(jsonBodyData));
-                      
 
-                console.log('formData Object:');
-                for (let entry of formData.entries()) {
-                  console.log(entry[0], entry[1]);
-                }
-                console.log(jsonBodyData);
-          
                 try {
                   const uploadResponse = await fetch('http://13.115.56.48:8080/techmadhyam/upload', {
                     method: 'POST',
@@ -585,80 +535,131 @@ let finalAmount = totalAmount.toFixed(2)
           
                   if (uploadResponse.ok) {
                     console.log('Performa Invoice uploaded successfully');
+                    const responseData = await uploadResponse.json();
+                    console.log(responseData)
+
+                    performaInvoiceData = {
+                      data: responseData,
+                      file: performaInvoiceFile
+                    };
+              
+
+                 
                   } else {
                     console.error('Performa Invoice upload failed');
-                    return; 
+              
                   }
                 } catch (error) {
                   console.error( error);
-                  return; 
+                
                 }
               }
           
               // Approved Invoice upload
               if (approvedInvoiceFile) {
                 const formData = new FormData();
-          
-                formData.append('fileName', approvedInvoiceFile?.name);
-                formData.append('fileType', approvedInvoiceFile?.type);
-                formData.append('referenceId', data.purchaseOrderRec?.id);
-                formData.append('referenceType', 'PurchaseOrder');
-                formData.append('file', approvedInvoiceFile);
-          
+
+                
+                let jsonBodyData = {};
+
+               let file = approvedInvoiceFile;
+                jsonBodyData.fileId = 0;
+                jsonBodyData.fileName = approvedInvoiceFile?.name;
+                jsonBodyData.fileType = approvedInvoiceFile?.type;
+                jsonBodyData.referenceId = data.purchaseOrderRec?.id;
+                jsonBodyData.referenceType = 'PurchaseOrder';
+                
+                formData.append(
+                  'file',
+                  file
+                );
+                formData.append('fileWrapper',JSON.stringify(jsonBodyData));
+
                 try {
                   const uploadResponse = await fetch('http://13.115.56.48:8080/techmadhyam/upload', {
                     method: 'POST',
-                    body: formData,
-                    headers: {
-                      'Content-Type': 'multipart/form-data'
-                    },
+                    body: formData
                   });
           
-                  
                   if (uploadResponse.ok) {
-                    console.log('Approved Invoice uploaded successfully');
+                    console.log('approved Invoice File uploaded successfully');
+                    const responseData = await uploadResponse.json();
+                
+
+                    approvedInvoiceData = {
+                      data: responseData,
+                      file: approvedInvoiceFile
+                    };
+               
+                  
                   } else {
-                    console.error('Approved Invoice upload failed');
-                    return; 
+                    console.error('approved Invoice File upload failed');
+                  
                   }
                 } catch (error) {
                   console.error( error);
-                  return; 
+                
                 }
               }
           
               // Delivery Challan upload
               if (deliveryChallanFile) {
                 const formData = new FormData();
-          
-                formData.append('fileName', deliveryChallanFile?.name);
-                formData.append('fileType', deliveryChallanFile?.type);
-                formData.append('referenceId', data.purchaseOrderRec?.id);
-                formData.append('referenceType', 'PurchaseOrder');
-                formData.append('file', deliveryChallanFile);
-          
+
+                
+                let jsonBodyData = {};
+
+               let file = deliveryChallanFile;
+                jsonBodyData.fileId = 0;
+                jsonBodyData.fileName = deliveryChallanFile?.name;
+                jsonBodyData.fileType = deliveryChallanFile?.type;
+                jsonBodyData.referenceId = data.purchaseOrderRec?.id;
+                jsonBodyData.referenceType = 'PurchaseOrder';
+                
+                formData.append(
+                  'file',
+                  file
+                );
+                formData.append('fileWrapper',JSON.stringify(jsonBodyData));
+
                 try {
                   const uploadResponse = await fetch('http://13.115.56.48:8080/techmadhyam/upload', {
                     method: 'POST',
-                    body: formData,
-                    headers: {
-                      'Content-Type': 'multipart/form-data'
-                    },
+                    body: formData
                   });
           
-               
                   if (uploadResponse.ok) {
-                    console.log('Delivery Challan uploaded successfully');
+                    console.log('delivery Challan File uploaded successfully');
+                    const responseData = await uploadResponse.json();
+                
+
+                    deliveryChallanData = {
+                      data: responseData,
+                      file: deliveryChallanFile
+                    };
+                 
+                 
                   } else {
-                    console.error('Delivery Challan upload failed');
-                    return; 
+                    console.error('delivery Challan File upload failed');
+                    return;
                   }
                 } catch (error) {
                   console.error( error);
                   return;
                 }
               }
-              navigate('/dashboard/purchaseorder/viewDetail', { state: data });
+
+              if (performaInvoiceData || approvedInvoiceData || deliveryChallanData) {
+                navigate('/dashboard/purchaseorder/viewDetail', {
+                  state: {
+                    data: data,
+                    performaInvoice: performaInvoiceData,
+                    approvedInvoice: approvedInvoiceData,
+                    deliveryChallan: deliveryChallanData
+                  }
+                });
+              }
+        
         });
           } 
         } catch (error) {
@@ -706,7 +707,6 @@ let finalAmount = totalAmount.toFixed(2)
 
     console.log('Performa Invoice File:', performaInvoiceFile?.name);
     console.log('Performa Invoice File:', performaInvoiceFile?.type);
-    console.log(quotation)
 
 
   return (

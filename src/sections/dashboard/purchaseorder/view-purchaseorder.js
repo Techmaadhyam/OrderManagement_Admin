@@ -6,7 +6,8 @@ import {
   Typography,
   Link,
   SvgIcon,
-  Grid
+  Grid,
+  Button,
 } from '@mui/material';
 
 import './purchase-order.css'
@@ -33,8 +34,18 @@ import { useEffect } from 'react';
 
 
 export const ViewPurchaseOrder = (props) => {
+
   const location = useLocation();
-  const state = location.state;
+  const state = location.state.data || location.state;
+
+  const performaInvoice =location.state.performaInvoice?.file
+  const approvedInvoice =location.state.approvedInvoice?.file
+  const deliveryChallan =location.state.deliveryChallan?.file
+ 
+
+  console.log(performaInvoice)
+  console.log(state)
+
 
 
   const columns = [
@@ -110,6 +121,47 @@ export const ViewPurchaseOrder = (props) => {
       });
   }, [state?.id, state?.purchaseOrderRec?.id]);
 
+
+  // const handlePerfoma = () => {
+  //   const blob = new Blob([performaInvoice], { type: 'text/plain' });
+  //   const blobURL = URL.createObjectURL(blob);
+  //   const link = document.createElement('a');
+  //   link.href = blobURL;
+  //   link.download = performaInvoice?.name;
+  //   link.click();
+  //   URL.revokeObjectURL(blobURL);
+  // };
+  // const handleApproved = () => {
+  //   const blob = new Blob([approvedInvoice], { type: 'text/plain' });
+  //   const blobURL = URL.createObjectURL(blob);
+  //   const link = document.createElement('a');
+  //   link.href = blobURL;
+  //   link.download = approvedInvoice?.name;
+  //   link.click();
+  //   URL.revokeObjectURL(blobURL);
+  // };
+  // const handleDelivery = () => {
+  //   const blob = new Blob([deliveryChallan], { type: 'text/plain' });
+  //   const blobURL = URL.createObjectURL(blob);
+  //   const link = document.createElement('a');
+  //   link.href = blobURL;
+  //   link.download = deliveryChallan?.name;
+  //   link.click();
+  //   URL.revokeObjectURL(blobURL);
+  // };
+
+  const handlePerfoma = () => {
+    const fileURL = URL.createObjectURL(performaInvoice);
+    window.open(fileURL, '_blank');
+  };
+  const handleApproved = () => {
+    const fileURL = URL.createObjectURL(approvedInvoice);
+    window.open(fileURL, '_blank');
+  };
+  const handleDelivery = () => {
+    const fileURL = URL.createObjectURL(deliveryChallan);
+    window.open(fileURL, '_blank');
+  };
 
   return (
     <div style={{minWidth: "100%", marginTop: "1rem"  }}>
@@ -217,7 +269,35 @@ export const ViewPurchaseOrder = (props) => {
   <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginLeft: '10px', color:'black', fontWeight:"bold"}}>Comments: {state?.comments || state?.purchaseOrderRec?.comments}</Typography>
 
             </Grid>
+       
         <Divider/>
+        {performaInvoice && (
+        <Button
+          sx={{ ml: 2 }}
+          variant="contained"
+          onClick={handlePerfoma}
+        >
+          View Performa Invoice
+        </Button>
+      )}
+      {approvedInvoice && (
+        <Button
+          sx={{ ml: 2 }}
+          variant="contained"
+          onClick={handleApproved}
+        >
+          View Approved Invoice
+        </Button>
+      )}
+       {deliveryChallan && (
+        <Button
+          sx={{ ml: 2 }}
+          variant="contained"
+          onClick={handleDelivery}
+        >
+          View Delivery Challan
+        </Button>
+      )}
       </Card>
     </div>
   );
