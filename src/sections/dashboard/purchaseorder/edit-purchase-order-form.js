@@ -788,7 +788,7 @@ const handleOpenFile = () => {
   return (
     <div style={{minWidth: "100%" }}>
     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-    <button onClick={handleOpenFile}>Open File</button>
+    
       <h2>Edit Purchase Order</h2>
       <IconWithPopup/>
     </div>
