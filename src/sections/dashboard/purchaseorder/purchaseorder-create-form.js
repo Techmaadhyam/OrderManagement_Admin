@@ -434,7 +434,7 @@ const updatedRows = rows.map(({ productName, ...rest }) => ({
   
 }));
 
-//const salesOrder= rows.map(({ productName, inventory, ...rest})=> rest)
+
 
 //handle API post request
 const handleClick = async (event) => {
