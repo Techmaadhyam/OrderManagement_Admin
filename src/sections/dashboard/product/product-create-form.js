@@ -78,8 +78,29 @@ export const CreateProduct = (props) => {
       label: 'Others',
       value: 'others'
     },
+    // {
+    //   label: 'ETON STD 2002',
+    //   value: 'ETON STD 2002'
+    // },
+    // {
+    //   label: 'ETON BASIC 2002',
+    //   value: 'ETON BASIC 2002'
+    // },
+    // {
+    //   label: 'ETON 5000 APPAREL STD',
+    //   value: 'ETON 5000 APPAREL STD'
+    // },
+    // {
+    //   label: 'ETON 5000 ADVANCE SYNCRO',
+    //   value: 'ETON 5000 ADVANCE SYNCRO'
+    // },
+    // {
+    //   label: 'ETON 4000',
+    //   value: 'ETON 4000'
+    // },
     
   ];
+
 
   // const typeDropdown = [
   //   {

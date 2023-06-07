@@ -55,12 +55,12 @@ const customerType = [
 const categoryBuySell = [
    
   {
-    label: 'Buyer',
-    value: 'Buyer'
+    label: 'Purchase Quotation',
+    value: 'Purchase Quotation'
   },
   {
-    label: 'Seller',
-    value: 'Seller'
+    label: 'Sales Quotation',
+    value: 'Sales Quotation'
   },
 ];
 
@@ -931,7 +931,7 @@ height='50px'/>
               align="right"
               onClick={handleClick}
             >
-              Place Quotation
+              Create Quotation
             </Button>
           </Box>
         </Grid>

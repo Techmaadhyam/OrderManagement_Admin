@@ -683,86 +683,112 @@ const [productName, setProductName] = useState('');
       }
     };
 
-    useEffect(() => {
-      const getFileAndData = async () => {
-        try {
-          const apiUrl = `http://13.115.56.48:8080/techmadhyam/getAllFiles/PurchaseOrder/${state?.id || state?.purchaseOrderRec?.id}`;
-    
-          const response = await axios.get(apiUrl, {
-            responseType: 'arraybuffer' 
-          });
-    
-          const fileData = response.data; 
-          const metadata = response.headers['x-metadata']; 
-    
-
-          console.log('File data:', fileData);
-          console.log('Metadata:', metadata);
-        } catch (error) {
-    
-          console.error(error);
-        }
-      };
-    
-
-      getFileAndData();
-    }, []);
-
     // useEffect(() => {
-    //   const getFile = async () => {
+    //   const getFileAndData = async () => {
     //     try {
-    //       const fileResponse = await fetch(`http://13.115.56.48:8080/techmadhyam/getAllFiles/PurchaseOrder/${state?.id || state?.purchaseOrderRec?.id}`);
-    //       if (fileResponse.ok) {
-    //         const fileData = await fileResponse.json();
-    //         console.log(fileData);
-        
-    //       } else {
-    //         console.error('Unable to fetch the file');
-    //       }
+    //       const apiUrl = `http://13.115.56.48:8080/techmadhyam/getAllFiles/PurchaseOrder/${state?.id || state?.purchaseOrderRec?.id}`;
+    
+    //       const response = await axios.get(apiUrl, {
+    //         responseType: 'arraybuffer' 
+    //       });
+    
+    //       const fileData = response.data; 
+    //       const metadata = response.headers['x-metadata']; 
+    
+
+    //       console.log('File data:', fileData);
+    //       console.log('Metadata:', metadata);
     //     } catch (error) {
+    
     //       console.error(error);
-      
     //     }
     //   };
     
-    //   getFile();
-    // },  [state?.id, state?.purchaseOrderRec?.id]);
-    
 
-    
+    //   getFileAndData();
+    // }, []);
+
     useEffect(() => {
-      const downloadFile = async () => {
+      const getFile = async () => {
         try {
-          const downloadResponse = await fetch(`http://13.115.56.48:8080/techmadhyam/getAllFiles/PurchaseOrder/${state?.id || state?.purchaseOrderRec?.id}`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/octet-stream', 
-            },
-          });
+          const fileResponse = await fetch(`http://13.115.56.48:8080/techmadhyam/getAllFiles/PurchaseOrder/${state?.id || state?.purchaseOrderRec?.id}`);
+          if (fileResponse.ok) {
+            const fileData = await fileResponse.json();
+            console.log(fileData);
+            const extractedFileData = fileData[0].fileData;
+            setPerformaInvoiceFile(extractedFileData)
         
-          if (downloadResponse.ok) {
-            
-            const blob = await downloadResponse.blob();
-            console.log('Response Blob:', blob);
-
-            setPerformaInvoiceFile(blob);
           } else {
-            console.error('File download failed');
+            console.error('Unable to fetch the file');
           }
         } catch (error) {
           console.error(error);
+      
         }
       };
     
-      downloadFile();
-    }, [state?.id, state?.purchaseOrderRec?.id]);
+      getFile();
+    },  [state?.id, state?.purchaseOrderRec?.id]);
 
-    console.log('Performa Invoice File:', performaInvoiceFile?.name);
+    // Convert the file data to a Blob object
+const byteCharacters = atob(performaInvoiceFile); // Decode the base64-encoded string
+const byteArrays = [];
+for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+  const slice = byteCharacters.slice(offset, offset + 512);
+  const byteNumbers = new Array(slice.length);
+  for (let i = 0; i < slice.length; i++) {
+    byteNumbers[i] = slice.charCodeAt(i);
+  }
+  const byteArray = new Uint8Array(byteNumbers);
+  byteArrays.push(byteArray);
+}
+const blob = new Blob(byteArrays, { type: 'application/pdf' })
+
+console.log(blob)
+
+const fileURL = URL.createObjectURL(blob);
+
+
+const handleOpenFile = () => {
+  window.open(fileURL);
+};
+    
+
+    
+    // useEffect(() => {
+    //   const downloadFile = async () => {
+    //     try {
+    //       const downloadResponse = await fetch(`http://13.115.56.48:8080/techmadhyam/getAllFiles/PurchaseOrder/${state?.id || state?.purchaseOrderRec?.id}`, {
+    //         method: 'GET',
+    //         headers: {
+    //           'Content-Type': 'application/octet-stream', 
+    //         },
+    //       });
+        
+    //       if (downloadResponse.ok) {
+            
+    //         const blob = await downloadResponse.blob();
+    //         console.log('Response Blob:', blob);
+
+    //         setPerformaInvoiceFile(blob);
+    //       } else {
+    //         console.error('File download failed');
+    //       }
+    //     } catch (error) {
+    //       console.error(error);
+    //     }
+    //   };
+    
+    //   downloadFile();
+    // }, [state?.id, state?.purchaseOrderRec?.id]);
+
+    console.log('Performa Invoice File:', performaInvoiceFile);
     console.log('Performa Invoice File:', performaInvoiceFile?.type);
 
   return (
     <div style={{minWidth: "100%" }}>
     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+    <button onClick={handleOpenFile}>Open File</button>
       <h2>Edit Purchase Order</h2>
       <IconWithPopup/>
     </div>

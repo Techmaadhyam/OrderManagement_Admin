@@ -26,7 +26,7 @@ import { useState, useEffect } from 'react';
 
 const columns = [
   {
-    title: 'Part or Spare Part Name',
+    title: 'Part Name',
     dataIndex: 'productName',
     key: 'productName',
   },

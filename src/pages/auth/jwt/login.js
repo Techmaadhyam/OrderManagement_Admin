@@ -113,7 +113,8 @@ const Page = () => {
     <>
       <Seo title="Login" />
       <div>
-        <Card elevation={15}>
+        <Card elevation={15}
+        sx={{width: 450, margin : '0 auto'}}>
         <ToastContainer
           position="top-right"
           autoClose={2000}
@@ -125,13 +126,22 @@ const Page = () => {
           draggable
           pauseOnHover
           theme="light"/>
-          <CardHeader
-            subheader={(
+         <Typography
+          sx={{ ml: 3, mt: 3, fontSize: '1.2rem'}}
+          variant="subtitle2"
+          color="text.primary"
+        >
+          Hello! Welcome to Tech Maadhyam
+        </Typography>
+             <CardHeader
+           title={(
               <Typography
                 color="text.secondary"
                 variant="body2"
+                sx={{mt:-4}}
+                
               >
-                Don&apos;t have an account?
+                If you don&apos;t have an account.
                 &nbsp;
                 <Link
                   component={RouterLink}
@@ -139,19 +149,28 @@ const Page = () => {
                   underline="hover"
                   variant="subtitle2"
                 >
-                  Register
+                  Please Register Here
                 </Link>
+                
               </Typography>
             )}
-            sx={{ pb: 0 }}
-            title="Log in"
+            sx={{ pb: 0,}}
+          
           />
+          <h3 style={{
+          alignItems: 'center',
+          textAlign: 'center',
+          marginTop: '20px',
+          marginBottom: '-10px'
+        }}
+        
+          >Log In</h3>
           <CardContent>
             <form
               noValidate
               onSubmit={formik.handleSubmit}
             >
-              <Stack spacing={3}>
+              <Stack spacing={2} >
                 <TextField
                   autoFocus
                   error={!!(formik.touched.email && formik.errors.email)}
@@ -175,16 +194,24 @@ const Page = () => {
                   type="password"
                   value={formik.values.password}
                 />
-              </Stack>
-              {formik.errors.submit && (
-                <FormHelperText
-                  error
-                  sx={{ mt: 3 }}
+                    <Typography
+                color="text.secondary"
+                variant="body2"
+              >
+                Forgot Password?
+                &nbsp;
+                <Link
+                  component={RouterLink}
+                  href={paths.auth.jwt.register}
+                  underline="hover"
+                  variant="subtitle2"
                 >
-                  {formik.errors.submit}
-                </FormHelperText>
-              )}
-              <Button
+                  Click Here
+                </Link>
+                
+              </Typography>
+
+                  <Button
                 disabled={formik.isSubmitting}
                 fullWidth
                 size="large"
@@ -196,6 +223,16 @@ const Page = () => {
               >
                 Log In
               </Button>
+              </Stack>
+              {formik.errors.submit && (
+                <FormHelperText
+                  error
+                  sx={{ mt: 3 }}
+                >
+                  {formik.errors.submit}
+                </FormHelperText>
+              )}
+            
             </form>
           </CardContent>
         </Card>

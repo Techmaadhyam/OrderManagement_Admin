@@ -151,7 +151,7 @@ useEffect(() => {
  
 const columns = [
   {
-    title: 'Name',
+    title: 'Warehouse Name',
     dataIndex: 'name',
     key: 'name',
     render: (name, record) => {

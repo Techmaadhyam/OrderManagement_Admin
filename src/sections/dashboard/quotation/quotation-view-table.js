@@ -29,12 +29,12 @@ const userId = sessionStorage.getItem('user');
 const categoryBuySell = [
    
   {
-    label: 'Buyer',
-    value: 'Buyer'
+    label: 'Purchase Quotation',
+    value: 'Purchase Quotation'
   },
   {
-    label: 'Seller',
-    value: 'Seller'
+    label: 'Sales Quotation',
+    value: 'Sales Quotation'
   },
 ];
 

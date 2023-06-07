@@ -51,13 +51,14 @@ export const useSections = () => {
             ),
             items: [
               {
-                title: t(tokens.nav.create),
-                path: paths.dashboard.quotation.index
-              },
-              {
                 title: t(tokens.nav.view),
                 path: paths.dashboard.quotation.view
               },
+              {
+                title: t(tokens.nav.create),
+                path: paths.dashboard.quotation.index
+              },
+           
               {
                 title: t(tokens.nav.invoice),
                 path: paths.dashboard.quotation.invoice

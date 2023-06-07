@@ -708,8 +708,19 @@ height='50px'/>
           {showForm && (
             <div className='modal' 
             onClick={handleModalClick}>
+             
               <div className='modal-content'>
-                <h5 className='product-detail-heading'>Add Part Details</h5>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <button
+              style={{ background: `${primaryColor}` }}
+              className="submit"
+              type="submit"
+              onClick={toggleForm}
+            >
+              Close
+            </button>
+            <h5 className="product-detail-heading">Add Part Details</h5>
+          </div>
                 <form className='form'>
                   {/* Form fields */}
                   <div className='form-row'>
