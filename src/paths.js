@@ -49,11 +49,13 @@ export const paths = {
   dashboard: {
     index: '/dashboard',
     quotation: {
-      index: '/dashboard/quotation',
+      buy: '/dashboard/quotation/buy',
       view: '/dashboard/quotation/:courseId',
       invoice: '/dashboard/quotation/invoice',
       viewDetail: '/dashboard/quotation/viewDetail',
-      edit: '/dashboard/quotation/edit'
+      edit: '/dashboard/quotation/edit',
+      sell: '/dashboard/quotation/sell',
+      service: '/dashboard/quotation/service'
     },
     account: '/dashboard/account',
     analytics: '/dashboard/analytics',

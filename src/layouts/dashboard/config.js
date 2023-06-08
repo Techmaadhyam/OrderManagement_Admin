@@ -135,7 +135,23 @@ export const useSections = () => {
               },
               {
                 title: t(tokens.nav.create),
-                path: paths.dashboard.quotation.index
+             
+                items: [
+                  {
+                    title: t(tokens.nav.buyer),
+                    path: paths.dashboard.quotation.buy,
+                    
+                  },
+                  {
+                    title: t(tokens.nav.seller),
+                    path: paths.dashboard.quotation.sell,
+                    
+                  },
+                  {
+                    title: t(tokens.nav.service),
+                    path: paths.dashboard.quotation.service,
+                  },
+                ]
               },
            
               {
@@ -190,8 +206,6 @@ export const useSections = () => {
             ]
           },
          
-          
-          
           
           
         ]
