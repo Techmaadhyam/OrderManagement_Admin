@@ -192,9 +192,11 @@ const [productName, setProductName] = useState('');
     const [approvedInvoiceFile, setApprovedInvoiceFile] = useState(null);
     const [deliveryChallanFile, setDeliveryChallanFile] = useState(null);
 
-    const [performaInvoiceId, setPerformaInvoiceId] = useState({ perfoma: null, approved: null, delivery: null });
-    const [approvedInvoiceId, setApprovedInvoiceId] = useState(null);
-    const [deliveryChallanId, setDeliveryChallanId] = useState(null);
+    const [fileId, setFileId] = useState({ perfoma: 0, approved: 0, delivery: 0 });
+    const [fileDecode, setFileDecode] = useState({ perfoma: null, approved: null, delivery: null });
+    const [fileNames, setFileNames] = useState({ perfoma: null, approved: null, delivery: null });
+
+ 
 
     //deleted row
   const [deletedRows, setDeletedRows] = useState([]);
@@ -528,18 +530,23 @@ const [productName, setProductName] = useState('');
           
           if (response.ok) {
             response.json().then(async (data) => {
+
+              let performaInvoiceData = null;
+              let approvedInvoiceData = null;
+              let deliveryChallanData = null;
+
               // Performa Invoice upload
-              if (performaInvoiceFile) {
+              if (1+1===2) {
                 const formData = new FormData();
 
                 
                 let jsonBodyData = {};
 
                let file = performaInvoiceFile;
-                jsonBodyData.fileId = 0;
+                jsonBodyData.fileId = fileId?.perfoma;
                 jsonBodyData.fileName = performaInvoiceFile?.name;
                 jsonBodyData.fileType = performaInvoiceFile?.type;
-                jsonBodyData.referenceId = data.purchaseOrderRec?.id;
+                jsonBodyData.referenceId = state?.id;
                 jsonBodyData.referenceType = 'PurchaseOrder';
                 
                 formData.append(
@@ -556,6 +563,16 @@ const [productName, setProductName] = useState('');
           
                   if (uploadResponse.ok) {
                     console.log('Performa Invoice uploaded successfully');
+                    const responseData = await uploadResponse.json();
+                    console.log(responseData)
+
+                    performaInvoiceData = {
+                      data: responseData,
+                      file: performaInvoiceFile
+                    };
+              
+
+                 
                   } else {
                     console.error('Performa Invoice upload failed');
               
@@ -574,10 +591,10 @@ const [productName, setProductName] = useState('');
                 let jsonBodyData = {};
 
                let file = approvedInvoiceFile;
-                jsonBodyData.fileId = 0;
+                jsonBodyData.fileId = fileId?.approved;
                 jsonBodyData.fileName = approvedInvoiceFile?.name;
                 jsonBodyData.fileType = approvedInvoiceFile?.type;
-                jsonBodyData.referenceId = data.purchaseOrderRec?.id;
+                jsonBodyData.referenceId = state?.id;
                 jsonBodyData.referenceType = 'PurchaseOrder';
                 
                 formData.append(
@@ -594,6 +611,15 @@ const [productName, setProductName] = useState('');
           
                   if (uploadResponse.ok) {
                     console.log('approved Invoice File uploaded successfully');
+                    const responseData = await uploadResponse.json();
+                
+
+                    approvedInvoiceData = {
+                      data: responseData,
+                      file: approvedInvoiceFile
+                    };
+               
+                  
                   } else {
                     console.error('approved Invoice File upload failed');
                   
@@ -612,10 +638,10 @@ const [productName, setProductName] = useState('');
                 let jsonBodyData = {};
 
                let file = deliveryChallanFile;
-                jsonBodyData.fileId = 0;
+                jsonBodyData.fileId = fileId?.delivery;
                 jsonBodyData.fileName = deliveryChallanFile?.name;
                 jsonBodyData.fileType = deliveryChallanFile?.type;
-                jsonBodyData.referenceId = data.purchaseOrderRec?.id;
+                jsonBodyData.referenceId = state?.id;
                 jsonBodyData.referenceType = 'PurchaseOrder';
                 
                 formData.append(
@@ -632,6 +658,15 @@ const [productName, setProductName] = useState('');
           
                   if (uploadResponse.ok) {
                     console.log('delivery Challan File uploaded successfully');
+                    const responseData = await uploadResponse.json();
+                
+
+                    deliveryChallanData = {
+                      data: responseData,
+                      file: deliveryChallanFile
+                    };
+                 
+                 
                   } else {
                     console.error('delivery Challan File upload failed');
                     return;
@@ -641,8 +676,18 @@ const [productName, setProductName] = useState('');
                   return;
                 }
               }
-          
-              navigate('/dashboard/purchaseorder/viewDetail', { state: data });
+
+              if (performaInvoiceData || approvedInvoiceData || deliveryChallanData) {
+                navigate('/dashboard/purchaseorder/viewDetail', {
+                  state: {
+                    data: data,
+                    performaInvoice: performaInvoiceData,
+                    approvedInvoice: approvedInvoiceData,
+                    deliveryChallan: deliveryChallanData
+                  }
+                });
+              }
+        
         });
           } 
         }  catch (error) {
@@ -687,30 +732,7 @@ const [productName, setProductName] = useState('');
       }
     };
 
-    // useEffect(() => {
-    //   const getFileAndData = async () => {
-    //     try {
-    //       const apiUrl = `http://13.115.56.48:8080/techmadhyam/getAllFiles/PurchaseOrder/${state?.id || state?.purchaseOrderRec?.id}`;
-    
-    //       const response = await axios.get(apiUrl, {
-    //         responseType: 'arraybuffer' 
-    //       });
-    
-    //       const fileData = response.data; 
-    //       const metadata = response.headers['x-metadata']; 
-    
 
-    //       console.log('File data:', fileData);
-    //       console.log('Metadata:', metadata);
-    //     } catch (error) {
-    
-    //       console.error(error);
-    //     }
-    //   };
-    
-
-    //   getFileAndData();
-    // }, []);
 
     useEffect(() => {
       const getFile = async () => {
@@ -718,19 +740,33 @@ const [productName, setProductName] = useState('');
           const fileResponse = await fetch(`http://13.115.56.48:8080/techmadhyam/getAllFiles/PurchaseOrder/${state?.id || state?.purchaseOrderRec?.id}`);
           if (fileResponse.ok) {
             const fileData = await fileResponse.json();
-            console.log(fileData);
-            const extractedFileData = fileData[0]?.fileData;
-            const extractedFileData2 =fileData[1]?.fileData
-            const extractedFileData3 =fileData[2]?.fileData
-            setPerformaInvoiceFile(extractedFileData)
-            setApprovedInvoiceFile(extractedFileData2)
-            setDeliveryChallanFile(extractedFileData3)
-
-            setPerformaInvoiceId({
+            console.log(fileData)
+          
+        
+            const fileDecodeData = {
+              perfoma: fileData[0]?.fileData,
+              approved: fileData.length > 1 ? fileData[1]?.fileData : null,
+              delivery: fileData.length > 2 ? fileData[2]?.fileData : null
+            };
+    
+            const fileNamesData = {
+              perfoma: fileData[0]?.fileName,
+              approved: fileData.length > 1 ? fileData[1]?.fileName : null,
+              delivery: fileData.length > 2 ? fileData[2]?.fileName : null
+            };
+    
+            const fileIdData = {
               perfoma: fileData[0]?.id,
-              approved: fileData[1]?.id,
-              delivery: fileData[2]?.id
-            });
+              approved: fileData.length > 1 ? fileData[1]?.id : null,
+              delivery: fileData.length > 2 ? fileData[2]?.id : null
+            };
+
+            setFileDecode(fileDecodeData);
+            setFileId(fileIdData);
+            setFileNames(fileNamesData);
+    
+            handleFileDecode(fileDecodeData, fileNamesData);
+         
           } else {
             console.error('Unable to fetch the file');
           }
@@ -743,65 +779,47 @@ const [productName, setProductName] = useState('');
       getFile();
     },  [state?.id, state?.purchaseOrderRec?.id]);
 
-    // Convert the file data to a Blob object
-const byteCharacters = atob(performaInvoiceFile); // Decode the base64-encoded string
-const byteArrays = [];
-for (let offset = 0; offset < byteCharacters.length; offset += 512) {
-  const slice = byteCharacters.slice(offset, offset + 512);
-  const byteNumbers = new Array(slice.length);
-  for (let i = 0; i < slice.length; i++) {
-    byteNumbers[i] = slice.charCodeAt(i);
-  }
-  const byteArray = new Uint8Array(byteNumbers);
-  byteArrays.push(byteArray);
-}
-const blob = new Blob(byteArrays, { type: 'application/pdf' })
 
-console.log(blob)
+// const blob = new Blob(byteArrays, { type: 'application/pdf' })
+// const fileURL = URL.createObjectURL(blob);
 
-const fileURL = URL.createObjectURL(blob);
+const handleFileDecode = (fileDecode, fileNames) => {
 
+  console.log(fileDecode)
+  const decodeAndCreateFile = (base64String, fileName) => {
+    if (!base64String || !fileName) {
+      return null; 
+    }
 
-const handleOpenFile = () => {
-  window.open(fileURL);
+    const byteCharacters = atob(base64String);
+    const byteArrays = [];
+    for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+      const slice = byteCharacters.slice(offset, offset + 512);
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+    const blob = new Blob(byteArrays, { type: 'application/pdf' });
+    return new File([blob], fileName, { type: 'application/pdf' });
+  };
+
+  const perfomaFile = decodeAndCreateFile(fileDecode?.perfoma, fileNames?.perfoma);
+  const approvedFile = decodeAndCreateFile(fileDecode?.approved, fileNames?.approved);
+  const deliveryFile = decodeAndCreateFile(fileDecode?.delivery, fileNames?.delivery);
+
+  setPerformaInvoiceFile(perfomaFile);
+  setApprovedInvoiceFile(approvedFile);
+  setDeliveryChallanFile(deliveryFile);
 };
-    
-console.log(performaInvoiceId)
-    
-    // useEffect(() => {
-    //   const downloadFile = async () => {
-    //     try {
-    //       const downloadResponse = await fetch(`http://13.115.56.48:8080/techmadhyam/getAllFiles/PurchaseOrder/${state?.id || state?.purchaseOrderRec?.id}`, {
-    //         method: 'GET',
-    //         headers: {
-    //           'Content-Type': 'application/octet-stream', 
-    //         },
-    //       });
-        
-    //       if (downloadResponse.ok) {
-            
-    //         const blob = await downloadResponse.blob();
-    //         console.log('Response Blob:', blob);
 
-    //         setPerformaInvoiceFile(blob);
-    //       } else {
-    //         console.error('File download failed');
-    //       }
-    //     } catch (error) {
-    //       console.error(error);
-    //     }
-    //   };
-    
-    //   downloadFile();
-    // }, [state?.id, state?.purchaseOrderRec?.id]);
-
-
-    console.log('Performa Invoice File:', performaInvoiceFile?.type);
+console.log(performaInvoiceFile, approvedInvoiceFile, deliveryChallanFile)
 
   return (
     <div style={{minWidth: "100%" }}>
     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-    {/* <button onClick={handleOpenFile}>Open File</button> */}
       <h2>Edit Purchase Order</h2>
       <IconWithPopup/>
     </div>
