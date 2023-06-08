@@ -114,7 +114,7 @@ const Page = () => {
       <Seo title="Login" />
       <div>
         <Card elevation={15}
-        sx={{width: 450, margin : '0 auto'}}>
+        sx={{ maxWidth: 450, margin : '0 auto'}}>
         <ToastContainer
           position="top-right"
           autoClose={2000}
