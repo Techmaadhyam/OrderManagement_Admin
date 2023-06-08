@@ -75,8 +75,8 @@ export const CreateProduct = (props) => {
       value: 'none'
     },
     {
-      label: 'Others',
-      value: 'others'
+      label: 'New Model',
+      value: 'New Model'
     },
     // {
     //   label: 'ETON STD 2002',
@@ -253,40 +253,7 @@ export const CreateProduct = (props) => {
             </TextField>
                </Grid>*/}
     
-        <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-
-                    fullWidth
-                    label="Part Name"
-                    name="name"
-                    value={product}
-                    onChange={handleProduct} 
-                   
-            
-                  >
-                  </TextField>
-      
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-
-                    fullWidth
-                    label="Part Number"
-                    name="partNumber"
-                    value={partNumber}
-                    onChange={handlePart} 
-                   
-            
-                  >
-                  </TextField>
-      
-            </Grid>
+        
       
             <Grid
               xs={12}
@@ -345,7 +312,40 @@ export const CreateProduct = (props) => {
           </Grid>
         </>
       )}
-           
+           <Grid
+              xs={12}
+              md={6}
+            >
+              <TextField
+
+                    fullWidth
+                    label="Part Name"
+                    name="name"
+                    value={product}
+                    onChange={handleProduct} 
+                   
+            
+                  >
+                  </TextField>
+      
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
+            >
+              <TextField
+
+                    fullWidth
+                    label="Part Number"
+                    name="partNumber"
+                    value={partNumber}
+                    onChange={handlePart} 
+                   
+            
+                  >
+                  </TextField>
+      
+            </Grid>
           
           </Grid>
           <Grid

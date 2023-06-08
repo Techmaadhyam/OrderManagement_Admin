@@ -25,8 +25,8 @@ const userOptions = [
     value: 'none'
   },
   {
-    label: 'Others',
-    value: 'others'
+    label: 'New Rack',
+    value: 'New Rack'
   },
   
 ];
