@@ -37,6 +37,10 @@ const categoryBuySell = [
     label: 'Sales Quotation',
     value: 'Sales Quotation'
   },
+  {
+    label: 'Service Quotation',
+    value: 'Service Quotation'
+  }
 ];
 
 const QuotationViewTable = () => {

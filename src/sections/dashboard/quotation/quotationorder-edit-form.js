@@ -49,17 +49,7 @@ const customerType = [
   }
 ];
 
-const categoryBuySell = [
-   
-  {
-    label: 'Purchase Quotation',
-    value: 'Purchase Quotation'
-  },
-  {
-    label: 'Sales Quotation',
-    value: 'Sales Quotation'
-  },
-];
+
 
 const userOptions = [
   {
@@ -169,7 +159,7 @@ const [userState, setUserState] = useState(state?.userId);
 const [terms, setTerms] = useState(state?.termsAndCondition || '');
 const [comment, setComment] = useState(state?.comments||'');
 const [user, setUser] = useState('')
-const [category, setCategory] = useState(state?.category || '');
+
 
 const [currentDate, setCurrentDate] = useState('');
 
@@ -231,9 +221,6 @@ const [productName, setProductName] = useState('');
       case 'contactName':
         setContactName(value);
         break;
-      case 'category':
-          setCategory(value);
-            break;
       case 'mobileno':
         setPhone(value);
         break;
@@ -490,7 +477,7 @@ const [productName, setProductName] = useState('');
                   contactPersonName: contactName,
                   contactPhoneNumber: phone,    
                   status: status,
-                  category: category,
+                  category: state?.category ,
                   type: type,
                   deliveryDate: dDate,
                   lastModifiedDate: currentDate,
@@ -593,32 +580,9 @@ const [productName, setProductName] = useState('');
               </MenuItem>
             )
           ))}
-          </TextField>
-                
+          </TextField>   
             </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-
-                    fullWidth
-                    label="Category"
-                    name="category"
-                    value={category}
-                    onChange={handleInputChange}
-                    select
-                  >
-                    {categoryBuySell.map((option) => (
-                      <MenuItem
-                        key={option.value}
-                        value={option.value}
-                      >
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-            </Grid>
+            <Grid/>
             <Grid
               xs={12}
               md={6}

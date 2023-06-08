@@ -6,7 +6,9 @@ import { Layout as DashboardLayout } from 'src/layouts/dashboard';
 const IndexPage = lazy(() => import('src/pages/dashboard/index'));
 
 // Quotation (do not delete)
-const QuotationCreatePage = lazy(() => import('src/pages/dashboard/quotation/create'));
+const QuotationBuyPage = lazy(() => import('src/pages/dashboard/quotation/buyQuotation'));
+const QuotationSellPage = lazy(() => import('src/pages/dashboard/quotation/sellQuotation'));
+const QuotationServicePage = lazy(() => import('src/pages/dashboard/quotation/serviceQuotation'));
 const QuotationViewPage = lazy(() => import('src/pages/dashboard/quotation/view'));
 const QuotationInvoicePage = lazy(() => import('src/pages/dashboard/quotation/invoice'));
 const QuotationViewDetailPage = lazy(() => import('src/pages/dashboard/quotation/viewDetail'));
@@ -73,8 +75,16 @@ export const dashboardRoutes = [
         path: 'quotation',
         children: [
           {
-            index: true,
-            element: <QuotationCreatePage />
+            path: 'buy',
+            element: <QuotationBuyPage />
+          },
+          {
+            path: 'sell',
+            element: <QuotationSellPage />
+          },
+          {
+            path: 'service',
+            element: <QuotationServicePage />
           },
               {
                 path: ':courseId',
