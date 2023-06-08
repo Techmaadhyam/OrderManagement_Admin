@@ -30,10 +30,7 @@ import React from 'react';
 import { Delete } from '@mui/icons-material';
 import './customTable.css'
 import { useNavigate } from 'react-router-dom';
-
-
-
-
+import { useLocation } from 'react-router-dom';
 
 
 
@@ -51,17 +48,6 @@ const customerType = [
   }
 ];
 
-const categoryBuySell = [
-   
-  {
-    label: 'Purchase Quotation',
-    value: 'Purchase Quotation'
-  },
-  {
-    label: 'Sales Quotation',
-    value: 'Sales Quotation'
-  },
-];
 
 const userOptions = [
   {
@@ -186,6 +172,18 @@ const [productName, setProductName] = useState('');
   const [productId, setProductId] = useState()
 
   const [totalAmount, setTotalAmount] = useState(0);
+ 
+  const location = useLocation();
+
+console.log(location.pathname)
+  useEffect(() => {
+    // Check the current path and set the state accordingly
+    if (location.pathname === '/dashboard/quotation/buy') {
+      setCategory('Purchase Quotation');
+    } else if (location.pathname === '/dashboard/quotation/sell') {
+      setCategory('Sales Quotation');
+    }
+  }, [location.pathname]);
 
   //currentdate
   useEffect(() => {
@@ -202,9 +200,6 @@ const [productName, setProductName] = useState('');
   
       case 'user':
         setUserName(value);
-          break;
-      case 'category':
-        setCategory(value);
           break;
       case 'contactName':
         setContactName(value);
@@ -529,17 +524,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
                     label="Category"
                     name="category"
                     value={category}
-                    onChange={handleInputChange}
-                    select
                   >
-                    {categoryBuySell.map((option) => (
-                      <MenuItem
-                        key={option.value}
-                        value={option.value}
-                      >
-                        {option.label}
-                      </MenuItem>
-                    ))}
                   </TextField>
             </Grid>
             <Grid
