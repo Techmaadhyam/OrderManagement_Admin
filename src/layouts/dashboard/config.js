@@ -42,6 +42,85 @@ export const useSections = () => {
             )
           },
           {
+            title: t(tokens.nav.products),
+            path: paths.dashboard.products.index,
+            icon: (
+              <SvgIcon fontSize="small">
+                <Upload04Icon />
+              </SvgIcon>
+            ),
+            items: [
+              {
+                title: t(tokens.nav.create),
+                path: paths.dashboard.products.create
+              },
+              {
+                title: t(tokens.nav.view),
+                path: paths.dashboard.products.view
+              }
+            
+            ]
+          },
+          {
+            title: t(tokens.nav.inventory),
+            path: paths.dashboard.inventory.index,
+            icon: (
+              <SvgIcon fontSize="small">
+                <ShoppingBag03Icon />
+              </SvgIcon>
+            ),
+            items: [
+              {
+                title: t(tokens.nav.create),
+                path: paths.dashboard.inventory.create
+              },
+              {
+                title: t(tokens.nav.view),
+                path: paths.dashboard.inventory.view
+              }
+            
+            ]
+          },
+          {
+            title: t(tokens.nav.warehouse),
+            path: paths.dashboard.invoices.index,
+            icon: (
+              <SvgIcon fontSize="small">
+                <ReceiptCheckIcon />
+              </SvgIcon>
+            ),
+            items: [
+              {
+                title: t(tokens.nav.create),
+                path: paths.dashboard.invoices.index
+              },
+              {
+                title: t(tokens.nav.view),
+                path: paths.dashboard.invoices.details
+              }
+            ]
+          },
+          {
+            title: t(tokens.nav.user),
+            path: paths.dashboard.logistics.index,
+            icon: (
+              <SvgIcon fontSize="small">
+                <Users03Icon /> 
+                {/* <Truck01Icon /> */}
+              </SvgIcon>
+            ),
+            items: [
+              {
+                title: t(tokens.nav.create),
+                path: paths.dashboard.logistics.index
+              },
+              {
+                title: t(tokens.nav.view),
+                path: paths.dashboard.logistics.fleet
+              }
+            ]
+          },
+          {
             title: t(tokens.nav.quotation),
             path: paths.dashboard.quotation.index,
             icon: (
@@ -62,30 +141,6 @@ export const useSections = () => {
               {
                 title: t(tokens.nav.invoice),
                 path: paths.dashboard.quotation.invoice
-              }
-            ]
-          },
-          {
-            title: t(tokens.nav.purchaseorder),
-            path: paths.dashboard.purchaseorder.index,
-            icon: (
-              <SvgIcon fontSize="small">
-                <ShoppingCart01Icon />
-                {/* <Users03Icon /> */}
-              </SvgIcon>
-            ),
-            items: [
-              {
-                title: t(tokens.nav.create),
-                path: paths.dashboard.purchaseorder.create
-              },
-              {
-                title: t(tokens.nav.view),
-                path: paths.dashboard.purchaseorder.view
-              },
-              {
-                title: t(tokens.nav.invoice),
-                path: paths.dashboard.purchaseorder.invoice
               }
             ]
           },
@@ -114,84 +169,31 @@ export const useSections = () => {
             ]
           },
           {
-            title: t(tokens.nav.warehouse),
-            path: paths.dashboard.invoices.index,
+            title: t(tokens.nav.purchaseorder),
+            path: paths.dashboard.purchaseorder.index,
             icon: (
               <SvgIcon fontSize="small">
-                <ReceiptCheckIcon />
+                <ShoppingCart01Icon />
+                {/* <Users03Icon /> */}
               </SvgIcon>
             ),
             items: [
               {
                 title: t(tokens.nav.create),
-                path: paths.dashboard.invoices.index
+                path: paths.dashboard.purchaseorder.create
               },
               {
                 title: t(tokens.nav.view),
-                path: paths.dashboard.invoices.details
-              }
-            ]
-          },
-          {
-            title: t(tokens.nav.inventory),
-            path: paths.dashboard.inventory.index,
-            icon: (
-              <SvgIcon fontSize="small">
-                <ShoppingBag03Icon />
-              </SvgIcon>
-            ),
-            items: [
-              {
-                title: t(tokens.nav.create),
-                path: paths.dashboard.inventory.create
+                path: paths.dashboard.purchaseorder.view
               },
-              {
-                title: t(tokens.nav.view),
-                path: paths.dashboard.inventory.view
-              }
-            
+          
             ]
           },
-          {
-            title: t(tokens.nav.products),
-            path: paths.dashboard.products.index,
-            icon: (
-              <SvgIcon fontSize="small">
-                <Upload04Icon />
-              </SvgIcon>
-            ),
-            items: [
-              {
-                title: t(tokens.nav.create),
-                path: paths.dashboard.products.create
-              },
-              {
-                title: t(tokens.nav.view),
-                path: paths.dashboard.products.view
-              }
-            
-            ]
-          },
-          {
-            title: t(tokens.nav.user),
-            path: paths.dashboard.logistics.index,
-            icon: (
-              <SvgIcon fontSize="small">
-                <Users03Icon /> 
-                {/* <Truck01Icon /> */}
-              </SvgIcon>
-            ),
-            items: [
-              {
-                title: t(tokens.nav.create),
-                path: paths.dashboard.logistics.index
-              },
-              {
-                title: t(tokens.nav.view),
-                path: paths.dashboard.logistics.fleet
-              }
-            ]
-          },
+         
+          
+          
+          
+          
         ]
       },
       // {
