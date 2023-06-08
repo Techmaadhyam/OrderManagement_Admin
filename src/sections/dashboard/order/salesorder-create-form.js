@@ -270,7 +270,7 @@ const handleDateChange = (date) => {
   
   const approvedQuotation = allQuotation.map(item => ({
     value: item.id,
-    label: item.contactPersonName
+    label: item.id
   }));
 
 
@@ -600,7 +600,7 @@ console.log(rows)
                   <MenuItem 
                   key={option.value} 
                   value={option.value}>
-                     {option.value}
+                     {option.label}
                   </MenuItem>
   ))}             
                   </TextField>

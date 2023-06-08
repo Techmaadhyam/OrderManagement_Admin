@@ -327,7 +327,7 @@ const [productName, setProductName] = useState('');
   
   const approvedQuotation = allQuotation.map(item => ({
     value: item.id,
-    label: item.contactPersonName
+    label: item.id
   }));
 
   const handleDateChange = (date) => {
@@ -710,7 +710,7 @@ const notify = (type, message) => {
                   <MenuItem 
                   key={option.value} 
                   value={option.value}>
-                    {option.value}
+                    {option.label}
                   </MenuItem>
   ))}             
                   </TextField>
