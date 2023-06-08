@@ -131,7 +131,7 @@ const Page = () => {
           variant="subtitle2"
           color="text.primary"
         >
-          Hello! Welcome to Tech Maadhyam
+          Hello! Welcome to TechMaadhyam
         </Typography>
              <CardHeader
            title={(

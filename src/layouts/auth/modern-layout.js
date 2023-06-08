@@ -143,7 +143,7 @@ export const Layout = (props) => {
                   }
                 }}
               >
-                Tech Maadhyam
+                TechMaadhyam
               </Box>
             </Stack>
           </Box>
