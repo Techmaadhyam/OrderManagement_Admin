@@ -39,16 +39,15 @@ import { useNavigate } from 'react-router-dom';
 
 const userId = parseInt(sessionStorage.getItem('user'))
 
-const customerType = [
-   
-  {
-    label: 'Distributor',
-    value: 'Distributor'
-  },
 
+const customerType = [
   {
     label: 'Customer',
     value: 'Customer'
+  },
+  {
+    label: 'Vendor',
+    value: 'Vendor'
   }
 ];
 
@@ -66,25 +65,26 @@ const categoryBuySell = [
 
 const userOptions = [
   {
-    label: 'Open',
-    value: 'Open'
+    label: 'Draft',
+    value: 'Draft'
   },
   {
     label: 'Waiting for Approval',
     value: 'Waiting for Approval'
   },
   {
-    label: 'Pending',
-    value: 'Pending'
-  },
-  {
     label: 'Cancelled',
     value: 'Cancelled'
+  },
+  {
+    label: 'Approved',
+    value: 'Approved'
   },
   {
     label: 'Delivered',
     value: 'Delivered'
   },
+ 
 ];
 
 const tableHeader=[

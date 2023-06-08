@@ -19,14 +19,13 @@ import { useNavigate } from 'react-router-dom';
   const userId = sessionStorage.getItem('user');
 
   const customerType = [
-   
-    {
-      label: 'Distributor',
-      value: 'Distributor'
-    },
     {
       label: 'Customer',
       value: 'Customer'
+    },
+    {
+      label: 'Vendor',
+      value: 'Vendor'
     }
   ];
 

@@ -21,6 +21,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SearchIcon from '@mui/icons-material/Search';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import './customer.css'
 
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, MenuItem } from '@mui/material';
 
@@ -28,17 +29,17 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, M
 const userId = sessionStorage.getItem('user');
 
 
+
 const customerType = [
-   
-  {
-    label: 'Distributor',
-    value: 'Distributor'
-  },
   {
     label: 'Customer',
     value: 'Customer'
+  },
+  {
+    label: 'Vendor',
+    value: 'Vendor'
   }
-];
+];;
 
 
 const ViewTemporaryUser = () => {
@@ -234,10 +235,45 @@ const handleCompanyCancel = () => {
             }}
             underline="hover"
           >
-            <Typography variant="subtitle2">{name}</Typography>
+            <Typography variant="subtitle1">{name}</Typography>
           </Link>
         );
       },
+    },
+    {
+      title:  (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          {!isSearching ? (
+            <>
+              <Typography variant="subtitle2">Company Name</Typography>
+              <IconButton onClick={handleCompanyClick}>
+                <SearchIcon />
+              </IconButton>
+            </>
+          ) : (
+            <>
+              <InputBase
+                value={searchText}
+                onChange={handleCompanyInputChange}
+                placeholder="Search company..."
+              />
+              <IconButton onClick={handleCompanyCancel}>
+                <Icon>
+                  <HighlightOffIcon />
+                </Icon>
+              </IconButton>
+            </>
+          )}
+        </div>
+    ),
+      key: 'companyName',
+      dataIndex: 'companyName',
+    },
+    {
+      title: 'Address',
+      key: 'address',
+      dataIndex: 'address',
+      render: (text, record) => `${text}, ${record.city}, ${record.state}`,
     },
     {
       title: 'Email',
@@ -269,41 +305,7 @@ const handleCompanyCancel = () => {
       key: 'type',
       dataIndex: 'type',
     },
-    {
-      title:  (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          {!isSearching ? (
-            <>
-              <Typography variant="subtitle1">Company Name</Typography>
-              <IconButton onClick={handleCompanyClick}>
-                <SearchIcon />
-              </IconButton>
-            </>
-          ) : (
-            <>
-              <InputBase
-                value={searchText}
-                onChange={handleCompanyInputChange}
-                placeholder="Search company..."
-              />
-              <IconButton onClick={handleCompanyCancel}>
-                <Icon>
-                  <HighlightOffIcon />
-                </Icon>
-              </IconButton>
-            </>
-          )}
-        </div>
-    ),
-      key: 'companyName',
-      dataIndex: 'companyName',
-    },
-    {
-      title: 'Address',
-      key: 'address',
-      dataIndex: 'address',
-      render: (text, record) => `${text}, ${record.city}, ${record.state}`,
-    },
+   
     {
       dataIndex: 'actionEdit',
       key: 'actionEdit',
@@ -504,6 +506,8 @@ const handleCompanyCancel = () => {
             sx={{ minWidth: 800, overflowX: 'auto' }}
             columns={columns}
             dataSource={filteredData}
+            rowClassName={() => 'table-data-row'}
+
             ></Table>
             </Scrollbar>
             <ToastContainer

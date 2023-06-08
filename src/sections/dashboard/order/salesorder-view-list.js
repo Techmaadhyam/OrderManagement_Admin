@@ -27,16 +27,15 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 const userId = sessionStorage.getItem('user');
 
-const customerType = [
-   
-  {
-    label: 'Distributor',
-    value: 'Distributor'
-  },
 
+const customerType = [
   {
     label: 'Customer',
     value: 'Customer'
+  },
+  {
+    label: 'Vendor',
+    value: 'Vendor'
   }
 ];
 
@@ -180,47 +179,17 @@ const handleTypeChange = (event) => {
             }}
             underline="hover"
           >
-            <Typography variant="subtitle2">{name}</Typography>
+            <Typography variant="subtitle1">{name}</Typography>
           </Link>
         );
       },
     },
     {
       title: (
-        <TextField
-
-        label="Type"
-        name="type"
-        sx={{ minWidth: 150 }}
-        value={selectedType}
-        onChange={handleTypeChange}
-  
-  
-        select
-        >
-       <MenuItem value="">All</MenuItem>
-          {customerType.map((option) => (
-            <MenuItem key={option.value} 
-            value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
-      ),
-      key: 'type',
-      dataIndex: 'type',
-    },
-    {
-      title: 'Status',
-      key: 'status',
-      dataIndex: 'status',
-    },
-    {
-      title: (
         <div style={{ display: 'flex', alignItems: 'center' }}>
           {!isSearching ? (
             <>
-              <Typography variant="subtitle1">Company Name</Typography>
+              <Typography variant="subtitle2">Company Name</Typography>
               <IconButton onClick={handleCompanyClick}>
                 <SearchIcon />
               </IconButton>
@@ -245,9 +214,9 @@ const handleTypeChange = (event) => {
       dataIndex: 'companyName',
     },
     {
-      title: 'Delivery Date',
-      key: 'deliveryDate',
-      dataIndex: 'deliveryDate',
+      title: 'Order Modified Date',
+      key: 'lastModifiedDate',
+      dataIndex: 'lastModifiedDate',
     },
     {
       title: 'Order Date',
@@ -255,9 +224,40 @@ const handleTypeChange = (event) => {
       dataIndex: 'createdDate',
     },
     {
-      title: 'Order Modified Date',
-      key: 'lastModifiedDate',
-      dataIndex: 'lastModifiedDate',
+      title: 'Delivery Date',
+      key: 'deliveryDate',
+      dataIndex: 'deliveryDate',
+    },
+    {
+      title: 'Status',
+      key: 'status',
+      dataIndex: 'status',
+    },
+ 
+    {
+      title: (
+        <TextField
+
+        label="Type"
+        name="type"
+        sx={{ minWidth: 150 }}
+        value={selectedType}
+        onChange={handleTypeChange}
+  
+  
+        select
+        >
+       <MenuItem value="">All</MenuItem>
+          {customerType.map((option) => (
+            <MenuItem key={option.value} 
+            value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </TextField>
+      ),
+      key: 'type',
+      dataIndex: 'type',
     },
     {
       dataIndex: 'actionEdit',
@@ -301,6 +301,7 @@ const handleTypeChange = (event) => {
             sx={{ minWidth: 800, overflowX: 'auto' }}
             columns={columns}
             dataSource={filteredData}
+            rowClassName={() => 'table-data-row'}
             ></Table>
             </Scrollbar>
             <ToastContainer

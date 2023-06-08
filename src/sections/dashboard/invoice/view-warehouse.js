@@ -18,6 +18,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import './warehouse.css'
 
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@mui/material';
 
@@ -169,7 +170,7 @@ const columns = [
           }}
           underline="hover"
         >
-          <Typography variant="subtitle2">{name}</Typography>
+          <Typography variant="subtitle1">{name}</Typography>
         </Link>
       );
     },
@@ -362,6 +363,7 @@ const columns = [
             sx={{ minWidth: 800, overflowX: 'auto' }}
             columns={columns}
             dataSource={dataWithKeys}
+            rowClassName={() => 'table-data-row'}
             ></Table>
             </Scrollbar>
             <ToastContainer

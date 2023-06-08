@@ -24,6 +24,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import SearchIcon from '@mui/icons-material/Search';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
+
 const userId = sessionStorage.getItem('user');
 
 const categoryBuySell = [
@@ -175,27 +176,17 @@ const filteredList = updatedUser.filter(product => {
             }}
             underline="hover"
           >
-            <Typography variant="subtitle2">{name}</Typography>
+            <Typography variant="subtitle1">{name}</Typography>
           </Link>
         );
       },
-    },
-    {
-      title: 'Status',
-      key: 'status',
-      dataIndex: 'status',
-    },
-    {
-      title: 'Type',
-      key: 'type',
-      dataIndex: 'type',
     },
     {
       title: (
         <div style={{ display: 'flex', alignItems: 'center' }}>
           {!isSearching ? (
             <>
-              <Typography variant="subtitle1">Company Name</Typography>
+              <Typography variant="subtitle2">Company Name</Typography>
               <IconButton onClick={handleCompanyClick}>
                 <SearchIcon />
               </IconButton>
@@ -220,9 +211,9 @@ const filteredList = updatedUser.filter(product => {
       dataIndex: 'companyName',
     },
     {
-      title: 'Delivery Date',
-      key: 'deliveryDate',
-      dataIndex: 'deliveryDate',
+      title: 'Order Modified Date',
+      key: 'lastModifiedDate',
+      dataIndex: 'lastModifiedDate',
     },
     {
       title: 'Order Date',
@@ -230,9 +221,19 @@ const filteredList = updatedUser.filter(product => {
       dataIndex: 'createdDate',
     },
     {
-      title: 'Order Modified Date',
-      key: 'lastModifiedDate',
-      dataIndex: 'lastModifiedDate',
+      title: 'Delivery Date',
+      key: 'deliveryDate',
+      dataIndex: 'deliveryDate',
+    },
+    {
+      title: 'Status',
+      key: 'status',
+      dataIndex: 'status',
+    },
+    {
+      title: 'Type',
+      key: 'type',
+      dataIndex: 'type',
     },
     {
       dataIndex: 'actionEdit',
@@ -299,9 +300,10 @@ const filteredList = updatedUser.filter(product => {
            
         <Scrollbar>
           <Table
-            sx={{ minWidth: 800, overflowX: 'auto' }}
+            sx={{ minWidth: 800, overflowX: 'auto'}}
             columns={columns}
             dataSource={filteredList}
+            rowClassName={() => 'table-data-row'}
             ></Table>
             </Scrollbar>
             <ToastContainer

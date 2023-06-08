@@ -22,6 +22,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SearchIcon from '@mui/icons-material/Search';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import './inventory.css'
 
   //get userid 
   const userId = sessionStorage.getItem('user');
@@ -173,7 +174,7 @@ const filteredProducts = filteredData.filter(product => {
         <div style={{ display: 'flex', alignItems: 'center' }}>
           {!isSearching ? (
             <>
-              <Typography variant="subtitle1">Part Name</Typography>
+              <Typography variant="subtitle2">Part Name</Typography>
               <IconButton onClick={handleProductClick}>
                 <SearchIcon />
               </IconButton>
@@ -211,7 +212,7 @@ const filteredProducts = filteredData.filter(product => {
             }}
             underline="hover"
           >
-            <Typography variant="subtitle2">{name}</Typography>
+            <Typography variant="subtitle1">{name}</Typography>
          
           </Link>
         );
@@ -222,7 +223,7 @@ const filteredProducts = filteredData.filter(product => {
         <div style={{ display: 'flex', alignItems: 'center' }}>
           {!isSearchingWarehouse? (
             <>
-              <Typography variant="subtitle1">Warehouse</Typography>
+              <Typography variant="subtitle2">Warehouse</Typography>
               <IconButton onClick={handleWarehouseClick}>
                 <SearchIcon />
               </IconButton>
@@ -252,16 +253,17 @@ const filteredProducts = filteredData.filter(product => {
       dataIndex: 'quantity',
     },
     {
-      title: 'Cost',
-      key: 'price',
-      dataIndex: 'price',
+      title: 'HSN Code',
+      key: 'hsncode',
+      dataIndex: 'hsncode',
     },
+
     {
       title: (
         <div style={{ display: 'flex', alignItems: 'center' }}>
           {!isSearchingCategory ? (
             <>
-              <Typography variant="subtitle1">Model</Typography>
+              <Typography variant="subtitle2">Model</Typography>
               <IconButton onClick={handleCategoryClick}>
                 <SearchIcon />
               </IconButton>
@@ -286,9 +288,9 @@ const filteredProducts = filteredData.filter(product => {
       dataIndex: 'categoryName',
     },
     {
-      title: 'HSN Code',
-      key: 'hsncode',
-      dataIndex: 'hsncode',
+      title: 'Cost',
+      key: 'price',
+      dataIndex: 'price',
     },
     {
       dataIndex: 'actionEdit',
@@ -348,6 +350,7 @@ const filteredProducts = filteredData.filter(product => {
             sx={{ minWidth: 800, overflowX: 'auto' }}
             columns={columns}
             dataSource={filteredProducts}
+            rowClassName={() => 'table-data-row'}
             ></Table>
             </Scrollbar>
             <ToastContainer

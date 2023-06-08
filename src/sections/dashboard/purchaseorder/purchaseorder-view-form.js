@@ -26,16 +26,15 @@ import SearchIcon from '@mui/icons-material/Search';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 
-const customerType = [
-   
-  {
-    label: 'Distributor',
-    value: 'Distributor'
-  },
 
+const customerType = [
   {
     label: 'Customer',
     value: 'Customer'
+  },
+  {
+    label: 'Vendor',
+    value: 'Vendor'
   }
 ];
 
@@ -184,10 +183,54 @@ setSelectedType(event.target.value);
             }}
             underline="hover"
           >
-            <Typography variant="subtitle2">{name}</Typography>
+            <Typography variant="subtitle1">{name}</Typography>
           </Link>
         );
       },
+    },
+    {
+      title: (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          {!isSearching ? (
+            <>
+              <Typography variant="subtitle2">Company Name</Typography>
+              <IconButton onClick={handleCompanyClick}>
+                <SearchIcon />
+              </IconButton>
+            </>
+          ) : (
+            <>
+              <InputBase
+                value={searchText}
+                onChange={handleCompanyInputChange}
+                placeholder="Search company..."
+              />
+              <IconButton onClick={handleCompanyCancel}>
+                <Icon>
+                  <HighlightOffIcon />
+                </Icon>
+              </IconButton>
+            </>
+          )}
+        </div>
+    ),
+      key: 'companyName',
+      dataIndex: 'companyName',
+    },
+    {
+      title: 'Order Modified Date',
+      key: 'lastModifiedDate',
+      dataIndex: 'lastModifiedDate',
+    },
+    {
+      title: 'Order Date',
+      key: 'createdDate',
+      dataIndex: 'createdDate',
+    },
+    {
+      title: 'Delivery Date',
+      key: 'deliveryDate',
+      dataIndex: 'deliveryDate',
     },
     {
       title: 'Status',
@@ -219,50 +262,7 @@ setSelectedType(event.target.value);
       key: 'type',
       dataIndex: 'type',
     },
-    {
-      title: (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          {!isSearching ? (
-            <>
-              <Typography variant="subtitle1">Company Name</Typography>
-              <IconButton onClick={handleCompanyClick}>
-                <SearchIcon />
-              </IconButton>
-            </>
-          ) : (
-            <>
-              <InputBase
-                value={searchText}
-                onChange={handleCompanyInputChange}
-                placeholder="Search company..."
-              />
-              <IconButton onClick={handleCompanyCancel}>
-                <Icon>
-                  <HighlightOffIcon />
-                </Icon>
-              </IconButton>
-            </>
-          )}
-        </div>
-    ),
-      key: 'companyName',
-      dataIndex: 'companyName',
-    },
-    {
-      title: 'Delivery Date',
-      key: 'deliveryDate',
-      dataIndex: 'deliveryDate',
-    },
-    {
-      title: 'Order Date',
-      key: 'createdDate',
-      dataIndex: 'createdDate',
-    },
-    {
-      title: 'Order Modified Date',
-      key: 'lastModifiedDate',
-      dataIndex: 'lastModifiedDate',
-    },
+   
     {
       dataIndex: 'actionEdit',
       key: 'actionEdit',
@@ -305,6 +305,7 @@ setSelectedType(event.target.value);
             sx={{ minWidth: 800, overflowX: 'auto' }}
             columns={columns}
             dataSource={filteredData}
+            rowClassName={() => 'table-data-row'}
             ></Table>
             </Scrollbar>
             <ToastContainer
