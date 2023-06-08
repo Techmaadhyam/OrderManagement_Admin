@@ -276,7 +276,7 @@ const handleDateChange = (date) => {
   //only show quotations that have status: delivered
   const approvedQuotation = allQuotation.map(item => ({
     value: item.id,
-    label: item.contactPersonName
+    label: item.id
   }));
 
   //format date
@@ -810,7 +810,7 @@ let finalAmount = totalAmount.toFixed(2)
                   <MenuItem 
                   key={option.value} 
                   value={option.value}>
-                    {option.value}
+                    {option.label}
                   </MenuItem>
   ))}             
                   </TextField>
