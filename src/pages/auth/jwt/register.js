@@ -75,6 +75,8 @@ const Register = () => {
   const [currentDate, setCurrentDate] = useState('');
   const [gstn, setGstn]= useState('')
 
+  const [step, setStep] = useState(1);
+
 
   //updating form state
   const handleInputChange = (event) => {
@@ -120,6 +122,16 @@ const Register = () => {
       default:
         break;
     }
+  };
+
+  const handleNext = (e) => {
+    e.preventDefault()
+    setStep(step + 1);
+  };
+
+  const handleBack = (e) => {
+    e.preventDefault()
+    setStep(step - 1);
   };
 
   //getting current date
@@ -382,91 +394,16 @@ const handleCities = async (event) => {
     }
   };
 
-
-  return (
-   <>
-    <Box
-    sx={{
-      backgroundColor: 'background.default',
-      display: 'flex',
-      flex: '1 1 auto',
-      flexDirection: {
-        xs: 'column-reverse',
-        md: 'row'
-      }
-    }}
-    >   
-      <Box
-  sx={{
-    alignItems: 'center',
-    backgroundColor: 'neutral.800',
-    backgroundImage: 'url("/assets/gradient-bg.svg")',
-    backgroundPosition: 'top center',
-    backgroundRepeat: 'no-repeat',
-    color: 'common.white',
-    display: 'flex',
-    flex: {
-      xs: '0 0 auto',
-      md: '1 1 auto'
-    },
-    justifyContent: 'center',
-    p: {
-      xs: 4,
-      md: 8
-    },
-    position: 'sticky', 
-    top: 0, 
-    height: '100vh', 
-    maxHeight: '100vh', 
-    overflowY: 'auto' 
-  }}
+  const renderFormStep = () => {
+    switch (step) {
+      case 1:
+        return (
+        <>
+  <Box
       >
-        <Box maxWidth="md">
-          <Stack
-            alignItems="center"
-            direction="row"
-            flexWrap="wrap"
-            gap={4}
-            sx={{
-              color: 'text.primary',
-              '& > *': {
-                color: 'neutral.400',
-                flex: '0 0 auto'
-              }
-            }}
-          >
-            <img
-              alt=""
-              src={images[currentImage]}
-              style={{width: 350 , height: 'auto'}}
-            />
-          </Stack>
-        </Box>
-
-
-      </Box>
      
-
-      <Box
-         sx={{
-          backgroundColor: 'background.paper',
-          display: 'flex',
-          flex: {
-            xs: '1 1 auto',
-            md: '0 0 auto'
-          },
-          flexDirection: 'column',
-          maxWidth: '100%',
-          p: {
-            xs: 4,
-            md: 8
-          },
-          width: {
-            md: 750
-          },
-          overflowY: 'auto' // Add overflowY property to enable vertical scrolling
-        }}
-      >
+     <Box
+        >
      
      <div>
     <Link
@@ -487,13 +424,13 @@ const handleCities = async (event) => {
       </Typography>
     </Link>
   </div>
-          <Box sx={{ mb: 4 }}>
+          <Box sx={{ mb: 1 }}>
             <Stack
               alignItems="center"
               component={RouterLink}
               direction="column"
               display="flex"
-              href={paths.authDemo.login.modern}
+           
               spacing={1}
               sx={{ textDecoration: 'none' }}
             >
@@ -522,7 +459,7 @@ const handleCities = async (event) => {
                   }
                 }}
               >
-                Tech Maadhyam
+                TechMaadhyam
               </Box>
             </Stack>
           </Box>
@@ -598,7 +535,7 @@ const handleCities = async (event) => {
             </Grid>
             <Grid
               xs={12}
-              md={12}
+              md={6}
             >
               <TextField
                     fullWidth
@@ -611,7 +548,7 @@ const handleCities = async (event) => {
             </Grid>
             <Grid
               xs={12}
-              md={12}
+              md={6}
             >
               <TextField
                     fullWidth
@@ -622,9 +559,80 @@ const handleCities = async (event) => {
                   >
                   </TextField>
             </Grid>
+           
+            
+            </Grid>
+            <Grid
+    xs={12}
+    md={6}
+        >
+            <Box sx={{ mt: 2 }}
+                display="flex"
+                justifyContent="flex-end"
+                >
+             {step < 2 && (
+                <Button
+                  color="primary"
+                  variant="contained"
+                  align="right"
+                  onClick={handleNext}
+                >
+                  Next
+                </Button>
+              )}
+            </Box>
+          </Grid>
+        </CardContent>     
+        <Divider/>
+      </Card>
+    </form>
+    </div>
+   
+      </Box>
+   
+    </Box>
+        </>
+        );
+      case 2:
+        return (
+       <>
+      <Box
+          sx={{
+            backgroundColor: 'background.paper',
+            display: 'flex',
+            flex: {
+              xs: '1 1 auto',
+              md: '0 0 auto'
+            },
+            flexDirection: 'column',
+            maxWidth: '100%',
+            p: {
+              xs: 4,
+              md: 3
+            },
+            width: {
+              md: 750
+            },
+          }}
+        >
+     
+
+    
+     
+    <div style={{minWidth: "100%", marginBottom: '1rem' }}>
+
+    <form>
+      <Card>
+        <CardHeader title="Create new account" />
+        <CardContent sx={{ pt: 0 }}>
+          <Grid
+            container
+            spacing={3}
+          >
+            
             <Grid
               xs={12}
-              md={12}
+              md={6}
             >
               <TextField
                     fullWidth
@@ -637,7 +645,7 @@ const handleCities = async (event) => {
             </Grid>
             <Grid
               xs={12}
-              md={12}
+              md={6}
             >
               <TextField
                     fullWidth
@@ -760,9 +768,9 @@ const handleCities = async (event) => {
               >
                 </TextField>
             </Grid>
-          <Grid
+            <Grid
               xs={12}
-              md={12}
+              md={6}
             >
               <TextField
                     fullWidth
@@ -776,7 +784,7 @@ const handleCities = async (event) => {
             </Grid>
             <Grid
               xs={12}
-              md={12}
+              md={6}
             >
               <TextField
                     fullWidth
@@ -788,6 +796,15 @@ const handleCities = async (event) => {
                   >
                   </TextField>
             </Grid>
+            {step > 1 && <Button
+                    color="primary"
+                    variant="contained"
+                    align="right"
+                    onClick={handleBack}
+                    >
+                    Back
+                    </Button>}
+            
             </Grid>
         </CardContent>
         <Divider/>
@@ -825,8 +842,103 @@ const handleCities = async (event) => {
             </Box>
           </Grid>
     </div>
+
       </Box>
-   
+      </>
+        );
+      default:
+        return null;
+    }
+  };
+
+
+  return (
+   <>
+    <Box
+    sx={{
+      backgroundColor: 'background.default',
+      display: 'flex',
+      flex: '1 1 auto',
+      overflow: 'hidden',
+      height: '100vh', 
+      flexDirection: {
+        xs: 'column-reverse',
+        md: 'row'
+      }
+    }}
+    >   
+      <Box
+  sx={{
+    alignItems: 'center',
+    backgroundColor: 'neutral.800',
+    backgroundImage: 'url("/assets/gradient-bg.svg")',
+    backgroundPosition: 'top center',
+    backgroundRepeat: 'no-repeat',
+    color: 'common.white',
+    display: 'flex',
+    flex: {
+      xs: '0 0 auto',
+      md: '1 1 auto'
+    },
+    justifyContent: 'center',
+    p: {
+      xs: 4,
+      md: 8
+    },
+    position: 'sticky', 
+    top: 0, 
+    height: '100vh', 
+    maxHeight: '100vh', 
+ 
+  }}
+      >
+        <Box maxWidth="md">
+          <Stack
+            alignItems="center"
+            direction="row"
+            flexWrap="wrap"
+            gap={4}
+            sx={{
+              color: 'text.primary',
+              '& > *': {
+                color: 'neutral.400',
+                flex: '0 0 auto'
+              }
+            }}
+          >
+            <img
+              alt=""
+              src={images[currentImage]}
+              style={{width: 350 , height: 'auto'}}
+            />
+          </Stack>
+        </Box>
+
+
+      </Box>
+      <Box
+         sx={{
+          backgroundColor: 'background.paper',
+          display: 'flex',
+          flex: {
+            xs: '1 1 auto',
+            md: '0 0 auto'
+          },
+          flexDirection: 'column',
+          maxWidth: '100%',
+          p: {
+            xs: 4,
+            md: 3
+          },
+          width: {
+            md: 750
+          },
+          overflowY: 'hidden' 
+        }}
+      >
+      {renderFormStep()}
+      </Box>
+
     </Box>
   </>
   );
