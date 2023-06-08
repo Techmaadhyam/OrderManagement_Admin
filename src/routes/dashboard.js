@@ -18,7 +18,7 @@ const PurchaseOrderCreatePage = lazy(() => import('src/pages/dashboard/purchaseo
 const PurchaseOrderViewPage = lazy(() => import('src/pages/dashboard/purchaseorder/view'));
 const PurchaseOrderViewDetailPage = lazy(() => import('src/pages/dashboard/purchaseorder/viewDetail'));
 const PurchaseOrderEdit = lazy(() => import('src/pages/dashboard/purchaseorder/edit'));
-const PurchaseOrderInvoicePage = lazy(() => import('src/pages/dashboard/purchaseorder/invoice'));
+
 
 // Invoice (do not delete)
 const InvoiceListPage = lazy(() => import('src/pages/dashboard/invoices/list'));
@@ -112,10 +112,7 @@ export const dashboardRoutes = [
             path: 'edit',
             element: <PurchaseOrderEdit/>
           },
-          {
-            path: 'invoice',
-            element: <PurchaseOrderInvoicePage />
-          },
+      
          
         ]
       },
