@@ -43,7 +43,7 @@ export const ViewPurchaseOrder = (props) => {
   const deliveryChallan =location.state.deliveryChallan?.file
  
 
-  console.log(performaInvoice)
+  console.log(approvedInvoice)
   console.log(state)
 
 
@@ -96,6 +96,10 @@ export const ViewPurchaseOrder = (props) => {
 
   const [tempuser, setTempuser] =useState([])
   const [rowData, setRowData] =useState()
+
+  const [performaInvoiceFile, setPerformaInvoiceFile] = useState(null);
+  const [approvedInvoiceFile, setApprovedInvoiceFile] = useState(null);
+  const [deliveryChallanFile, setDeliveryChallanFile] = useState(null);
 
 
   const align = 'horizontal' 
@@ -150,18 +154,110 @@ export const ViewPurchaseOrder = (props) => {
   //   URL.revokeObjectURL(blobURL);
   // };
 
+
+  useEffect(() => {
+    const getFile = async () => {
+      try {
+        const fileResponse = await fetch(`http://13.115.56.48:8080/techmadhyam/getAllFiles/PurchaseOrder/${state?.id || state?.purchaseOrderRec?.id}`);
+        if (fileResponse.ok) {
+          const fileData = await fileResponse.json();
+          console.log(fileData)
+        
+      
+          const fileDecodeData = {
+            perfoma: fileData[0]?.fileData,
+            approved: fileData.length > 1 ? fileData[1]?.fileData : null,
+            delivery: fileData.length > 2 ? fileData[2]?.fileData : null
+          };
+  
+          const fileNamesData = {
+            perfoma: fileData[0]?.fileName,
+            approved: fileData.length > 1 ? fileData[1]?.fileName : null,
+            delivery: fileData.length > 2 ? fileData[2]?.fileName : null
+          };
+  
+          const fileIdData = {
+            perfoma: fileData[0]?.id,
+            approved: fileData.length > 1 ? fileData[1]?.id : null,
+            delivery: fileData.length > 2 ? fileData[2]?.id : null
+          };
+
+  
+          handleFileDecode(fileDecodeData, fileNamesData);
+       
+        } else {
+          console.error('Unable to fetch the file');
+        }
+      } catch (error) {
+        console.error(error);
+    
+      }
+    };
+  
+    getFile();
+  },  [state?.id, state?.purchaseOrderRec?.id]);
+
+  const decodeAndCreateURL = (base64String) => {
+    if (!base64String) {
+      return null; 
+    }
+    const byteCharacters = atob(base64String);
+    const byteArrays = [];
+    for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+      const slice = byteCharacters.slice(offset, offset + 512);
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+    const blob = new Blob(byteArrays, { type: 'application/pdf' });
+    return URL.createObjectURL(blob);
+  };
+
+  const handleFileDecode = (fileDecode, fileNames) => {
+    const createURL = (base64String, fileName) => {
+      const url = decodeAndCreateURL(base64String);
+      return { url, fileName };
+    };
+  
+    const perfomaURL = createURL(fileDecode?.perfoma, fileNames?.perfoma);
+    const approvedURL = createURL(fileDecode?.approved, fileNames?.approved);
+    const deliveryURL = createURL(fileDecode?.delivery, fileNames?.delivery);
+  
+    setPerformaInvoiceFile(perfomaURL);
+    setApprovedInvoiceFile(approvedURL);
+    setDeliveryChallanFile(deliveryURL);
+  };
+
   const handlePerfoma = () => {
-    const fileURL = URL.createObjectURL(performaInvoice);
-    window.open(fileURL, '_blank');
+    if (performaInvoice) {
+      const fileURL = URL.createObjectURL(performaInvoice);
+      window.open(fileURL, '_blank');
+    } else if (performaInvoiceFile && performaInvoiceFile.url) {
+      window.open(performaInvoiceFile.url, '_blank');
+    }
   };
   const handleApproved = () => {
-    const fileURL = URL.createObjectURL(approvedInvoice);
-    window.open(fileURL, '_blank');
+    if (approvedInvoice) {
+      const fileURL = URL.createObjectURL(approvedInvoice);
+      window.open(fileURL, '_blank');
+    } else if (approvedInvoiceFile && approvedInvoiceFile.url) {
+      window.open(approvedInvoiceFile.url, '_blank');
+    }
   };
+  
   const handleDelivery = () => {
-    const fileURL = URL.createObjectURL(deliveryChallan);
-    window.open(fileURL, '_blank');
+    if (deliveryChallan) {
+      const fileURL = URL.createObjectURL(deliveryChallan);
+      window.open(fileURL, '_blank');
+    } else if (deliveryChallanFile && deliveryChallanFile.url) {
+      window.open(deliveryChallanFile.url, '_blank');
+    }
   };
+
+  console.log(performaInvoiceFile, approvedInvoiceFile, deliveryChallanFile)
 
   return (
     <div style={{minWidth: "100%", marginTop: "1rem"  }}>
@@ -271,7 +367,7 @@ export const ViewPurchaseOrder = (props) => {
             </Grid>
        
         <Divider/>
-        {performaInvoice && (
+        {performaInvoice || (performaInvoiceFile && performaInvoiceFile?.url) ? (
         <Button
           sx={{ ml: 2 }}
           variant="contained"
@@ -279,8 +375,8 @@ export const ViewPurchaseOrder = (props) => {
         >
           View Performa Invoice
         </Button>
-      )}
-      {approvedInvoice && (
+      ) : null}
+      {approvedInvoice || (approvedInvoiceFile && approvedInvoiceFile?.url) ? (
         <Button
           sx={{ ml: 2 }}
           variant="contained"
@@ -288,8 +384,8 @@ export const ViewPurchaseOrder = (props) => {
         >
           View Approved Invoice
         </Button>
-      )}
-       {deliveryChallan && (
+      ): null}
+       {deliveryChallan || (deliveryChallanFile && deliveryChallanFile?.url) ? (
         <Button
           sx={{ ml: 2 }}
           variant="contained"
@@ -297,7 +393,7 @@ export const ViewPurchaseOrder = (props) => {
         >
           View Delivery Challan
         </Button>
-      )}
+      ) : null}
       </Card>
     </div>
   );
