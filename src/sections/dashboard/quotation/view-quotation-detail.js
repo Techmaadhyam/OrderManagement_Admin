@@ -73,6 +73,31 @@ const columns = [
 ];
 
 
+const columns2=[
+  {
+    title: 'Part Description',
+    dataIndex: 'description',
+    key: 'description',
+  },
+  {
+    title:'No. Of Workstations',
+    dataIndex:'workstationCount',
+    key: 'workstationCount',
+},
+  {
+    title: 'Cost',
+    dataIndex: 'price',
+    key: 'price',
+  },
+  {
+    dataIndex:'igst',
+    title:'IGST',
+   key: 'igst',
+},
+
+];
+
+
 
 
 export const ViewQuotationDetail = (props) => {
@@ -180,12 +205,24 @@ export const ViewQuotationDetail = (props) => {
       <Card style={{marginBottom: "40px" }}>
       <Box sx={{  position: 'relative' , overflowX: "auto", marginBottom: '30px'}}>    
       <Scrollbar>
-        <Table 
-        sx={{ minWidth: 800,overflowX: "auto" }}
-         pagination={false}
-         columns={columns} 
-         dataSource={rowData?.map(row => ({ ...row, key: row.id }))} >
-         </Table>
+      {!rowData?.some(row => row.workstationCount) && (
+      <Table
+        sx={{ minWidth: 800, overflowX: "auto" }}
+        pagination={false}
+        columns={columns}
+        dataSource={rowData?.map(row => ({ ...row, key: row.id }))}
+      >
+      </Table>
+    )}
+   {rowData?.some(row => row.workstationCount) && (
+      <Table
+        sx={{ minWidth: 800, overflowX: "auto" }}
+        pagination={false}
+        columns={columns2}
+        dataSource={rowData?.map(row => ({ ...row, key: row.id }))}
+      >
+      </Table>
+      )}
       </Scrollbar>
     </Box>
      <Grid
