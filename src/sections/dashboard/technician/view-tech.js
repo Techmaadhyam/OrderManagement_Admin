@@ -42,7 +42,7 @@ const customerType = [
 ];;
 
 
-const ViewTemporaryUser = () => {
+const ViewTechnician = () => {
 
   const [userData, setUserData]= useState([])
 
@@ -53,7 +53,7 @@ const ViewTemporaryUser = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [searchText, setSearchText] = useState('');
 
-  const [selectedType, setSelectedType] = useState('');
+  const [selectedType, setSelectedType] = useState('Technician');
 
   const navigate = useNavigate();
   
@@ -72,21 +72,17 @@ const ViewTemporaryUser = () => {
   const dataWithKeys = userData.map((item) => ({ ...item, key: item.id }));
 
 
-const filteredList = dataWithKeys.filter(product => {
+const filteredList = dataWithKeys?.filter(product => {
     const companyMatch = product.companyName.toLowerCase().includes(searchText.toLowerCase());
    
     return companyMatch
 });
 
-const removeTechnician = filteredList.filter((obj) => obj.type !== 'Technician');
+const filteredData = selectedType && selectedType === 'Technician'
+  ? filteredList.filter(item => item.type === 'Technician')
+  : [];
 
-const filteredData = selectedType
-? removeTechnician.filter((item) => item.type === selectedType)
-: removeTechnician;
 
-const handleTypeChange = (event) => {
-  setSelectedType(event.target.value);
-};
 
     //toast notification from toastify library
 const notify = (type, message) => {
@@ -224,7 +220,7 @@ const handleCompanyCancel = () => {
       key: 'userName',
       render: (name, record) => {
         const handleNavigation = () => {
-          navigate(`/dashboard/logistics/viewDetail`, { state: record });
+          navigate(`/dashboard/technician/viewDetail`, { state: record });
         };
         
         return (
@@ -283,27 +279,7 @@ const handleCompanyCancel = () => {
       dataIndex: 'emailId',
     },
     {
-      title: (
-        <TextField
-
-        label="Type"
-        name="type"
-        sx={{ minWidth: 150 }}
-        value={selectedType}
-        onChange={handleTypeChange}
-  
-  
-        select
-        >
-       <MenuItem value="">All</MenuItem>
-          {customerType.map((option) => (
-            <MenuItem key={option.value} 
-            value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
-      ),
+      title: 'Type',
       key: 'type',
       dataIndex: 'type',
     },
@@ -353,7 +329,7 @@ const handleCompanyCancel = () => {
     return (
       <Dialog open={true} 
       onClose={onClose}>
-        <DialogTitle>Edit Customer</DialogTitle>
+        <DialogTitle>Edit Technician</DialogTitle>
         <DialogContent>
         <Grid
             container
@@ -499,7 +475,7 @@ const handleCompanyCancel = () => {
           alignItems: 'center',
         }}
       >
-        <h2>View Customer</h2>
+        <h2>View Technician</h2>
         <IconWithPopup/>
       </div>
       <Box sx={{ position: 'relative', overflowX: 'auto' }}>
@@ -535,4 +511,4 @@ const handleCompanyCancel = () => {
       );
     };
     
-    export default ViewTemporaryUser;
+    export default ViewTechnician;

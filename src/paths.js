@@ -95,6 +95,12 @@ export const paths = {
       viewDetail: '/dashboard/logistics/viewDetail',
 
     },
+    technician: {
+      index: '/dashboard/technician',
+      view: '/dashboard/technician/view',
+      viewDetail: '/dashboard/technician/viewDetail',
+
+    },
     mail: '/dashboard/mail',
     orders: {
       index: '/dashboard/orders',

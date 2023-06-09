@@ -39,6 +39,11 @@ const LogisticsDashboardPage = lazy(() => import('src/pages/dashboard/logistics/
 const LogisticsFleetPage = lazy(() => import('src/pages/dashboard/logistics/view'));
 const LogisticsViewDetailPage = lazy(() => import('src/pages/dashboard/logistics/viewDetail'));
 
+//add technician
+const TechnicianCreatePage = lazy(() => import('src/pages/dashboard/technician/dashboard'));
+const TechnicianViewPage =lazy(() => import('src/pages/dashboard/technician/view'));
+const TechnicianViewDetailPage =lazy(() => import('src/pages/dashboard/technician/viewDetail'));
+
 // Orders (do not delete)
 const OrderListPage = lazy(() => import('src/pages/dashboard/orders/create'));
 const OrderViewPage = lazy(() => import('src/pages/dashboard/orders/view'));
@@ -162,6 +167,23 @@ export const dashboardRoutes = [
           {
             path:'viewDetail',
             element: <LogisticsViewDetailPage/>
+          },
+        ]
+      },
+      {
+        path: 'technician',
+        children: [
+          {
+            index: true,
+            element: <TechnicianCreatePage />
+          },
+          {
+            path: 'view',
+            element: <TechnicianViewPage />
+          },
+          {
+            path:'viewDetail',
+            element: <TechnicianViewDetailPage />
           },
         ]
       },
