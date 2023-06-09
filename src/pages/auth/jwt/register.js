@@ -399,11 +399,9 @@ const handleCities = async (event) => {
       case 1:
         return (
         <>
-  <Box
-      >
+  
      
-     <Box
-        >
+   
      
      <div>
     <Link
@@ -588,37 +586,17 @@ const handleCities = async (event) => {
     </form>
     </div>
    
-      </Box>
-   
-    </Box>
+    
         </>
         );
       case 2:
         return (
        <>
-      <Box
-          sx={{
-            backgroundColor: 'background.paper',
-            display: 'flex',
-            flex: {
-              xs: '1 1 auto',
-              md: '0 0 auto'
-            },
-            flexDirection: 'column',
-            maxWidth: '100%',
-            p: {
-              xs: 4,
-              md: 3
-            },
-            width: {
-              md: 750
-            },
-          }}
-        >
-     
-
     
+      <Box
      
+        >
+    
     <div style={{minWidth: "100%", marginBottom: '1rem' }}>
 
     <form>
@@ -796,16 +774,18 @@ const handleCities = async (event) => {
                   >
                   </TextField>
             </Grid>
+           
+            
+            </Grid>
             {step > 1 && <Button
                     color="primary"
                     variant="contained"
                     align="right"
+                    sx={{mt:2}}
                     onClick={handleBack}
                     >
                     Back
                     </Button>}
-            
-            </Grid>
         </CardContent>
         <Divider/>
       </Card>
@@ -860,7 +840,7 @@ const handleCities = async (event) => {
       display: 'flex',
       flex: '1 1 auto',
       overflow: 'hidden',
-      height: '100vh', 
+  
       flexDirection: {
         xs: 'column-reverse',
         md: 'row'
@@ -887,8 +867,7 @@ const handleCities = async (event) => {
     },
     position: 'sticky', 
     top: 0, 
-    height: '100vh', 
-    maxHeight: '100vh', 
+
  
   }}
       >
