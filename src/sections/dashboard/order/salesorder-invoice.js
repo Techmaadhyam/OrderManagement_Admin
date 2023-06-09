@@ -558,11 +558,62 @@ const handleChallanPdf = async (record) => {
             }}
             underline="hover"
           >
-            <Typography variant="subtitle2">{name}</Typography>
+            <Typography variant="subtitle1">{name}</Typography>
           </Box>
         );
       },
     },
+    {
+      title: (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          {!isSearching ? (
+            <>
+              <Typography variant="subtitle2">Company Name</Typography>
+              <IconButton onClick={handleCompanyClick}>
+                <SearchIcon />
+              </IconButton>
+            </>
+          ) : (
+            <>
+              <InputBase
+                value={searchText}
+                onChange={handleCompanyInputChange}
+                placeholder="Search company..."
+              />
+              <IconButton onClick={handleCompanyCancel}>
+                <Icon>
+                  <HighlightOffIcon />
+                </Icon>
+              </IconButton>
+            </>
+          )}
+        </div>
+      ),
+      key: 'companyName',
+      dataIndex: 'companyName',
+    },
+    {
+      title: 'Order Modified Date',
+      key: 'lastModifiedDate',
+      dataIndex: 'lastModifiedDate',
+    },
+     
+    {
+      title: 'Order Date',
+      key: 'createdDate',
+      dataIndex: 'createdDate',
+    },
+    {
+      title: 'Delivery Date',
+      key: 'deliveryDate',
+      dataIndex: 'deliveryDate',
+    },
+    {
+      title: 'Status',
+      key: 'status',
+      dataIndex: 'status',
+    },
+  
     {
       title: (
         <TextField
@@ -588,56 +639,7 @@ const handleChallanPdf = async (record) => {
       key: 'type',
       dataIndex: 'type',
     },
-    {
-      title: 'Status',
-      key: 'status',
-      dataIndex: 'status',
-    },
-    {
-      title: (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          {!isSearching ? (
-            <>
-              <Typography variant="subtitle1">Company Name</Typography>
-              <IconButton onClick={handleCompanyClick}>
-                <SearchIcon />
-              </IconButton>
-            </>
-          ) : (
-            <>
-              <InputBase
-                value={searchText}
-                onChange={handleCompanyInputChange}
-                placeholder="Search company..."
-              />
-              <IconButton onClick={handleCompanyCancel}>
-                <Icon>
-                  <HighlightOffIcon />
-                </Icon>
-              </IconButton>
-            </>
-          )}
-        </div>
-      ),
-      key: 'companyName',
-      dataIndex: 'companyName',
-    },
   
-    {
-      title: 'Delivery Date',
-      key: 'deliveryDate',
-      dataIndex: 'deliveryDate',
-    },
-    {
-      title: 'Created Date',
-      key: 'createdDate',
-      dataIndex: 'createdDate',
-    },
-    {
-      title: 'Last Modified Date',
-      key: 'lastModifiedDate',
-      dataIndex: 'lastModifiedDate',
-    },
     {
         title: 'Download Invoice',
       dataIndex: 'downloadInvoice',
@@ -694,6 +696,7 @@ const handleChallanPdf = async (record) => {
             sx={{ minWidth: 800, overflowX: '*' }}
             columns={columns}
             dataSource={filteredData}
+            rowClassName={() => 'table-data-row'}
             ></Table>
             </Scrollbar>
             <ToastContainer
