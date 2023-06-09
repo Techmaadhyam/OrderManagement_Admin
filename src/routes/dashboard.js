@@ -22,6 +22,12 @@ const PurchaseOrderViewPage = lazy(() => import('src/pages/dashboard/purchaseord
 const PurchaseOrderViewDetailPage = lazy(() => import('src/pages/dashboard/purchaseorder/viewDetail'));
 const PurchaseOrderEdit = lazy(() => import('src/pages/dashboard/purchaseorder/edit'));
 
+// workorder (do not delete)
+const WorkOrderCreatePage = lazy(() => import('src/pages/dashboard/workorder/create'));
+const WorkOrderViewPage = lazy(() => import('src/pages/dashboard/workorder/view'));
+const WorkOrderViewDetailPage = lazy(() => import('src/pages/dashboard/workorder/viewDetail'));
+const WorkOrderEdit = lazy(() => import('src/pages/dashboard/workorder/edit'));
+
 
 // Invoice (do not delete)
 const InvoiceListPage = lazy(() => import('src/pages/dashboard/invoices/list'));
@@ -131,6 +137,28 @@ export const dashboardRoutes = [
           },{
             path: 'edit',
             element: <PurchaseOrderEdit/>
+          },
+      
+         
+        ]
+      },
+      {
+        path: 'workorder',
+        children: [
+          {
+            index: true,
+            element: <WorkOrderCreatePage />
+          },
+          {
+            path: 'view',
+            element: <WorkOrderViewPage />
+          },
+          {
+            path: 'viewDetail',
+            element: <WorkOrderViewDetailPage/>
+          },{
+            path: 'edit',
+            element: <WorkOrderEdit/>
           },
       
          

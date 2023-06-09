@@ -225,6 +225,27 @@ export const useSections = () => {
           
             ]
           },
+          {
+            title: t(tokens.nav.workorder),
+            path: paths.dashboard.workorder.index,
+            icon: (
+              <SvgIcon fontSize="small">
+                <ShoppingCart01Icon />
+                {/* <Users03Icon /> */}
+              </SvgIcon>
+            ),
+            items: [
+              {
+                title: t(tokens.nav.create),
+                path: paths.dashboard.workorder.create
+              },
+              {
+                title: t(tokens.nav.view),
+                path: paths.dashboard.workorder.view
+              },
+          
+            ]
+          },
          
           
           

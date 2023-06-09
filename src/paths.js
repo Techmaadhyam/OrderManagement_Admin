@@ -49,6 +49,7 @@ export const paths = {
   dashboard: {
     index: '/dashboard',
     quotation: {
+      index: 'dashboard/quotation',
       buy: '/dashboard/quotation/buy',
       view: '/dashboard/quotation/:courseId',
       invoice: '/dashboard/quotation/invoice',
@@ -73,6 +74,13 @@ export const paths = {
       viewDetail: '/dashboard/purchaseorder/viewDetail',
       edit: '/dashboard/purchaseorder/edit',
       invoice: '/dashboard/purchaseorder/invoice',
+    },
+    workorder:{
+      index: '/dashboard/workorder',
+      create: '/dashboard/workorder',
+      view: '/dashboard/workorder/view',
+      viewDetail: '/dashboard/workorder/viewDetail',
+      edit: '/dashboard/workorder/edit',
     },
     ecommerce: '/dashboard/ecommerce',
     fileManager: '/dashboard/file-manager',

@@ -21,6 +21,7 @@ export const tokens = {
     create: 'nav.create',
     crypto: 'nav.crypto',
     purchaseorder: 'nav.purchaseorder',
+    workorder: 'nav.workorder',
     buy: 'nav.buy',
     view: 'nav.view',
     ecommerce: 'nav.ecommerce',
