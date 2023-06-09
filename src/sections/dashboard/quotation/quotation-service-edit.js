@@ -30,8 +30,12 @@ import React from 'react';
 import { Delete } from '@mui/icons-material';
 import './customTable.css'
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import dayjs from 'dayjs';
+import './customTable.css'
 
 const userId = parseInt(sessionStorage.getItem('user'))
+const dateFormat = 'DD/MM/YYYY';
 
 
 const customerType = [
@@ -44,6 +48,7 @@ const customerType = [
     value: 'Vendor'
   }
 ];
+
 
 
 const userOptions = [
@@ -110,50 +115,79 @@ const tableHeader=[
   }
 ];
 
-export const QuotationServiceCreateForm = (props) => {
+
+export const QuotationServiceEditForm = (props) => {
+
+  const location = useLocation();
+  const state = location.state;
+console.log(state)
+
 
 
   const [userData, setUserData]= useState([])
   const navigate = useNavigate();
 //form state handeling
-const [userName, setUserName] = useState('');
-const [type, setType] = useState("");
-const [deliveryDate, setDeliveryDate] = useState('');
-const [status, setStatus] = useState("");
-const [contactName,setContactName] = useState('')
-const [adminName,setAdminName] = useState('')
-const [adminEmail, setAdminEmail] = useState('');
-const [adminPhone, setAdminPhone] = useState('');
-const [inchargeEmail, setInchargeEmail] = useState('');
-const [phone, setPhone] = useState('');
-const [address, setAddress] = useState("");
-const [tempId, setTempId] = useState();
-const [userState, setUserState] = useState();
-const [terms, setTerms] = useState('');
-const [comment, setComment] = useState('');
+
+const [type, setType] = useState(state?.type||"");
+
+const [deliveryDate, setDeliveryDate] = useState(dayjs(state?.deliveryDate, dateFormat));
+const [status, setStatus] = useState(state?.status || "");
+const [contactName,setContactName] = useState(state?.contactPersonName ||'')
+const [adminName,setAdminName] = useState(state?.adminPersonName ||'')
+const [adminEmail, setAdminEmail] = useState(state?.adminEmail ||'');
+const [adminPhone, setAdminPhone] = useState(state?.adminPhoneNumber ||'');
+const [inchargeEmail, setInchargeEmail] = useState(state?.contactEmail ||'');
+const [phone, setPhone] = useState(state?.contactPhoneNumber ||'');
+const [address, setAddress] = useState(state?.deliveryAddress || "");
+const [tempId, setTempId] = useState(state?.tempUserId);
+const [userState, setUserState] = useState(state?.userId);
+const [terms, setTerms] = useState(state?.termsAndCondition || '');
+const [comment, setComment] = useState(state?.comments||'');
+const [user, setUser] = useState('')
 const [category, setCategory] = useState('Service Quotation');
+
 
 const [currentDate, setCurrentDate] = useState('');
 
 //add product state
 const [productName, setProductName] = useState('');
   const [weight, setWeight] = useState('');
-  const [workstation, setWorkstation] = useState();
+  const [sgst, setSgst] = useState();
   const [igst, setIgst] = useState();
   const [quantity, setQuantity] = useState();
   const [price, setPrice] = useState();
   const [cgst, setCgst] = useState();
   const [size, setSize] = useState();
   const [description, setDescription] = useState('');
-  const [rows, setRows] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
+  const [workstation, setWorkstation] = useState();
 
   const [userData2, setUserData2] = useState([])
   const [productId, setProductId] = useState()
 
   const [totalAmount, setTotalAmount] = useState(0);
- 
+
+  const [rowData, setRowData] =useState()
+  const [dDate, setDDate] =useState(state?.deliveryDate)
+
+  const [Id, setId] = useState()
+
+
+      //deleted row
+  const [deletedRows, setDeletedRows] = useState([]);
+
+  useEffect(() => {
+    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllQuotationDetails/${state?.id || state?.quotation?.id}`)
+      .then(response => {
+       setRowData(response.data)
+       setTotalAmount(state?.totalAmount)
+      
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, [state?.id, state?.quotation?.id , state?.totalAmount]);
 
   //currentdate
   useEffect(() => {
@@ -162,14 +196,14 @@ const [productName, setProductName] = useState('');
     const formattedDate = today.toLocaleDateString('IN', options);
     setCurrentDate(formattedDate);
   }, []);
-  console.log(workstation)
- const handleInputChange = (event) => {
+
+  const handleInputChange = (event) => {
   const { name, value } = event.target;
 
   switch (name) {
   
       case 'user':
-        setUserName(value);
+        setUser(value);
           break;
       case 'contactName':
         setContactName(value);
@@ -202,56 +236,68 @@ const [productName, setProductName] = useState('');
       break;
   }
 };
-const handleDateChange = (date) => {
-  setDeliveryDate(date);
-};
    //get temp user
    useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`)
-      .then(response => {
-        setUserData(prevData => [...prevData, ...response.data]);
-     
-      })
-      .catch(error => {
-        console.error(error);
-      });
+    const request1 = axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`);
+    const request2 = axios.get(`http://13.115.56.48:8080/techmadhyam/getAllUsersBasedOnType/${userId}`);
   
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllUsersBasedOnType/${userId}`)
-      .then(response => {
-        setUserData(prevData => [...prevData, ...response.data]);
-
+    Promise.all([request1, request2])
+      .then(([response1, response2]) => {
+        const tempUsersData = response1.data;
+        const usersData = response2.data;
+        const combinedData = [...tempUsersData, ...usersData];
+        setUserData(combinedData);
+  
+        const selecteduserId = combinedData.find((option) => (option.id !== 0 && option.id === state?.tempUserId) || option.id === state?.userId);
+        const selecteduser = selecteduserId ? selecteduserId.companyName : '';
+        setUser(selecteduser);
       })
       .catch(error => {
         console.error(error);
       });
-  }, []);
+  }, [state?.tempUserId, state?.userId]);
 
-const deliveryDateAntd = deliveryDate;
-const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
-const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD/MM/YYYY') : '';
+ 
+  useEffect(() => {
+    if (deliveryDate) {
+      const deliveryDateJS = deliveryDate.toDate();
+      const formattedDeliveryDate = moment(deliveryDateJS).format('DD/MM/YYYY');
+      setDDate(formattedDeliveryDate);
+    } else {
+      setDDate('');
+    }
+  }, [deliveryDate]);
 
-
+  const handleDateChange = (date) => {
+    setDeliveryDate(date);
+  };
 
   //////////////
   //add product//
   /////////////
 
-  const handleRemoveRow = (idx) => () => {
-    const updatedRows = rows.filter((_, index) => index !== idx);
-    setRows(updatedRows);
+
+
+  const handleRemoveRow = (idx, row) => () => {
+
+    const deletedRow = { ...row }; 
+    setDeletedRows((prevDeletedRows) => [...prevDeletedRows, deletedRow]);
   
-    const calculatedTotalAmount = updatedRows.reduce(
-      (total, row) =>
-        total +
-        row.quantity * row.price +
-        (row.quantity * row.price * row.cgst) / 100 +
-        (row.quantity * row.price * row.igst) / 100 +
-        (row.quantity * row.price * row.sgst) / 100,
-      0
-    );
-  
-    setTotalAmount(calculatedTotalAmount);
-  };
+      const updatedRows = rowData?.filter((_, index) => index !== idx);
+      setRowData(updatedRows);
+    
+      const calculatedTotalAmount = updatedRows.reduce(
+        (total, row) =>
+          total +
+          row.quantity * row.price +
+          (row.quantity * row.price * row.cgst) / 100 +
+          (row.quantity * row.price * row.igst) / 100 +
+          (row.quantity * row.price * row.sgst) / 100,
+        0
+      );
+    
+      setTotalAmount(calculatedTotalAmount);
+    };
 
   const toggleForm = () => {
     setShowForm((prevState) => !prevState);
@@ -266,38 +312,40 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
   };
 
   const handleSubmit = (e) => {
+
     e.preventDefault();
   
     if (
-      price &&
+     
       productName &&
       workstation &&
       igst &&
       description
     ) {
       const newRow = {
+        id: Id,
         productId,
         productName,
-        quotationId: null,
         price: parseFloat(price),
         description,
-        createdBy: userId,
         workstationCount: parseFloat(workstation),
+        createdBy: userId,
         igst: parseFloat(igst),
         comments: comment,
         createdDate: currentDate,
         lastModifiedDate: currentDate,
+   
       };
   
       let updatedRows;
   
       if (editIndex !== null) {
-        updatedRows = [...rows];
+        updatedRows = [...rowData];
         updatedRows[editIndex] = newRow;
-        setRows(updatedRows);
+        setRowData(updatedRows);
       } else {
-        updatedRows = [...rows, newRow];
-        setRows(updatedRows);
+        updatedRows = [...rowData, newRow];
+        setRowData(updatedRows);
       }
   
       clearFormFields();
@@ -317,14 +365,27 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
       setTotalAmount(calculatedTotalAmount);
     }
   };
+
+  
+
+
   const handleEditRow = (idx, row) => {
+
+console.log(idx, row)
+
+    const selectedOption = userData2.find((option) => option.productName === row.productName);
+    const selectedProductId = selectedOption ? selectedOption.id : '';
+
+  setId(row.id)
+  setProductId(selectedProductId);
   setProductName(row.productName);
   setWeight(row.weight);
   setQuantity(row.quantity);
+  setWorkstation(row.workstationCount)
   setPrice(row.price);
   setCgst(row.cgst);
   setIgst(row.igst)
-  setWorkstation(row.workstationCount)
+  setSgst(row.sgst)
   setSize(row.size)
   setDescription(row.description);
   setEditIndex(idx);
@@ -340,8 +401,9 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
     setCgst('');
     setSize('')
     setIgst('')
-    setWorkstation('')
+    setSgst('')
     setDescription('');
+    setWorkstation('')
   };
 
   //
@@ -356,13 +418,39 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
   }, []);
 
 
-  const updatedRows = rows.map(({ productName, comments, ...rest }) => rest);
+  
+  const updatedRows = rowData?.map(({ productName, ...rest }) => rest);
+  const deleteRows= deletedRows?.map(({ productName, ...rest }) => rest);
+
   //post request
   const handleClick = async (event) => {
+    let finalAmount = parseFloat(totalAmount.toFixed(2))
 
-    let finalAmount = totalAmount.toFixed(2)
-
+    
+    
     event.preventDefault();
+
+    console.log({
+      quotation:{
+          id: state?.id,
+          userId: userState,
+          tempUserId :tempId,
+          contactPerson: contactName,
+          contactPhone: phone,    
+          status: status,
+          type: type,
+          deliveryDate: dDate,
+          deliveryAddress: address,
+          createdBy: userId,
+          lastModifiedDate: currentDate,
+
+          comments : comment,
+          termsAndCondition: terms,
+          totalAmount: finalAmount,
+      },
+        quotationDetails: updatedRows,
+        deletedQuotationDetails: deleteRows
+  })
     
       if (contactName && userId && phone && status && comment && terms && updatedRows) {
         try {
@@ -374,28 +462,28 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
             },
             body: JSON.stringify({
               quotation:{
+                  id: state?.id,
+                  createdBy: userId,
                   tempUserId :tempId,
                   userId: userState,
                   contactPersonName: contactName,
-                  contactPhoneNumber: phone,
+                  contactPhoneNumber: phone,    
                   contactEmail: inchargeEmail,
                   adminPersonName: adminName,
                   adminPhoneNumber: adminPhone,
                   adminEmail: adminEmail,   
                   status: status,
+                  category: state?.category ,
                   type: type,
-                  deliveryDate: formattedDeliveryDate,
-                  createdBy: userId,
-                  createdDate: currentDate,
+                  deliveryDate: dDate,
                   lastModifiedDate: currentDate,
-                  comments : comment,
-                  category: category,
                   lastModifiedByUser: {id: userId},
+                  comments : comment,
                   termsAndCondition: terms,
                   totalAmount: 0,
-        
               },
-                  quotationDetails: updatedRows
+                  quotationDetails: updatedRows,
+                  deletedQuotationDetails: deleteRows
           })
           });
           
@@ -403,10 +491,9 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
             // Redirect to home page upon successful submission
         
            response.json().then(data => {
-    
+            navigate('/dashboard/quotation/viewDetail', { state: data });
+            console.log(data)
       
-          navigate('/dashboard/quotation/viewDetail', { state: data });
-          console.log(data)
     });
           } 
         } catch (error) {
@@ -420,7 +507,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
   return (
     <div style={{minWidth: "100%" }}>
     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-      <h2>Create Quotation Order</h2>
+      <h2>Edit Quotation Orders</h2>
       <IconWithPopup/>
     </div>
     <form>
@@ -435,7 +522,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
               xs={12}
               md={4}
             >
-            <TextField
+          <TextField
                     fullWidth
                     label="Type"
                     name="type"
@@ -443,14 +530,14 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
                     value={type}
                     onChange={handleInputChange}
                   >
-                     {customerType.map((option) => (
+                    {customerType.map((option) => (
                       <MenuItem
                         key={option.value}
                         value={option.value}
                       >
                         {option.label}
                       </MenuItem>
-                    ))}
+                    ))} 
                   </TextField>
             </Grid>
             <Grid
@@ -459,10 +546,15 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
             >
                 <DatePicker placeholder="Delivery Date"
                 onChange={handleDateChange}
+                defaultValue={deliveryDate} 
+                format={dateFormat}
                 className="css-dev-only-do-not-override-htwhyh"
                 style={{ height: '58px', width: '250px' , color: 'red'}}
+                
+             
 
 height='50px'/>
+
             </Grid>
             <Grid
               xs={12}
@@ -472,41 +564,41 @@ height='50px'/>
             <Grid
               xs={12}
               md={4}
-            >
-                 <TextField
-                fullWidth
-                label="Company Name"
-                name="user"
-                select
-                value={userName}
-                onChange={(e) => {
-                  const selectedOption = userData.find((option) => option.companyName === e.target.value);
-                  if (selectedOption) {
-                    if (selectedOption.hasOwnProperty('createdByUser')) {
-                      setTempId(selectedOption.id || '');
-                      setUserState(null)
-                    } else {
-                      setUserState(selectedOption.id || '');
-                      setTempId(null)
-                    }
-                  }
-                  setUserName(e.target.value);
-                }}
-                style={{ marginBottom: 10 }}
-              >
-                {userData
-              .filter((option) => option.type === type) 
-              .map((option) => (
-                option.companyName && (
-                  <MenuItem key={option.id} 
-                  value={option.companyName}>
-                    {option.companyName}
-                  </MenuItem>
-                )
-              ))}
-              </TextField>
-               
+            >    <TextField
+            fullWidth
+            label="Company Name"
+            name="user"
+            select
+            value={user}
+            onChange={(e) => {
+              const selectedOption = userData?.find((option) => option.companyName === e.target.value);
+              if (selectedOption) {
+                if (selectedOption.hasOwnProperty('createdByUser')) {
+                  setTempId(selectedOption.id || '');
+                  setUserState(null)
+                } else {
+                  setUserState(selectedOption.id || '');
+                  setTempId(null)
+                }
+              }
+              setUser(e.target.value);
+            }}
+            style={{ marginBottom: 10 }}
+          >
+               {userData
+          .filter((option) => option.type === type) 
+          .map((option) => (
+            option.companyName && (
+              <MenuItem 
+              key={option.id}
+               value={option.companyName}>
+                {option.companyName}
+              </MenuItem>
+            )
+          ))}
+          </TextField>   
             </Grid>
+ 
             <Grid
               xs={12}
               md={4}
@@ -591,15 +683,12 @@ height='50px'/>
               md={4}
             >
               <TextField
-
-                    fullWidth
-                    label="Incharge Name"
-                    name="contactName"
-                    value={contactName}
-                    onChange={handleInputChange}
-                
-                  >
-                  </TextField>
+                fullWidth
+                label="Incharge Name"
+                name="contactName"
+                value={contactName}
+                onChange={handleInputChange}
+              />
             </Grid>
             <Grid
               xs={12}
@@ -620,18 +709,13 @@ height='50px'/>
               md={4}
             >
               <TextField
-
-                    fullWidth
-                    label="Incharge Phone"
-                    name="mobileno"
-                    value={phone}
-                    onChange={handleInputChange}
-                  >
-                  </TextField>
+                fullWidth
+                label="Incharge Phone"
+                name="mobileno"
+                value={phone}
+                onChange={handleInputChange}
+              />
             </Grid>
-           
-           
-            
           </Grid>
         </CardContent>
         <Divider/>
@@ -669,7 +753,7 @@ height='50px'/>
                   <div className='form-row'>
                     <div className='popup-left'>
                       <Grid xs={12} 
-                      md={6}>
+                            md={6}>
                         <TextField
                           fullWidth
                           label='Part Name'
@@ -692,8 +776,7 @@ height='50px'/>
                           ))}
                           </TextField>
                           </Grid>
-                          
-                            <Grid
+                          <Grid
                             xs={12}
                             md={6}
                             >
@@ -708,7 +791,8 @@ height='50px'/>
                           
                               />
                             </Grid>
-                            
+                           
+                          
                           </div>
                           <div className='popup-right'>
                           <Grid
@@ -785,10 +869,10 @@ height='50px'/>
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          {rows.map((row, idx) => (
+                          {rowData?.map((row, idx) => (
                             <TableRow hover 
-                            key={idx}>
-                               <TableCell>
+                            key={idx?.id}>
+                              <TableCell>
                                 <div>{row.description}</div>
                               </TableCell>
                               <TableCell>
@@ -818,7 +902,7 @@ height='50px'/>
                                 </IconButton>
                               </TableCell>
                               <TableCell align='right'>
-                                <IconButton onClick={handleRemoveRow(idx)}>
+                                <IconButton onClick={handleRemoveRow(idx, row)}>
                                   <Icon>
                                     <Delete />
                                   </Icon>
@@ -836,7 +920,7 @@ height='50px'/>
                 md={6}
               >
               <label style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Total Amount : {totalAmount.toFixed(2)}</label>
-      
+          
               </Grid>
               <Grid
                 xs={12}
@@ -873,7 +957,7 @@ height='50px'/>
             xs={12}
             md={6}
             >
-            <Box sx={{ mt: 2, mb: 2 }}
+            <Box sx={{ mt: 2 , mb: 2 }}
             display="flex"
             justifyContent="flex-end"
             marginRight="12px">
@@ -891,6 +975,6 @@ height='50px'/>
   );
 };
 
-QuotationServiceCreateForm.propTypes = {
+QuotationServiceEditForm.propTypes = {
   customer: PropTypes.object.isRequired
 };

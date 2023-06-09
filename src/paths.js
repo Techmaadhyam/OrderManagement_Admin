@@ -55,7 +55,8 @@ export const paths = {
       viewDetail: '/dashboard/quotation/viewDetail',
       edit: '/dashboard/quotation/edit',
       sell: '/dashboard/quotation/sell',
-      service: '/dashboard/quotation/service'
+      service: '/dashboard/quotation/service',
+      editService: '/dashboard/quotation/editService',
     },
     account: '/dashboard/account',
     analytics: '/dashboard/analytics',

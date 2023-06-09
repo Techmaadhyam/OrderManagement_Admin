@@ -13,6 +13,7 @@ const QuotationViewPage = lazy(() => import('src/pages/dashboard/quotation/view'
 const QuotationInvoicePage = lazy(() => import('src/pages/dashboard/quotation/invoice'));
 const QuotationViewDetailPage = lazy(() => import('src/pages/dashboard/quotation/viewDetail'));
 const QuotationEditPage = lazy(() => import('src/pages/dashboard/quotation/edit'));
+const QuotationServiceEditPage = lazy(() => import('src/pages/dashboard/quotation/editserviceQuotation'));
 
 
 // PurchaseOrder (do not delete)
@@ -101,6 +102,10 @@ export const dashboardRoutes = [
               {
                 path: 'edit',
                 element: <QuotationEditPage/>
+              },
+              {
+                path: 'editService',
+                element: <QuotationServiceEditPage/>
               }
         ]
       },
