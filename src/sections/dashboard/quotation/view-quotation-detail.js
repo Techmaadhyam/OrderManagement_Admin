@@ -103,7 +103,7 @@ const columns2=[
 export const ViewQuotationDetail = (props) => {
   const location = useLocation();
   const state = location.state;
-
+console.log(state)
 
   const [tempuser, setTempuser] =useState([])
   const [rowData, setRowData] =useState()
@@ -193,6 +193,29 @@ export const ViewQuotationDetail = (props) => {
           value={state?.contactPhoneNumber || state?.quotation?.contactPhoneNumber}
         />
         <Divider />
+        {state?.adminPersonName && (
+          <>
+            <PropertyListItem
+              align={align}
+              label="Admin Name"
+              value={state?.adminPersonName || state?.quotation?.adminPersonName }
+            />
+            <Divider />
+            <PropertyListItem
+              align={align}
+              label="Admin Phone"
+              value={state?.adminPhoneNumber || state?.quotation?.adminPhoneNumber }
+            />
+            <Divider />
+            <PropertyListItem
+              align={align}
+              label="Admin Email"
+              value={state?.adminEmail || state?.quotation?.adminEmail }
+            />
+            <Divider />
+          </>
+        )}
+        
         <PropertyListItem
           align={align}
           label="Status"

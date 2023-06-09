@@ -105,9 +105,12 @@ const handleCategoryChange = (event) => {
   };
 
   const handleNavigation = record => {
-    navigate('/dashboard/quotation/edit', { state: record });
+    if (record.category === 'Sales Quotation' || record.category === 'Purchase Quotation') {
+      navigate('/dashboard/quotation/edit', { state: record });
+    } else if (record.category === 'Service Quotation') {
+      navigate('/dashboard/quotation/editService', { state: record });
+    }
   };
-
   //company search
 const handleCompanyClick = () => {
   setIsSearching(true);
