@@ -422,7 +422,7 @@ console.log(filteredData)
                   lastModifiedByUser: {id: userId},
                   termsAndCondition: terms,
                   //totalAmount: finalAmount,
-                  technician:{id: technician},
+                  technicianInfo: {id: technician},
                   noncompany:{id: tempId},
                   //company: {id: userState},
         
