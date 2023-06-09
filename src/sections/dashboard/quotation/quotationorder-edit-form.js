@@ -844,7 +844,7 @@ height='50px'/>
                               className='submit' 
                               
                               onClick={toggleForm}>
-                                Close
+                               Cancel
                               </button>
                               <button style={{ background: `${primaryColor}` }} 
                               className='submit' 
