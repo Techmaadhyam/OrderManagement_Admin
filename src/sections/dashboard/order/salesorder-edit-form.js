@@ -989,6 +989,12 @@ height='50px'/>
                         />
                         </Grid>
                             <div className='submit-purchase'>
+                            <button style={{ background: `${primaryColor}`, marginRight: '20px' }} 
+                              className='submit' 
+                              
+                              onClick={toggleForm}>
+                                Close
+                              </button>
                               <button style={{ background: `${primaryColor}` }} 
                               className='submit' 
                               type='submit' 
