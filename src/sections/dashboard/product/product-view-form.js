@@ -250,7 +250,7 @@ const columns = [
       <div style={{ display: 'flex', alignItems: 'center' }}>
         {!isSearching ? (
           <>
-            <Typography variant="subtitle1">Part Name</Typography>
+            <Typography variant="subtitle2">Part Name</Typography>
             <IconButton onClick={handleProductClick}>
               <SearchIcon />
             </IconButton>
