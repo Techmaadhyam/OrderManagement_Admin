@@ -4,6 +4,7 @@ import { styled } from '@mui/material/styles';
 import { MobileNav } from '../mobile-nav';
 import { SideNav } from './side-nav';
 import { useMobileNav } from './use-mobile-nav';
+import { TopNav } from './top-nav';
 
 const SIDE_NAV_WIDTH = 280;
 
@@ -30,7 +31,7 @@ export const VerticalLayout = (props) => {
 
   return (
     <>
-
+    <TopNav onMobileNavOpen={mobileNav.handleOpen} />
       {lgUp && (
         <SideNav
           color={navColor}
