@@ -344,7 +344,7 @@ const handleCities = async (event) => {
               firstName: firstName,
               lastName: lastName,
               emailId: email,
-              mobile: phone,
+              mobile: `+91 ${phone}`,
               address: address,
               city: currentCity,
               state: currentState,
@@ -515,22 +515,28 @@ const handleCities = async (event) => {
                   >
                   </TextField>
             </Grid>
-            <Grid
-              xs={12}
-              md={12}
-            >
+            <Grid xs={12} md={12}>
+            <div style={{ display: 'flex' }}>
+            <TextField
+                style={{ width: 100, marginRight: 10 }}
+                label="Code"
+                name="countryCode"
+                type="text"
+                value={'+91'}
+              
+              />
               <TextField
-                  
-                    fullWidth
-                    label="Phone"
-                    name="phone"
-                    type='number'
-                    value={phone}
-                    onChange={handleInputChange}
-
-                  >
-                  </TextField>
-            </Grid>
+                style={{ flexGrow: 1 }}
+                fullWidth
+                label="Phone"
+                name="phone"
+                type="number"
+                value={phone}
+                onChange={handleInputChange}
+              />
+           
+            </div>
+          </Grid>
             <Grid
               xs={12}
               md={6}
