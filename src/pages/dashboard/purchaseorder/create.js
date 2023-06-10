@@ -4,7 +4,8 @@ import { customersApi } from 'src/api/customers';
 import { Seo } from 'src/components/seo';
 import { useMounted } from 'src/hooks/use-mounted';
 import { usePageView } from 'src/hooks/use-page-view';
-import { PurchaseOrderCreateForm } from 'src/sections/dashboard/purchaseorder/purchaseorder-create-form';
+import { CreateTable } from 'src/pages/components/createTable';
+// src/sections/dashboard/purchaseorder/purchaseorder-create-form';
 
 const useCustomer = () => {
   const isMounted = useMounted();
@@ -52,7 +53,8 @@ const Page = () => {
       >
         <Container maxWidth="lg">
           <Stack spacing={4}>
-            <PurchaseOrderCreateForm customer={customer} />
+            <CreateTable customer={customer}
+purchase={true}/>
           </Stack>
         </Container>
       </Box>
