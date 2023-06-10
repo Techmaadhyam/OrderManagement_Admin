@@ -12,9 +12,6 @@ const AmplifyLoginPage = lazy(() => import('src/pages/auth/amplify/login'));
 const AmplifyRegisterPage = lazy(() => import('src/pages/auth/amplify/register'));
 const AmplifyResetPasswordPage = lazy(() => import('src/pages/auth/amplify/reset-password'));
 
-// Auth0
-const Auth0CallbackPage = lazy(() => import('src/pages/auth/auth0/callback'));
-const Auth0LoginPage = lazy(() => import('src/pages/auth/auth0/login'));
 
 // Firebase
 const FirebaseLoginPage = lazy(() => import('src/pages/auth/firebase/login'));
@@ -59,26 +56,6 @@ export const authRoutes = [
           {
             path: 'reset-password',
             element: <AmplifyResetPasswordPage />
-          }
-        ]
-      },
-      {
-        path: 'auth0',
-        element: (
-          <IssuerGuard issuer={Issuer.Auth0}>
-            <GuestGuard>
-              <Outlet />
-            </GuestGuard>
-          </IssuerGuard>
-        ),
-        children: [
-          {
-            path: 'callback',
-            element: <Auth0CallbackPage />
-          },
-          {
-            path: 'login',
-            element: <Auth0LoginPage />
           }
         ]
       },

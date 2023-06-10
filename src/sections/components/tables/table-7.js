@@ -33,24 +33,6 @@ const pages = [
     url: '/dashboard',
     visitors: 85406
   },
-  {
-    bounceRate: 12,
-    uniqueVisits: 12322,
-    url: '/blog/top-5-react-frameworks',
-    visitors: 75050
-  },
-  {
-    bounceRate: 10,
-    uniqueVisits: 11645,
-    url: '/blog/understand-programming-principles',
-    visitors: 68003
-  },
-  {
-    bounceRate: 8,
-    uniqueVisits: 10259,
-    url: '/blog/design-patterns',
-    visitors: 49510
-  }
 ];
 
 export const Table7 = () => (

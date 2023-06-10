@@ -6,7 +6,6 @@ export const en = {
   [tokens.nav.account]: 'Account',
   [tokens.nav.analytics]: 'Analytics',
   [tokens.nav.auth]: 'Auth',
-  [tokens.nav.blog]: 'Blog',
   [tokens.nav.browse]: 'Browse',
   [tokens.nav.calendar]: 'Calendar',
   [tokens.nav.chat]: 'Chat',

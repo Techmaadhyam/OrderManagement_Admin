@@ -62,11 +62,6 @@ export const paths = {
     account: '/dashboard/account',
     analytics: '/dashboard/analytics',
     blank: '/dashboard/blank',
-    blog: {
-      index: '/dashboard/blog',
-      postDetails: '/dashboard/blog/:postId',
-      postCreate: '/dashboard/blog/create'
-    },
     purchaseorder: {
       index: '/dashboard/purchaseorder',
       create: '/dashboard/purchaseorder/',

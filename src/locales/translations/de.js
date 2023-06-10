@@ -6,7 +6,6 @@ export const de = {
   [tokens.nav.account]: 'Konto',
   [tokens.nav.analytics]: 'Analytik',
   [tokens.nav.auth]: 'Authentifizierung',
-  [tokens.nav.blog]: 'Blog',
   [tokens.nav.browse]: 'Durchsuche',
   [tokens.nav.calendar]: 'Kalender',
   [tokens.nav.chat]: 'Plaudern',
