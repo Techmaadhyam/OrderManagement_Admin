@@ -4,6 +4,7 @@ import { paths } from 'src/paths';
 
 const issuers = {
   Amplify: '/assets/logos/logo-amplify.svg',
+  Auth0: '/assets/logos/logo-auth0.svg',
   Firebase: '/assets/logos/logo-firebase.svg',
   JWT: '/assets/logos/logo-jwt.svg'
 };

@@ -6,6 +6,12 @@ export const amplifyConfig = {
   aws_user_pools_web_client_id: process.env.REACT_APP_AWS_USER_POOLS_WEB_CLIENT_ID
 };
 
+export const auth0Config = {
+  base_url: process.env.REACT_APP_AUTH0_BASE_URL,
+  client_id: process.env.REACT_APP_AUTH0_CLIENT_ID,
+  issuer_base_url: process.env.REACT_APP_AUTH0_ISSUER_BASE_URL
+};
+
 export const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   appId: process.env.REACT_APP_FIREBASE_APP_ID,

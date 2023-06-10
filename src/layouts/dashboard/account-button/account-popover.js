@@ -38,6 +38,11 @@ export const AccountPopover = (props) => {
           break;
         }
 
+        case Issuer.Auth0: {
+          await auth.logout();
+          break;
+        }
+
         case Issuer.Firebase: {
           await auth.signOut();
           break;
