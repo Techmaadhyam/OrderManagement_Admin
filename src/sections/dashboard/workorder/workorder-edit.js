@@ -139,12 +139,13 @@ const [adminPhone, setAdminPhone] = useState(state?.adminPhoneNumber ||'');
 const [inchargeEmail, setInchargeEmail] = useState(state?.contactEmail ||'');
 const [phone, setPhone] = useState(state?.contactPhoneNumber ||'');
 const [address, setAddress] = useState(state?.deliveryAddress || "");
-const [tempId, setTempId] = useState(state?.tempUserId);
+const [tempId, setTempId] = useState(state?.noncompany.id);
 const [userState, setUserState] = useState(state?.userId);
 const [terms, setTerms] = useState(state?.termsAndCondition || '');
 const [comment, setComment] = useState(state?.comments||'');
 const [user, setUser] = useState('')
-const [category, setCategory] = useState('Service Quotation');
+const [technician, setTechnician] = useState(state?.technicianInfo.id || '');
+const [technicianData, setTechnicianData] = useState([]);
 
 
 const [currentDate, setCurrentDate] = useState('');
@@ -226,6 +227,9 @@ const [productName, setProductName] = useState('');
       case 'type':
         setType(value);
         break;
+        case 'technician':
+          setTechnician(value);
+          break;
       case 'status':
         setStatus(value);
         break;
@@ -247,8 +251,9 @@ const [productName, setProductName] = useState('');
         const usersData = response2.data;
         const combinedData = [...tempUsersData, ...usersData];
         setUserData(combinedData);
+        setTechnicianData(tempUsersData)
   
-        const selecteduserId = combinedData.find((option) => (option.id !== 0 && option.id === state?.tempUserId) || option.id === state?.userId);
+        const selecteduserId = combinedData.find((option) => (option.id !== 0 && option.id === state?.noncompany.id) || option.id === state?.company.id);
         const selecteduser = selecteduserId ? selecteduserId.companyName : '';
         setUser(selecteduser);
       })
@@ -268,6 +273,8 @@ const [productName, setProductName] = useState('');
     }
   }, [deliveryDate]);
 
+  const filteredData = technicianData?.filter(item => item.type === 'Technician')
+
   const handleDateChange = (date) => {
     setDeliveryDate(date);
   };
@@ -276,7 +283,7 @@ const [productName, setProductName] = useState('');
   //add product//
   /////////////
 
-
+console.log(user)
 
   const handleRemoveRow = (idx, row) => () => {
 
@@ -288,10 +295,10 @@ const [productName, setProductName] = useState('');
     
       const calculatedTotalAmount = updatedRows.reduce(
         (total, row) =>
-          total +
-          row.workstationCount * row.price +
-          (row.workstationCount * row.price * row.igst) / 100,
-        0
+        total +
+        row.workstationcount * row.unitPrice +
+        (row.workstationcount * row.unitPrice * row.igst) / 100,
+      0
       );
     
       setTotalAmount(calculatedTotalAmount);
@@ -321,17 +328,18 @@ const [productName, setProductName] = useState('');
       description
     ) {
       const newRow = {
-        id: Id,
-        productId,
+        Id: Id,
+        product: {id: productId},
         productName,
-        price: parseFloat(price),
+        workOrderId: null,
+        unitPrice: parseFloat(price),
         description,
-        workstationCount: parseFloat(workstation),
-        createdBy: userId,
+        //createdBy: userId,
+        workstationcount: parseFloat(workstation),
         igst: parseFloat(igst),
-        comments: comment,
-        createdDate: currentDate,
-        lastModifiedDate: currentDate,
+        comment: comment,
+        //createdDate: currentDate,
+        //lastModifiedDate: currentDate,
    
       };
   
@@ -353,8 +361,8 @@ const [productName, setProductName] = useState('');
       const calculatedTotalAmount = updatedRows.reduce(
         (total, row) =>
           total +
-          row.workstationCount * row.price +
-          (row.workstationCount * row.price * row.igst) / 100,
+          row.workstationcount * row.unitPrice +
+          (row.workstationcount * row.unitPrice * row.igst) / 100,
         0
       );
   
@@ -369,16 +377,16 @@ const [productName, setProductName] = useState('');
 
 console.log(idx, row)
 
-    const selectedOption = userData2.find((option) => option.productName === row.productName);
+    const selectedOption = userData2.find((option) => option.productName === row.product.productName);
     const selectedProductId = selectedOption ? selectedOption.id : '';
 
   setId(row.id)
   setProductId(selectedProductId);
-  setProductName(row.productName);
+  setProductName(row.product.productName || row.productName);
   setWeight(row.weight);
   setQuantity(row.quantity);
-  setWorkstation(row.workstationCount)
-  setPrice(row.price);
+  setWorkstation(row.workstationcount)
+  setPrice(row.unitPrice);
   setCgst(row.cgst);
   setIgst(row.igst)
   setSgst(row.sgst)
@@ -426,27 +434,7 @@ console.log(idx, row)
     
     event.preventDefault();
 
-    console.log({
-      quotation:{
-          id: state?.id,
-          userId: userState,
-          tempUserId :tempId,
-          contactPerson: contactName,
-          contactPhone: phone,    
-          status: status,
-          type: type,
-          deliveryDate: dDate,
-          deliveryAddress: address,
-          createdBy: userId,
-          lastModifiedDate: currentDate,
 
-          comments : comment,
-          termsAndCondition: terms,
-          totalAmount: finalAmount,
-      },
-        quotationDetails: updatedRows,
-        deletedQuotationDetails: deleteRows
-  })
     
       if (contactName && userId && phone && status && comment && terms && updatedRows) {
         try {
@@ -458,30 +446,31 @@ console.log(idx, row)
             },
             body: JSON.stringify({
               workorder:{
-                  id: state?.id,
-                  createdBy: userId,
-                  contactPersonName: contactName,
-                  contactPhoneNumber: phone,    
-                  contactEmail: inchargeEmail,
-                  adminPersonName: adminName,
-                  adminPhoneNumber: adminPhone,
-                  adminEmail: adminEmail,   
-                  status: status,
-                  //category: state?.category ,
-                  type: type,
-                  deliveryDate: dDate,
-                  lastModifiedDate: currentDate,
-                  lastModifiedByUser: {id: userId},
-                  comments : comment,
-                  termsAndCondition: terms,
-                  totalAmount: finalAmount,
-                  technician:{ id :1},
-                  noncompany:{ id:userState},
-                  company:{ id :tempId} 
-              },
-                  workOrderItems: updatedRows,
-                  deleteWorkOrderItems: deleteRows
-          })
+                id: state?.id,
+                contactPersonName: contactName,
+                contactPhoneNumber: phone,
+                contactEmail: inchargeEmail,
+                adminPersonName: adminName,
+                adminPhoneNumber: adminPhone,
+                adminEmail: adminEmail,   
+                status: status,
+                type: type,
+                deliveryDate: dDate,
+                createdByUser: {id: userId},
+                createdDate: currentDate,
+                lastModifiedDate: currentDate,
+                comments : comment,
+                lastModifiedByUser: {id: userId},
+                termsAndCondition: terms,
+                //totalAmount: finalAmount,
+                technicianInfo: {id: technician},
+                noncompany:{id: tempId},
+                //company: {id: userState},
+      
+            },
+                workOrderItems: updatedRows,
+                deleteWorkOrderItems: deletedRows
+        })
           });
           
           if (response.ok) {
@@ -623,14 +612,26 @@ height='50px'/>
               xs={12}
               md={4}
             >
-              <TextField
+            <TextField
 
-                    fullWidth
-                    label="Category"
-                    name="category"
-                    value={category}
+                fullWidth
+                label="Technician"
+                name="technician"
+                select
+                value={technician}
+
+                onChange={handleInputChange}
+
+                >
+                {filteredData?.map((option) => (
+                  <MenuItem
+                    key={option.id}
+                    value={option.id}
                   >
-                  </TextField>
+                    {option.userName}
+                  </MenuItem>
+                ))}
+                </TextField>
             </Grid>
             <Grid
               xs={12}
@@ -879,10 +880,10 @@ height='50px'/>
                                 <div>{row.description}</div>
                               </TableCell>
                               <TableCell>
-                                <div>{row.price}</div>
+                                <div>{row.unitPrice}</div>
                               </TableCell>
                               <TableCell>
-                                <div>{row.workstationCount}</div>
+                                <div>{row.workstationcount}</div>
                               </TableCell>
                               <TableCell>
                                 <div>{row.igst}</div>
@@ -890,8 +891,8 @@ height='50px'/>
                               <TableCell>
                               <div>
                                 {(
-                                  ((row.workstationCount * row.price) +
-                                  ((row.workstationCount * row.price) * row.igst/ 100)).toFixed(2)
+                                  ((row.workstationcount * row.unitPrice) +
+                                  ((row.workstationcount * row.unitPrice) * row.igst/ 100)).toFixed(2)
                                 )}
                               </div>
                               </TableCell>
@@ -920,7 +921,7 @@ height='50px'/>
                 xs={12}
                 md={6}
               >
-              <label style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Total Amount : {totalAmount.toFixed(2)}</label>
+              <label style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Total Amount : {totalAmount?.toFixed(2)}</label>
           
               </Grid>
               <Grid
@@ -933,7 +934,7 @@ height='50px'/>
               fullWidth
               multiline
               rows={4}
-              maxRows={8}
+   
               value={terms}
               onChange={(e) => setTerms(e.target.value)}
             />
@@ -948,7 +949,7 @@ height='50px'/>
               fullWidth
               multiline
               rows={2}
-              maxRows={4}
+    
               value={comment}
               onChange={(e) => setComment(e.target.value)} 
             />

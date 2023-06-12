@@ -114,9 +114,17 @@ console.log(state)
           </Typography>
           </PropertyListItem>
         <Divider />
+        {
+          state.technicianInfo.userName &&(
+          <PropertyListItem
+          align={align}
+          label="Technician"
+          value={state?.technicianInfo.userName}
+        />
+        )}
         <PropertyListItem
           align={align}
-          label="DeliveryDate"
+          label="Delivery Date"
           value={state?.deliveryDate || state?.workorder?.deliveryDate}
         />
         <Divider />
