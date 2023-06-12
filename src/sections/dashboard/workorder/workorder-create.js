@@ -119,6 +119,7 @@ export const WorkOrderCreateForm = (props) => {
 const [userName, setUserName] = useState('');
 const [type, setType] = useState("");
 const [deliveryDate, setDeliveryDate] = useState('');
+const [assignmentEnd, setAssignmentEnd]= useState('')
 const [status, setStatus] = useState("");
 const [contactName,setContactName] = useState('')
 const [adminName,setAdminName] = useState('')
@@ -207,8 +208,12 @@ const [productName, setProductName] = useState('');
       break;
   }
 };
-const handleDateChange = (date) => {
+const handleDateStart = (date) => {
   setDeliveryDate(date);
+
+};
+const handleDateEnd = (date) => {
+  setAssignmentEnd(date)
 };
    //get temp user
    useEffect(() => {
@@ -236,6 +241,10 @@ const handleDateChange = (date) => {
 const deliveryDateAntd = deliveryDate;
 const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
 const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD/MM/YYYY') : '';
+
+const deliveryDateAntd2 = assignmentEnd;
+const deliveryDateJS2 = deliveryDateAntd2 ? deliveryDateAntd2.toDate() : null;
+const formattedDeliveryDate2 = deliveryDateJS2 ? moment(deliveryDateJS2).format('DD/MM/YYYY') : '';
 
 
 const filteredData = technicianData?.filter(item => item.type === 'Technician')
@@ -418,7 +427,8 @@ const filteredData = technicianData?.filter(item => item.type === 'Technician')
                   adminEmail: adminEmail,   
                   status: status,
                   type: type,
-                  deliveryDate: formattedDeliveryDate,
+                  startdate: formattedDeliveryDate,
+                  enddate: formattedDeliveryDate2,
                   createdByUser: {id: userId},
                   createdDate: currentDate,
                   lastModifiedDate: currentDate,
@@ -467,7 +477,8 @@ const filteredData = technicianData?.filter(item => item.type === 'Technician')
                   adminEmail: adminEmail,   
                   status: status,
                   type: type,
-                  deliveryDate: formattedDeliveryDate,
+                  startdate: formattedDeliveryDate,
+                  enddate: formattedDeliveryDate2,
                   createdByUser: {id: userId},
                   createdDate: currentDate,
                   lastModifiedDate: currentDate,
@@ -543,8 +554,8 @@ const filteredData = technicianData?.filter(item => item.type === 'Technician')
               xs={12}
               md={4}
             >
-                <DatePicker placeholder="Delivery Date"
-                onChange={handleDateChange}
+                <DatePicker placeholder="Assignment Start Date"
+                onChange={handleDateStart}
                 className="css-dev-only-do-not-override-htwhyh"
                 style={{ height: '58px', width: '250px' , color: 'red'}}
 
@@ -554,7 +565,12 @@ height='50px'/>
               xs={12}
               md={4}
             >
-              
+                     <DatePicker placeholder="Assignment End Date"
+                onChange={handleDateEnd}
+                className="css-dev-only-do-not-override-htwhyh"
+                style={{ height: '58px', width: '250px' , color: 'red'}}
+
+height='50px'/>
             </Grid>
             <Grid
               xs={12}

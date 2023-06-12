@@ -124,8 +124,14 @@ console.log(state)
         )}
         <PropertyListItem
           align={align}
-          label="Delivery Date"
-          value={state?.deliveryDate || state?.workorder?.deliveryDate}
+          label="Assignment Start Date"
+          value={state?.startdate || state?.workorder?.startdate}
+        />
+        <Divider />
+        <PropertyListItem
+          align={align}
+          label="Assignment End Date"
+          value={state?.enddate || state?.workorder?.enddate}
         />
         <Divider />
         <PropertyListItem

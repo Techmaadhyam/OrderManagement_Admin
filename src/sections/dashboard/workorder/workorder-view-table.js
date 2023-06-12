@@ -181,9 +181,14 @@ console.log(filteredList)
       dataIndex: 'createdDate',
     },
     {
-      title: 'Delivery Date',
-      key: 'deliveryDate',
-      dataIndex: 'deliveryDate',
+      title: 'Assignment Start Date',
+      key: 'startdate',
+      dataIndex: 'startdate',
+    },
+    {
+      title: 'Assignment End Date',
+      key: 'enddate',
+      dataIndex: 'enddate',
     },
     {
       title: 'Status',

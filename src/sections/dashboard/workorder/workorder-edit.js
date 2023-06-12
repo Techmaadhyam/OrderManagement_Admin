@@ -130,7 +130,8 @@ console.log(state)
 
 const [type, setType] = useState(state?.type||"");
 
-const [deliveryDate, setDeliveryDate] = useState(dayjs(state?.deliveryDate, dateFormat));
+const [deliveryDate, setDeliveryDate] = useState(dayjs(state?.startdate, dateFormat));
+const [assignmentEnd, setAssignmentEnd]= useState(dayjs(state?.enddate, dateFormat))
 const [status, setStatus] = useState(state?.status || "");
 const [contactName,setContactName] = useState(state?.contactPersonName ||'')
 const [adminName,setAdminName] = useState(state?.adminPersonName ||'')
@@ -170,7 +171,8 @@ const [productName, setProductName] = useState('');
   const [totalAmount, setTotalAmount] = useState(0);
 
   const [rowData, setRowData] =useState()
-  const [dDate, setDDate] =useState(state?.deliveryDate)
+  const [dDate, setDDate] =useState(state?.startdate)
+  const [dDate2, setDDate2] =useState(state?.enddate)
 
   const [Id, setId] = useState()
 
@@ -273,10 +275,24 @@ const [productName, setProductName] = useState('');
     }
   }, [deliveryDate]);
 
+  useEffect(() => {
+    if (assignmentEnd) {
+      const deliveryDateJS = assignmentEnd.toDate();
+      const formattedDeliveryDate = moment(deliveryDateJS).format('DD/MM/YYYY');
+      setDDate2(formattedDeliveryDate);
+    } else {
+      setDDate2('');
+    }
+  }, [assignmentEnd]);
+
   const filteredData = technicianData?.filter(item => item.type === 'Technician')
 
   const handleDateChange = (date) => {
     setDeliveryDate(date);
+  };
+
+  const handleDateEnd = (date) => {
+    setAssignmentEnd(date)
   };
 
   //////////////
@@ -455,7 +471,8 @@ console.log(idx, row)
                 adminEmail: adminEmail,   
                 status: status,
                 type: type,
-                deliveryDate: dDate,
+                startdate: dDate,
+                enddate: dDate2,
                 createdByUser: {id: userId},
                 createdDate: currentDate,
                 lastModifiedDate: currentDate,
@@ -469,7 +486,7 @@ console.log(idx, row)
       
             },
                 workOrderItems: updatedRows,
-                deleteWorkOrderItems: deletedRows
+                deleteWorkOrderItems: deleteRows
         })
           });
           
@@ -518,7 +535,7 @@ console.log(idx, row)
       
             },
                 workOrderItems: updatedRows,
-                deleteWorkOrderItems: deletedRows
+                deleteWorkOrderItems: deleteRows
         })
           });
           
@@ -585,16 +602,20 @@ console.log(idx, row)
                 format={dateFormat}
                 className="css-dev-only-do-not-override-htwhyh"
                 style={{ height: '58px', width: '250px' , color: 'red'}}
-                
-             
-
-height='50px'/>
+                height='50px'/>
 
             </Grid>
             <Grid
               xs={12}
               md={4}
             >
+                <DatePicker placeholder="Assignment End Date"
+                onChange={handleDateEnd}
+                defaultValue={assignmentEnd}
+                format={dateFormat}
+                className="css-dev-only-do-not-override-htwhyh"
+                style={{ height: '58px', width: '250px' , color: 'red'}}
+                height='50px'/>
             </Grid>
             <Grid
               xs={12}
