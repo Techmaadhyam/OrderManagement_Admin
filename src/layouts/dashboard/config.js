@@ -11,6 +11,9 @@ import Upload04Icon from 'src/icons/untitled-ui/duocolor/upload-04';
 import Users03Icon from 'src/icons/untitled-ui/duocolor/users-03';
 import { tokens } from 'src/locales/tokens';
 import { paths } from 'src/paths';
+import BuildCircleTwoToneIcon from '@mui/icons-material/BuildCircleTwoTone';
+import InventoryTwoToneIcon from '@mui/icons-material/InventoryTwoTone';
+import AssignmentTwoToneIcon from '@mui/icons-material/AssignmentTwoTone';
 
 export const useSections = () => {
   const { t } = useTranslation();
@@ -125,7 +128,7 @@ export const useSections = () => {
             path: paths.dashboard.technician.index,
             icon: (
               <SvgIcon fontSize="small">
-                <Users03Icon /> 
+                <BuildCircleTwoToneIcon /> 
                 {/* <Truck01Icon /> */}
               </SvgIcon>
             ),
@@ -184,7 +187,7 @@ export const useSections = () => {
             title: t(tokens.nav.orderList),
             icon: (
               <SvgIcon fontSize="small">
-                <ShoppingCart01Icon />
+                <InventoryTwoToneIcon />
               </SvgIcon>
             ),
             path: paths.dashboard.orders.index,
@@ -230,7 +233,7 @@ export const useSections = () => {
             path: paths.dashboard.workorder.index,
             icon: (
               <SvgIcon fontSize="small">
-                <ShoppingCart01Icon />
+                <AssignmentTwoToneIcon />
                 {/* <Users03Icon /> */}
               </SvgIcon>
             ),
