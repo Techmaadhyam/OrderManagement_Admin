@@ -400,7 +400,7 @@ const filteredData = technicianData?.filter(item => item.type === 'Technician')
 
     event.preventDefault();
     
-      if (contactName && userId && phone && status && comment && terms && updatedRows) {
+      if (contactName && userId && phone && status && comment && terms && updatedRows && tempId) {
         try {
           const response = await fetch('http://13.115.56.48:8080/techmadhyam/addWorkOrderWithItems', {
             method: 'POST',
@@ -449,9 +449,57 @@ const filteredData = technicianData?.filter(item => item.type === 'Technician')
         } catch (error) {
           console.error('API call failed:', error);
         }
-      } 
+      } else if(contactName && userId && phone && status && comment && terms && updatedRows && userState){
+        try {
+          const response = await fetch('http://13.115.56.48:8080/techmadhyam/addWorkOrderWithItems', {
+            method: 'POST',
+            headers: {
     
-    };
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              workorder:{
+                  contactPersonName: contactName,
+                  contactPhoneNumber: phone,
+                  contactEmail: inchargeEmail,
+                  adminPersonName: adminName,
+                  adminPhoneNumber: adminPhone,
+                  adminEmail: adminEmail,   
+                  status: status,
+                  type: type,
+                  deliveryDate: formattedDeliveryDate,
+                  createdByUser: {id: userId},
+                  createdDate: currentDate,
+                  lastModifiedDate: currentDate,
+                  comments : comment,
+                  lastModifiedByUser: {id: userId},
+                  termsAndCondition: terms,
+                  //totalAmount: finalAmount,
+                  technicianInfo: {id: technician},
+                  company: {id: userState},
+        
+              },
+                  workOrderItems: updatedRows,
+                  deleteWorkOrderItems: []
+          })
+          });
+          
+          if (response.ok) {
+            // Redirect to home page upon successful submission
+        
+           response.json().then(data => {
+    
+      
+          navigate('/dashboard/workorder/viewDetail', { state: data });
+          console.log(data)
+    });
+          } 
+        } catch (error) {
+          console.error('API call failed:', error);
+        }
+      }
+    
+    }
 
 
 
