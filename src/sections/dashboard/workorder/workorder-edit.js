@@ -176,9 +176,17 @@ const [productName, setProductName] = useState('');
 
   const [Id, setId] = useState()
 
+  const [touched, setTouched] = useState(false);
+
 
       //deleted row
   const [deletedRows, setDeletedRows] = useState([]);
+
+  const handleBlur = () => {
+    setTouched(true);
+  };
+  
+  const hasError = touched && !adminEmail.includes("@");
 
   useEffect(() => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllWorkOrderItems/${state?.id || state?.workorder?.id}`)
@@ -264,7 +272,7 @@ const [productName, setProductName] = useState('');
       });
   }, [state?.tempUserId, state?.userId]);
 
- 
+ console.log(user)
   useEffect(() => {
     if (deliveryDate) {
       const deliveryDateJS = deliveryDate.toDate();
@@ -727,6 +735,9 @@ console.log(idx, row)
                     fullWidth
                     label="Admin Email"
                     name="adminemail"
+                    helperText={hasError && "Please enter a valid email."}
+                    onBlur={handleBlur}
+                    error={hasError}
                     value={adminEmail}
                     onChange={handleInputChange}
                   >
@@ -741,6 +752,7 @@ console.log(idx, row)
                     fullWidth
                     label="Admin Phone"
                     name="adminphone"
+                    type='number'
                     value={adminPhone}
                     onChange={handleInputChange}
                   >
@@ -768,6 +780,9 @@ console.log(idx, row)
                     label="Incharge Email"
                     name="inchargeemail"
                     value={inchargeEmail}
+                    helperText={hasError && "Please enter a valid email."}
+                    onBlur={handleBlur}
+                    error={hasError}
                     onChange={handleInputChange}
                   >
                   </TextField>
@@ -780,6 +795,7 @@ console.log(idx, row)
                 fullWidth
                 label="Incharge Phone"
                 name="mobileno"
+                type='number'
                 value={phone}
                 onChange={handleInputChange}
               />

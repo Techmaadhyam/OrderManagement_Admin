@@ -50,8 +50,16 @@ const [address, setAddress] = useState("");
 const [zipcode, setZipcode] = useState("");
 const [currentDate, setCurrentDate] = useState('');
 const [gstn, setGstn]= useState('')
+const [touched, setTouched] = useState(false);
 
  ////
+
+ const handleBlur = () => {
+  setTouched(true);
+};
+
+const hasError = touched && !email.includes("@");
+
  const handleInputChange = (event) => {
   const { name, value } = event.target;
 
@@ -365,6 +373,9 @@ event.preventDefault();
                 label="Email"
                 name="email"
                 value={email}
+                helperText={hasError && "Please enter a valid email."}
+                onBlur={handleBlur}
+                error={hasError}
                 onChange={handleInputChange}
 
              
@@ -379,6 +390,7 @@ event.preventDefault();
                 label="Phone"
                 name="phone"
                 value={phone}
+                type='number'
                 onChange={handleInputChange}
 
               />

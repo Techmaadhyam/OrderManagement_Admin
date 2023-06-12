@@ -156,6 +156,8 @@ const [productName, setProductName] = useState('');
   const [productId, setProductId] = useState()
 
   const [totalAmount, setTotalAmount] = useState(0);
+
+  const [touched, setTouched] = useState(false);
  
 
   //currentdate
@@ -208,6 +210,14 @@ const [productName, setProductName] = useState('');
       break;
   }
 };
+
+
+const handleBlur = () => {
+  setTouched(true);
+};
+
+const hasError = touched && !adminEmail.includes("@");
+
 const handleDateStart = (date) => {
   setDeliveryDate(date);
 
@@ -677,12 +687,15 @@ height='50px'/>
               xs={12}
               md={4}
             >
-              <TextField
+           <TextField
 
                     fullWidth
                     label="Admin Email"
                     name="adminemail"
                     value={adminEmail}
+                    helperText={hasError && "Please enter a valid email."}
+                    onBlur={handleBlur}
+                    error={hasError}
                     onChange={handleInputChange}
                   >
                   </TextField>
@@ -696,6 +709,7 @@ height='50px'/>
                     fullWidth
                     label="Admin Phone"
                     name="adminphone"
+                    type='number'
                     value={adminPhone}
                     onChange={handleInputChange}
                   >
@@ -726,6 +740,9 @@ height='50px'/>
                     label="Incharge Email"
                     name="inchargeemail"
                     value={inchargeEmail}
+                    helperText={hasError && "Please enter a valid email."}
+                    onBlur={handleBlur}
+                    error={hasError}
                     onChange={handleInputChange}
                   >
                   </TextField>
@@ -739,6 +756,7 @@ height='50px'/>
                     fullWidth
                     label="Incharge Phone"
                     name="mobileno"
+                    type='number'
                     value={phone}
                     onChange={handleInputChange}
                   >

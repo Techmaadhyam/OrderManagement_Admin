@@ -974,6 +974,7 @@ height='50px'/>
                 fullWidth
                 label="Mobile No."
                 name="mobileno"
+                type='number'
                 value={phone}
                 onChange={handleInputChange}
               />

@@ -76,6 +76,7 @@ const Register = () => {
   const [gstn, setGstn]= useState('')
 
   const [step, setStep] = useState(1);
+  const [touched, setTouched] = useState(false);
 
 
   //updating form state
@@ -123,6 +124,12 @@ const Register = () => {
         break;
     }
   };
+
+  const handleBlur = () => {
+    setTouched(true);
+  };
+  
+  const hasError = touched && !email.includes("@");
 
   const handleNext = (e) => {
     e.preventDefault()
@@ -329,7 +336,7 @@ const handleCities = async (event) => {
     event.preventDefault();
   
     if (password === confirmPassword) {
-      if (firstName && lastName && email && phone && username && company && type && currentCountry && currentState && currentCity && zipcode && password && currentDate) {
+      if (firstName && lastName && email && phone  && company && type && currentCountry && currentState && currentCity && zipcode && password && currentDate) {
         try {
           const response = await fetch('http://13.115.56.48:8080/techmadhyam/addUser', {
             method: 'POST',
@@ -339,7 +346,7 @@ const handleCities = async (event) => {
             },
             body: JSON.stringify({
               companyName: company,
-              userName : username,
+              userName : email,
               password: password,
               firstName: firstName,
               lastName: lastName,
@@ -511,7 +518,10 @@ const handleCities = async (event) => {
                     name="Email"
                     value={email}
                     onChange={handleInputChange}
-                    color="warning"
+                    helperText={hasError && "Please enter a valid email."}
+                    onBlur={handleBlur}
+                    error={hasError}
+        
                   >
                   </TextField>
             </Grid>
@@ -537,22 +547,10 @@ const handleCities = async (event) => {
            
             </div>
           </Grid>
+        
             <Grid
               xs={12}
-              md={6}
-            >
-              <TextField
-                    fullWidth
-                    label="Username"
-                    name="username"
-                    value={username}
-                    onChange={handleInputChange}
-                  >
-                  </TextField>
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
+              md={12}
             >
               <TextField
                     fullWidth

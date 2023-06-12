@@ -172,6 +172,7 @@ const [productName, setProductName] = useState('');
   const [dDate, setDDate] =useState(state?.deliveryDate)
 
   const [Id, setId] = useState()
+  const [touched, setTouched] = useState(false);
 
 
       //deleted row
@@ -236,6 +237,12 @@ const [productName, setProductName] = useState('');
       break;
   }
 };
+
+const handleBlur = () => {
+  setTouched(true);
+};
+
+const hasError = touched && !adminEmail.includes("@");
    //get temp user
    useEffect(() => {
     const request1 = axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`);
@@ -655,6 +662,9 @@ height='50px'/>
                     fullWidth
                     label="Admin Email"
                     name="adminemail"
+                    helperText={hasError && "Please enter a valid email."}
+                    onBlur={handleBlur}
+                    error={hasError}
                     value={adminEmail}
                     onChange={handleInputChange}
                   >
@@ -668,6 +678,7 @@ height='50px'/>
 
                     fullWidth
                     label="Admin Phone"
+                    type='number'
                     name="adminphone"
                     value={adminPhone}
                     onChange={handleInputChange}
@@ -695,6 +706,9 @@ height='50px'/>
                     fullWidth
                     label="Incharge Email"
                     name="inchargeemail"
+                    helperText={hasError && "Please enter a valid email."}
+                    onBlur={handleBlur}
+                    error={hasError}
                     value={inchargeEmail}
                     onChange={handleInputChange}
                   >
@@ -707,6 +721,7 @@ height='50px'/>
               <TextField
                 fullWidth
                 label="Incharge Phone"
+                type='number'
                 name="mobileno"
                 value={phone}
                 onChange={handleInputChange}

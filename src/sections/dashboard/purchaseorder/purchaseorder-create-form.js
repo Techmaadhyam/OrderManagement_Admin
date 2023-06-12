@@ -870,6 +870,7 @@ height='50px'/>
                 label="Mobile No."
                 name="mobileno"
                 value={phone}
+                type='number'
                 onChange={handleInputChange}
               />
             </Grid>
