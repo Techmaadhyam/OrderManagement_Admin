@@ -25,7 +25,7 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import './inventory.css'
 
   //get userid 
-  const userId = sessionStorage.getItem('user');
+  const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
 
   // const typeDropdown = [
   //   {

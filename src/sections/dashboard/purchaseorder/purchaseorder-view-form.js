@@ -39,7 +39,7 @@ const customerType = [
 ];
 
 
-const userId = sessionStorage.getItem('user');
+const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
   const PurchaseOrderViewForm = () => {
 
   const [userData, setUserData]= useState([])

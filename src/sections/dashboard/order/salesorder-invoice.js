@@ -42,7 +42,7 @@ const customerType = [
     value: 'Customer'
   }
 ];
-const userId = sessionStorage.getItem('user');
+const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
 console.log(userId);
 const SalesOrderInvoice = (props) => {
 

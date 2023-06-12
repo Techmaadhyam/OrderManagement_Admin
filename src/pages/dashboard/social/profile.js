@@ -70,10 +70,14 @@ export const Page = () => {
 
   }
 //logout
-  const handleLogout = () => {
-    sessionStorage.clear();
-    window.location.href = paths.index;
-  };
+const handleLogout = () => {
+  // Clear the session storage
+  sessionStorage.clear();
+  localStorage.removeItem('accessToken');
+  const broadcastChannel = new BroadcastChannel('logoutChannel');
+  broadcastChannel.postMessage('logout');
+  window.location.href = paths.index;
+};
 
   const align = 'horizontal' 
 

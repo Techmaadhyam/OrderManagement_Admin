@@ -38,7 +38,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 
-const userId = parseInt(sessionStorage.getItem('user'))
+const userId = parseInt(sessionStorage.getItem('user') || localStorage.getItem('user'))
 const dateFormat = 'DD/MM/YYYY';
 
 

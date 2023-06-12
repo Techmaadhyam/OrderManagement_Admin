@@ -31,7 +31,7 @@ import { Delete } from '@mui/icons-material';
 import './customTable.css'
 import { useNavigate } from 'react-router-dom';
 
-const userId = parseInt(sessionStorage.getItem('user'))
+const userId = parseInt(sessionStorage.getItem('user')|| localStorage.getItem('user'))
 
 
 const customerType = [

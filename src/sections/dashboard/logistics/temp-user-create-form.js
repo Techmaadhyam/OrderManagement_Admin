@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 
 
   //get userid 
-  const userId = sessionStorage.getItem('user');
+const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
 
   const customerType = [
     {

@@ -27,7 +27,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 
-const userId = sessionStorage.getItem('user');
+const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
 
 const categoryBuySell = [
    

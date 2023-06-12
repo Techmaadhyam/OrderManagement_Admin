@@ -23,7 +23,7 @@ import './warehouse.css'
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@mui/material';
 
   //get userid 
-  const userId = sessionStorage.getItem('user');
+  const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
 
 const ViewWarehouse = () => {
 

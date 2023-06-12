@@ -34,7 +34,7 @@ import { useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
 
 
-const userId = parseInt(sessionStorage.getItem('user'))
+const userId = parseInt(sessionStorage.getItem('user')|| localStorage.getItem('user'))
 const dateFormat = 'DD/MM/YYYY';
 
 

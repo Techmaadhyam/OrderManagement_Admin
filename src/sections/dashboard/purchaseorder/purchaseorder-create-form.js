@@ -37,7 +37,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 //get userId from session storage
-const userId = parseInt(sessionStorage.getItem('user'))
+const userId = parseInt(sessionStorage.getItem('user')|| localStorage.getItem('user'))
 
 //type dropdown
 
