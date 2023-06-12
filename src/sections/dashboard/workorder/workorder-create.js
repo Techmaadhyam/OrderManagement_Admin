@@ -132,8 +132,8 @@ const [userState, setUserState] = useState();
 const [terms, setTerms] = useState('');
 const [comment, setComment] = useState('');
 const [category, setCategory] = useState('');
-const [technician, setTechnician] = useState(undefined);
-const [technicianData, setTechnicianData] = useState();
+const [technician, setTechnician] = useState('');
+const [technicianData, setTechnicianData] = useState([]);
 
 const [currentDate, setCurrentDate] = useState('');
 
@@ -164,7 +164,7 @@ const [productName, setProductName] = useState('');
     const formattedDate = today.toLocaleDateString('IN', options);
     setCurrentDate(formattedDate);
   }, []);
-  console.log(workstation)
+
  const handleInputChange = (event) => {
   const { name, value } = event.target;
 
@@ -239,7 +239,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
 
 
 const filteredData = technicianData?.filter(item => item.type === 'Technician')
-console.log(filteredData)
+
   //////////////
   //add product//
   /////////////
@@ -251,8 +251,8 @@ console.log(filteredData)
     const calculatedTotalAmount = updatedRows.reduce(
       (total, row) =>
         total +
-        row.workstationCount * row.unitPrice +
-          (row.workstationCount * row.unitPrice * row.igst) / 100,
+        row.workstationcount * row.unitPrice +
+          (row.workstationcount * row.unitPrice * row.igst) / 100,
       0
     );
   
@@ -282,17 +282,17 @@ console.log(filteredData)
       description
     ) {
       const newRow = {
-        productId,
+        product: {id: productId},
         productName,
         workOrderId: null,
         unitPrice: parseFloat(price),
         description,
-        createdBy: userId,
-        workstationCount: parseFloat(workstation),
+        //createdBy: userId,
+        workstationcount: parseFloat(workstation),
         igst: parseFloat(igst),
-        comments: comment,
-        createdDate: currentDate,
-        lastModifiedDate: currentDate,
+        comment: comment,
+        //createdDate: currentDate,
+        //lastModifiedDate: currentDate,
       };
   
       let updatedRows;
@@ -313,8 +313,8 @@ console.log(filteredData)
       const calculatedTotalAmount = updatedRows.reduce(
         (total, row) =>
           total +
-          row.workstationCount * row.unitPrice +
-          (row.workstationCount * row.unitPrice * row.igst) / 100,
+          row.workstationcount * row.unitPrice +
+          (row.workstationcount * row.unitPrice * row.igst) / 100,
         0
       );
   
@@ -328,7 +328,7 @@ console.log(filteredData)
   setPrice(row.unitPrice);
   setCgst(row.cgst);
   setIgst(row.igst)
-  setWorkstation(row.workstationCount)
+  setWorkstation(row.workstationcount)
   setSize(row.size)
   setDescription(row.description);
   setEditIndex(idx);
@@ -360,7 +360,12 @@ console.log(filteredData)
   }, []);
 
 
-  const updatedRows = rows.map(({ productName, ...rest }) => rest);
+
+  const updatedRows = rows.map(({ productName, ...rest }) => ({
+    ...rest,
+    comment : comment,
+    
+  }));
   //post request
   const handleClick = async (event) => {
 
@@ -368,29 +373,29 @@ console.log(filteredData)
 
     console.log( JSON.stringify({
       workorder:{
-          contactPersonName: contactName,
-          contactPhoneNumber: phone,
-          contactEmail: inchargeEmail,
-          adminPersonName: adminName,
-          adminPhoneNumber: adminPhone,
-          adminEmail: adminEmail,   
-          status: status,
-          type: type,
-          deliveryDate: formattedDeliveryDate,
-          createdBy: userId,
-          createdDate: currentDate,
-          lastModifiedDate: currentDate,
-          comments : comment,
-          //category: category,
-          lastModifiedByUser: {id: userId},
-          termsAndCondition: terms,
-          totalAmount: finalAmount,
-          technician:{id: technician},
-          noncompany:{id: tempId},
-          //company: {id: userState},
+        contactPersonName: contactName,
+        contactPhoneNumber: phone,
+        contactEmail: inchargeEmail,
+        adminPersonName: adminName,
+        adminPhoneNumber: adminPhone,
+        adminEmail: adminEmail,   
+        status: status,
+        type: type,
+        deliveryDate: formattedDeliveryDate,
+        createdBy: {id: userId},
+        createdDate: currentDate,
+        lastModifiedDate: currentDate,
+        comments : comment,
+        lastModifiedByUser: {id: userId},
+        termsAndCondition: terms,
+        //totalAmount: finalAmount,
+        technicianInfo: {id: technician},
+        noncompany:{id: tempId}
+        //company: {id: userState},
 
-      },
-          workOrderItems: updatedRows
+    },
+        workOrderItems: updatedRows,
+        deleteWorkOrderItems: []
   }))
 
     event.preventDefault();
@@ -414,11 +419,10 @@ console.log(filteredData)
                   status: status,
                   type: type,
                   deliveryDate: formattedDeliveryDate,
-                  createdBy: {id: userId},
+                  createdByUser: {id: userId},
                   createdDate: currentDate,
                   lastModifiedDate: currentDate,
                   comments : comment,
-                  //category: category,
                   lastModifiedByUser: {id: userId},
                   termsAndCondition: terms,
                   //totalAmount: finalAmount,
@@ -427,7 +431,8 @@ console.log(filteredData)
                   //company: {id: userState},
         
               },
-                  workOrderItems: updatedRows
+                  workOrderItems: updatedRows,
+                  deleteWorkOrderItems: []
           })
           });
           
@@ -447,7 +452,8 @@ console.log(filteredData)
       } 
     
     };
-console.log(technician)
+
+
 
   return (
     <div style={{minWidth: "100%" }}>
@@ -572,9 +578,9 @@ height='50px'/>
                 fullWidth
                 label="Technician"
                 name="technician"
-                value={technician}
                 select
-                defaultValue=''
+                value={technician}
+            
                 onChange={handleInputChange}
 
                 >
@@ -846,7 +852,7 @@ height='50px'/>
                                 <div>{row.unitPrice}</div>
                               </TableCell>
                               <TableCell>
-                                <div>{row.workstationCount}</div>
+                                <div>{row.workstationcount}</div>
                               </TableCell>
                               <TableCell>
                                 <div>{row.igst}</div>
@@ -854,8 +860,8 @@ height='50px'/>
                               <TableCell>
                               <div>
                                 {(
-                              ((row.workstationCount * row.unitPrice) +
-                              ((row.workstationCount * row.unitPrice) * row.igst/ 100)).toFixed(2)
+                              ((row.workstationcount * row.unitPrice) +
+                              ((row.workstationcount * row.unitPrice) * row.igst/ 100)).toFixed(2)
                                 )}
                               </div>
                               </TableCell>
@@ -897,7 +903,7 @@ height='50px'/>
               fullWidth
               multiline
               rows={4}
-              maxRows={8}
+     
               value={terms}
               onChange={(e) => setTerms(e.target.value)}
             />
@@ -912,7 +918,7 @@ height='50px'/>
               fullWidth
               multiline
               rows={2}
-              maxRows={4}
+ 
               value={comment}
               onChange={(e) => setComment(e.target.value)} 
             />
