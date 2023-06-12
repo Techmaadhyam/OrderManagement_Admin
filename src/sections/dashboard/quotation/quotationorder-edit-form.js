@@ -948,7 +948,7 @@ height='50px'/>
               fullWidth
               multiline
               rows={4}
-              maxRows={8}
+
               value={terms}
               onChange={(e) => setTerms(e.target.value)}
             />
@@ -963,7 +963,7 @@ height='50px'/>
               fullWidth
               multiline
               rows={2}
-              maxRows={4}
+        
               value={comment}
               onChange={(e) => setComment(e.target.value)} 
             />
