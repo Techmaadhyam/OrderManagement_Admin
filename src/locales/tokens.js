@@ -3,6 +3,7 @@ export const tokens = {
     languageChanged: 'common.languageChanged'
   },
   nav: {
+    downloadQuotation: 'nav.downloadQuotation',
     quotation: 'nav.quotation',
     account: 'nav.account',
     analytics: 'nav.analytics',

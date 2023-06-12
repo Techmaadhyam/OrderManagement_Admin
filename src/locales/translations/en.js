@@ -5,6 +5,7 @@ export const en = {
   [tokens.nav.quotation]: 'Quotation',
   [tokens.nav.account]: 'Account',
   [tokens.nav.analytics]: 'Analytics',
+  [tokens.nav.downloadQuotation]: 'Download Quotation',
   [tokens.nav.auth]: 'Auth',
   [tokens.nav.blog]: 'Blog',
   [tokens.nav.browse]: 'Browse',
