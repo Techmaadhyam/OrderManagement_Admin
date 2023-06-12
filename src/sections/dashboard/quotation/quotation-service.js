@@ -242,11 +242,9 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
   
     const calculatedTotalAmount = updatedRows.reduce(
       (total, row) =>
-        total +
-        row.quantity * row.price +
-        (row.quantity * row.price * row.cgst) / 100 +
-        (row.quantity * row.price * row.igst) / 100 +
-        (row.quantity * row.price * row.sgst) / 100,
+      total +
+        row.workstationCount * row.price +
+          (row.workstationCount * row.price * row.igst) / 100,
       0
     );
   
@@ -306,12 +304,10 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
   
       const calculatedTotalAmount = updatedRows.reduce(
         (total, row) =>
-          total +
-          row.quantity * row.price +
-          (row.quantity * row.price * row.cgst) / 100 +
-          (row.quantity * row.price * row.igst) / 100 +
-          (row.quantity * row.price * row.sgst) / 100,
-        0
+        total +
+        row.workstationCount * row.price +
+          (row.workstationCount * row.price * row.igst) / 100,
+      0
       );
   
       setTotalAmount(calculatedTotalAmount);
@@ -392,7 +388,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
                   category: category,
                   lastModifiedByUser: {id: userId},
                   termsAndCondition: terms,
-                  totalAmount: 0,
+                  totalAmount: finalAmount,
         
               },
                   quotationDetails: updatedRows
@@ -808,11 +804,9 @@ height='50px'/>
                               </TableCell>
                               <TableCell>
                               <div>
-                                {(
-                                  ((row.quantity * row.price) +
-                                  ((row.quantity * row.price) * row.cgst/ 100) +
-                                  ((row.quantity * row.price) * row.igst / 100) +
-                                  ((row.quantity * row.price) * row.sgst / 100)).toFixed(2)
+                              {(
+                              ((row.workstationCount * row.price) +
+                              ((row.workstationCount * row.price) * row.igst/ 100)).toFixed(2)
                                 )}
                               </div>
                               </TableCell>
