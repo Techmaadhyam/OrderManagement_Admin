@@ -263,7 +263,7 @@ const [productName, setProductName] = useState('');
         setUserData(combinedData);
         setTechnicianData(tempUsersData)
   
-        const selecteduserId = combinedData.find((option) => (option.id !== 0 && option.id === state?.noncompany.id) || option.id === state?.company.id);
+        const selecteduserId = combinedData.find((option) => (option.id !== 0 && option.id === state?.noncompany.id) || option.id === state?.noncompany.id);
         const selecteduser = selecteduserId ? selecteduserId.companyName : '';
         setUser(selecteduser);
       })
