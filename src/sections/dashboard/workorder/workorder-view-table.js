@@ -27,26 +27,10 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 const userId = sessionStorage.getItem('user');
 
-const categoryBuySell = [
-   
-  {
-    label: 'Purchase Quotation',
-    value: 'Purchase Quotation'
-  },
-  {
-    label: 'Sales Quotation',
-    value: 'Sales Quotation'
-  },
-  {
-    label: 'Service Quotation',
-    value: 'Service Quotation'
-  }
-];
 
 const WorkOrderViewTable = () => {
   const [userData, setUserData]= useState([])
-  const [userData1, setUserData1]= useState([])
-  const [selectedCategory, setSelectedCategory] = useState('');
+
 
   const [isSearching, setIsSearching] = useState(false);
   const [searchText, setSearchText] = useState('');
@@ -66,15 +50,15 @@ const WorkOrderViewTable = () => {
       });
   }, []);
 
-  const dataWithKeys = userData?.map((item) => ({ ...item, key: item.id }));
+  const updatedData = userData?.map((item) => {
+    return {
+      ...item,
+      companyName: item.noncompany.companyName
+    };
+  });
 
-  const filteredData = selectedCategory
-  ? dataWithKeys.filter((item) => item.category === selectedCategory)
-  : dataWithKeys;
+  const dataWithKeys = updatedData?.map((item) => ({ ...item, key: item.id }));
 
-const handleCategoryChange = (event) => {
-  setSelectedCategory(event.target.value);
-};
 
   //toast notification from toastify library
   const notify = (type, message) => {
@@ -97,7 +81,7 @@ const handleCategoryChange = (event) => {
       setUserData(updatedRows);
       notify(
         "success",
-        `Sucessfully deleted row with quotation order number: ${id}.`
+        `Sucessfully deleted row with work order number: ${id}.`
       );
     } catch (error) {
       console.error('Error deleting row:', error.message);
@@ -123,43 +107,14 @@ const handleCompanyCancel = () => {
   setSearchText('');
 };
 
-
-
-  //get company name
-useEffect(() => {
-  const request1 = axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`);
-  const request2 = axios.get(`http://13.115.56.48:8080/techmadhyam/getAllUsersBasedOnType/${userId}`);
-
-  Promise.all([request1, request2])
-    .then(([response1, response2]) => {
-      const tempUsersData = response1.data;
-      const usersData1 = response2.data;
-      const combinedData = [...tempUsersData, ...usersData1];
-      setUserData1(combinedData);
-     
-    })
-    .catch(error => {
-      console.error(error);
-    });
-}, []);
-
-const updatedUser = filteredData?.map((item) => {
-  if (item.tempUserId !== 0) {
-    const matchedCompany = userData1.find(
-      (u) => u.id === item.tempUserId || u.id === item.userId
-    );
-    if (matchedCompany) {
-      return { ...item, companyName: matchedCompany.companyName };
-    }
-  }
-  return item;
-});
   
-const filteredList = updatedUser.filter(product => {
+const filteredList = dataWithKeys.filter(product => {
   const companyMatch = product.companyName?.toLowerCase().includes(searchText.toLowerCase());
  
   return companyMatch
 });
+
+console.log(filteredList)
 
   const columns = [
     {
@@ -280,26 +235,7 @@ const filteredList = updatedUser.filter(product => {
         <IconWithPopup/>
       </div>
       
-      <TextField
-
-      label="Category"
-      name="category"
-      sx={{ minWidth: 250 }}
-      value={selectedCategory}
-      onChange={handleCategoryChange}
-
-
-      select
-      >
-     <MenuItem value="">All</MenuItem>
-        {categoryBuySell.map((option) => (
-          <MenuItem key={option.value} 
-          value={option.value}>
-            {option.label}
-          </MenuItem>
-        ))}
-      </TextField>
-      
+    
       <Box sx={{  position: 'relative' , overflowX: "auto", marginTop:'30px'}}>
  
            

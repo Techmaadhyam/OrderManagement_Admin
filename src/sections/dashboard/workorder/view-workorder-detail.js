@@ -26,54 +26,7 @@ import { useEffect } from 'react';
 
 
 
-
-const columns = [
-  {
-    title: 'Part Description',
-    dataIndex: 'description',
-    key: 'description',
-  },
-  {
-      title: 'Quantity',
-      dataIndex: 'quantity',
-      key: 'quantity',
-    },
-  {
-    title: 'Weight',
-    dataIndex: 'weight',
-    key: 'weight',
-  },
-  {
-    title: 'Size',
-    dataIndex: 'size',
-    key: 'size',
-  },
-  
-  {
-    title: 'Cost',
-    key: 'price',
-    dataIndex: 'price',
-  },
-    {
-      title: 'CGST',
-      key: 'cgst',
-      dataIndex: 'cgst',
-    },
-    {
-      title: 'SGST',
-      key: 'sgst',
-      dataIndex: 'sgst',
-    },
-    {
-      title: 'IGST',
-      key: 'igst',
-      dataIndex: 'igst',
-    },
- 
-];
-
-
-const columns2=[
+const columns=[
   {
     title: 'Part Description',
     dataIndex: 'description',
@@ -81,13 +34,13 @@ const columns2=[
   },
   {
     title:'No. Of Workstations',
-    dataIndex:'workstationCount',
-    key: 'workstationCount',
+    dataIndex:'workstationcount',
+    key: 'workstationcount',
 },
   {
     title: 'Cost',
-    dataIndex: 'price',
-    key: 'price',
+    dataIndex: 'unitPrice',
+    key: 'unitPrice',
   },
   {
     dataIndex:'igst',
@@ -111,16 +64,8 @@ console.log(state)
 
   const align = 'horizontal' 
 
-  useEffect(() => {
+ 
 
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getTempUserById/${state?.tempUserId || state?.workorder?.tempUserId}`)
-      .then(response => {
-       setTempuser(response.data)
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }, [state?.workorder?.tempUserId, state?.tempUserId]);
 
   useEffect(() => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllWorkOrderItems/${state?.id || state?.workorder?.id}`)
@@ -160,20 +105,14 @@ console.log(state)
  <h2>Workorder Detail</h2>
       <Card style={{marginBottom: "12px" }}>
         <PropertyList>
+     
         <PropertyListItem
           align={align}
-          label="User Name"
-        >
+          label="Work Order Number">
           <Typography variant="subtitle2">
-          {tempuser.firstName+' '+tempuser.lastName}
+          {String(state?.id || state?.workorder?.id)}
           </Typography>
-        </PropertyListItem>
-        <Divider />
-        <PropertyListItem
-          align={align}
-          label="Work Order Number"
-          value={String(state?.id || state?.workorder?.id)}
-        />
+          </PropertyListItem>
         <Divider />
         <PropertyListItem
           align={align}
@@ -183,13 +122,13 @@ console.log(state)
         <Divider />
         <PropertyListItem
           align={align}
-          label="Contact Name"
+          label="Incharge Name"
           value={state?.contactPersonName|| state?.workorder?.contactPersonName}
         />
         <Divider />
         <PropertyListItem
           align={align}
-          label="Contact No"
+          label="Incharge Phone"
           value={state?.contactPhoneNumber || state?.workorder?.contactPhoneNumber}
         />
         <Divider />
@@ -237,7 +176,7 @@ console.log(state)
       <Table
         sx={{ minWidth: 800, overflowX: "auto" }}
         pagination={false}
-        columns={columns2}
+        columns={columns}
         dataSource={rowData?.map(row => ({ ...row, key: row.id }))}
       >
       </Table>
