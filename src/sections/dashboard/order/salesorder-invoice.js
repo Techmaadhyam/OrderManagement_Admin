@@ -21,7 +21,7 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import SearchIcon from '@mui/icons-material/Search';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-
+import imgUrl from './imageDataUrl.js'
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 const customerType = [   
@@ -156,7 +156,7 @@ const handleTypeChange = (event) => {
 };
  
 
-const handleInvoicePdf = async (record) => {
+const handleInvoicePdf = async (record ,heading) => {
   console.log(record);
         try{
               const response = await axios.get(`http://13.115.56.48:8080/techmadhyam/getAllSalesOrderDetails/${record.id}`)
@@ -200,21 +200,26 @@ const handleInvoicePdf = async (record) => {
                 const docDefinition = {
                     pageOrientation: 'landscape',
                     content: [
-                        {
+                      {
                         columns: [
-                          // {
-                          //   image: logo,
-                          //   width: 100,
-                          // },
-                      { text: `${record.createdByUser.companyName}`, style: 'header', alignment: 'left' },
+                          {
+                            image: imgUrl,
+                            width: 150,
+                            alignment: 'left',
+                          },
+                          {stack: [
+                            {text: `${record.createdByUser.companyName}`, style: 'header'},
+                            { text: `${record.createdByUser.address}, ${record.createdByUser.city}, ${record.createdByUser.pincode}, ${record.createdByUser.state}, ${record.createdByUser.country}`, style: 'subheader' },
+                      { text: `GSTIN: ${record.createdByUser.gstNumber}`, style: 'subheader'},
+                      { text: 'PAN: AAGFT5872R', style: 'subheader'},
+                        ],
+                        margin: [20, 0, 0, 0],
+                      },
                       
                       { text: 'ORIGINAL', style: 'header', alignment: 'center' },
                         
-                      { text: 'TAX INVOICE', style: 'header', alignment: 'right' },
+                      { text: heading, style: 'header', alignment: 'right' },
                         ]},
-                        { text: `${record.createdByUser.address}, ${record.createdByUser.city}, ${record.createdByUser.pincode}, ${record.createdByUser.state}, ${record.createdByUser.country}`, style: 'subheader', alignment: 'left', margin: [0, 0, 450, 5] },
-                      { text: `GSTIN: ${record.createdByUser.gstNumber}`, style: 'subheader', alignment: 'left' },
-                      { text: 'PAN: AAGFT5872R', style: 'subheader', alignment: 'left' },
                       {
                         style: 'newTable',
                         margin: [380,0,0,0],
@@ -645,7 +650,7 @@ const handleChallanPdf = async (record) => {
       dataIndex: 'downloadInvoice',
       key: 'downloadInvoice',
       render: (_, record) => (
-        <IconButton onClick={() => handleInvoicePdf(record)}>
+        <IconButton onClick={() => handleInvoicePdf(record,"TAX INVOICE")}>
           <Icon>
             <DownloadIcon />
           </Icon>
@@ -669,7 +674,7 @@ const handleChallanPdf = async (record) => {
       dataIndex: 'downloadInvoice',
       key: 'downloadInvoice',
       render: (_, record) => (
-        <IconButton onClick={() => handleInvoicePdf(record)}>
+        <IconButton onClick={() => handleInvoicePdf(record,"PROFORMA INVOICE")}>
           <Icon>
             <DownloadIcon />
           </Icon>
