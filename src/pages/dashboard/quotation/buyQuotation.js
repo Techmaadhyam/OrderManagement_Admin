@@ -6,7 +6,8 @@ import {
 } from '@mui/material';
 import { Seo } from 'src/components/seo';
 import { usePageView } from 'src/hooks/use-page-view';
-import { QuotationOrderCreateForm } from 'src/sections/dashboard/quotation/quotationorder-create-form';
+//import { QuotationOrderCreateForm } from 'src/sections/dashboard/quotation/quotationorder-create-form';
+import { CreateTable } from 'src/pages/components/createTable';
 import { customersApi } from 'src/api/customers';
 import { useMounted } from 'src/hooks/use-mounted';
 import { useState,useCallback, useEffect } from 'react';
@@ -58,7 +59,10 @@ const Page = () => {
       >
         <Container maxWidth="lg">
           <Stack spacing={4}>
-            <QuotationOrderCreateForm customer={customer} />
+            {/* <QuotationOrderCreateForm customer={customer}
+quotationForm={true} /> */}
+<CreateTable customer={customer}
+quotationForm={true} />
           </Stack>
         </Container>
       </Box>

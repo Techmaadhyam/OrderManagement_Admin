@@ -1,0 +1,39 @@
+[
+  {
+      "id":"description",
+      "name":"Part Description"  
+  },
+  {
+      "id":"quantity",
+      "name":"Quantity"
+  },
+  {
+      "id":"weight",
+      "name":"Weight"
+  },
+  {
+    "id":"size",
+    "name":"Size"
+},
+  {
+      "id":"price",
+      "name":"Cost"
+  },
+  {
+      "id":"cgst",
+      "name":"CGST"
+  },
+  {
+    "id":"sgst",
+    "name":"SCGST"
+},
+  {
+    "id":"igst",
+    "name":"IGST"
+},
+
+  {
+    "id":"amount",
+    "name":"Net Amount"
+}
+]

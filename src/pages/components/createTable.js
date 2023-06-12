@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import {
   Box,
   IconButton,
-  //Table,
+  Table,
   TableBody,
   TableCell,
   TableHead,
@@ -17,7 +17,7 @@ import {
   MenuItem,
   Unstable_Grid2 as Grid
 } from '@mui/material';
-import { DatePicker, Table , Row, Typography} from 'antd';
+import { DatePicker , Row, Typography} from 'antd';
 import './purchase-order.css'
 import IconWithPopup from 'src/sections/dashboard/user/user-icon';
 import { useState, useEffect } from 'react';
@@ -30,6 +30,8 @@ import React from 'react';
 import { Delete } from '@mui/icons-material';
 import './customTable.css'
 import { useNavigate } from 'react-router-dom';
+import salesTable from 'src/pages/components/salesTableColumn.json';
+import serviceTable from 'src/pages/components/serviceQuotation.json';
 
 
 
@@ -78,73 +80,9 @@ const userOptions = [
  
 ];
 
-//parts row heading and width
-const tableHeader=[
-  {
-      id:'product_name',
-      name:'Part Description',
-      width: 200,
-      
-  },
-  {
-      id:'quantity',
-      name:'Quantity',
-      width: 200,
-  },
-  {
-      id:'weight',
-      name:'Weight',
-      width: 150,
-  },
-  {
-    id:'size',
-    name:'Size',
-    width: 150,
-},
-  {
-      id:'cost',
-      name:'Cost',
-      width: 150,
-  },
-  {
-      id:'cgst',
-      name:'CGST',
-      width: 150,
-  },
-  {
-    id:'sgst',
-    name:'SCGST',
-    width: 150,
-},
-  {
-    id:'igst',
-    name:'IGST',
-    width: 150,
-},
-
-  {
-    id:'amount',
-    name:'Net Amount',
-    width: 150,
-},
-  {
-      id:'add',
-      name:'',
-      width: 50,
-  },
-  {
-      id:'delete',
-      name:'',
-      width: 50,
-  }
-];
-
 
 export const CreateTable = (props) => {
-    const { sales, purchase } =props;
-    console.log("sales...",sales);
-    console.log("purchase...",purchase);
-
+    const { sales, purchase, quotationForm, service } =props;
 
   //used to store company names from 2 diffrent API's
   const [userData, setUserData]= useState([])
@@ -160,7 +98,11 @@ export const CreateTable = (props) => {
   const [quotation, setQuotation] = useState('');
   const [deliveryDate, setDeliveryDate] = useState('');
   const [status, setStatus] = useState("");
-  const [contactName,setContactName] = useState('')
+  const [contactName,setContactName] = useState('');
+  const [adminName,setAdminName] = useState('')
+  const [adminEmail, setAdminEmail] = useState('');
+  const [adminPhone, setAdminPhone] = useState('');
+  const [inchargeEmail, setInchargeEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState("");
   const [tempId, setTempId] = useState();
@@ -168,10 +110,12 @@ export const CreateTable = (props) => {
   const [terms, setTerms] = useState('');
   const [comment, setComment] = useState('');
   const [currentDate, setCurrentDate] = useState('');
-
+  const [category, setCategory] = useState('Service Quotation');
+  
   //add parts state managment
   const [productName, setProductName] = useState('');
   const [weight, setWeight] = useState('');
+  const [workstation, setWorkstation] = useState();
   const [sgst, setSgst] = useState();
   const [igst, setIgst] = useState();
   const [quantity, setQuantity] = useState();
@@ -188,6 +132,7 @@ export const CreateTable = (props) => {
   const [productId, setProductId] = useState()
   const [salesUser, setSalesUser] =useState()
   const [allQuotation, setAllQuotation] = useState([])
+  const [tableColums, setTableColumns ] = useState([])
 
 
   //store total amount
@@ -197,6 +142,7 @@ export const CreateTable = (props) => {
   const [performaInvoiceFile, setPerformaInvoiceFile] = useState(null);
   const [approvedInvoiceFile, setApprovedInvoiceFile] = useState(null);
   const [deliveryChallanFile, setDeliveryChallanFile] = useState(null);
+  const [titleHeader, setTiltleHeader] = useState('');
 
 
   //get currentdate
@@ -205,12 +151,58 @@ export const CreateTable = (props) => {
     const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
     const formattedDate = today.toLocaleDateString('IN', options);
     setCurrentDate(formattedDate);
+    if(sales){
+      setTiltleHeader("Create Sales Order");
+    }
+    else if(purchase){
+      setTiltleHeader("Create Purchase Order");
+    }
+    else{
+      setTiltleHeader("Create Quotation Order");
+    }
   }, []);
 
   //handle form fields state update
  const handleInputChange = (event) => {
   const { name, value } = event.target;
-
+  if(service){
+    switch (name) {
+  
+      case 'user':
+        setUserName(value);
+          break;
+      case 'contactName':
+        setContactName(value);
+        break;
+      case 'adminname':
+        setAdminName(value);
+        break;
+      case 'adminemail':
+        setAdminEmail(value);
+        break;
+      case 'adminphone':
+        setAdminPhone(value);
+        break;
+      case 'inchargeemail':
+        setInchargeEmail(value);
+        break;
+      case 'mobileno':
+        setPhone(value);
+        break;
+      case 'type':
+        setType(value);
+        break;
+      case 'status':
+        setStatus(value);
+        break;
+    case 'address':
+      setAddress(value);
+        break;
+    default:
+      break;
+  }
+  }
+else {
   switch (name) {
   
       case 'user':
@@ -240,6 +232,7 @@ export const CreateTable = (props) => {
     default:
       break;
   }
+}
 };
 
 const handleDateChange = (date) => {
@@ -247,26 +240,53 @@ const handleDateChange = (date) => {
 };
    //get temporary user data
    useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`)
-      .then(response => {
-      
-        setUserData(prevData => [...prevData, ...response.data]);
+    if(sales || purchase || quotationForm){
+        const tableColums = salesTable;
+        setTableColumns(tableColums);
+        axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`)
+        .then(response => {
+        
+          setUserData(prevData => [...prevData, ...response.data]);
+         
        
-     
-      })
-      .catch(error => {
-        console.error(error);
-      });
-    //get user data
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllUsersBasedOnType/${userId}`)
-      .then(response => {
-        setUserData(prevData => [...prevData, ...response.data]);
-
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }, []);
+        })
+        .catch(error => {
+          console.error(error);
+        });
+      
+      //get user data
+      axios.get(`http://13.115.56.48:8080/techmadhyam/getAllUsersBasedOnType/${userId}`)
+        .then(response => {
+          setUserData(prevData => [...prevData, ...response.data]);
+  
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
+    else if(service){
+      const tableColums = serviceTable;
+        setTableColumns(tableColums);
+        axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`)
+        .then(response => {
+          setUserData(prevData => [...prevData, ...response.data]);
+       
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    
+      axios.get(`http://13.115.56.48:8080/techmadhyam/getAllUsersBasedOnType/${userId}`)
+        .then(response => {
+          setUserData(prevData => [...prevData, ...response.data]);
+  
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
+ 
+  }, [purchase, quotationForm, sales, service]);
 
 //get quotation data
   useEffect(() => {
@@ -327,7 +347,57 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
   //handle popup submission
   const handleSubmit = (e) => {
     e.preventDefault();
+  if(service){
+    if (
+      price &&
+      productName &&
+      workstation &&
+      igst &&
+      description
+    ) {
+      const newRow = {
+        productId,
+        productName,
+        quotationId: null,
+        price: parseFloat(price),
+        description,
+        createdBy: userId,
+        workstationCount: parseFloat(workstation),
+        igst: parseFloat(igst),
+        comments: comment,
+        createdDate: currentDate,
+        lastModifiedDate: currentDate,
+      };
   
+      let updatedRows;
+  
+      if (editIndex !== null) {
+        updatedRows = [...rows];
+        updatedRows[editIndex] = newRow;
+        setRows(updatedRows);
+      } else {
+        updatedRows = [...rows, newRow];
+        setRows(updatedRows);
+      }
+  
+      clearFormFields();
+      setShowForm(false);
+      setEditIndex(null);
+  
+      const calculatedTotalAmount = updatedRows.reduce(
+        (total, row) =>
+          total +
+          row.quantity * row.price +
+          (row.quantity * row.price * row.cgst) / 100 +
+          (row.quantity * row.price * row.igst) / 100 +
+          (row.quantity * row.price * row.sgst) / 100,
+        0
+      );
+  
+      setTotalAmount(calculatedTotalAmount);
+    }
+  }
+  else{
     if (
       quantity &&
       price &&
@@ -385,7 +455,8 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
   
       setTotalAmount(calculatedTotalAmount);
     }
-  };
+  }
+};
 //handle editing of row
   const handleEditRow = (idx, row) => {
   setProductName(row.productName);
@@ -399,6 +470,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
   setDescription(row.description);
   setEditIndex(idx);
   setShowForm(true);
+  setWorkstation(row.workstationCount)
 };
   
 //clear popup field on save, close.
@@ -412,6 +484,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
     setIgst('')
     setSgst('')
     setDescription('');
+    setWorkstation('')
   };
 
   //get all parts details
@@ -448,7 +521,7 @@ const handleClick = async (event) => {
 let finalAmount = totalAmount.toFixed(2)
     event.preventDefault();
     
-      if (1+1===2) {
+      if (purchase && 1+1===2) {
         try {
           const response = await fetch('http://13.115.56.48:8080/techmadhyam/createPurchaseOrder', {
             method: 'POST',
@@ -672,6 +745,149 @@ let finalAmount = totalAmount.toFixed(2)
           console.error('API call failed:', error);
         }
       } 
+      if (sales && contactName) {
+        try {
+          const response = await fetch('http://13.115.56.48:8080/techmadhyam/createSalesOrder', {
+            method: 'POST',
+            headers: {
+    
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              salesOrder:{
+                  quotationId: quotation,
+                  userId: userState,
+                  tempUserId :tempId,
+                  contactPerson: contactName,
+                  contactPhone: phone,    
+                  status: status,
+                  paymentMode: payment,
+                  type: type,
+                  deliveryDate: formattedDeliveryDate,
+                  deliveryAddress: address,
+                  city: null,
+                  state:null,
+                  country: null,
+                  createdBy: userId,
+                  createdDate: currentDate,
+                  lastModifiedDate: currentDate,
+                  comments : comment,
+                  termsAndCondition: terms,
+                  totalAmount: finalAmount,
+                  lastModifiedByUser: {id: userId},
+              },
+                  salesOrderDetails: updatedRows
+          })
+          });
+          
+          if (response.ok) {
+            // Redirect to home page upon successful submission
+        
+           response.json().then(data => {
+
+          
+            navigate('/dashboard/orders/viewDetail', { state: data });
+            console.log(data)
+    });
+          } 
+        } catch (error) {
+          console.error('API call failed:', error);
+        }
+      } 
+      if (quotationForm && contactName && address && userId && phone && status && address && comment && terms && updatedRows) {
+        try {
+          const response = await fetch('http://13.115.56.48:8080/techmadhyam/addQuoatation', {
+            method: 'POST',
+            headers: {
+    
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              quotation:{
+                  tempUserId :tempId,
+                  userId: userState,
+                  contactPersonName: contactName,
+                  contactPhoneNumber: phone,   
+                  status: status,
+                  type: type,
+                  deliveryDate: formattedDeliveryDate,
+                  createdBy: userId,
+                  createdDate: currentDate,
+                  lastModifiedDate: currentDate,
+                  comments : comment,
+                  category: category,
+                  lastModifiedByUser: {id: userId},
+                  termsAndCondition: terms,
+                  totalAmount: finalAmount,
+        
+              },
+                  quotationDetails: updatedRows
+          })
+          });
+          
+          if (response.ok) {
+            // Redirect to home page upon successful submission
+        
+           response.json().then(data => {
+    
+      
+          navigate('/dashboard/quotation/viewDetail', { state: data });
+          console.log(data)
+    });
+          } 
+        } catch (error) {
+          console.error('API call failed:', error);
+        }
+      } 
+      if (service && contactName && userId && phone && status && comment && terms && updatedRows) {
+        try {
+          const response = await fetch('http://13.115.56.48:8080/techmadhyam/addQuoatation', {
+            method: 'POST',
+            headers: {
+    
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              quotation:{
+                  tempUserId :tempId,
+                  userId: userState,
+                  contactPersonName: contactName,
+                  contactPhoneNumber: phone,
+                  contactEmail: inchargeEmail,
+                  adminPersonName: adminName,
+                  adminPhoneNumber: adminPhone,
+                  adminEmail: adminEmail,   
+                  status: status,
+                  type: type,
+                  deliveryDate: formattedDeliveryDate,
+                  createdBy: userId,
+                  createdDate: currentDate,
+                  lastModifiedDate: currentDate,
+                  comments : comment,
+                  category: category,
+                  lastModifiedByUser: {id: userId},
+                  termsAndCondition: terms,
+                  totalAmount: 0,
+        
+              },
+                  quotationDetails: updatedRows
+          })
+          });
+          
+          if (response.ok) {
+            // Redirect to home page upon successful submission
+        
+           response.json().then(data => {
+    
+      
+          navigate('/dashboard/quotation/viewDetail', { state: data });
+          console.log(data)
+    });
+          } 
+        } catch (error) {
+          console.error('API call failed:', error);
+        }
+      } 
     
     };
 
@@ -723,7 +939,7 @@ let finalAmount = totalAmount.toFixed(2)
         return [
           {
             title: "Part Description",
-            dataIndex: 'pardescription',
+            dataIndex: 'description',
             key: 'type',
             ellipsis: true,
             width: 110,
@@ -944,12 +1160,49 @@ let finalAmount = totalAmount.toFixed(2)
 
     console.log('Performa Invoice File:', performaInvoiceFile?.name);
     console.log('Performa Invoice File:', performaInvoiceFile?.type);
+    console.log("row...",rows);
 
+const tdData =() =>{
+    return rows.length > 0 && rows.map((data, idx)=>{
+      return(
+        <TableRow alignItems="center">
+               {
+                  tableColums.map((v)=>{
+                      return  (v.id !=="amount" ? <TableCell>{data[v.id]} </TableCell>
+                      : <TableCell> {(
+                        ((data.quantity * data.price) +
+                        ((data.quantity * data.price) * data.cgst/ 100) +
+                        ((data.quantity * data.price) * data.igst / 100) +
+                        ((data.quantity * data.price) * data.sgst / 100)).toFixed(2)
+                      )} </TableCell>
+                      )
+                  })
+               }
+               <>
+                              <TableCell>
+                                <IconButton onClick={() => handleEditRow(idx, data)}>
+                                  <Icon>
+                                    <EditIcon />
+                                  </Icon>
+                                </IconButton>
+                              </TableCell>
+                              <TableCell align='right'>
+                                <IconButton onClick={handleRemoveRow(idx)}>
+                                  <Icon>
+                                    <Delete />
+                                  </Icon>
+                                </IconButton>
+                              </TableCell>
+                              </>
+         </TableRow >
+      )
+    })
+}
 
   return (
     <div style={{minWidth: "100%" }}>
     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-      {sales ? <h2>Create Sales Order</h2> : <h2>Create Purchase Order</h2> }
+   <h2>{titleHeader}</h2>
       <IconWithPopup/>
     </div>
     <form>
@@ -1324,93 +1577,22 @@ height='50px'/>
                   </div>
 
                     <Scrollbar>
-                      {/* <Table sx={{ minWidth: 800, overflowX: 'auto' }}>
-                        <TableHead>
-                          <TableRow>
-                            {tableHeader.map((item, idx) => (
-                              <TableCell sx={{ width: item.width }} 
-                              key={idx}>
-                                {item.name}
+                    <Table sx={{ minWidth: 800, overflowX: 'auto' }}>
+        <TableHead>
+        <TableRow>
+                            {tableColums.map((data, idx) => (
+                              <TableCell
+                               key={data.id}>
+                                {data.name}
                               </TableCell>
                             ))}
                           </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {rows.map((row, idx) => (
-                            <TableRow hover 
-                            key={idx}>
-                              <TableCell>
-                                <div>{row.description}</div>
-                              </TableCell>
-                              <TableCell>
-                                 <div>{row.quantity}</div>
-                              </TableCell>
-                              <TableCell>
-                                <div>{row.weight}</div>
-                              </TableCell>
-                              <TableCell>
-                                <div>{row.size}</div>
-                              </TableCell>
-                              <TableCell>
-                                <div>{row.price}</div>
-                              </TableCell>
-                              <TableCell>
-                                <div>{row.cgst}</div>
-                              </TableCell>
-                              <TableCell>
-                                <div>{row.sgst}</div>
-                              </TableCell>
-                              <TableCell>
-                                <div>{row.igst}</div>
-                              </TableCell>
-                              
-                              <TableCell>
-                              <div>
-                                {(
-                                  ((row.quantity * row.price) +
-                                  ((row.quantity * row.price) * row.cgst/ 100) +
-                                  ((row.quantity * row.price) * row.igst / 100) +
-                                  ((row.quantity * row.price) * row.sgst / 100)).toFixed(2)
-                                )}
-                              </div>
-                              </TableCell>
-                              <TableCell>
-                                <IconButton onClick={() => handleEditRow(idx, row)}>
-                                  <Icon>
-                                    <EditIcon />
-                                  </Icon>
-                                </IconButton>
-                              </TableCell>
-                              <TableCell align='right'>
-                                <IconButton onClick={handleRemoveRow(idx)}>
-                                  <Icon>
-                                    <Delete />
-                                  </Icon>
-                                </IconButton>
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table> */}
-
-<Table sx={{ minWidth: 800, overflowX: 'auto' }}
-          rowKey="incidentId"
-          // columns={this.getColumns()}
-          columns={getColumns()}
-        //   dataSource={rowData}
-        //   rowSelection={rowSelection}
-          size="small"
-          scroll={{ x: '68vh', y: '60vh' }}
-          onRow={record => ({
-            onClick: () => {
-              this.detailsPage(record);
-            },
-          })}
-          rowClassName={record =>
-            record.ongoing ? 'row-ongoing-highlight' : null
-          }
-        //   onChange={this.getSelectedRows}
-        />
+        </TableHead>
+        <TableBody>
+        {tdData()}
+        </TableBody>
+       </Table>
+                    
                     </Scrollbar>
                   </Box>
                   <br></br>
@@ -1574,5 +1756,6 @@ CreateTable.propTypes = {
   customer: PropTypes.object.isRequired,
   sales: PropTypes.bool,
   purchase: PropTypes.bool,
-
+  quotationForm: PropTypes.bool,
+  service: PropTypes.bool,
 };

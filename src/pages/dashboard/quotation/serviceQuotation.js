@@ -6,7 +6,8 @@ import {
   } from '@mui/material';
   import { Seo } from 'src/components/seo';
   import { usePageView } from 'src/hooks/use-page-view';
-  import { QuotationServiceCreateForm } from 'src/sections/dashboard/quotation/quotation-service';
+  // import { QuotationServiceCreateForm } from 'src/sections/dashboard/quotation/quotation-service';
+  import { CreateTable } from 'src/pages/components/createTable';
   import { customersApi } from 'src/api/customers';
   import { useMounted } from 'src/hooks/use-mounted';
   import { useState,useCallback, useEffect } from 'react';
@@ -58,7 +59,8 @@ import {
         >
           <Container maxWidth="lg">
             <Stack spacing={4}>
-              <QuotationServiceCreateForm customer={customer} />
+              {/* <QuotationServiceCreateForm customer={customer} /> */}
+              <CreateTable customer={customer} service={true}/>
             </Stack>
           </Container>
         </Box>

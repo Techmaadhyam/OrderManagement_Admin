@@ -1,0 +1,22 @@
+[
+    {
+        "id":"description",
+        "name":"Description"  
+    },
+    {
+        "id":"unitPrice",
+        "name":"Unit Price"
+    },
+    {
+        "id":"noOfWorkstation",
+        "name":"No. of Workstations"
+    },
+    {
+      "id":"igst",
+      "name":"IGST"
+  },
+    {
+      "id":"amount",
+      "name":"Net Amount"
+  }
+  ]
