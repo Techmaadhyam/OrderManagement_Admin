@@ -31,6 +31,7 @@ import { Delete } from '@mui/icons-material';
 import './customTable.css'
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
+import { current } from '@reduxjs/toolkit';
 
 
 
@@ -175,7 +176,7 @@ const [productName, setProductName] = useState('');
  
   const location = useLocation();
 
-console.log(location.pathname)
+
   useEffect(() => {
     // Check the current path and set the state accordingly
     if (location.pathname === '/dashboard/quotation/buy') {
@@ -188,10 +189,14 @@ console.log(location.pathname)
   //currentdate
   useEffect(() => {
     const today = new Date();
-    const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
-    const formattedDate = today.toLocaleDateString('IN', options);
+    const year = today.getFullYear().toString();
+    const month = (today.getMonth() + 1).toString().padStart(2, '0');
+    const day = today.getDate().toString().padStart(2, '0');
+    const formattedDate = `${year}/${month}/${day}`;
     setCurrentDate(formattedDate);
   }, []);
+
+
 
  const handleInputChange = (event) => {
   const { name, value } = event.target;
@@ -246,7 +251,9 @@ const handleDateChange = (date) => {
 
 const deliveryDateAntd = deliveryDate;
 const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
-const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD/MM/YYYY') : '';
+const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('YYYY/MM/DD') : '';
+
+console.log(new Date(formattedDeliveryDate), new Date(currentDate))
 
 
 
@@ -311,8 +318,8 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
         sgst: parseFloat(sgst),
         igst: parseFloat(igst),
         comments: comment,
-        createdDate: currentDate,
-        lastModifiedDate: currentDate,
+        createdDate: new Date(currentDate),
+        lastModifiedDate: new Date(currentDate),
       };
   
       let updatedRows;
@@ -406,10 +413,10 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
                   contactPhoneNumber: phone,   
                   status: status,
                   type: type,
-                  deliveryDate: formattedDeliveryDate,
+                  deliveryDate: new Date(formattedDeliveryDate),
                   createdBy: userId,
-                  createdDate: currentDate,
-                  lastModifiedDate: currentDate,
+                  createdDate: new Date(currentDate),
+                  lastModifiedDate: new Date(currentDate),
                   comments : comment,
                   category: category,
                   lastModifiedByUser: {id: userId},
