@@ -259,7 +259,7 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('YY
 const date = moment.tz(formattedDeliveryDate, 'YYYY/MM/DD', 'Asia/Kolkata');
 const deliveryIST = date.format('YYYY-MM-DDTHH:mm:ssZ')
 
-
+console.log(deliveryDate)
 
 
 
@@ -402,6 +402,7 @@ console.log(currentDate, deliveryIST)
   const handleClick = async (event) => {
 
     let finalAmount = totalAmount.toFixed(2)
+    debugger;
 
     event.preventDefault();
     

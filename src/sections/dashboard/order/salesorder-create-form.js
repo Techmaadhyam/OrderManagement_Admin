@@ -281,8 +281,11 @@ const deliveryDateAntd = deliveryDate;
 const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
 const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('YYYY/MM/DD') : '';
 const date = moment.tz(formattedDeliveryDate, 'YYYY/MM/DD', 'Asia/Kolkata');
-const deliveryIST = date.format('YYYY-MM-DDTHH:mm:ssZ')
 
+const deliveryIST = date.toISOString()
+//const deliveryIST = date.format('YYYY-MM-DDTHH:mm:ssZ')
+
+console.log(deliveryDate)
 
 
   //////////////
@@ -433,13 +436,15 @@ console.log(currentDate)
       });
   }, []);
 
-
+console.log(deliveryIST)
   const updatedRows = rows.map(({ productName, productDescription, ...rest }) => rest);
   //post request
+
+  
   const handleClick = async (event) => {
     let finalAmount = totalAmount.toFixed(2)
     event.preventDefault();
-    
+    debugger;
       if (contactName) {
         try {
           const response = await fetch('http://13.115.56.48:8080/techmadhyam/createSalesOrder', {
