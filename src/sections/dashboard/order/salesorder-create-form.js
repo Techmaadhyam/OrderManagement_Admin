@@ -22,7 +22,6 @@ import './sales-order.css'
 import IconWithPopup from '../user/user-icon';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import moment from 'moment/moment';
 import { primaryColor } from 'src/primaryColor';
 import EditIcon from '@mui/icons-material/Edit';
 import { Scrollbar } from 'src/components/scrollbar';
@@ -278,14 +277,15 @@ const handleDateChange = (date) => {
 
 
 const deliveryDateAntd = deliveryDate;
+debugger;
 const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
-const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('YYYY/MM/DD') : '';
-const date = moment.tz(formattedDeliveryDate, 'YYYY/MM/DD', 'Asia/Kolkata');
+//const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('YYYY/MM/DD') : '';
+//const date = moment.tz(formattedDeliveryDate, 'YYYY/MM/DD', 'Asia/Kolkata');
 
-const deliveryIST = date.toISOString()
+const deliveryIST = deliveryDateJS;
 //const deliveryIST = date.format('YYYY-MM-DDTHH:mm:ssZ')
 
-console.log(deliveryDate)
+//console.log(deliveryDateAntd.toDate())
 
 
   //////////////
