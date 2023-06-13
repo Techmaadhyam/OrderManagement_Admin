@@ -140,8 +140,8 @@ const [adminPhone, setAdminPhone] = useState(state?.adminPhoneNumber ||'');
 const [inchargeEmail, setInchargeEmail] = useState(state?.contactEmail ||'');
 const [phone, setPhone] = useState(state?.contactPhoneNumber ||'');
 const [address, setAddress] = useState(state?.deliveryAddress || "");
-const [tempId, setTempId] = useState(state?.noncompany.id);
-const [userState, setUserState] = useState(state?.userId);
+const [tempId, setTempId] = useState(state?.noncompany?.id);
+const [userState, setUserState] = useState(state?.company?.id);
 const [terms, setTerms] = useState(state?.termsAndCondition || '');
 const [comment, setComment] = useState(state?.comments||'');
 const [user, setUser] = useState('')
@@ -185,8 +185,9 @@ const [productName, setProductName] = useState('');
   const handleBlur = () => {
     setTouched(true);
   };
-  
-  const hasError = touched && !adminEmail.includes("@");
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const hasError = touched && !emailRegex.test(adminEmail);
+  const hasError2 = touched && !emailRegex.test(inchargeEmail);
 
   useEffect(() => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllWorkOrderItems/${state?.id || state?.workorder?.id}`)
@@ -263,16 +264,18 @@ const [productName, setProductName] = useState('');
         setUserData(combinedData);
         setTechnicianData(tempUsersData)
   
-        const selecteduserId = combinedData.find((option) => (option.id !== 0 && option.id === state?.noncompany.id) || option.id === state?.noncompany.id);
+        const selecteduserId = combinedData.find((option) => (option.id === tempId || userState));
         const selecteduser = selecteduserId ? selecteduserId.companyName : '';
         setUser(selecteduser);
+ 
+       
       })
       .catch(error => {
         console.error(error);
       });
   }, [state?.tempUserId, state?.userId]);
+ 
 
- console.log(user)
   useEffect(() => {
     if (deliveryDate) {
       const deliveryDateJS = deliveryDate.toDate();
@@ -452,7 +455,7 @@ console.log(idx, row)
 
   //post request
   const handleClick = async (event) => {
-    let finalAmount = parseFloat(totalAmount.toFixed(2))
+    let finalAmount = parseFloat(totalAmount?.toFixed(2))
 
     
     
@@ -780,9 +783,9 @@ console.log(idx, row)
                     label="Incharge Email"
                     name="inchargeemail"
                     value={inchargeEmail}
-                    helperText={hasError && "Please enter a valid email."}
+                    helperText={hasError2 && "Please enter a valid email."}
                     onBlur={handleBlur}
-                    error={hasError}
+                    error={hasError2}
                     onChange={handleInputChange}
                   >
                   </TextField>

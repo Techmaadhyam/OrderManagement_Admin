@@ -242,7 +242,9 @@ const handleBlur = () => {
   setTouched(true);
 };
 
-const hasError = touched && !adminEmail.includes("@");
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const hasError = touched && !emailRegex.test(adminEmail);
+const hasError2 = touched && !emailRegex.test(inchargeEmail);
    //get temp user
    useEffect(() => {
     const request1 = axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`);
@@ -706,9 +708,9 @@ height='50px'/>
                     fullWidth
                     label="Incharge Email"
                     name="inchargeemail"
-                    helperText={hasError && "Please enter a valid email."}
+                    helperText={hasError2 && "Please enter a valid email."}
                     onBlur={handleBlur}
-                    error={hasError}
+                    error={hasError2}
                     value={inchargeEmail}
                     onChange={handleInputChange}
                   >

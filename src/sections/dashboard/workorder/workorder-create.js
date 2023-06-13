@@ -216,7 +216,11 @@ const handleBlur = () => {
   setTouched(true);
 };
 
-const hasError = touched && !adminEmail.includes("@");
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const hasError = touched && !emailRegex.test(adminEmail);
+  const hasError2 = touched && !emailRegex.test(inchargeEmail);
+
+
 
 const handleDateStart = (date) => {
   setDeliveryDate(date);
@@ -740,9 +744,9 @@ height='50px'/>
                     label="Incharge Email"
                     name="inchargeemail"
                     value={inchargeEmail}
-                    helperText={hasError && "Please enter a valid email."}
+                    helperText={hasError2 && "Please enter a valid email."}
                     onBlur={handleBlur}
-                    error={hasError}
+                    error={hasError2}
                     onChange={handleInputChange}
                   >
                   </TextField>
