@@ -68,7 +68,33 @@ const QuotationViewTable = () => {
       });
   }, []);
 
-  const dataWithKeys = userData?.map((item) => ({ ...item, key: item.id }));
+  function formatDate(dateString) {
+    const parsedDate = new Date(dateString);
+    const year = parsedDate.getFullYear();
+    const month = String(parsedDate.getMonth() + 1).padStart(2, '0');
+    const day = String(parsedDate.getDate()).padStart(2, '0');
+    return `${year}/${month}/${day}`;
+  }
+
+  const formattedArray = userData?.map((item) => {
+    const formattedItem = { ...item }; 
+  
+    if (formattedItem.createdDate) {
+      formattedItem.createdDate = formatDate(formattedItem.createdDate);
+    }
+  
+    if (formattedItem.lastModifiedDate) {
+      formattedItem.lastModifiedDate = formatDate(formattedItem.lastModifiedDate);
+    }
+  
+    if (formattedItem.deliveryDate) {
+      formattedItem.deliveryDate = formatDate(formattedItem.deliveryDate);
+    }
+  
+    return formattedItem;
+  });
+
+  const dataWithKeys = formattedArray?.map((item) => ({ ...item, key: item.id }));
 
   const filteredData = selectedCategory
   ? dataWithKeys.filter((item) => item.category === selectedCategory)

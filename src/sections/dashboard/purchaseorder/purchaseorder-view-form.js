@@ -58,6 +58,7 @@ const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllPurchaseOrderByUser/${userId}`)
       .then(response => {
         setUserData(response.data);
+        console.log(response.data)
 
       })
       .catch(error => {
@@ -65,8 +66,34 @@ const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
       });
   }, []);
 
+  function formatDate(dateString) {
+    const parsedDate = new Date(dateString);
+    const year = parsedDate.getFullYear();
+    const month = String(parsedDate.getMonth() + 1).padStart(2, '0');
+    const day = String(parsedDate.getDate()).padStart(2, '0');
+    return `${year}/${month}/${day}`;
+  }
 
-  const dataWithKeys = userData?.map((item) => ({ ...item, key: item.id }));
+  const formattedArray = userData?.map((item) => {
+    const formattedItem = { ...item }; 
+  
+    if (formattedItem.createdDate) {
+      formattedItem.createdDate = formatDate(formattedItem.createdDate);
+    }
+  
+    if (formattedItem.lastModifiedDate) {
+      formattedItem.lastModifiedDate = formatDate(formattedItem.lastModifiedDate);
+    }
+  
+    if (formattedItem.deliveryDate) {
+      formattedItem.deliveryDate = formatDate(formattedItem.deliveryDate);
+    }
+  
+    return formattedItem;
+  });
+
+console.log(formattedArray)
+  const dataWithKeys = formattedArray?.map((item) => ({ ...item, key: item.id }));
 
   const handleRemoveRow = (id) => async () => {
     try {
