@@ -39,7 +39,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 const userId = parseInt(sessionStorage.getItem('user') || localStorage.getItem('user'))
-const dateFormat = 'DD/MM/YYYY';
+const dateFormat = 'M/D/YYYY, h:mm:ss A';
 
 
 const customerType = [
@@ -151,7 +151,8 @@ export const SalesOrderEditForm = (props) => {
 
 const [type, setType] = useState(state?.type||"");
 const [quotation, setQuotation] = useState(state?.quotationId ||'');
-const [deliveryDate, setDeliveryDate] = useState(dayjs(state?.deliveryDate, dateFormat));
+const [deliveryDateUTC, setDeliveryDateUTC] = useState(new Date(state?.deliveryDate).toLocaleString());
+const [deliveryDate, setDeliveryDate] = useState(dayjs(deliveryDateUTC, dateFormat));
 const [status, setStatus] = useState(state?.status || "");
 const [contactName,setContactName] = useState(state?.contactPerson||'')
 const [phone, setPhone] = useState(state?.contactPhone||'');
@@ -243,8 +244,10 @@ const [productName, setProductName] = useState('');
   //currentdate
   useEffect(() => {
     const today = new Date();
-    const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
-    const formattedDate = today.toLocaleDateString('IN', options);
+    const year = today.getFullYear().toString();
+    const month = (today.getMonth() + 1).toString().padStart(2, '0');
+    const day = today.getDate().toString().padStart(2, '0');
+    const formattedDate = `${year}/${month}/${day}`;
     setCurrentDate(formattedDate);
   }, []);
 
@@ -307,7 +310,7 @@ const [productName, setProductName] = useState('');
   useEffect(() => {
     if (deliveryDate) {
       const deliveryDateJS = deliveryDate.toDate();
-      const formattedDeliveryDate = moment(deliveryDateJS).format('DD/MM/YYYY');
+      const formattedDeliveryDate = moment(deliveryDateJS).format('YYYY/MM/DD');
       setDDate(formattedDeliveryDate);
     } else {
       setDDate('');
@@ -539,9 +542,7 @@ const notify = (type, message) => {
           city: null,
           state:null,
           country: null,
-          createdBy: userId,
-          createdDate: state?.createdDate,
-          lastModifiedDate: currentDate,
+          lastModifiedDate: new Date(currentDate),
           comments : comment,
           termsAndCondition: terms,
           totalAmount: finalAmount,
@@ -570,13 +571,13 @@ const notify = (type, message) => {
                   status: status,
                   paymentMode: payment,
                   type: type,
-                  deliveryDate: dDate,
+                  deliveryDate: new Date (dDate),
                   deliveryAddress: address,
                   city: null,
                   state:null,
                   country: null,
                   createdBy: userId,
-                  lastModifiedDate: currentDate,
+                  lastModifiedDate:new Date(currentDate),
                   comments : comment,
                   termsAndCondition: terms,
                   totalAmount: finalAmount,
@@ -722,7 +723,7 @@ const notify = (type, message) => {
                 <DatePicker placeholder="Delivery Date"
                 onChange={handleDateChange}
                 defaultValue={deliveryDate} 
-                format={dateFormat}
+                format= "YYYY/MM/DD"
                 className="css-dev-only-do-not-override-htwhyh"
                 style={{ height: '58px', width: '250px' , color: 'red'}}
                 

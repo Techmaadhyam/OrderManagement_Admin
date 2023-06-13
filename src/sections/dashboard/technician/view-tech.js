@@ -30,16 +30,7 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, M
 
 
 
-const customerType = [
-  {
-    label: 'Customer',
-    value: 'Customer'
-  },
-  {
-    label: 'Vendor',
-    value: 'Vendor'
-  }
-];;
+
 
 
 const ViewTechnician = () => {
@@ -166,7 +157,7 @@ const handleSaveRecord = async (editedRecord) => {
           state: editedRecord.state,
           country: editedRecord.country,
           createdByUser: {id: editedRecord.createdByUser.id},
-          lastModifiedDate: currentDate,
+          lastModifiedDate: new Date(currentDate),
           lastModifiedByUser: {id: userId},
         })
       });
@@ -189,8 +180,10 @@ const handleSaveRecord = async (editedRecord) => {
 //Get date
 useEffect(() => {
   const today = new Date();
-  const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
-  const formattedDate = today.toLocaleDateString('IN', options);
+  const year = today.getFullYear().toString();
+  const month = (today.getMonth() + 1).toString().padStart(2, '0');
+  const day = today.getDate().toString().padStart(2, '0');
+  const formattedDate = `${year}/${month}/${day}`;
   setCurrentDate(formattedDate);
 }, []);
 
@@ -367,19 +360,10 @@ const handleCompanyCancel = () => {
           <TextField
             label="Type"
             name="type"
-            select
             value={editedRecord.type}
-            onChange={handleChange}
             style={{ marginBottom: 10 }}
           >
-             {customerType.map((option) => (
-                      <MenuItem
-                        key={option.value}
-                        value={option.value}
-                      >
-                        {option.label}
-                      </MenuItem>
-                    ))} 
+
           </TextField>
           </Grid>
           <Grid
@@ -390,7 +374,6 @@ const handleCompanyCancel = () => {
             label="Company"
             name="companyName"
             value={editedRecord.companyName}
-            onChange={handleChange}
             style={{ marginBottom: 10 }}
           />
           </Grid>
@@ -442,6 +425,10 @@ const handleCompanyCancel = () => {
             style={{ marginBottom: 10 }}
           />
           </Grid>
+          <Grid
+              xs={12}
+              md={6}
+            >
             <TextField
             label="Address"
             name="address"
@@ -450,6 +437,7 @@ const handleCompanyCancel = () => {
             fullWidth
             style={{ marginBottom: 10 }}
           />
+                </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>

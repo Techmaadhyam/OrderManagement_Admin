@@ -122,12 +122,14 @@ console.log(selectedName, createdDate)
   }, []);
 
   //  get date
- useEffect(() => {
-  const today = new Date();
-  const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
-  const formattedDate = today.toLocaleDateString('IN', options);
-  setCreatedDate(formattedDate);
-}, []);
+  useEffect(() => {
+    const today = new Date();
+    const year = today.getFullYear().toString();
+    const month = (today.getMonth() + 1).toString().padStart(2, '0');
+    const day = today.getDate().toString().padStart(2, '0');
+    const formattedDate = `${year}/${month}/${day}`;
+    setCreatedDate(formattedDate);
+  }, []);
 
 useEffect(() => {
   axios.get(`http://13.115.56.48:8080/techmadhyam/getInventoryByUserId/${userId}`)

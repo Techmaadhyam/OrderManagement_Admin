@@ -196,8 +196,10 @@ export const PurchaseOrderCreateForm = (props) => {
   //get currentdate
   useEffect(() => {
     const today = new Date();
-    const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
-    const formattedDate = today.toLocaleDateString('IN', options);
+    const year = today.getFullYear().toString();
+    const month = (today.getMonth() + 1).toString().padStart(2, '0');
+    const day = today.getDate().toString().padStart(2, '0');
+    const formattedDate = `${year}/${month}/${day}`;
     setCurrentDate(formattedDate);
   }, []);
 
@@ -282,7 +284,8 @@ const handleDateChange = (date) => {
   //format date
 const deliveryDateAntd = deliveryDate;
 const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
-const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD/MM/YYYY') : '';
+const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('YYYY/MM/DD') : '';
+
 
 
 
@@ -347,8 +350,8 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD
         size: size,
         sgst: parseFloat(sgst),
         igst: parseFloat(igst),
-        createdDate: currentDate,
-        lastModifiedDate: currentDate,
+        createdDate: new Date(currentDate),
+        lastModifiedDate: new Date(currentDate),
       };
   
       let updatedRows;
@@ -461,14 +464,14 @@ let finalAmount = totalAmount.toFixed(2)
                   status: status,
                   paymentMode: payment,
                   type: type,
-                  deliveryDate: formattedDeliveryDate,
+                  deliveryDate: new Date(formattedDeliveryDate),
                   deliveryAddress: address,
                   city: null,
                   state:null,
                   country: null,
                   createdBy: userId,
-                  createdDate: currentDate,
-                  lastModifiedDate: currentDate,
+                  createdDate: new Date(currentDate),
+                  lastModifiedDate: new Date(currentDate),
                   comments : comment,
                   termsAndCondition: terms,
                   totalAmount: finalAmount,
@@ -1176,7 +1179,7 @@ height='50px'/>
               fullWidth
               multiline
               rows={4}
-              maxRows={8}
+         
               value={terms}
               onChange={(e) => setTerms(e.target.value)}
             />
@@ -1191,7 +1194,7 @@ height='50px'/>
               fullWidth
               multiline
               rows={2}
-              maxRows={4}
+       
               value={comment}
               onChange={(e) => setComment(e.target.value)} 
             />

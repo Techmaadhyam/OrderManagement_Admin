@@ -97,7 +97,7 @@ const handleSaveRecord = async (editedRecord) => {
     state: editedRecord.state,
     country: editedRecord.country,
     createdBy: userId,
-    lastModifiedDate: currentDate
+    lastModifiedDate: new Date(currentDate),
 
   }))
 
@@ -121,7 +121,7 @@ const handleSaveRecord = async (editedRecord) => {
           state: editedRecord.state,
           country: editedRecord.country,
           createdBy: userId,
-          lastModifiedDate: currentDate
+          lastModifiedDate: new Date(currentDate),
 
         })
       });
@@ -144,8 +144,10 @@ const handleSaveRecord = async (editedRecord) => {
 //Get date
 useEffect(() => {
   const today = new Date();
-  const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
-  const formattedDate = today.toLocaleDateString('IN', options);
+  const year = today.getFullYear().toString();
+  const month = (today.getMonth() + 1).toString().padStart(2, '0');
+  const day = today.getDate().toString().padStart(2, '0');
+  const formattedDate = `${year}/${month}/${day}`;
   setCurrentDate(formattedDate);
 }, []);
 

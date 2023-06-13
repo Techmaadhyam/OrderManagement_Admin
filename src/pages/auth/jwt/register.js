@@ -144,8 +144,9 @@ const Register = () => {
   //getting current date
   useEffect(() => {
     const today = new Date();
-    const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
-    const formattedDate = today.toLocaleDateString('IN', options);
+    const options = { year: 'numeric',  month: 'numeric', day: 'numeric'  };
+    const formattedDate = today.toLocaleDateString('en-ZA', options);
+    console.log(formattedDate)
     setCurrentDate(formattedDate);
   }, []);
 
@@ -358,8 +359,8 @@ const handleCities = async (event) => {
               country: currentCountry,
               type: type,
               gstNumber: gstn,
-              createdDate:currentDate,
-              unpdatedDate:currentDate
+              createdDate:new Date(currentDate),
+              unpdatedDate:new Date(currentDate)
             })
           });
           
@@ -400,6 +401,8 @@ const handleCities = async (event) => {
       notify("error", "Your password does not match, please re-verify.");
     }
   };
+
+  console.log(currentDate)
 
   const renderFormStep = () => {
     switch (step) {

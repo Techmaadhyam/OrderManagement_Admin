@@ -103,8 +103,10 @@ const hasError = touched && !email.includes("@");
   //getting current date
   useEffect(() => {
     const today = new Date();
-    const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
-    const formattedDate = today.toLocaleDateString('IN', options);
+    const year = today.getFullYear().toString();
+    const month = (today.getMonth() + 1).toString().padStart(2, '0');
+    const day = today.getDate().toString().padStart(2, '0');
+    const formattedDate = `${year}/${month}/${day}`;
     setCurrentDate(formattedDate);
   }, []);
 
@@ -283,8 +285,8 @@ event.preventDefault();
           state: currentState,
           country: currentCountry,
           createdByUser: {id: userId},
-          createdDate:currentDate,
-          lastModifiedDate:currentDate,
+          createdDate:new Date(currentDate),
+          lastModifiedDate:new Date(currentDate),
           lastModifiedByUser: {id: userId},
         })
       });

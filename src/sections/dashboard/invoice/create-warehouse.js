@@ -106,8 +106,10 @@ export const CreateWarehouse = (props) => {
     //getting current date
     useEffect(() => {
       const today = new Date();
-      const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
-      const formattedDate = today.toLocaleDateString('IN', options);
+      const year = today.getFullYear().toString();
+      const month = (today.getMonth() + 1).toString().padStart(2, '0');
+      const day = today.getDate().toString().padStart(2, '0');
+      const formattedDate = `${year}/${month}/${day}`;
       setCurrentDate(formattedDate);
     }, []);
 
@@ -254,8 +256,8 @@ const handleClick = async (event) => {
             state: currentState,
             country: currentCountry,
             createdBy: userId,
-            createdDate:currentDate,
-            lastModifiedDate:currentDate
+            createdDate:new Date(currentDate),
+            lastModifiedDate:new Date(currentDate),
           })
         });
         

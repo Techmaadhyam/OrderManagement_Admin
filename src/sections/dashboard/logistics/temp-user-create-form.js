@@ -112,7 +112,7 @@ const hasError = touched && !email.includes("@");
   useEffect(() => {
     const today = new Date();
     const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
-    const formattedDate = today.toLocaleDateString('IN', options);
+    const formattedDate = today.toLocaleDateString('en-ZA', options);
     setCurrentDate(formattedDate);
   }, []);
 
@@ -291,8 +291,8 @@ event.preventDefault();
           state: currentState,
           country: currentCountry,
           createdByUser: {id: userId},
-          createdDate:currentDate,
-          lastModifiedDate:currentDate,
+          createdDate:new Date(currentDate),
+          lastModifiedDate:new Date(currentDate),
           lastModifiedByUser: {id: userId},
         })
       });

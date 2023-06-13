@@ -35,7 +35,7 @@ import dayjs from 'dayjs';
 import './customTable.css'
 
 const userId = parseInt(sessionStorage.getItem('user')|| localStorage.getItem('user'))
-const dateFormat = 'DD/MM/YYYY';
+const dateFormat = 'M/D/YYYY, h:mm:ss A';
 
 
 const customerType = [
@@ -130,8 +130,10 @@ console.log(state)
 
 const [type, setType] = useState(state?.type||"");
 
-const [deliveryDate, setDeliveryDate] = useState(dayjs(state?.startdate, dateFormat));
-const [assignmentEnd, setAssignmentEnd]= useState(dayjs(state?.enddate, dateFormat))
+const [deliveryDateUTC, setDeliveryDateUTC] = useState(new Date(state?.startdate).toLocaleString());
+const [deliveryDate, setDeliveryDate] = useState(dayjs(deliveryDateUTC, dateFormat));
+const [assignmentUTC, setAssignmentUTC] = useState(new Date(state?.enddate).toLocaleString());
+const [assignmentEnd, setAssignmentEnd]= useState(dayjs(assignmentUTC, dateFormat))
 const [status, setStatus] = useState(state?.status || "");
 const [contactName,setContactName] = useState(state?.contactPersonName ||'')
 const [adminName,setAdminName] = useState(state?.adminPersonName ||'')
@@ -204,8 +206,10 @@ const [productName, setProductName] = useState('');
   //currentdate
   useEffect(() => {
     const today = new Date();
-    const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
-    const formattedDate = today.toLocaleDateString('IN', options);
+    const year = today.getFullYear().toString();
+    const month = (today.getMonth() + 1).toString().padStart(2, '0');
+    const day = today.getDate().toString().padStart(2, '0');
+    const formattedDate = `${year}/${month}/${day}`;
     setCurrentDate(formattedDate);
   }, []);
 
@@ -279,7 +283,7 @@ const [productName, setProductName] = useState('');
   useEffect(() => {
     if (deliveryDate) {
       const deliveryDateJS = deliveryDate.toDate();
-      const formattedDeliveryDate = moment(deliveryDateJS).format('DD/MM/YYYY');
+      const formattedDeliveryDate = moment(deliveryDateJS).format('YYYY/MM/DD');
       setDDate(formattedDeliveryDate);
     } else {
       setDDate('');
@@ -289,7 +293,7 @@ const [productName, setProductName] = useState('');
   useEffect(() => {
     if (assignmentEnd) {
       const deliveryDateJS = assignmentEnd.toDate();
-      const formattedDeliveryDate = moment(deliveryDateJS).format('DD/MM/YYYY');
+      const formattedDeliveryDate = moment(deliveryDateJS).format('YYYY/MM/DD');
       setDDate2(formattedDeliveryDate);
     } else {
       setDDate2('');
@@ -482,11 +486,11 @@ console.log(idx, row)
                 adminEmail: adminEmail,   
                 status: status,
                 type: type,
-                startdate: dDate,
-                enddate: dDate2,
+                startdate: new Date (dDate),
+                enddate: new Date (dDate2),
                 createdByUser: {id: userId},
-                createdDate: currentDate,
-                lastModifiedDate: currentDate,
+                createdDate: new Date(currentDate),
+                lastModifiedDate: new Date(currentDate),
                 comments : comment,
                 lastModifiedByUser: {id: userId},
                 termsAndCondition: terms,
@@ -532,10 +536,11 @@ console.log(idx, row)
                 adminEmail: adminEmail,   
                 status: status,
                 type: type,
-                deliveryDate: dDate,
+                startdate: new Date (dDate),
+                enddate: new Date (dDate2),
                 createdByUser: {id: userId},
-                createdDate: currentDate,
-                lastModifiedDate: currentDate,
+                createdDate: new Date(currentDate),
+                lastModifiedDate: new Date(currentDate),
                 comments : comment,
                 lastModifiedByUser: {id: userId},
                 termsAndCondition: terms,
@@ -610,7 +615,7 @@ console.log(idx, row)
                 <DatePicker placeholder="Delivery Date"
                 onChange={handleDateChange}
                 defaultValue={deliveryDate} 
-                format={dateFormat}
+                format= "YYYY/MM/DD"
                 className="css-dev-only-do-not-override-htwhyh"
                 style={{ height: '58px', width: '250px' , color: 'red'}}
                 height='50px'/>
@@ -623,7 +628,7 @@ console.log(idx, row)
                 <DatePicker placeholder="Assignment End Date"
                 onChange={handleDateEnd}
                 defaultValue={assignmentEnd}
-                format={dateFormat}
+                format= "YYYY/MM/DD"
                 className="css-dev-only-do-not-override-htwhyh"
                 style={{ height: '58px', width: '250px' , color: 'red'}}
                 height='50px'/>

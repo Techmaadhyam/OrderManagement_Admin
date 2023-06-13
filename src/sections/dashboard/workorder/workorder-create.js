@@ -163,8 +163,10 @@ const [productName, setProductName] = useState('');
   //currentdate
   useEffect(() => {
     const today = new Date();
-    const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
-    const formattedDate = today.toLocaleDateString('IN', options);
+    const year = today.getFullYear().toString();
+    const month = (today.getMonth() + 1).toString().padStart(2, '0');
+    const day = today.getDate().toString().padStart(2, '0');
+    const formattedDate = `${year}/${month}/${day}`;
     setCurrentDate(formattedDate);
   }, []);
 
@@ -254,11 +256,11 @@ const handleDateEnd = (date) => {
 
 const deliveryDateAntd = deliveryDate;
 const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
-const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('DD/MM/YYYY') : '';
+const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('YYYY/MM/DD') : '';
 
 const deliveryDateAntd2 = assignmentEnd;
 const deliveryDateJS2 = deliveryDateAntd2 ? deliveryDateAntd2.toDate() : null;
-const formattedDeliveryDate2 = deliveryDateJS2 ? moment(deliveryDateJS2).format('DD/MM/YYYY') : '';
+const formattedDeliveryDate2 = deliveryDateJS2 ? moment(deliveryDateJS2).format('YYYY/MM/DD') : '';
 
 
 const filteredData = technicianData?.filter(item => item.type === 'Technician')
@@ -404,10 +406,10 @@ const filteredData = technicianData?.filter(item => item.type === 'Technician')
         adminEmail: adminEmail,   
         status: status,
         type: type,
-        deliveryDate: formattedDeliveryDate,
+        deliveryDate: new Date (formattedDeliveryDate),
         createdBy: {id: userId},
-        createdDate: currentDate,
-        lastModifiedDate: currentDate,
+        createdDate: new Date(currentDate),
+        lastModifiedDate: new Date(currentDate),
         comments : comment,
         lastModifiedByUser: {id: userId},
         termsAndCondition: terms,
@@ -441,11 +443,11 @@ const filteredData = technicianData?.filter(item => item.type === 'Technician')
                   adminEmail: adminEmail,   
                   status: status,
                   type: type,
-                  startdate: formattedDeliveryDate,
-                  enddate: formattedDeliveryDate2,
+                  startdate: new Date(formattedDeliveryDate),
+                  enddate: new Date (formattedDeliveryDate2),
                   createdByUser: {id: userId},
-                  createdDate: currentDate,
-                  lastModifiedDate: currentDate,
+                  createdDate: new Date(currentDate),
+                  lastModifiedDate: new Date(currentDate),
                   comments : comment,
                   lastModifiedByUser: {id: userId},
                   termsAndCondition: terms,
@@ -491,11 +493,11 @@ const filteredData = technicianData?.filter(item => item.type === 'Technician')
                   adminEmail: adminEmail,   
                   status: status,
                   type: type,
-                  startdate: formattedDeliveryDate,
-                  enddate: formattedDeliveryDate2,
+                  startdate: new Date(formattedDeliveryDate),
+                  enddate: new Date (formattedDeliveryDate2),
                   createdByUser: {id: userId},
-                  createdDate: currentDate,
-                  lastModifiedDate: currentDate,
+                  createdDate: new Date(currentDate),
+                  lastModifiedDate: new Date(currentDate),
                   comments : comment,
                   lastModifiedByUser: {id: userId},
                   termsAndCondition: terms,

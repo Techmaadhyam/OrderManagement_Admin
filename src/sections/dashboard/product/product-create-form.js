@@ -53,7 +53,7 @@ export const CreateProduct = (props) => {
  useEffect(() => {
   const today = new Date();
   const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
-  const formattedDate = today.toLocaleDateString('IN', options);
+  const formattedDate = today.toLocaleDateString('en-ZA', options);
   setCurrentDate(formattedDate);
 }, []);
 
@@ -156,8 +156,8 @@ export const CreateProduct = (props) => {
           partnumber: partNumber,
           description: desc2,
           createdBy: userId,
-          createdDate: currentDate,
-          lastModifiedDate: currentDate,
+          createdDate: new Date(currentDate),
+          lastModifiedDate:new Date(currentDate),
           lastModifiedByUser: {id: userId},
  
         },
@@ -165,7 +165,7 @@ export const CreateProduct = (props) => {
           name: newCategory,
           description: desc1,
           createdBy: userId,
-          createdDate: currentDate
+          createdDate:new Date(currentDate),
         }
       };
     } else if(showAdditionalFields===false && product && desc2 && userId && currentDate && category){
@@ -176,8 +176,8 @@ export const CreateProduct = (props) => {
           //type: type,
           description: desc2,
           createdBy: userId,
-          createdDate: currentDate,
-          lastModifiedDate: currentDate,
+          createdDate:new Date(currentDate),
+          lastModifiedDate:new Date(currentDate),
           lastModifiedByUser: {id: userId},
           
         },

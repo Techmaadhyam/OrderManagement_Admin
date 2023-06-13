@@ -77,7 +77,7 @@ export const ViewProductDetail = (props) => {
         name: editedData?.category,
         id: state?.category.id,
         description: editedData?.description,
-        lastModifiedDate: currentDate,
+        lastModifiedDate: new Date(currentDate)
       }
       console.log(JSON.stringify(responseBody))
     
