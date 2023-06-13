@@ -57,7 +57,37 @@ const WorkOrderViewTable = () => {
     };
   });
 
-  const dataWithKeys = updatedData?.map((item) => ({ ...item, key: item.id }));
+  function formatDate(dateString) {
+    const parsedDate = new Date(dateString);
+    const year = parsedDate.getFullYear();
+    const month = String(parsedDate.getMonth() + 1).padStart(2, '0');
+    const day = String(parsedDate.getDate()).padStart(2, '0');
+    return `${year}/${month}/${day}`;
+  }
+
+  const formattedArray = updatedData?.map((item) => {
+    const formattedItem = { ...item }; 
+  
+    if (formattedItem.createdDate) {
+      formattedItem.createdDate = formatDate(formattedItem.createdDate);
+    }
+  
+    if (formattedItem.lastModifiedDate) {
+      formattedItem.lastModifiedDate = formatDate(formattedItem.lastModifiedDate);
+    }
+  
+    if (formattedItem.startdate) {
+      formattedItem.startdate = formatDate(formattedItem.startdate);
+    }
+    if (formattedItem.enddate) {
+      formattedItem.enddate = formatDate(formattedItem.enddate);
+    }
+  
+  
+    return formattedItem;
+  });
+
+  const dataWithKeys = formattedArray?.map((item) => ({ ...item, key: item.id }));
 
 
   //toast notification from toastify library
