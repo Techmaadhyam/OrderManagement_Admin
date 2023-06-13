@@ -128,8 +128,8 @@ const Register = () => {
   const handleBlur = () => {
     setTouched(true);
   };
-  
-  const hasError = touched && !email.includes("@");
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const hasError = touched && !emailRegex.test(email);
 
   const handleNext = (e) => {
     e.preventDefault()
