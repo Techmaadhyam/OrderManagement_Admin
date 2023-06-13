@@ -32,6 +32,7 @@ import './customTable.css'
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
+import 'moment-timezone';
 
 
 const userId = parseInt(sessionStorage.getItem('user')|| localStorage.getItem('user'))
@@ -186,7 +187,7 @@ const [productName, setProductName] = useState('');
 
   const [Id, setId] = useState()
 
-
+console.log(deliveryDateUTC)
       //deleted row
   const [deletedRows, setDeletedRows] = useState([]);
 
@@ -266,7 +267,9 @@ const [productName, setProductName] = useState('');
     if (deliveryDate) {
       const deliveryDateJS = deliveryDate.toDate();
       const formattedDeliveryDate = moment(deliveryDateJS).format('YYYY/MM/DD');
-      setDDate(formattedDeliveryDate);
+      const date = moment.tz(formattedDeliveryDate, 'YYYY/MM/DD', 'Asia/Kolkata');
+      const deliveryIST = date.format('YYYY-MM-DDTHH:mm:ssZ')
+      setDDate(deliveryIST);
     } else {
       setDDate('');
     }
@@ -345,8 +348,8 @@ const [productName, setProductName] = useState('');
         sgst: parseFloat(sgst),
         igst: parseFloat(igst),
         comments: comment,
-        createdDate:new Date(currentDate),
-        lastModifiedDate: new Date(currentDate),
+        createdDate:new Date(),
+        lastModifiedDate: new Date(),
    
       };
   
@@ -450,11 +453,10 @@ const [productName, setProductName] = useState('');
           contactPhone: phone,    
           status: status,
           type: type,
-          deliveryDate: new Date(dDate),
+          deliveryDate: dDate,
           deliveryAddress: address,
           createdBy: userId,
-          lastModifiedDate:new Date(currentDate),
-
+          lastModifiedDate:new Date(),
           comments : comment,
           termsAndCondition: terms,
           totalAmount: finalAmount,
@@ -482,8 +484,8 @@ const [productName, setProductName] = useState('');
                   status: status,
                   category: state?.category ,
                   type: type,
-                  deliveryDate: new Date(dDate),
-                  lastModifiedDate: new Date(currentDate),
+                  deliveryDate: dDate,
+                  lastModifiedDate: new Date(),
                   lastModifiedByUser: {id: userId},
                   comments : comment,
                   termsAndCondition: terms,

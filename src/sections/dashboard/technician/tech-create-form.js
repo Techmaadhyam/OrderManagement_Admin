@@ -285,8 +285,8 @@ event.preventDefault();
           state: currentState,
           country: currentCountry,
           createdByUser: {id: userId},
-          createdDate:new Date(currentDate),
-          lastModifiedDate:new Date(currentDate),
+          createdDate:new Date(),
+          lastModifiedDate:new Date(),
           lastModifiedByUser: {id: userId},
         })
       });

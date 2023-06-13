@@ -30,6 +30,7 @@ import React from 'react';
 import { Delete } from '@mui/icons-material';
 import './customTable.css'
 import { useNavigate } from 'react-router-dom';
+import 'moment-timezone';
 
 const userId = parseInt(sessionStorage.getItem('user')|| localStorage.getItem('user'))
 
@@ -240,6 +241,8 @@ const handleDateChange = (date) => {
 const deliveryDateAntd = deliveryDate;
 const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
 const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('YYYY/MM/DD') : '';
+const date = moment.tz(formattedDeliveryDate, 'YYYY/MM/DD', 'Asia/Kolkata');
+const deliveryIST = date.format('YYYY-MM-DDTHH:mm:ssZ')
 
 
 
@@ -294,8 +297,8 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('YY
         workstationCount: parseFloat(workstation),
         igst: parseFloat(igst),
         comments: comment,
-        createdDate: new Date(currentDate),
-        lastModifiedDate: new Date(currentDate),
+        createdDate: new Date(),
+        lastModifiedDate: new Date(),
       };
   
       let updatedRows;
@@ -391,10 +394,10 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('YY
                   adminEmail: adminEmail,   
                   status: status,
                   type: type,
-                  deliveryDate: new Date ( formattedDeliveryDate),
+                  deliveryDate: deliveryIST,
                   createdBy: userId,
-                  createdDate: new Date(currentDate),
-                  lastModifiedDate: new Date(currentDate),
+                  createdDate: new Date(),
+                  lastModifiedDate: new Date(),
                   comments : comment,
                   category: category,
                   lastModifiedByUser: {id: userId},

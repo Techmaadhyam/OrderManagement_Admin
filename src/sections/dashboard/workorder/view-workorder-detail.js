@@ -79,6 +79,17 @@ console.log(state)
       });
   }, [state?.id, state?.workorder?.id]);
 
+  function formatDate(dateString) {
+    const parsedDate = new Date(dateString);
+    const year = parsedDate.getFullYear();
+    const month = String(parsedDate.getMonth() + 1).padStart(2, '0');
+    const day = String(parsedDate.getDate()).padStart(2, '0');
+    return `${year}/${month}/${day}`;
+  }
+  const startdate = formatDate(state?.startdate);
+  const enddate = formatDate(state?.enddate);
+  
+
 
   return (
     <div style={{minWidth: "100%", marginTop: "1rem"  }}>
@@ -125,13 +136,13 @@ console.log(state)
         <PropertyListItem
           align={align}
           label="Assignment Start Date"
-          value={state?.startdate || state?.workorder?.startdate}
+          value={startdate}
         />
         <Divider />
         <PropertyListItem
           align={align}
           label="Assignment End Date"
-          value={state?.enddate || state?.workorder?.enddate}
+          value={enddate}
         />
         <Divider />
         <PropertyListItem

@@ -33,6 +33,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
 import './customTable.css'
+import 'moment-timezone';
 
 const userId = parseInt(sessionStorage.getItem('user')|| localStorage.getItem('user'))
 const dateFormat = 'M/D/YYYY, h:mm:ss A';
@@ -274,7 +275,9 @@ const hasError2 = touched && !emailRegex.test(inchargeEmail);
     if (deliveryDate) {
       const deliveryDateJS = deliveryDate.toDate();
       const formattedDeliveryDate = moment(deliveryDateJS).format('YYYY/MM/DD');
-      setDDate(formattedDeliveryDate);
+      const date = moment.tz(formattedDeliveryDate, 'YYYY/MM/DD', 'Asia/Kolkata');
+      const deliveryIST = date.format('YYYY-MM-DDTHH:mm:ssZ')
+      setDDate(deliveryIST);
     } else {
       setDDate('');
     }
@@ -342,8 +345,8 @@ const hasError2 = touched && !emailRegex.test(inchargeEmail);
         createdBy: userId,
         igst: parseFloat(igst),
         comments: comment,
-        createdDate: new Date(currentDate),
-        lastModifiedDate: new Date(currentDate)
+        createdDate: new Date(),
+        lastModifiedDate: new Date()
    
       };
   
@@ -483,8 +486,8 @@ console.log(idx, row)
                   status: status,
                   category: state?.category ,
                   type: type,
-                  deliveryDate: new Date(dDate),
-                  lastModifiedDate: new Date(currentDate),
+                  deliveryDate: dDate,
+                  lastModifiedDate: new Date(),
                   lastModifiedByUser: {id: userId},
                   comments : comment,
                   termsAndCondition: terms,

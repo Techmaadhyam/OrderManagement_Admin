@@ -35,6 +35,7 @@ import { useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import 'moment-timezone';
 
 
 
@@ -311,7 +312,9 @@ const [productName, setProductName] = useState('');
     if (deliveryDate) {
       const deliveryDateJS = deliveryDate.toDate();
       const formattedDeliveryDate = moment(deliveryDateJS).format('YYYY/MM/DD');
-      setDDate(formattedDeliveryDate);
+      const date = moment.tz(formattedDeliveryDate, 'YYYY/MM/DD', 'Asia/Kolkata');
+      const deliveryIST = date.format('YYYY-MM-DDTHH:mm:ssZ')
+      setDDate(deliveryIST);
     } else {
       setDDate('');
     }
@@ -430,8 +433,8 @@ const notify = (type, message) => {
         sgst: parseFloat(sgst),
         igst: parseFloat(igst),
         comments: comment,
-        createdDate: currentDate,
-        lastModifiedDate: currentDate,
+        createdDate: new Date(),
+        lastModifiedDate: new Date(),
       };
   
       let updatedRows;
@@ -542,7 +545,7 @@ const notify = (type, message) => {
           city: null,
           state:null,
           country: null,
-          lastModifiedDate: new Date(currentDate),
+          lastModifiedDate: new Date(),
           comments : comment,
           termsAndCondition: terms,
           totalAmount: finalAmount,

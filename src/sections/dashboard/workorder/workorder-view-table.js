@@ -144,7 +144,7 @@ const filteredList = dataWithKeys.filter(product => {
   return companyMatch
 });
 
-console.log(filteredList)
+
 
   const columns = [
     {

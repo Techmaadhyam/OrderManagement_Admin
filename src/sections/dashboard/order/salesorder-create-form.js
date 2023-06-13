@@ -32,6 +32,7 @@ import './customTable.css'
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import 'moment-timezone';
 
 
 
@@ -279,6 +280,8 @@ const handleDateChange = (date) => {
 const deliveryDateAntd = deliveryDate;
 const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
 const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('YYYY/MM/DD') : '';
+const date = moment.tz(formattedDeliveryDate, 'YYYY/MM/DD', 'Asia/Kolkata');
+const deliveryIST = date.format('YYYY-MM-DDTHH:mm:ssZ')
 
 
 
@@ -356,8 +359,8 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('YY
         sgst: parseFloat(sgst),
         igst: parseFloat(igst),
         comments: comment,
-        createdDate: new Date(currentDate),
-        lastModifiedDate: new Date(currentDate),
+        createdDate: new Date(),
+        lastModifiedDate: new Date(),
       };
   
       let updatedRows;
@@ -455,14 +458,14 @@ console.log(currentDate)
                   status: status,
                   paymentMode: payment,
                   type: type,
-                  deliveryDate: new Date(formattedDeliveryDate),
+                  deliveryDate: deliveryIST,
                   deliveryAddress: address,
                   city: null,
                   state:null,
                   country: null,
                   createdBy: userId,
-                  createdDate: new Date(currentDate),
-                  lastModifiedDate: new Date(currentDate),
+                  createdDate: new Date(),
+                  lastModifiedDate: new Date(),
                   comments : comment,
                   termsAndCondition: terms,
                   totalAmount: finalAmount,

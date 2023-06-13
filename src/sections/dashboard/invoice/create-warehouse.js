@@ -256,8 +256,8 @@ const handleClick = async (event) => {
             state: currentState,
             country: currentCountry,
             createdBy: userId,
-            createdDate:new Date(currentDate),
-            lastModifiedDate:new Date(currentDate),
+            createdDate:new Date(),
+            lastModifiedDate:new Date(),
           })
         });
         

@@ -30,6 +30,7 @@ import React from 'react';
 import { Delete } from '@mui/icons-material';
 import './customTable.css'
 import { useNavigate } from 'react-router-dom';
+import 'moment-timezone';
 
 const userId = parseInt(sessionStorage.getItem('user')|| localStorage.getItem('user'))
 
@@ -257,10 +258,14 @@ const handleDateEnd = (date) => {
 const deliveryDateAntd = deliveryDate;
 const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
 const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('YYYY/MM/DD') : '';
+const date = moment.tz(formattedDeliveryDate, 'YYYY/MM/DD', 'Asia/Kolkata');
+const deliveryIST = date.format('YYYY-MM-DDTHH:mm:ssZ')
 
 const deliveryDateAntd2 = assignmentEnd;
 const deliveryDateJS2 = deliveryDateAntd2 ? deliveryDateAntd2.toDate() : null;
 const formattedDeliveryDate2 = deliveryDateJS2 ? moment(deliveryDateJS2).format('YYYY/MM/DD') : '';
+const date2 = moment.tz(formattedDeliveryDate2, 'YYYY/MM/DD', 'Asia/Kolkata');
+const deliveryIST2 = date2.format('YYYY-MM-DDTHH:mm:ssZ')
 
 
 const filteredData = technicianData?.filter(item => item.type === 'Technician')
@@ -391,37 +396,14 @@ const filteredData = technicianData?.filter(item => item.type === 'Technician')
     comment : comment,
     
   }));
+
+  console.log(deliveryIST, deliveryIST2)
   //post request
   const handleClick = async (event) => {
 
     let finalAmount = totalAmount.toFixed(2)
 
-    console.log( JSON.stringify({
-      workorder:{
-        contactPersonName: contactName,
-        contactPhoneNumber: phone,
-        contactEmail: inchargeEmail,
-        adminPersonName: adminName,
-        adminPhoneNumber: adminPhone,
-        adminEmail: adminEmail,   
-        status: status,
-        type: type,
-        deliveryDate: new Date (formattedDeliveryDate),
-        createdBy: {id: userId},
-        createdDate: new Date(currentDate),
-        lastModifiedDate: new Date(currentDate),
-        comments : comment,
-        lastModifiedByUser: {id: userId},
-        termsAndCondition: terms,
-        //totalAmount: finalAmount,
-        technicianInfo: {id: technician},
-        noncompany:{id: tempId}
-        //company: {id: userState},
-
-    },
-        workOrderItems: updatedRows,
-        deleteWorkOrderItems: []
-  }))
+  
 
     event.preventDefault();
     
@@ -443,11 +425,11 @@ const filteredData = technicianData?.filter(item => item.type === 'Technician')
                   adminEmail: adminEmail,   
                   status: status,
                   type: type,
-                  startdate: new Date(formattedDeliveryDate),
-                  enddate: new Date (formattedDeliveryDate2),
+                  startdate: deliveryIST,
+                  enddate: deliveryIST2,
                   createdByUser: {id: userId},
-                  createdDate: new Date(currentDate),
-                  lastModifiedDate: new Date(currentDate),
+                  createdDate: new Date(),
+                  lastModifiedDate: new Date(),
                   comments : comment,
                   lastModifiedByUser: {id: userId},
                   termsAndCondition: terms,
@@ -493,11 +475,11 @@ const filteredData = technicianData?.filter(item => item.type === 'Technician')
                   adminEmail: adminEmail,   
                   status: status,
                   type: type,
-                  startdate: new Date(formattedDeliveryDate),
-                  enddate: new Date (formattedDeliveryDate2),
+                  startdate: deliveryIST,
+                  enddate: deliveryIST2,
                   createdByUser: {id: userId},
-                  createdDate: new Date(currentDate),
-                  lastModifiedDate: new Date(currentDate),
+                  createdDate: new Date(),
+                  lastModifiedDate: new Date(),
                   comments : comment,
                   lastModifiedByUser: {id: userId},
                   termsAndCondition: terms,

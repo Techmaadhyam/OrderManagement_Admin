@@ -33,6 +33,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
 import './customTable.css'
+import 'moment-timezone';
 
 const userId = parseInt(sessionStorage.getItem('user')|| localStorage.getItem('user'))
 const dateFormat = 'M/D/YYYY, h:mm:ss A';
@@ -284,7 +285,9 @@ const [productName, setProductName] = useState('');
     if (deliveryDate) {
       const deliveryDateJS = deliveryDate.toDate();
       const formattedDeliveryDate = moment(deliveryDateJS).format('YYYY/MM/DD');
-      setDDate(formattedDeliveryDate);
+      const date = moment.tz(formattedDeliveryDate, 'YYYY/MM/DD', 'Asia/Kolkata');
+      const deliveryIST = date.format('YYYY-MM-DDTHH:mm:ssZ')
+      setDDate(deliveryIST);
     } else {
       setDDate('');
     }
@@ -294,7 +297,9 @@ const [productName, setProductName] = useState('');
     if (assignmentEnd) {
       const deliveryDateJS = assignmentEnd.toDate();
       const formattedDeliveryDate = moment(deliveryDateJS).format('YYYY/MM/DD');
-      setDDate2(formattedDeliveryDate);
+      const date = moment.tz(formattedDeliveryDate, 'YYYY/MM/DD', 'Asia/Kolkata');
+      const deliveryIST = date.format('YYYY-MM-DDTHH:mm:ssZ')
+      setDDate2(deliveryIST);
     } else {
       setDDate2('');
     }
@@ -486,11 +491,11 @@ console.log(idx, row)
                 adminEmail: adminEmail,   
                 status: status,
                 type: type,
-                startdate: new Date (dDate),
-                enddate: new Date (dDate2),
+                startdate: dDate,
+                enddate: dDate2,
                 createdByUser: {id: userId},
-                createdDate: new Date(currentDate),
-                lastModifiedDate: new Date(currentDate),
+                createdDate: new Date(),
+                lastModifiedDate: new Date(),
                 comments : comment,
                 lastModifiedByUser: {id: userId},
                 termsAndCondition: terms,
@@ -536,11 +541,11 @@ console.log(idx, row)
                 adminEmail: adminEmail,   
                 status: status,
                 type: type,
-                startdate: new Date (dDate),
-                enddate: new Date (dDate2),
+                startdate: dDate,
+                enddate: dDate2,
                 createdByUser: {id: userId},
-                createdDate: new Date(currentDate),
-                lastModifiedDate: new Date(currentDate),
+                createdDate: new Date(),
+                lastModifiedDate: new Date(),
                 comments : comment,
                 lastModifiedByUser: {id: userId},
                 termsAndCondition: terms,

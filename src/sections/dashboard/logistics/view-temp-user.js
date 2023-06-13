@@ -170,7 +170,7 @@ const handleSaveRecord = async (editedRecord) => {
           state: editedRecord.state,
           country: editedRecord.country,
           createdByUser: {id: editedRecord.createdByUser.id},
-          lastModifiedDate: new Date(currentDate),
+          lastModifiedDate: new Date(),
           lastModifiedByUser: {id: userId},
         })
       });

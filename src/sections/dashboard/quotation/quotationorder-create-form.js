@@ -31,7 +31,8 @@ import { Delete } from '@mui/icons-material';
 import './customTable.css'
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import { current } from '@reduxjs/toolkit';
+import 'moment-timezone';
+
 
 
 
@@ -193,9 +194,12 @@ const [productName, setProductName] = useState('');
     const month = (today.getMonth() + 1).toString().padStart(2, '0');
     const day = today.getDate().toString().padStart(2, '0');
     const formattedDate = `${year}/${month}/${day}`;
-    setCurrentDate(formattedDate);
+    const date = moment.tz(formattedDate, 'YYYY/MM/DD', 'Asia/Kolkata');
+    const currentIST = date.format('YYYY-MM-DDTHH:mm:ssZ');
+    setCurrentDate(currentIST);
   }, []);
 
+ ;
 
 
  const handleInputChange = (event) => {
@@ -252,8 +256,10 @@ const handleDateChange = (date) => {
 const deliveryDateAntd = deliveryDate;
 const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
 const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('YYYY/MM/DD') : '';
+const date = moment.tz(formattedDeliveryDate, 'YYYY/MM/DD', 'Asia/Kolkata');
+const deliveryIST = date.format('YYYY-MM-DDTHH:mm:ssZ')
 
-console.log(new Date(formattedDeliveryDate), new Date(currentDate))
+
 
 
 
@@ -318,8 +324,8 @@ console.log(new Date(formattedDeliveryDate), new Date(currentDate))
         sgst: parseFloat(sgst),
         igst: parseFloat(igst),
         comments: comment,
-        createdDate: new Date(currentDate),
-        lastModifiedDate: new Date(currentDate),
+        createdDate: new Date(),
+        lastModifiedDate: new Date(),
       };
   
       let updatedRows;
@@ -389,6 +395,8 @@ console.log(new Date(formattedDeliveryDate), new Date(currentDate))
   }, []);
 
 
+console.log(currentDate, deliveryIST)
+
   const updatedRows = rows.map(({ productName, comments, ...rest }) => rest);
   //post request
   const handleClick = async (event) => {
@@ -413,10 +421,10 @@ console.log(new Date(formattedDeliveryDate), new Date(currentDate))
                   contactPhoneNumber: phone,   
                   status: status,
                   type: type,
-                  deliveryDate: new Date(formattedDeliveryDate),
+                  deliveryDate: deliveryIST,
                   createdBy: userId,
-                  createdDate: new Date(currentDate),
-                  lastModifiedDate: new Date(currentDate),
+                  createdDate: new Date(),
+                  lastModifiedDate: new Date(),
                   comments : comment,
                   category: category,
                   lastModifiedByUser: {id: userId},
@@ -895,7 +903,7 @@ height='50px'/>
               fullWidth
               multiline
               rows={4}
-              maxRows={8}
+   
               value={terms}
               onChange={(e) => setTerms(e.target.value)}
             />
@@ -910,7 +918,7 @@ height='50px'/>
               fullWidth
               multiline
               rows={2}
-              maxRows={4}
+       
               value={comment}
               onChange={(e) => setComment(e.target.value)} 
             />

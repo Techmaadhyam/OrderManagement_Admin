@@ -30,6 +30,7 @@ import React from 'react';
 import { Delete } from '@mui/icons-material';
 import './customTable.css'
 import { useNavigate } from 'react-router-dom';
+import 'moment-timezone';
 
 
 
@@ -285,6 +286,8 @@ const handleDateChange = (date) => {
 const deliveryDateAntd = deliveryDate;
 const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
 const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('YYYY/MM/DD') : '';
+const date = moment.tz(formattedDeliveryDate, 'YYYY/MM/DD', 'Asia/Kolkata');
+const deliveryIST = date.format('YYYY-MM-DDTHH:mm:ssZ')
 
 
 
@@ -350,8 +353,8 @@ const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('YY
         size: size,
         sgst: parseFloat(sgst),
         igst: parseFloat(igst),
-        createdDate: new Date(currentDate),
-        lastModifiedDate: new Date(currentDate),
+        createdDate: new Date(),
+        lastModifiedDate: new Date(),
       };
   
       let updatedRows;
@@ -439,7 +442,7 @@ const updatedRows = rows.map(({ productName, ...rest }) => ({
 }));
 
 
-
+console.log(deliveryIST)
 //handle API post request
 const handleClick = async (event) => {
 let finalAmount = totalAmount.toFixed(2)
@@ -464,14 +467,14 @@ let finalAmount = totalAmount.toFixed(2)
                   status: status,
                   paymentMode: payment,
                   type: type,
-                  deliveryDate: new Date(formattedDeliveryDate),
+                  deliveryDate: deliveryIST,
                   deliveryAddress: address,
                   city: null,
                   state:null,
                   country: null,
                   createdBy: userId,
-                  createdDate: new Date(currentDate),
-                  lastModifiedDate: new Date(currentDate),
+                  createdDate: new Date(),
+                  lastModifiedDate: new Date(),
                   comments : comment,
                   termsAndCondition: terms,
                   totalAmount: finalAmount,

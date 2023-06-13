@@ -134,6 +134,14 @@ console.log(state)
       });
   }, [state?.id, state?.quotation?.id]);
 
+  function formatDate(dateString) {
+    const parsedDate = new Date(dateString);
+    const year = parsedDate.getFullYear();
+    const month = String(parsedDate.getMonth() + 1).padStart(2, '0');
+    const day = String(parsedDate.getDate()).padStart(2, '0');
+    return `${year}/${month}/${day}`;
+  }
+  const formattedDate = formatDate(state?.quotation?.deliveryDate);
 
   return (
     <div style={{minWidth: "100%", marginTop: "1rem"  }}>
@@ -178,7 +186,7 @@ console.log(state)
         <PropertyListItem
           align={align}
           label="DeliveryDate"
-          value={state?.deliveryDate || state?.quotation?.deliveryDate}
+          value={state?.deliveryDate || formattedDate}
         />
         <Divider />
         <PropertyListItem

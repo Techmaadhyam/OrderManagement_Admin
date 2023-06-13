@@ -257,6 +257,15 @@ export const ViewPurchaseOrder = (props) => {
     }
   };
 
+  function formatDate(dateString) {
+    const parsedDate = new Date(dateString);
+    const year = parsedDate.getFullYear();
+    const month = String(parsedDate.getMonth() + 1).padStart(2, '0');
+    const day = String(parsedDate.getDate()).padStart(2, '0');
+    return `${year}/${month}/${day}`;
+  }
+  const formattedDate = formatDate(state?.purchaseOrderRec?.deliveryDate);
+
   console.log(performaInvoiceFile, approvedInvoiceFile, deliveryChallanFile)
 
   return (
@@ -309,7 +318,7 @@ export const ViewPurchaseOrder = (props) => {
         <PropertyListItem
           align={align}
           label="DeliveryDate"
-          value={state?.deliveryDate || state?.purchaseOrderRec?.deliveryDate}
+          value={state?.deliveryDate || formattedDate}
         />
         <Divider />
         <PropertyListItem

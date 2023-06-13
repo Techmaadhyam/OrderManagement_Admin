@@ -32,6 +32,7 @@ import './customTable.css'
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
+import 'moment-timezone';
 
 
 const userId = parseInt(sessionStorage.getItem('user')|| localStorage.getItem('user'))
@@ -283,7 +284,9 @@ const [productName, setProductName] = useState('');
     if (deliveryDate) {
       const deliveryDateJS = deliveryDate.toDate();
       const formattedDeliveryDate = moment(deliveryDateJS).format('YYYY/MM/DD');
-      setDDate(formattedDeliveryDate);
+      const date = moment.tz(formattedDeliveryDate, 'YYYY/MM/DD', 'Asia/Kolkata');
+      const deliveryIST = date.format('YYYY-MM-DDTHH:mm:ssZ')
+      setDDate(deliveryIST);
     } else {
       setDDate('');
     }
@@ -378,8 +381,8 @@ const [productName, setProductName] = useState('');
         sgst: parseFloat(sgst),
         igst: parseFloat(igst),
         comments: comment,
-        createdDate:new Date(currentDate),
-        lastModifiedDate: new Date(currentDate),
+        createdDate:new Date(),
+        lastModifiedDate: new Date(),
       };
   
       let updatedRows;
@@ -486,7 +489,7 @@ const [productName, setProductName] = useState('');
           state:null,
           country: null,
           createdBy: userId,
-          lastModifiedDate: new Date(currentDate),
+          lastModifiedDate: new Date(),
           comments : comment,
           termsAndCondition: terms,
           totalAmount: finalAmount,
@@ -514,13 +517,13 @@ const [productName, setProductName] = useState('');
                   status: status,
                   paymentMode: payment,
                   type: type,
-                  deliveryDate: new Date(dDate),
+                  deliveryDate: dDate,
                   deliveryAddress: address,
                   city: null,
                   state:null,
                   country: null,
                   createdBy: userId,
-                  lastModifiedDate:new Date(currentDate),
+                  lastModifiedDate:new Date(),
                   comments : comment,
                   termsAndCondition: terms,
                   totalAmount: finalAmount,

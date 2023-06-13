@@ -110,6 +110,15 @@ export const ViewSalesOrder = (props) => {
       });
   }, [state?.id, state?.soRecord?.id]);
 
+  function formatDate(dateString) {
+    const parsedDate = new Date(dateString);
+    const year = parsedDate.getFullYear();
+    const month = String(parsedDate.getMonth() + 1).padStart(2, '0');
+    const day = String(parsedDate.getDate()).padStart(2, '0');
+    return `${year}/${month}/${day}`;
+  }
+  const formattedDate = formatDate(state?.soRecord?.deliveryDate);
+
 
 
   return (
@@ -161,7 +170,7 @@ export const ViewSalesOrder = (props) => {
         <PropertyListItem
           align={align}
           label="DeliveryDate"
-          value={state?.deliveryDate || state?.soRecord?.deliveryDate}
+          value={state?.deliveryDate || formattedDate}
         />
         <Divider />
         <PropertyListItem

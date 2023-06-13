@@ -156,8 +156,8 @@ export const CreateProduct = (props) => {
           partnumber: partNumber,
           description: desc2,
           createdBy: userId,
-          createdDate: new Date(currentDate),
-          lastModifiedDate:new Date(currentDate),
+          createdDate: new Date(),
+          lastModifiedDate:new Date(),
           lastModifiedByUser: {id: userId},
  
         },
@@ -165,7 +165,7 @@ export const CreateProduct = (props) => {
           name: newCategory,
           description: desc1,
           createdBy: userId,
-          createdDate:new Date(currentDate),
+          createdDate:new Date(),
         }
       };
     } else if(showAdditionalFields===false && product && desc2 && userId && currentDate && category){
@@ -176,8 +176,8 @@ export const CreateProduct = (props) => {
           //type: type,
           description: desc2,
           createdBy: userId,
-          createdDate:new Date(currentDate),
-          lastModifiedDate:new Date(currentDate),
+          createdDate:new Date(),
+          lastModifiedDate:new Date(),
           lastModifiedByUser: {id: userId},
           
         },

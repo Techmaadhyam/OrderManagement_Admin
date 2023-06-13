@@ -136,7 +136,7 @@ const handleSaveRecord = async (editedRecord) => {
       id: editedRecord.category.id,
       name: editedRecord.category.name,
       desccription: editedRecord.category.description,
-      lastModifiedDate: currentDate
+      lastModifiedDate: new Date()
   
     }
   }))
@@ -156,7 +156,7 @@ const handleSaveRecord = async (editedRecord) => {
             productName: editedRecord.productName,
             type: editedRecord.type,
             createdBy: editedRecord.createdBy,
-            lastModifiedDate: currentDate,
+            lastModifiedDate: new Date(),
             lastModifiedByUser: {id: userId},
             
           },
