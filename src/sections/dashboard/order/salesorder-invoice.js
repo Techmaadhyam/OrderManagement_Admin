@@ -21,7 +21,8 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import SearchIcon from '@mui/icons-material/Search';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import imgUrl from './imageDataUrl.js'
+import imgUrl from '../pdfAssets/imageDataUrl.js';
+
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 const customerType = [   
@@ -69,12 +70,12 @@ const SalesOrderInvoice = (props) => {
       });
   }, []);
   const numberToWords = require('number-to-words');
-  const convertAmountToWords = (amount) => {
+    const convertAmountToWords = (amount) => {
     const rupees = Math.floor(amount);
     const paisa = Math.round((amount - rupees) * 100);
   
-    const rupeesInWords = numberToWords.toWords(rupees);
-    const paisaInWords = numberToWords.toWords(paisa);
+    const rupeesInWords = numberToWords.toWords(rupees); // Convert rupees to words
+    const paisaInWords = numberToWords.toWords(paisa); // Convert paisa to words
   
     let result = '';
   
@@ -83,7 +84,10 @@ const SalesOrderInvoice = (props) => {
     }
   
     if (paisa > 0) {
-      result += ` and ${paisaInWords} paisa`;
+      if (rupees > 0) {
+        result += ' and ';
+      }
+      result += `${paisaInWords} paisa`;
     }
   
     return result;
