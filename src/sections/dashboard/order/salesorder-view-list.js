@@ -80,6 +80,7 @@ const SalesOrderViewList = () => {
     }
   
     if (formattedItem.lastModifiedDate) {
+      formattedItem.originalDeliveryDate = formattedItem.lastModifiedDate;
       formattedItem.lastModifiedDate = formatDate(formattedItem.lastModifiedDate);
     }
   

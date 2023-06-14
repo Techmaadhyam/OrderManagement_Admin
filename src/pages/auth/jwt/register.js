@@ -125,12 +125,16 @@ const Register = () => {
     }
   };
 
+  //check if email field is open
   const handleBlur = () => {
     setTouched(true);
   };
+
+  //add email validation
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const hasError = touched && !emailRegex.test(email);
 
+  //handle next and back button
   const handleNext = (e) => {
     e.preventDefault()
     setStep(step + 1);
@@ -359,8 +363,8 @@ const handleCities = async (event) => {
               country: currentCountry,
               type: type,
               gstNumber: gstn,
-              createdDate:new Date(currentDate),
-              unpdatedDate:new Date(currentDate)
+              createdDate:new Date(),
+              unpdatedDate:new Date()
             })
           });
           

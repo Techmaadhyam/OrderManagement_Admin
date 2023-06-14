@@ -255,17 +255,17 @@ const handleDateEnd = (date) => {
       });
   }, []);
 
-const deliveryDateAntd = deliveryDate;
-const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
-const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('YYYY/MM/DD') : '';
-const date = moment.tz(formattedDeliveryDate, 'YYYY/MM/DD', 'Asia/Kolkata');
-const deliveryIST = date.format('YYYY-MM-DDTHH:mm:ssZ')
+  const deliveryDateAntd = deliveryDate;
+  const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
+  //const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('YYYY/MM/DD') : '';
+  //const date = moment.tz(formattedDeliveryDate, 'YYYY/MM/DD', 'Asia/Kolkata');
+  
+  const deliveryIST = deliveryDateJS;
 
 const deliveryDateAntd2 = assignmentEnd;
 const deliveryDateJS2 = deliveryDateAntd2 ? deliveryDateAntd2.toDate() : null;
-const formattedDeliveryDate2 = deliveryDateJS2 ? moment(deliveryDateJS2).format('YYYY/MM/DD') : '';
-const date2 = moment.tz(formattedDeliveryDate2, 'YYYY/MM/DD', 'Asia/Kolkata');
-const deliveryIST2 = date2.format('YYYY-MM-DDTHH:mm:ssZ')
+
+const deliveryIST2 = deliveryDateJS2
 
 
 const filteredData = technicianData?.filter(item => item.type === 'Technician')

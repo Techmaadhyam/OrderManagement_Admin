@@ -285,9 +285,10 @@ const handleDateChange = (date) => {
   //format date
 const deliveryDateAntd = deliveryDate;
 const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
-const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('YYYY/MM/DD') : '';
-const date = moment.tz(formattedDeliveryDate, 'YYYY/MM/DD', 'Asia/Kolkata');
-const deliveryIST = date.format('YYYY-MM-DDTHH:mm:ssZ')
+//const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('YYYY/MM/DD') : '';
+//const date = moment.tz(formattedDeliveryDate, 'YYYY/MM/DD', 'Asia/Kolkata');
+
+const deliveryIST = deliveryDateJS;
 
 
 

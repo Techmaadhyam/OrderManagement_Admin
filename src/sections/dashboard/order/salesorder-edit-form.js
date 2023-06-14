@@ -23,7 +23,7 @@ import './sales-order.css'
 import IconWithPopup from '../user/user-icon';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import moment from 'moment/moment';
+
 import { primaryColor } from 'src/primaryColor';
 import EditIcon from '@mui/icons-material/Edit';
 import { Scrollbar } from 'src/components/scrollbar';
@@ -35,7 +35,7 @@ import { useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import 'moment-timezone';
+
 
 
 
@@ -185,6 +185,7 @@ const [productName, setProductName] = useState('');
   const [Id, setId] = useState()
 
   const [totalAmount, setTotalAmount] = useState(0);
+  const [userState, setUserState] = useState(state?.userId);
 
   const [rowData, setRowData] =useState()
   const [dDate, setDDate] =useState(state?.deliveryDate)
@@ -237,7 +238,7 @@ const [productName, setProductName] = useState('');
       });
   }, []);
 
-  console.log(inventoryData)
+  console.log(deliveryDateUTC)
   // const parsedInventory = JSON.parse(rowData.inventory);
 
 
@@ -308,17 +309,16 @@ const [productName, setProductName] = useState('');
   }, [state?.tempUserId, state?.userId]);
 
 
-  useEffect(() => {
-    if (deliveryDate) {
-      const deliveryDateJS = deliveryDate.toDate();
-      const formattedDeliveryDate = moment(deliveryDateJS).format('YYYY/MM/DD');
-      const date = moment.tz(formattedDeliveryDate, 'YYYY/MM/DD', 'Asia/Kolkata');
-      const deliveryIST = date.format('YYYY-MM-DDTHH:mm:ssZ')
-      setDDate(deliveryIST);
-    } else {
-      setDDate('');
-    }
-  }, [deliveryDate]);
+
+const deliveryDateAntd = deliveryDate;
+const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
+//const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('YYYY/MM/DD') : '';
+//const date = moment.tz(formattedDeliveryDate, 'YYYY/MM/DD', 'Asia/Kolkata');
+const deliveryIST = deliveryDateJS;
+
+
+console.log(deliveryIST)
+
 
   useEffect(() => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllQuotations/${userId}`)
@@ -534,7 +534,7 @@ const notify = (type, message) => {
       salesOrder:{
           id: state?.id,
           quotationId:null,
-          userId: userId,
+          userId: userState,
           tempUserId :tempId,
           contactPerson: contactName,
           contactPhone: phone,    
@@ -567,20 +567,20 @@ const notify = (type, message) => {
               salesOrder:{
                   id: state?.id,
                   quotationId:null,
-                  userId: userId,
+                  userId: userState,
                   tempUserId :tempId,
                   contactPerson: contactName,
                   contactPhone: phone,    
                   status: status,
                   paymentMode: payment,
                   type: type,
-                  deliveryDate: new Date (dDate),
+                  deliveryDate: deliveryIST,
                   deliveryAddress: address,
                   city: null,
                   state:null,
                   country: null,
                   createdBy: userId,
-                  lastModifiedDate:new Date(currentDate),
+                  lastModifiedDate:new Date(),
                   comments : comment,
                   termsAndCondition: terms,
                   totalAmount: finalAmount,
@@ -607,7 +607,7 @@ const notify = (type, message) => {
     
     };
 
-    console.log(rowData)
+    console.log(dDate)
     console.log(inventoryData)
 
   return (
@@ -680,7 +680,15 @@ const notify = (type, message) => {
             value={user}
             onChange={(e) => {
               const selectedOption = userData?.find((option) => option.companyName === e.target.value);
-              setTempId(selectedOption?.id || '');
+              if (selectedOption) {
+                if (selectedOption.hasOwnProperty('createdByUser')) {
+                  setTempId(selectedOption.id || '');
+                  setUserState(null)
+                } else {
+                  setUserState(selectedOption.id || '');
+                  setTempId(null)
+                }
+              }
               setUser(e.target.value);
             }}
             style={{ marginBottom: 10 }}
@@ -726,7 +734,7 @@ const notify = (type, message) => {
                 <DatePicker placeholder="Delivery Date"
                 onChange={handleDateChange}
                 defaultValue={deliveryDate} 
-                format= "YYYY/MM/DD"
+          
                 className="css-dev-only-do-not-override-htwhyh"
                 style={{ height: '58px', width: '250px' , color: 'red'}}
                 

@@ -97,9 +97,35 @@ const SalesOrderInvoice = (props) => {
   // const number = 1234.56;
   // const words = convertNumberToWords(number);
   // console.log(words); // Output: "one thousand two hundred thirty-four rupees and fifty-six paisas"
-  
 
-const dataWithKeys = userData?.map((item) => ({ ...item, key: item.id }));
+
+  function formatDate(dateString) {
+    const parsedDate = new Date(dateString);
+    const year = parsedDate.getFullYear();
+    const month = String(parsedDate.getMonth() + 1).padStart(2, '0');
+    const day = String(parsedDate.getDate()).padStart(2, '0');
+    return `${year}/${month}/${day}`;
+  }
+
+  const formattedArray = userData?.map((item) => {
+    const formattedItem = { ...item }; 
+  
+    if (formattedItem.createdDate) {
+      formattedItem.createdDate = formatDate(formattedItem.createdDate);
+    }
+  
+    if (formattedItem.lastModifiedDate) {
+      formattedItem.lastModifiedDate = formatDate(formattedItem.lastModifiedDate);
+    }
+  
+    if (formattedItem.deliveryDate) {
+      formattedItem.deliveryDate = formatDate(formattedItem.deliveryDate);
+    }
+  
+    return formattedItem;
+  });
+
+const dataWithKeys = formattedArray?.map((item) => ({ ...item, key: item.id }));
 
 const handleCompanyClick = () => {
   setIsSearching(true);

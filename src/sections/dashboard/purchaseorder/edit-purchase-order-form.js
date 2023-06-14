@@ -22,7 +22,6 @@ import './purchase-order.css'
 import IconWithPopup from '../user/user-icon';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import moment from 'moment/moment';
 import { primaryColor } from 'src/primaryColor';
 import EditIcon from '@mui/icons-material/Edit';
 import { Scrollbar } from 'src/components/scrollbar';
@@ -32,7 +31,7 @@ import './customTable.css'
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
-import 'moment-timezone';
+
 
 
 const userId = parseInt(sessionStorage.getItem('user')|| localStorage.getItem('user'))
@@ -181,6 +180,7 @@ const [productName, setProductName] = useState('');
   const [productId, setProductId] = useState()
 
   const [totalAmount, setTotalAmount] = useState(0);
+  const [userState, setUserState] = useState(state?.userId);
 
   const [rowData, setRowData] =useState()
   const [dDate, setDDate] =useState(state?.deliveryDate)
@@ -283,10 +283,8 @@ const [productName, setProductName] = useState('');
   useEffect(() => {
     if (deliveryDate) {
       const deliveryDateJS = deliveryDate.toDate();
-      const formattedDeliveryDate = moment(deliveryDateJS).format('YYYY/MM/DD');
-      const date = moment.tz(formattedDeliveryDate, 'YYYY/MM/DD', 'Asia/Kolkata');
-      const deliveryIST = date.format('YYYY-MM-DDTHH:mm:ssZ')
-      setDDate(deliveryIST);
+
+      setDDate(deliveryDateJS);
     } else {
       setDDate('');
     }
@@ -510,7 +508,7 @@ const [productName, setProductName] = useState('');
               purchaseOrder:{
                   id: state?.id,
                   quotationId: quotation,
-                  userId: userId,
+                  userId: userState,
                   tempUserId :tempId,
                   contactPerson: contactName,
                   contactPhone: phone,    
@@ -882,7 +880,15 @@ console.log(performaInvoiceFile, approvedInvoiceFile, deliveryChallanFile)
             value={user}
             onChange={(e) => {
               const selectedOption = userData?.find((option) => option.companyName === e.target.value);
-              setTempId(selectedOption?.id || '');
+              if (selectedOption) {
+                if (selectedOption.hasOwnProperty('createdByUser')) {
+                  setTempId(selectedOption.id || '');
+                  setUserState(null)
+                } else {
+                  setUserState(selectedOption.id || '');
+                  setTempId(null)
+                }
+              }
               setUser(e.target.value);
             }}
             style={{ marginBottom: 10 }}
