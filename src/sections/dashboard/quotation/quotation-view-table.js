@@ -88,6 +88,7 @@ const QuotationViewTable = () => {
     }
   
     if (formattedItem.deliveryDate) {
+      formattedItem.originalDeliveryDate =formattedItem.deliveryDate
       formattedItem.deliveryDate = formatDate(formattedItem.deliveryDate);
     }
   

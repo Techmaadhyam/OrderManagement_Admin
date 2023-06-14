@@ -148,8 +148,7 @@ export const PurchaseOrderEditForm = (props) => {
 
 const [type, setType] = useState(state?.type||"");
 const [quotation, setQuotation] = useState(state?.quotationId ||'');
-const [deliveryDateUTC, setDeliveryDateUTC] = useState(new Date(state?.deliveryDate).toLocaleString());
-const [deliveryDate, setDeliveryDate] = useState(dayjs(deliveryDateUTC, dateFormat));
+const [deliveryDate, setDeliveryDate] = useState(dayjs(state?.originalDeliveryDate|| ''));
 const [status, setStatus] = useState(state?.status || "");
 const [contactName,setContactName] = useState(state?.contactPerson ||'')
 const [phone, setPhone] = useState(state?.contactPhone||'');
@@ -279,16 +278,10 @@ const [productName, setProductName] = useState('');
       });
   }, [state?.tempUserId, state?.userId]);
 
- 
-  useEffect(() => {
-    if (deliveryDate) {
-      const deliveryDateJS = deliveryDate.toDate();
-
-      setDDate(deliveryDateJS);
-    } else {
-      setDDate('');
-    }
-  }, [deliveryDate]);
+  const deliveryDateAntd = deliveryDate;
+  const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
+  
+  const deliveryIST = deliveryDateJS;
 
   useEffect(() => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllQuotations/${userId}`)
@@ -515,7 +508,7 @@ const [productName, setProductName] = useState('');
                   status: status,
                   paymentMode: payment,
                   type: type,
-                  deliveryDate: dDate,
+                  deliveryDate: deliveryIST,
                   deliveryAddress: address,
                   city: null,
                   state:null,
@@ -934,7 +927,7 @@ console.log(performaInvoiceFile, approvedInvoiceFile, deliveryChallanFile)
                 <DatePicker placeholder="Delivery Date"
                 onChange={handleDateChange}
                 defaultValue={deliveryDate} 
-                format= "YYYY/MM/DD"
+                format= "YYYY-MM-DD"
                 className="css-dev-only-do-not-override-htwhyh"
                 style={{ height: '58px', width: '250px' , color: 'red'}}
                 

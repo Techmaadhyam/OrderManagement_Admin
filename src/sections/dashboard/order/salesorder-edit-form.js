@@ -23,7 +23,7 @@ import './sales-order.css'
 import IconWithPopup from '../user/user-icon';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import moment from 'moment';
 import { primaryColor } from 'src/primaryColor';
 import EditIcon from '@mui/icons-material/Edit';
 import { Scrollbar } from 'src/components/scrollbar';
@@ -152,8 +152,7 @@ export const SalesOrderEditForm = (props) => {
 
 const [type, setType] = useState(state?.type||"");
 const [quotation, setQuotation] = useState(state?.quotationId ||'');
-const [deliveryDateUTC, setDeliveryDateUTC] = useState(new Date(state?.deliveryDate).toLocaleString());
-const [deliveryDate, setDeliveryDate] = useState(dayjs(deliveryDateUTC, dateFormat));
+const [deliveryDate, setDeliveryDate] = useState(dayjs(state?.originalDeliveryDate|| ''));
 const [status, setStatus] = useState(state?.status || "");
 const [contactName,setContactName] = useState(state?.contactPerson||'')
 const [phone, setPhone] = useState(state?.contactPhone||'');
@@ -238,7 +237,7 @@ const [productName, setProductName] = useState('');
       });
   }, []);
 
-  console.log(deliveryDateUTC)
+
   // const parsedInventory = JSON.parse(rowData.inventory);
 
 
@@ -312,13 +311,12 @@ const [productName, setProductName] = useState('');
 
 const deliveryDateAntd = deliveryDate;
 const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
-//const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('YYYY/MM/DD') : '';
-//const date = moment.tz(formattedDeliveryDate, 'YYYY/MM/DD', 'Asia/Kolkata');
+
 const deliveryIST = deliveryDateJS;
 
 
+console.log(deliveryDate)
 console.log(deliveryIST)
-
 
   useEffect(() => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllQuotations/${userId}`)
@@ -734,7 +732,8 @@ const notify = (type, message) => {
                 <DatePicker placeholder="Delivery Date"
                 onChange={handleDateChange}
                 defaultValue={deliveryDate} 
-          
+            format= "YYYY-MM-DD"
+             
                 className="css-dev-only-do-not-override-htwhyh"
                 style={{ height: '58px', width: '250px' , color: 'red'}}
                 

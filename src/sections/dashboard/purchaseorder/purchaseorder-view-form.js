@@ -86,6 +86,7 @@ const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
     }
   
     if (formattedItem.deliveryDate) {
+      formattedItem.originalDeliveryDate =formattedItem.deliveryDate
       formattedItem.deliveryDate = formatDate(formattedItem.deliveryDate);
     }
   

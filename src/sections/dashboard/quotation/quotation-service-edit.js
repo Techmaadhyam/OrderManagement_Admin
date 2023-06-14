@@ -131,8 +131,7 @@ console.log(state)
 
 const [type, setType] = useState(state?.type||"");
 
-const [deliveryDateUTC, setDeliveryDateUTC] = useState(new Date(state?.deliveryDate).toLocaleString());
-const [deliveryDate, setDeliveryDate] = useState(dayjs(deliveryDateUTC, dateFormat));
+const [deliveryDate, setDeliveryDate] = useState(dayjs(state?.originalDeliveryDate|| ''));
 const [status, setStatus] = useState(state?.status || "");
 const [contactName,setContactName] = useState(state?.contactPersonName ||'')
 const [adminName,setAdminName] = useState(state?.adminPersonName ||'')
@@ -271,17 +270,12 @@ const hasError2 = touched && !emailRegex.test(inchargeEmail);
   }, [state?.tempUserId, state?.userId]);
 
  
-  useEffect(() => {
-    if (deliveryDate) {
-      const deliveryDateJS = deliveryDate.toDate();
-      const formattedDeliveryDate = moment(deliveryDateJS).format('YYYY/MM/DD');
-      const date = moment.tz(formattedDeliveryDate, 'YYYY/MM/DD', 'Asia/Kolkata');
-      const deliveryIST = date.format('YYYY-MM-DDTHH:mm:ssZ')
-      setDDate(deliveryIST);
-    } else {
-      setDDate('');
-    }
-  }, [deliveryDate]);
+  const deliveryDateAntd = deliveryDate;
+  const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
+
+
+  const deliveryIST = deliveryDateJS;
+
 
   const handleDateChange = (date) => {
     setDeliveryDate(date);
@@ -486,7 +480,7 @@ console.log(idx, row)
                   status: status,
                   category: state?.category ,
                   type: type,
-                  deliveryDate: dDate,
+                  deliveryDate: deliveryIST,
                   lastModifiedDate: new Date(),
                   lastModifiedByUser: {id: userId},
                   comments : comment,

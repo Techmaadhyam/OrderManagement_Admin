@@ -77,9 +77,11 @@ const WorkOrderViewTable = () => {
     }
   
     if (formattedItem.startdate) {
+      formattedItem.originalstartdate =formattedItem.startdate
       formattedItem.startdate = formatDate(formattedItem.startdate);
     }
     if (formattedItem.enddate) {
+      formattedItem.originalenddate =formattedItem.enddate
       formattedItem.enddate = formatDate(formattedItem.enddate);
     }
   

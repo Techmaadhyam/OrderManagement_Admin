@@ -131,10 +131,10 @@ console.log(state)
 
 const [type, setType] = useState(state?.type||"");
 
-const [deliveryDateUTC, setDeliveryDateUTC] = useState(new Date(state?.startdate).toLocaleString());
-const [deliveryDate, setDeliveryDate] = useState(dayjs(deliveryDateUTC, dateFormat));
-const [assignmentUTC, setAssignmentUTC] = useState(new Date(state?.enddate).toLocaleString());
-const [assignmentEnd, setAssignmentEnd]= useState(dayjs(assignmentUTC, dateFormat))
+
+const [deliveryDate, setDeliveryDate] = useState(dayjs(state?.originalstartdate|| ''));
+const [assignmentEnd, setAssignmentEnd]= useState(dayjs(state?.originalenddate|| ''))
+
 const [status, setStatus] = useState(state?.status || "");
 const [contactName,setContactName] = useState(state?.contactPersonName ||'')
 const [adminName,setAdminName] = useState(state?.adminPersonName ||'')
@@ -281,29 +281,14 @@ const [productName, setProductName] = useState('');
   }, [state?.tempUserId, state?.userId]);
  
 
-  useEffect(() => {
-    if (deliveryDate) {
-      const deliveryDateJS = deliveryDate.toDate();
-      const formattedDeliveryDate = moment(deliveryDateJS).format('YYYY/MM/DD');
-      const date = moment.tz(formattedDeliveryDate, 'YYYY/MM/DD', 'Asia/Kolkata');
-      const deliveryIST = date.format('YYYY-MM-DDTHH:mm:ssZ')
-      setDDate(deliveryIST);
-    } else {
-      setDDate('');
-    }
-  }, [deliveryDate]);
+  const deliveryDateAntd = deliveryDate;
+  const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
+  const deliveryIST = deliveryDateJS;
 
-  useEffect(() => {
-    if (assignmentEnd) {
-      const deliveryDateJS = assignmentEnd.toDate();
-      const formattedDeliveryDate = moment(deliveryDateJS).format('YYYY/MM/DD');
-      const date = moment.tz(formattedDeliveryDate, 'YYYY/MM/DD', 'Asia/Kolkata');
-      const deliveryIST = date.format('YYYY-MM-DDTHH:mm:ssZ')
-      setDDate2(deliveryIST);
-    } else {
-      setDDate2('');
-    }
-  }, [assignmentEnd]);
+ 
+  const deliveryDateAntd2 = assignmentEnd;
+  const deliveryDateJS2 = deliveryDateAntd2 ? deliveryDateAntd2.toDate() : null;
+  const deliveryIST2 = deliveryDateJS2;
 
   const filteredData = technicianData?.filter(item => item.type === 'Technician')
 
@@ -459,6 +444,7 @@ console.log(idx, row)
 
 
   
+  console.log(deliveryIST, deliveryIST2)
   const updatedRows = rowData?.map(({ productName, ...rest }) => rest);
   const deleteRows= deletedRows?.map(({ productName, ...rest }) => rest);
 
@@ -491,8 +477,8 @@ console.log(idx, row)
                 adminEmail: adminEmail,   
                 status: status,
                 type: type,
-                startdate: dDate,
-                enddate: dDate2,
+                startdate: deliveryIST,
+                enddate: deliveryIST2,
                 createdByUser: {id: userId},
                 createdDate: new Date(),
                 lastModifiedDate: new Date(),
@@ -541,8 +527,8 @@ console.log(idx, row)
                 adminEmail: adminEmail,   
                 status: status,
                 type: type,
-                startdate: dDate,
-                enddate: dDate2,
+                startdate: deliveryIST,
+                enddate: deliveryIST2,
                 createdByUser: {id: userId},
                 createdDate: new Date(),
                 lastModifiedDate: new Date(),

@@ -149,8 +149,7 @@ console.log(state)
 //form state handeling
 
 const [type, setType] = useState(state?.type||"");
-const [deliveryDateUTC, setDeliveryDateUTC] = useState(new Date(state?.deliveryDate).toLocaleString());
-const [deliveryDate, setDeliveryDate] = useState(dayjs(deliveryDateUTC, dateFormat));
+const [deliveryDate, setDeliveryDate] = useState(dayjs(state?.originalDeliveryDate|| ''));
 const [status, setStatus] = useState(state?.status || "");
 const [contactName,setContactName] = useState(state?.contactPersonName ||'')
 const [phone, setPhone] = useState(state?.contactPhoneNumber ||'');
@@ -187,7 +186,7 @@ const [productName, setProductName] = useState('');
 
   const [Id, setId] = useState()
 
-console.log(deliveryDateUTC)
+
       //deleted row
   const [deletedRows, setDeletedRows] = useState([]);
 
@@ -263,17 +262,10 @@ console.log(deliveryDateUTC)
   }, [state?.tempUserId, state?.userId]);
 
  
-  useEffect(() => {
-    if (deliveryDate) {
-      const deliveryDateJS = deliveryDate.toDate();
-      const formattedDeliveryDate = moment(deliveryDateJS).format('YYYY/MM/DD');
-      const date = moment.tz(formattedDeliveryDate, 'YYYY/MM/DD', 'Asia/Kolkata');
-      const deliveryIST = date.format('YYYY-MM-DDTHH:mm:ssZ')
-      setDDate(deliveryIST);
-    } else {
-      setDDate('');
-    }
-  }, [deliveryDate]);
+  const deliveryDateAntd = deliveryDate;
+  const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
+  
+  const deliveryIST = deliveryDateJS;
 
 
   const handleDateChange = (date) => {
@@ -484,7 +476,7 @@ console.log(deliveryDateUTC)
                   status: status,
                   category: state?.category ,
                   type: type,
-                  deliveryDate: dDate,
+                  deliveryDate: deliveryIST,
                   lastModifiedDate: new Date(),
                   lastModifiedByUser: {id: userId},
                   comments : comment,
