@@ -401,7 +401,7 @@ console.log(currentDate, deliveryIST)
   const handleClick = async (event) => {
 
     let finalAmount = totalAmount.toFixed(2)
-    debugger;
+
 
     event.preventDefault();
     
