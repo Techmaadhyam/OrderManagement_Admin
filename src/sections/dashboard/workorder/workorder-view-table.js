@@ -133,7 +133,7 @@ const WorkOrderViewTable = () => {
 
   const handleNavigation = record => {
 
-    navigate('/dashboard/workorder/edit', { state: record });
+    navigate('/dashboard/services/workorderedit', { state: record });
  
   };
   //company search
@@ -387,7 +387,7 @@ const handleWorkInvoice = async (record) => {
       key: 'id',
       render: (name, record) => {
         const handleNavigation = () => {
-          navigate(`/dashboard/workorder/viewDetail`, { state: record });
+          navigate('/dashboard/services/workorderDetail', { state: record });
         };
         
         return (
@@ -445,9 +445,14 @@ const handleWorkInvoice = async (record) => {
       dataIndex: 'createdDate',
     },
     {
-      title: 'Delivery Date',
-      key: 'deliveryDate',
-      dataIndex: 'deliveryDate',
+      title: 'Assignment Start Date',
+      key: 'startdate',
+      dataIndex: 'startdate',
+    },
+    {
+      title: 'Assignment End Date',
+      key: 'enddate',
+      dataIndex: 'enddate',
     },
     {
       title: 'Status',
