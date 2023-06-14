@@ -123,26 +123,7 @@ export const useSections = () => {
               }
             ]
           },
-          {
-            title: t(tokens.nav.technician),
-            path: paths.dashboard.technician.index,
-            icon: (
-              <SvgIcon fontSize="small">
-                <BuildCircleTwoToneIcon /> 
-                {/* <Truck01Icon /> */}
-              </SvgIcon>
-            ),
-            items: [
-              {
-                title: t(tokens.nav.create),
-                path: paths.dashboard.technician.index
-              },
-              {
-                title: t(tokens.nav.view),
-                path: paths.dashboard.technician.view
-              }
-            ]
-          },
+          
           {
             title: t(tokens.nav.quotation),
             path: paths.dashboard.quotation.index,
@@ -229,22 +210,45 @@ export const useSections = () => {
             ]
           },
           {
-            title: t(tokens.nav.workorder),
-            path: paths.dashboard.workorder.index,
+            title: t(tokens.nav.services),
+            path: paths.dashboard.services.index,
             icon: (
               <SvgIcon fontSize="small">
-                <AssignmentTwoToneIcon />
-                {/* <Users03Icon /> */}
+                <BuildCircleTwoToneIcon /> 
+                {/* <Truck01Icon /> */}
               </SvgIcon>
             ),
             items: [
               {
-                title: t(tokens.nav.create),
-                path: paths.dashboard.workorder.create
+                title: t(tokens.nav.workorder),
+             
+             
+                items: [
+                  {
+                    title: t(tokens.nav.create),
+                    path: paths.dashboard.services.createWorkorder
+                  },
+                  {
+                    title: t(tokens.nav.view),
+                    path: paths.dashboard.services.workorderview
+                  },
+              
+                ]
               },
               {
-                title: t(tokens.nav.view),
-                path: paths.dashboard.workorder.view
+                title: t(tokens.nav.technician),
+             
+             
+                items: [
+                  {
+                    title: t(tokens.nav.create),
+                    path: paths.dashboard.services.createTechnician
+                  },
+                  {
+                    title: t(tokens.nav.view),
+                    path: paths.dashboard.services.technicianview
+                  }
+                ]
               },
           
             ]

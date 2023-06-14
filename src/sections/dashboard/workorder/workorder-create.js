@@ -450,7 +450,7 @@ const filteredData = technicianData?.filter(item => item.type === 'Technician')
            response.json().then(data => {
     
       
-          navigate('/dashboard/workorder/viewDetail', { state: data });
+          navigate('/dashboard/services/workorderDetail', { state: data });
           console.log(data)
     });
           } 

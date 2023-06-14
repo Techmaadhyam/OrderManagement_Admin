@@ -23,6 +23,7 @@ export const tokens = {
     crypto: 'nav.crypto',
     purchaseorder: 'nav.purchaseorder',
     workorder: 'nav.workorder',
+    services: 'nav.services',
     buy: 'nav.buy',
     view: 'nav.view',
     ecommerce: 'nav.ecommerce',

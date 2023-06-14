@@ -122,7 +122,7 @@ const WorkOrderViewTable = () => {
 
   const handleNavigation = record => {
 
-    navigate('/dashboard/workorder/edit', { state: record });
+    navigate('/dashboard/services/workorderedit', { state: record });
  
   };
   //company search
@@ -155,7 +155,7 @@ const filteredList = dataWithKeys.filter(product => {
       key: 'id',
       render: (name, record) => {
         const handleNavigation = () => {
-          navigate(`/dashboard/workorder/viewDetail`, { state: record });
+          navigate('/dashboard/services/workorderDetail', { state: record });
         };
         
         return (

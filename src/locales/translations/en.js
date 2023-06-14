@@ -19,6 +19,7 @@ export const en = {
   [tokens.nav.crypto]: 'Crypto',
   [tokens.nav.purchaseorder]: 'Purchase Order',
   [tokens.nav.workorder]: 'Work Order',
+  [tokens.nav.services]: 'Services',
   [tokens.nav.buy]: 'Buy',
   [tokens.nav.view]: 'View',
   [tokens.nav.buyer]: 'Purchase Quotation',

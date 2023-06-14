@@ -97,7 +97,7 @@ console.log(state)
           <Link
           color="text.primary"
           component={RouterLink}
-          href={paths.dashboard.workorder.view}
+          href={paths.dashboard.services.workorderview}
           sx={{
             alignItems: 'center',
             display: 'inline-flex',

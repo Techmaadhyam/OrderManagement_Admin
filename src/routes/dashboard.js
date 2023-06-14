@@ -23,10 +23,10 @@ const PurchaseOrderViewDetailPage = lazy(() => import('src/pages/dashboard/purch
 const PurchaseOrderEdit = lazy(() => import('src/pages/dashboard/purchaseorder/edit'));
 
 // workorder (do not delete)
-const WorkOrderCreatePage = lazy(() => import('src/pages/dashboard/workorder/create'));
-const WorkOrderViewPage = lazy(() => import('src/pages/dashboard/workorder/view'));
-const WorkOrderViewDetailPage = lazy(() => import('src/pages/dashboard/workorder/viewDetail'));
-const WorkOrderEdit = lazy(() => import('src/pages/dashboard/workorder/edit'));
+const WorkOrderCreatePage = lazy(() => import('src/pages/dashboard/services/workorder/create'));
+const WorkOrderViewPage = lazy(() => import('src/pages/dashboard/services/workorder/view'));
+const WorkOrderViewDetailPage = lazy(() => import('src/pages/dashboard/services/workorder/viewDetail'));
+const WorkOrderEdit = lazy(() => import('src/pages/dashboard/services/workorder/edit'));
 
 
 // Invoice (do not delete)
@@ -46,9 +46,9 @@ const LogisticsFleetPage = lazy(() => import('src/pages/dashboard/logistics/view
 const LogisticsViewDetailPage = lazy(() => import('src/pages/dashboard/logistics/viewDetail'));
 
 //add technician
-const TechnicianCreatePage = lazy(() => import('src/pages/dashboard/technician/dashboard'));
-const TechnicianViewPage =lazy(() => import('src/pages/dashboard/technician/view'));
-const TechnicianViewDetailPage =lazy(() => import('src/pages/dashboard/technician/viewDetail'));
+const TechnicianCreatePage = lazy(() => import('src/pages/dashboard/services/technician/dashboard'));
+const TechnicianViewPage =lazy(() => import('src/pages/dashboard/services/technician/view'));
+const TechnicianViewDetailPage =lazy(() => import('src/pages/dashboard/services/technician/viewDetail'));
 
 // Orders (do not delete)
 const OrderListPage = lazy(() => import('src/pages/dashboard/orders/create'));
@@ -142,28 +142,7 @@ export const dashboardRoutes = [
          
         ]
       },
-      {
-        path: 'workorder',
-        children: [
-          {
-            index: true,
-            element: <WorkOrderCreatePage />
-          },
-          {
-            path: 'view',
-            element: <WorkOrderViewPage />
-          },
-          {
-            path: 'viewDetail',
-            element: <WorkOrderViewDetailPage/>
-          },{
-            path: 'edit',
-            element: <WorkOrderEdit/>
-          },
       
-         
-        ]
-      },
       {
         path: 'invoices',
         children: [
@@ -198,22 +177,80 @@ export const dashboardRoutes = [
           },
         ]
       },
+      // {
+      //   path: 'technician',
+      //   children: [
+      //     {
+      //       index: true,
+      //       element: <TechnicianCreatePage />
+      //     },
+      //     {
+      //       path: 'view',
+      //       element: <TechnicianViewPage />
+      //     },
+      //     {
+      //       path:'viewDetail',
+      //       element: <TechnicianViewDetailPage />
+      //     },
+      //   ]
+      // },
+      // {
+      //   path: 'workorder',
+      //   children: [
+      //     {
+      //       index: true,
+      //       element: <WorkOrderCreatePage />
+      //     },
+      //     {
+      //       path: 'view',
+      //       element: <WorkOrderViewPage />
+      //     },
+      //     {
+      //       path: 'viewDetail',
+      //       element: <WorkOrderViewDetailPage/>
+      //     },{
+      //       path: 'edit',
+      //       element: <WorkOrderEdit/>
+      //     },
+          
+      
+         
+      //   ]
+      // },
       {
-        path: 'technician',
+        path: 'services',
         children: [
           {
-            index: true,
+            path: 'workorder',
+            element: <WorkOrderCreatePage />
+          },
+          {
+            path: 'workorderview',
+            element: <WorkOrderViewPage />
+          },
+          {
+            path: 'workorderDetail',
+            element: <WorkOrderViewDetailPage/>
+          },{
+            path: 'workorderedit',
+            element: <WorkOrderEdit/>
+          },
+          {
+            path: 'technician',
             element: <TechnicianCreatePage />
           },
           {
-            path: 'view',
+            path: 'technicianview',
             element: <TechnicianViewPage />
           },
           {
-            path:'viewDetail',
+            path:'technicianDetail',
             element: <TechnicianViewDetailPage />
           },
+      
+         
         ]
+
       },
       {
         path: 'orders',

@@ -75,13 +75,20 @@ export const paths = {
       edit: '/dashboard/purchaseorder/edit',
       invoice: '/dashboard/purchaseorder/invoice',
     },
-    workorder:{
-      index: '/dashboard/workorder',
-      create: '/dashboard/workorder',
-      view: '/dashboard/workorder/view',
-      viewDetail: '/dashboard/workorder/viewDetail',
-      edit: '/dashboard/workorder/edit',
+    services:{
+      index: '/dashboard/services',
+
+        createWorkorder: '/dashboard/services/workorder',
+        workorderview: '/dashboard/services/workorderview',
+        workorderDetail: '/dashboard/services/workorderDetail',
+        workorderedit: '/dashboard/services/workorderedit',
+
+        createTechnician: '/dashboard/services/technician',
+        technicianview: '/dashboard/services/technicianview',
+        technicianDetail: '/dashboard/services/technicianDetail',
+      
     },
+ 
     ecommerce: '/dashboard/ecommerce',
     fileManager: '/dashboard/file-manager',
     invoices: {
@@ -103,12 +110,7 @@ export const paths = {
       viewDetail: '/dashboard/logistics/viewDetail',
 
     },
-    technician: {
-      index: '/dashboard/technician',
-      view: '/dashboard/technician/view',
-      viewDetail: '/dashboard/technician/viewDetail',
-
-    },
+ 
     mail: '/dashboard/mail',
     orders: {
       index: '/dashboard/orders',

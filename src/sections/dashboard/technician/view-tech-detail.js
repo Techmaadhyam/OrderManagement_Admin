@@ -35,7 +35,7 @@ export const ViewTechnicianDetail = (props) => {
           <Link
           color="text.primary"
           component={RouterLink}
-          href={paths.dashboard.technician.view}
+          href={paths.dashboard.services.technicianview}
           sx={{
             alignItems: 'center',
             display: 'inline-flex',

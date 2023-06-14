@@ -297,7 +297,7 @@ event.preventDefault();
        response.json().then(data => {
         console.log(data);
        
-        navigate('/dashboard/technician/viewDetail', { state: data });
+        navigate('/dashboard/services/technicianDetail', { state: data });
        
 });
       } 

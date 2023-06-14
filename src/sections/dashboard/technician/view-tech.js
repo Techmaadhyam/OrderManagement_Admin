@@ -213,7 +213,7 @@ const handleCompanyCancel = () => {
       key: 'userName',
       render: (name, record) => {
         const handleNavigation = () => {
-          navigate(`/dashboard/technician/viewDetail`, { state: record });
+          navigate('/dashboard/services/technicianDetail', { state: record });
         };
         
         return (
