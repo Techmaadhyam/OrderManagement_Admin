@@ -39,16 +39,6 @@ import 'moment-timezone';
 const userId = parseInt(sessionStorage.getItem('user')|| localStorage.getItem('user'))
 
 
-const customerType = [
-  {
-    label: 'Customer',
-    value: 'Customer'
-  },
-  {
-    label: 'Vendor',
-    value: 'Vendor'
-  }
-];
 
 
 const userOptions = [
@@ -182,8 +172,10 @@ const [productName, setProductName] = useState('');
     // Check the current path and set the state accordingly
     if (location.pathname === '/dashboard/quotation/buy') {
       setCategory('Purchase Quotation');
+      setType('Vendor')
     } else if (location.pathname === '/dashboard/quotation/sell') {
       setCategory('Sales Quotation');
+      setType('Customer')
     }
   }, [location.pathname]);
 
@@ -405,7 +397,7 @@ console.log(currentDate, deliveryIST)
 
     event.preventDefault();
     
-      if (contactName && address && userId && phone && status && address && comment && terms && updatedRows) {
+      if (contactName && address && userId && phone && status && address  && updatedRows) {
         try {
           const response = await fetch('http://13.115.56.48:8080/techmadhyam/addQuoatation', {
             method: 'POST',
@@ -476,18 +468,11 @@ console.log(currentDate, deliveryIST)
                     fullWidth
                     label="Type"
                     name="type"
-                    select
+                    
                     value={type}
                     onChange={handleInputChange}
                   >
-                     {customerType.map((option) => (
-                      <MenuItem
-                        key={option.value}
-                        value={option.value}
-                      >
-                        {option.label}
-                      </MenuItem>
-                    ))}
+                     
                   </TextField>
             </Grid>
             <Grid/>
@@ -499,6 +484,7 @@ console.log(currentDate, deliveryIST)
                 fullWidth
                 label="Company Name"
                 name="user"
+                required
                 select
                 value={userName}
                 onChange={(e) => {
@@ -538,6 +524,7 @@ console.log(currentDate, deliveryIST)
                     fullWidth
                     label="Category"
                     name="category"
+           
                     value={category}
                   >
                   </TextField>
@@ -548,6 +535,7 @@ console.log(currentDate, deliveryIST)
             >
                 <DatePicker placeholder="Delivery Date"
                 onChange={handleDateChange}
+           
                 className="css-dev-only-do-not-override-htwhyh"
                 style={{ height: '58px', width: '250px' , color: 'red'}}
 
@@ -562,6 +550,7 @@ height='50px'/>
                     fullWidth
                     label="Status"
                     name="status"
+                    required
                     value={status}
                     onChange={handleInputChange}
                     select
@@ -584,6 +573,7 @@ height='50px'/>
                 fullWidth
                 label="Contact Name"
                 name="contactName"
+                required
                 value={contactName}
                 onChange={handleInputChange}
               />
@@ -596,6 +586,7 @@ height='50px'/>
                 fullWidth
                 label="Mobile No."
                 name="mobileno"
+                required
                 value={phone}
                 type='number'
                 onChange={handleInputChange}
@@ -609,6 +600,7 @@ height='50px'/>
                 fullWidth
                 label="Address"
                 multiline
+                required
                 minRows={3}
                 name="address"
                 value={address}
@@ -657,6 +649,7 @@ height='50px'/>
                           fullWidth
                           label='Part Name'
                           name='name'
+                          required
                           select
                           value={productName}
                           onChange={(e) => {
@@ -683,6 +676,7 @@ height='50px'/>
                               fullWidth
                               label="Weight"
                               name="weight"
+                              required
                               value={weight}
                               onChange={(e) => setWeight(e.target.value)}
                               style={{ marginBottom: 10 }}
@@ -696,6 +690,7 @@ height='50px'/>
                               fullWidth
                               label="SGST"
                               name="sgst"
+                              required
                               type='number'
                               value={sgst}
                               onChange={(e) => setSgst(e.target.value)}
@@ -711,6 +706,7 @@ height='50px'/>
                               fullWidth
                               label="IGST"
                               name="igst"
+                              required
                               type='number'
                               value={igst}
                               onChange={(e) => setIgst(e.target.value)}
@@ -728,6 +724,7 @@ height='50px'/>
                               fullWidth
                               label="Quantity"
                               name="quantity"
+                              required
                               type='number'
                               value={quantity}
                               onChange={(e) => setQuantity(e.target.value)}
@@ -742,6 +739,7 @@ height='50px'/>
                               fullWidth
                               label="Cost"
                               name="cost"
+                              required
                               type='number'
                               value={price}
                               onChange={(e) => setPrice(e.target.value)}
@@ -757,6 +755,7 @@ height='50px'/>
                               fullWidth
                               label="Size"
                               name="size"
+                              required
                               value={size}
                               onChange={(e) => setSize(e.target.value)}
                               style={{ marginBottom: 10 }}
@@ -771,6 +770,7 @@ height='50px'/>
                               fullWidth
                               label="CGST"
                               name="cgst"
+                              required
                               type='number'
                               value={cgst}
                               onChange={(e) => setCgst(e.target.value)}
@@ -787,6 +787,7 @@ height='50px'/>
                           fullWidth
                           label="Description"
                           name="description"
+                          required
                           multiline
                           rows={4}
                           value={description}

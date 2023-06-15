@@ -450,6 +450,7 @@ const handleDateChange = (date) => {
                     label="Type"
                     name="type"
                     select
+                    required
                     value={type}
                     onChange={handleInputChange}
                   >
@@ -487,6 +488,7 @@ height='50px'/>
                 fullWidth
                 label="Company Name"
                 name="user"
+                required
                 select
                 value={userName}
                 onChange={(e) => {
@@ -526,6 +528,7 @@ height='50px'/>
                     fullWidth
                     label="Status"
                     name="status"
+                    required
                     value={status}
                     onChange={handleInputChange}
                     select
@@ -562,6 +565,7 @@ height='50px'/>
                     fullWidth
                     label="Admin Name"
                     name="adminname"
+                    required
                     value={adminName}
                     onChange={handleInputChange}
                 
@@ -577,6 +581,7 @@ height='50px'/>
                     fullWidth
                     label="Admin Email"
                     name="adminemail"
+                    required
                     value={adminEmail}
                     helperText={hasError && "Please enter a valid email."}
                     onBlur={handleBlur}
@@ -594,6 +599,7 @@ height='50px'/>
                     fullWidth
                     label="Admin Phone"
                     name="adminphone"
+                    required
                     type='number'
                     value={adminPhone}
                     onChange={handleInputChange}
@@ -609,6 +615,7 @@ height='50px'/>
                     fullWidth
                     label="Incharge Name"
                     name="contactName"
+                    required
                     value={contactName}
                     onChange={handleInputChange}
                 
@@ -624,6 +631,7 @@ height='50px'/>
                     fullWidth
                     label="Incharge Email"
                     name="inchargeemail"
+                    required
                     value={inchargeEmail}
                     helperText={hasError2 && "Please enter a valid email."}
                     onBlur={handleBlur}
@@ -641,6 +649,7 @@ height='50px'/>
                     fullWidth
                     label="Incharge Phone"
                     name="mobileno"
+                    required
                     type='number'
                     value={phone}
                     onChange={handleInputChange}
@@ -692,6 +701,7 @@ height='50px'/>
                           fullWidth
                           label='Part Name'
                           name='name'
+                          required
                           select
                           value={productName}
                           onChange={(e) => {
@@ -720,6 +730,7 @@ height='50px'/>
                               label="No. Of Workstations"
                               name="workstation"
                               type='number'
+                              required
                               value={workstation}
                               onChange={(e) => setWorkstation(e.target.value)}
                               style={{ marginBottom: 10 }}
@@ -737,6 +748,7 @@ height='50px'/>
                               fullWidth
                               label="IGST"
                               name="igst"
+                              required
                               type='number'
                               value={igst}
                               onChange={(e) => setIgst(e.target.value)}
@@ -753,6 +765,7 @@ height='50px'/>
                               label="Unit Price"
                               name="cost"
                               type='number'
+                              required
                               value={price}
                               onChange={(e) => setPrice(e.target.value)}
                               style={{ marginBottom: 10 }}
@@ -769,6 +782,7 @@ height='50px'/>
                           fullWidth
                           label="Description"
                           name="description"
+                          required
                           multiline
                           rows={4}
                           value={description}
