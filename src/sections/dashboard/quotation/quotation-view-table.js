@@ -16,7 +16,6 @@ import { Scrollbar } from 'src/components/scrollbar';
 import EditIcon from '@mui/icons-material/Edit';
 import {  Delete } from '@mui/icons-material';
 import DownloadIcon from '@mui/icons-material/Download';
-import Papa from 'papaparse';
 import IconWithPopup from '../user/user-icon';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -192,80 +191,6 @@ const filteredList = updatedUser.filter(product => {
   return companyMatch
 });
 
-const handleQuotation = async (record) => {
-  console.log(record)
-  try {
-    const response = await axios.get(`http://13.115.56.48:8080/techmadhyam/getAllQuotationDetails/${record.id}`)
-    setQuotationData(response.data);
-    const temp = await axios.get(`http://13.115.56.48:8080/techmadhyam/getTempUserById/${record.tempUserId}`)
-    // console.log(quotationData);
-    const rowData = response.data.map((product,index) =>{
-      return {
-        id: index+1,
-        productName: product.productName,
-        productDescription: product.description,
-        quantity: product.quantity,
-        weight: product.weight,
-        size: product.size,
-        price: product.price,
-        cgst: product.cgst,
-        sgst: product.sgst,
-        igst: product.igst,
-        total: ((product.price*product.quantity)+((product.price*product.quantity)*product.cgst/100)+((product.price*product.quantity)*product.sgst/100)+((product.price*product.quantity)*product.igst/100)).toFixed(2),
-      }
-    })
-    const userData = [
-      ['Company Name', record.companyName],
-      ['User Name', temp.data.firstName + ' ' + temp.data.lastName],
-      ['Quotation Number', record.id],
-      ['Delivery Date', record.deliveryDate],
-      ['Contact Name', record.contactPersonName],
-      ['Contact Number', record.contactPhoneNumber],
-    ];
-    const footerData = [
-      ['Total Amount', record.totalAmount],
-      ['Terms & Conditions', record.termsAndCondition],
-      ['Comments', record.comments],
-    ];
-
-    const allData = [
-      ...userData.map(row => [row[0], row[1]]), // User data as a 2-column table
-      [], // Empty row for separation
-      csvHeaders.map(header => header.label), // Column headers for quotation data
-      ...rowData.map(product =>
-        csvHeaders.map(header => product[header.key])
-      ), // Quotation data as a 10-column table
-      [], // Empty row for separation
-      ...footerData.map(row => [row[0], row[1]]), // Additional data as a 2-column table
-    ];
-
-    const csv = Papa.unparse(allData);
-    const csvData = new Blob([csv], { type: 'text/csv' });
-    // const csvData = new Blob([Papa.unparse(allData)], { type: 'text/csv' });
-    const csvUrl = URL.createObjectURL(csvData);
-    const tempLink = document.createElement('a');
-    tempLink.href = csvUrl;
-    tempLink.setAttribute('download', 'quotation.csv');
-    tempLink.click();
-    // setCsvData(rowData);
-    // console.log(csvData);
-  } catch (error) {
-    console.log(error);
-  }
-}
-  const csvHeaders = [
-    { label: 'S.No.', key: 'id' },
-    { label: 'Product Name', key: 'productName' },
-    { label: 'Product Description', key: 'productDescription' },
-    { label: 'Quantity', key: 'quantity' },
-    { label: 'Weight', key: 'weight' },
-    { label: 'Size', key: 'size' },
-    { label: 'Cost', key: 'price' },
-    { label: 'CGST', key: 'cgst' },
-    { label: 'SGST', key: 'sgst' },
-    { label: 'IGST', key: 'igst' },
-    { label: 'Total Amount', key: 'total' },
-  ]
 
   const columns = [
     {
@@ -357,17 +282,7 @@ const handleQuotation = async (record) => {
         </IconButton>
       ),
     },
-    {
-      dataIndex: 'quotation',
-      key: 'quotation',
-      render: (_, record) => (
-        <IconButton  onClick={() => handleQuotation(record)}>
-          <Icon>
-              <DownloadIcon />
-          </Icon>
-        </IconButton>
-      ),
-    },
+    
     {
       dataIndex: 'actionDelete',
       key: 'actionDelete',

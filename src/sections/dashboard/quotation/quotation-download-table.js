@@ -16,7 +16,7 @@ import { Scrollbar } from 'src/components/scrollbar';
 import EditIcon from '@mui/icons-material/Edit';
 import {  Delete } from '@mui/icons-material';
 import DownloadIcon from '@mui/icons-material/Download';
-import Papa from 'papaparse';
+import ExcelJS from 'exceljs';
 import IconWithPopup from '../user/user-icon';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -25,6 +25,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SearchIcon from '@mui/icons-material/Search';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import imgUrl from '../pdfAssets/imageDataUrl';
 
 
 const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
@@ -45,7 +46,7 @@ const categoryBuySell = [
   }
 ];
 
-const  QuotationDownloadTable = () => {
+const QuotationDownloadTable = () => {
   const [userData, setUserData]= useState([])
   const [userData1, setUserData1]= useState([])
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -67,7 +68,7 @@ const  QuotationDownloadTable = () => {
         console.error(error);
       });
   }, []);
-  
+
   function formatDate(dateString) {
     const parsedDate = new Date(dateString);
     const year = parsedDate.getFullYear();
@@ -193,17 +194,235 @@ const filteredList = updatedUser.filter(product => {
 });
 
 const handleQuotation = async (record) => {
-  console.log(record)
+  console.log(record);
   try {
-    const response = await axios.get(`http://13.115.56.48:8080/techmadhyam/getAllQuotationDetails/${record.id}`)
-    setQuotationData(response.data);
-    const temp = await axios.get(`http://13.115.56.48:8080/techmadhyam/getTempUserById/${record.tempUserId}`)
-    // console.log(quotationData);
-    const rowData = response.data.map((product,index) =>{
+    const response = await axios.get(`http://13.115.56.48:8080/techmadhyam/getAllQuotationDetails/${record.id}`);
+    const tempResponse = await axios.get(`http://13.115.56.48:8080/techmadhyam/getTempUserById/${record.tempUserId}`);
+    const temp = tempResponse.data;
+
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Sheet 1');
+
+    
+    worksheet.views = [{ state: 'frozen', ySplit: 1 }];
+    worksheet.properties.defaultRowHeight = 15;
+    worksheet.properties.defaultColWidth = 12;
+    worksheet.properties.tabColor = { argb: 'FFFFFFFF' };
+    worksheet.views = [{
+      showGridLines: false
+    }];
+
+    
+    const titleCell = worksheet.getCell('A1');
+    titleCell.value = 'QUOTATION';
+    titleCell.font = { size: 27, bold: true, name: 'Arial' };
+    titleCell.alignment = { horizontal: 'center', vertical: 'middle' };
+    titleCell.fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: '87CEEB' }, // Sky blue color
+    };
+    worksheet.mergeCells('A1:L1');
+    worksheet.mergeCells('A2:B6');
+    const image = workbook.addImage({
+      base64: imgUrl,
+      extension: 'png',
+    });
+    worksheet.addImage(image, {
+      tl: { col: 0, row: 1.2},
+      ext: { width: 167, height: 100 },
+    });
+    const infoData = [
+      ['Quotation Date:', `${record.createdDate}`], 
+      ['Quotation No.:', `${record.id}`], 
+      ['Customer Name:', `${temp.firstName} ${temp.lastName}`], 
+      ['Customer Contact:', `${temp.mobile}`], 
+    ];
+    
+    infoData.forEach((rowData, rowIndex) => {
+      rowData.forEach((cellData, colIndex) => {
+        const cell = worksheet.getCell(rowIndex + 3, colIndex + 7);
+        cell.value = cellData;
+        cell.font = { size: 10, bold: true, name: 'Arial' };
+        cell.alignment = { vertical: 'middle', horizontal: 'left' };
+      });
+    });
+    worksheet.mergeCells('C7:F7');
+    const tableOneData = [
+      ['Name:', `${record.createdByUser.companyName}`], 
+      ['Address:', `${record.createdByUser.address} ${record.createdByUser.city} ${record.createdByUser.state} ${record.createdByUser.country}`], 
+      ['Contact:', `${record.createdByUser.mobile}`], 
+      ['Email:', `${record.createdByUser.emailId}`], 
+      ['GSTIN:', `${record.createdByUser.gstNumber}`], 
+    ];
+    tableOneData.forEach((rowData, rowIndex) => {
+      rowData.forEach((cellData, colIndex) => {
+        const cell = worksheet.getCell(rowIndex + 9, colIndex + 3);
+        cell.value = cellData;
+        cell.font = { size: 10, bold: true, name: 'Arial' };
+        cell.alignment = { vertical: 'middle', horizontal: 'left' };
+      });
+    });
+    worksheet.getCell('C7').value = 'Company Address';
+    worksheet.getCell('C7').fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: '87CEEB' }, // Sky blue color
+    };
+    worksheet.getCell('C7').alignment = { vertical: 'middle', horizontal: 'center' };
+    worksheet.getCell('C7').font = { size: 10, bold: true, name: 'Arial' };
+    worksheet.getCell('I7').font = { size: 10, bold: true, name: 'Arial' };
+    worksheet.getCell('I7').alignment = { vertical: 'middle', horizontal: 'center' };
+    worksheet.mergeCells('C8:F8');
+    worksheet.mergeCells('C14:F14');
+    worksheet.mergeCells('D9:F9');
+    worksheet.mergeCells('D10:F10');
+    worksheet.mergeCells('D11:F11');
+    worksheet.mergeCells('D12:F12');
+    worksheet.mergeCells('D13:F13');
+    
+    worksheet.mergeCells('I7:L7');
+    const tableTwoData = [
+      ['Name:', `${temp.firstName} ${temp.lastName}`], 
+      ['Address:', `${temp.address} ${temp.city} ${temp.state} ${temp.country}`], 
+      ['Contact:', `${temp.mobile}`], 
+      ['Email:', `${temp.emailId}`], 
+      ['GSTIN:', `${temp.gstNumber}`], 
+    ];
+    tableTwoData.forEach((rowData, rowIndex) => {
+      rowData.forEach((cellData, colIndex) => {
+        const cell = worksheet.getCell(rowIndex + 9, colIndex + 9);
+        cell.value = cellData;
+        cell.font = { size: 10, bold: true, name: 'Arial' };
+        cell.alignment = { vertical: 'middle', horizontal: 'left' };
+      });
+    });
+    worksheet.getCell('I7').value = 'Customer Address';
+    worksheet.getCell('I7').fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: '87CEEB' }, // Sky blue color
+    };
+    worksheet.mergeCells('I8:L8');
+    worksheet.mergeCells('I14:L14');
+    worksheet.mergeCells('J9:L9');
+    worksheet.mergeCells('J10:L10');
+    worksheet.mergeCells('J11:L11');
+    worksheet.mergeCells('J12:L12');
+    worksheet.mergeCells('J13:L13');
+
+    // Set Border for tables
+    const tableBorder = { style: 'medium', color: { argb: '80808080' } };
+    
+    // Set border for cells E8 to E14 (left border)
+    for (let row = 8; row <= 14; row++) {
+      worksheet.getCell(`I${row}`).border = { left: tableBorder };
+    }
+    // Set border for cells G8 to G14 (right border)
+    for (let row = 8; row <= 14; row++) {
+      worksheet.getCell(`L${row}`).border = { right: tableBorder };
+    }
+    for (let row = 8; row <= 14; row++) {
+      worksheet.getCell(`C${row}`).border = { left: tableBorder };
+    }
+    // Set border for cells G8 to G14 (right border)
+    for (let row = 8; row <= 14; row++) {
+      worksheet.getCell(`F${row}`).border = { right: tableBorder };
+    }
+    worksheet.getCell('C14').border = { bottom: tableBorder ,left: tableBorder, right: tableBorder};
+    worksheet.getCell('C8').border = { left: tableBorder , right: tableBorder};
+    worksheet.getCell('I14').border = { bottom: tableBorder ,left: tableBorder, right: tableBorder};
+    worksheet.getCell('I8').border = { left: tableBorder , right: tableBorder};
+    worksheet.getCell('I7').border = {
+      top: tableBorder,
+      left: tableBorder,
+      bottom: tableBorder,
+      right: tableBorder,
+    };
+    
+    // Set border for cell A7 (top, bottom, left, right borders)
+    worksheet.getCell('C7').border = {
+      top: tableBorder,
+      left: tableBorder,
+      bottom: tableBorder,
+      right: tableBorder,
+    };
+    worksheet.getRow(16).height = 45;
+    worksheet.mergeCells('A16:L16');
+    worksheet.getCell('A16').value = `Note/Remarks: ${record.comments}`;
+    worksheet.getCell('A16').font = { size: 10, bold: true, name: 'Arial' };
+    worksheet.getCell('A16').alignment = { vertical: 'middle', horizontal: 'left' };
+    worksheet.getCell('A16').border = {
+      top: tableBorder,
+      left: tableBorder,
+      bottom: tableBorder,
+      right: tableBorder,
+    };
+    const table2Headers = [
+      'S.No.',
+      'PRODUCT NAME',
+      'DESCRIPTION',
+      'HSN/SAC',
+      'QUANTITY',
+      'WEIGHT',
+      'SIZE',
+      'COST',
+      'CGST',
+      'SGST',
+      'IGST',
+      'AMOUNT',
+    ];
+    table2Headers.forEach((header, index) => {
+      worksheet.getCell(18, index + 1).value = header;
+      worksheet.getCell(18, index + 1).font = { bold: true, size: 9, name: 'Arial' };
+      worksheet.getCell(18, index + 1).fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: '87CEEB' },
+      };
+      if (index !==  0&& index !== 1) {
+        worksheet.getColumn(index + 1).width = header.length + 8;
+      }
+      worksheet.getColumn(2).width = 16;
+      worksheet.getColumn(7).width = 20;
+    worksheet.getColumn(8).width = 20;
+    });
+    for (let row = 18; row <= 18; row++) {
+      for (let col = 1; col <= 12; col++) {
+        const cell = worksheet.getCell(row, col);
+        cell.border = {
+          top: tableBorder,
+          // left: tableBorder,
+          bottom: tableBorder,
+          right: { style: 'thin', color: { argb: '80808080' } },
+        };
+      }
+    }
+    worksheet.getCell('A18').border = {
+      top: tableBorder,
+      left: tableBorder,
+      bottom: tableBorder,
+      right: { style: 'thin', color: { argb: '80808080' } },
+    };
+    worksheet.getCell('L18').border = {
+      top: tableBorder,
+      left: { style: 'thin', color: { argb: '80808080' } },
+      bottom: tableBorder,
+      right: tableBorder,
+    };
+    const rowData = response.data.map((product, index) => {
+      const totalAmount = (
+        product.price * product.quantity +
+        (product.price * product.quantity * product.cgst) / 100 +
+        (product.price * product.quantity * product.sgst) / 100 +
+        (product.price * product.quantity * product.igst) / 100
+      ).toFixed(2);
+
       return {
-        id: index+1,
+        id: index + 1,
         productName: product.productName,
         productDescription: product.description,
+        hsn: product.id,
         quantity: product.quantity,
         weight: product.weight,
         size: product.size,
@@ -211,61 +430,62 @@ const handleQuotation = async (record) => {
         cgst: product.cgst,
         sgst: product.sgst,
         igst: product.igst,
-        total: ((product.price*product.quantity)+((product.price*product.quantity)*product.cgst/100)+((product.price*product.quantity)*product.sgst/100)+((product.price*product.quantity)*product.igst/100)).toFixed(2),
-      }
-    })
-    const userData = [
-      ['Company Name', record.companyName],
-      ['User Name', temp.data.firstName + ' ' + temp.data.lastName],
-      ['Quotation Number', record.id],
-      ['Delivery Date', record.deliveryDate],
-      ['Contact Name', record.contactPersonName],
-      ['Contact Number', record.contactPhoneNumber],
-    ];
-    const footerData = [
-      ['Total Amount', record.totalAmount],
-      ['Terms & Conditions', record.termsAndCondition],
-      ['Comments', record.comments],
-    ];
+        total: totalAmount,
+      };
+    });
+    rowData.forEach((row, rowIndex) => {
+      Object.keys(row).forEach((key, columnIndex) => {
+        const cell = worksheet.getCell(19 + rowIndex, columnIndex + 1);
+        cell.value = row[key];
+        cell.font = { bold: true, size: 9, name: 'Arial' };
+        cell.alignment = { vertical: 'middle', horizontal: 'center' };
+        cell.border = {
+          top: tableBorder,
+          left: tableBorder,
+          bottom: tableBorder,
+          right: tableBorder,
+        };
+      });
+    });
+    const editableRow = worksheet.lastRow.number + 2;
+    const thankYouCell = worksheet.getCell(editableRow, 2);
+    thankYouCell.value = 'THANK YOU FOR YOUR BUSINESS!';
+    thankYouCell.font = { bold: true, size: 9, name: 'Arial' };
 
-    const allData = [
-      ...userData.map(row => [row[0], row[1]]), // User data as a 2-column table
-      [], // Empty row for separation
-      csvHeaders.map(header => header.label), // Column headers for quotation data
-      ...rowData.map(product =>
-        csvHeaders.map(header => product[header.key])
-      ), // Quotation data as a 10-column table
-      [], // Empty row for separation
-      ...footerData.map(row => [row[0], row[1]]), // Additional data as a 2-column table
-    ];
+    const signatureCell = worksheet.getCell(editableRow + 1, 2);
+    signatureCell.value = 'Signature/Stamp:';
+    signatureCell.font = { size: 9, name: 'Arial' };
 
-    const csv = Papa.unparse(allData);
-    const csvData = new Blob([csv], { type: 'text/csv' });
-    // const csvData = new Blob([Papa.unparse(allData)], { type: 'text/csv' });
-    const csvUrl = URL.createObjectURL(csvData);
-    const tempLink = document.createElement('a');
-    tempLink.href = csvUrl;
-    tempLink.setAttribute('download', 'quotation.csv');
-    tempLink.click();
-    // setCsvData(rowData);
-    // console.log(csvData);
+    const placeCell = worksheet.getCell(editableRow + 2, 2);
+    placeCell.value = 'Place:';
+    placeCell.font = { size: 9, name: 'Arial' };
+    const placeCell2 = worksheet.getCell(editableRow + 2, 3);
+    placeCell2.value = 'Hyderabad';
+    placeCell2.font = { size: 9, name: 'Arial' };
+
+    const DateCell = worksheet.getCell(editableRow + 3, 2);
+    DateCell.value = `Date:`;
+    DateCell.font = { size: 9, name: 'Arial' };
+    
+    const DateCell2 = worksheet.getCell(editableRow + 3, 3);
+    const currentDate = new Date();
+    DateCell2.value = `${currentDate.getFullYear()}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}/${currentDate.getDate().toString().padStart(2, '0')}`
+    worksheet.mergeCells(`B${editableRow}:C${editableRow}`);
+    DateCell2.font = { size: 9, name: 'Arial' };
+   
+    // Save the workbook as a file
+    workbook.xlsx.writeBuffer().then((buffer) => {
+      const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'table.xlsx';
+      a.click();
+    });
   } catch (error) {
     console.log(error);
   }
-}
-  const csvHeaders = [
-    { label: 'S.No.', key: 'id' },
-    { label: 'Product Name', key: 'productName' },
-    { label: 'Product Description', key: 'productDescription' },
-    { label: 'Quantity', key: 'quantity' },
-    { label: 'Weight', key: 'weight' },
-    { label: 'Size', key: 'size' },
-    { label: 'Cost', key: 'price' },
-    { label: 'CGST', key: 'cgst' },
-    { label: 'SGST', key: 'sgst' },
-    { label: 'IGST', key: 'igst' },
-    { label: 'Total Amount', key: 'total' },
-  ]
+};
 
   const columns = [
     {

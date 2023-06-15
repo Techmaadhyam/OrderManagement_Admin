@@ -17,14 +17,22 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
 import SearchIcon from '@mui/icons-material/Search';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import imgUrl from '../pdfAssets/imageDataUrl.js';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from '../pdfAssets/vfs_fonts';
 
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
+pdfMake.fonts = {
+  Inter: {
+    normal: 'Inter-Regular.ttf',
+    bold: 'Inter-Bold.ttf',
+    light: 'Inter-Light.ttf',
+    medium: 'Inter-Medium.ttf',
+  }
+}
 const customerType = [   
   {
     label: 'Distributor',
@@ -98,7 +106,6 @@ const SalesOrderInvoice = (props) => {
   // const words = convertNumberToWords(number);
   // console.log(words); // Output: "one thousand two hundred thirty-four rupees and fifty-six paisas"
 
-
   function formatDate(dateString) {
     const parsedDate = new Date(dateString);
     const year = parsedDate.getFullYear();
@@ -119,13 +126,14 @@ const SalesOrderInvoice = (props) => {
     }
   
     if (formattedItem.deliveryDate) {
+      formattedItem.originalDeliveryDate =formattedItem.deliveryDate
       formattedItem.deliveryDate = formatDate(formattedItem.deliveryDate);
     }
   
     return formattedItem;
   });
 
-const dataWithKeys = formattedArray?.map((item) => ({ ...item, key: item.id }));
+  const dataWithKeys = formattedArray?.map((item) => ({ ...item, key: item.id }));
 
 const handleCompanyClick = () => {
   setIsSearching(true);
@@ -186,7 +194,7 @@ const handleTypeChange = (event) => {
 };
  
 
-const handleInvoicePdf = async (record ,heading) => {
+const handleInvoicePdf = async (record ,heading,dateData,noData) => {
   console.log(record);
         try{
               const response = await axios.get(`http://13.115.56.48:8080/techmadhyam/getAllSalesOrderDetails/${record.id}`)
@@ -229,6 +237,8 @@ const handleInvoicePdf = async (record ,heading) => {
                     });
                 const docDefinition = {
                     pageOrientation: 'landscape',
+                    defaultStyle: {
+                      font: 'Inter'},
                     content: [
                       {
                         columns: [
@@ -252,21 +262,25 @@ const handleInvoicePdf = async (record ,heading) => {
                         ]},
                       {
                         style: 'newTable',
-                        margin: [380,0,0,0],
+                        
                         table: {
-                          widths: ['*', '*', 'auto', 'auto'],
+                          widths: ['*','auto', 'auto', 'auto', 'auto', 'auto'],
                           body: [
                             [
-                              { text: 'Invoice Number:', style: 'tableLabel', border: [true, true, true, false]},
-                              { text: 'Invoice Date:', style: 'tableLabel', border: [true, true, true, false]},
+                              { text: '', border: [false, false, false, false] },
+                              { text: `${noData} Number:`, style: 'tableLabel', border: [true, true, true, false]},
+                              { text: `${dateData}:`, style: 'tableLabel', border: [true, true, true, false]},
                               { text: 'Customer ID:', style: 'tableLabel', border: [true, true, true, false] },
-                              { text: 'Phone No.:', style: 'tableLabel', border: [true, true, true, false] },
+                              { text: 'Customer Contact:', style: 'tableLabel', border: [true, true, true, false] },
+                              { text: 'Customer PO No.:', style: 'tableLabel', border: [true, true, true, false] },
                             ],
                             [
+                              { text: '', border: [false, false, false, false] },
                               { text: record.id, style: 'tableCell',border: [true, false, true, false] },
-                              { text: record.createdByUser.createdDate, style: 'tableCell', border: [true, false, true, false] },
+                              { text: formatDate(record.createdByUser.createdDate), style: 'tableCell', border: [true, false, true, false] },
                               { text: record.tempUserId || record.userId, style: 'tableCell',border: [true, false, true, false] },
                               { text: record.contactPhone, style: 'tableCell',border: [true, false, true, false] },
+                              { text: '1234', style: 'tableCell',border: [true, false, true, false] },
                             ],
                           ],
                         },
@@ -280,13 +294,13 @@ const handleInvoicePdf = async (record ,heading) => {
                               { text: `Bill To: ${record.contactPerson}`, style: 'tableLabel', border: [true, true, true, false]},
                               { text: `Ship To: ${record.contactPerson}`, style: 'tableLabel', border: [true, true, true, false] },
                               { text: 'Customer GST Registration information', style: 'tableLabel' },
-                              { text: 'Payment Mode:', style: 'tableLabel' },
+                              { text: 'Mode of Dispatch: Courier', style: 'tableLabel', border: [true, true, true, true]},
                             ],
                             [
                               { text: `${record.deliveryAddress}\n${record.city} - ${record.pinCode}\n${record.state}\n${record.country}`, style: 'tableCell',border: [true, false, true, false] },
                               { text: `${record.deliveryAddress}\n${record.city} - ${record.pinCode}\n${record.state}\n${record.country}`, style: 'tableCell', border: [true, false, true, false] },
                               { text: `${userMain ? mainGstNumber : tempGstNumber}`, style: 'tableCell',border: [true, false, true, false] },
-                              { text: `${record.paymentMode}`, style: 'tableCell',border: [true, false, true, false] },
+                              { text: `Mode of Payment: ${record.paymentMode}`, style: 'tableLabel',border: [true, false, true, false] },
                             ],
                           ],
                         },
@@ -295,10 +309,21 @@ const handleInvoicePdf = async (record ,heading) => {
                         style: 'table',
                         table: {
                             heights:['auto', 'auto'],
-                            widths: ['auto',200,'auto','auto','auto','auto','auto','auto','auto','auto','auto','auto'],
+                            widths: ['auto',"*",'auto','auto','auto','auto','auto','auto','auto','auto','auto','auto'],
                           body: [
                             
-                            ['S.No.','Item Code/product Description', 'HSN/SAC Code', 'Unit Price', 'Qty', 'Total before Discount', 'Discount', 'Total', 'CGST', 'SGST', 'IGST', 'Line Total'],
+                            [{ text: 'S.No.', style: 'tableLabel' },
+                            { text: 'Part No./Product Description', style: 'tableLabel' },
+                            { text: 'HSN/SAC Code', style: 'tableLabel' },
+                            { text: 'Unit Price', style: 'tableLabel' },
+                            { text: 'Qty', style: 'tableLabel' },
+                            { text: 'Total before Discount', style: 'tableLabel' },
+                            { text: 'Discount', style: 'tableLabel' },
+                            { text: 'Total', style: 'tableLabel' },
+                            { text: 'CGST', style: 'tableLabel' },
+                            { text: 'SGST', style: 'tableLabel' },
+                            { text: 'IGST', style: 'tableLabel' },
+                            { text: 'Line Total', style: 'tableLabel' },],
                             ...rowData,
                           ],
                         },
@@ -371,7 +396,7 @@ const handleInvoicePdf = async (record ,heading) => {
                             },
                         tableLabel: {
                           bold: true,
-                          border: [false, false, false, true],
+                          // border: [false, false, false, true],
                         },
                         tableCell: {
                           fillColor: '#ffffff',
@@ -428,37 +453,45 @@ const handleChallanPdf = async (record) => {
                     });
                 const docDefinition = {
                     pageOrientation: 'landscape',
+                    defaultStyle: {
+                      font: 'Inter'},
                     content: [
-                        {
+                      {
                         columns: [
-                          // {
-                          //   image: logo,
-                          //   width: 100,
-                          // },
-                      { text: `${record.createdByUser.companyName}`, style: 'header', alignment: 'left' },
+                          {
+                            image: imgUrl,
+                            width: 150,
+                            alignment: 'left',
+                          },
+                          {stack: [
+                            {text: `${record.createdByUser.companyName}`, style: 'header'},
+                            { text: `${record.createdByUser.address}, ${record.createdByUser.city}, ${record.createdByUser.pincode}, ${record.createdByUser.state}, ${record.createdByUser.country}`, style: 'subheader' },
+                      { text: `GSTIN: ${record.createdByUser.gstNumber}`, style: 'subheader'},
+                      { text: 'PAN: AAGFT5872R', style: 'subheader'},
+                        ],
+                        margin: [20, 0, 0, 0],
+                      },
                       
-                      // { text: 'ORIGINAL', style: 'header', alignment: 'center' },
+                      { text: 'ORIGINAL', style: 'header', alignment: 'center' },
                         
-                      { text: 'DELIVERY CHALLAN', style: 'header', alignment: 'right' },
+                      { text: "DELIVERY CHALLAN", style: 'header', alignment: 'right' },
                         ]},
-                        { text: `${record.createdByUser.address}, ${record.createdByUser.city}, ${record.createdByUser.pincode}, ${record.createdByUser.state}, ${record.createdByUser.country}`, style: 'subheader', alignment: 'left', margin: [0, 0, 450, 5] },
-                      { text: `GSTIN: ${record.createdByUser.gstNumber}`, style: 'subheader', alignment: 'left' },
-                      { text: 'PAN: AAGFT5872R', style: 'subheader', alignment: 'left' },
                       {
                         style: 'newTable',
-                        margin: [380,0,0,0],
                         table: {
-                          widths: ['*', '*', 'auto', 'auto'],
+                          widths: ['*','auto', 'auto', 'auto', 'auto'],
                           body: [
                             [
-                              { text: 'Invoice Number:', style: 'tableLabel', border: [true, true, true, false]},
-                              { text: 'Invoice Date:', style: 'tableLabel', border: [true, true, true, false]},
+                              { text: '', border: [false, false, false, false]},
+                              { text: 'Delivery Challan No:', style: 'tableLabel', border: [true, true, true, false]},
+                              { text: 'Date:', style: 'tableLabel', border: [true, true, true, false]},
                               { text: 'Customer ID:', style: 'tableLabel', border: [true, true, true, false] },
-                              { text: 'Phone No.:', style: 'tableLabel', border: [true, true, true, false] },
+                              { text: 'Customer Contact:', style: 'tableLabel', border: [true, true, true, false] },
                             ],
                             [
+                              { text: '', border: [false, false, false, false]},
                               { text: record.id, style: 'tableCell',border: [true, false, true, false] },
-                              { text: record.createdByUser.createdDate, style: 'tableCell', border: [true, false, true, false] },
+                              { text: formatDate(record.createdByUser.createdDate), style: 'tableCell', border: [true, false, true, false] },
                               { text: record.tempUserId || record.userId, style: 'tableCell',border: [true, false, true, false] },
                               { text: record.contactPhone, style: 'tableCell',border: [true, false, true, false] },
                             ],
@@ -468,19 +501,17 @@ const handleChallanPdf = async (record) => {
                       {
                         style: 'infoTable',
                         table: {
-                          widths: ['*', '*', '*', '*'],
+                          widths: ['*', '*', '*'],
                           body: [
                             [
                               { text: `Bill To: ${record.contactPerson}`, style: 'tableLabel', border: [true, true, true, false]},
                               { text: `Ship To: ${record.contactPerson}`, style: 'tableLabel', border: [true, true, true, false] },
                               { text: 'Customer GST Registration information', style: 'tableLabel' },
-                              { text: 'Payment Mode:', style: 'tableLabel' },
                             ],
                             [
                               { text: `${record.deliveryAddress}\n${record.city} - ${record.pinCode}\n${record.state}\n${record.country}`, style: 'tableCell',border: [true, false, true, false] },
                               { text: `${record.deliveryAddress}\n${record.city} - ${record.pinCode}\n${record.state}\n${record.country}`, style: 'tableCell', border: [true, false, true, false] },
                               { text: `${userMain ? mainGstNumber : tempGstNumber}`, style: 'tableCell',border: [true, false, true, false] },
-                              { text: `${record.paymentMode}`, style: 'tableCell',border: [true, false, true, false] },
                             ],
                           ],
                         },
@@ -491,7 +522,10 @@ const handleChallanPdf = async (record) => {
                             heights:['auto', 'auto'],
                             widths: ['auto',300,300,'*'],
                           body: [
-                            ['S.No.','Item Code/product Description','', 'Quantity'],
+                            [{ text: 'S.No.', style: 'tableLabel' },
+                            { text: 'Item Code/product Description', style: 'tableLabel' },
+                            { text: '', style: 'tableLabel' },
+                            { text: 'Quantity', style: 'tableLabel' },],
                             ...rowData,
                           ],
                         },
@@ -680,7 +714,7 @@ const handleChallanPdf = async (record) => {
       dataIndex: 'downloadInvoice',
       key: 'downloadInvoice',
       render: (_, record) => (
-        <IconButton onClick={() => handleInvoicePdf(record,"TAX INVOICE")}>
+        <IconButton onClick={() => handleInvoicePdf(record,"TAX INVOICE","Invoice Date","Invoice")}>
           <Icon>
             <DownloadIcon />
           </Icon>
@@ -701,10 +735,10 @@ const handleChallanPdf = async (record) => {
     },
     {
         title: 'Proforma Invoice',
-      dataIndex: 'downloadInvoice',
-      key: 'downloadInvoice',
+      dataIndex: 'downloadPI',
+      key: 'downloadPI',
       render: (_, record) => (
-        <IconButton onClick={() => handleInvoicePdf(record,"PROFORMA INVOICE")}>
+        <IconButton onClick={() => handleInvoicePdf(record,"PROFORMA INVOICE","Date","Quotation")}>
           <Icon>
             <DownloadIcon />
           </Icon>
