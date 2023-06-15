@@ -700,7 +700,7 @@ const handleChallanPdf = async (record) => {
       ),
     },
     {
-        title: 'Download Invoice',
+        title: 'Proforma Invoice',
       dataIndex: 'downloadInvoice',
       key: 'downloadInvoice',
       render: (_, record) => (
