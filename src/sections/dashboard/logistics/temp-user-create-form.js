@@ -54,7 +54,7 @@ const [userName, setUserName] = useState('');
 const [email, setEmail] = useState('');
 const [phone, setPhone] = useState('');
 const [company, setCompany] = useState("");
-const [type, setType] = useState("");
+const [type, setType] = useState("Customer");
 const [address, setAddress] = useState("");
 const [zipcode, setZipcode] = useState("");
 const [currentDate, setCurrentDate] = useState('');
@@ -290,10 +290,10 @@ event.preventDefault();
           city: currentCity,
           state: currentState,
           country: currentCountry,
-          createdByUser: {id: userId},
+          createdByUser: {id: parseFloat(userId)},
           createdDate:new Date(),
           lastModifiedDate:new Date(),
-          lastModifiedByUser: {id: userId},
+          lastModifiedByUser: {id: parseFloat(userId)},
         })
       });
       
@@ -319,12 +319,32 @@ event.preventDefault();
   return (
     <div style={{minWidth: "100%" , marginBottom: '1rem' }}>
     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-      <h2>Create Customer</h2>
+      <h2>Create Customer/Vendor</h2>
       <IconWithPopup/>
+
     </div>
+    <TextField
+             
+                label="Type"
+                name="type"
+                select
+                sx={{ minWidth: 250 , mb: 2}}
+                value={type}
+                onChange={handleInputChange}
+
+              >
+              {customerType.map((option) => (
+                      <MenuItem
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))}
+              </TextField>
     <form>
       <Card>
-        <CardHeader title="New Customer" />
+      <CardHeader title={type === "Customer" ? "New Customer" : "New Vendor"} />
         <CardContent sx={{ pt: 0 }}>
           <Grid
             container
@@ -338,6 +358,7 @@ event.preventDefault();
                 fullWidth
                 label="First Name"
                 name="firstname"
+                required
                 value={firstName}
                 onChange={handleInputChange}
 
@@ -352,6 +373,7 @@ event.preventDefault();
                 fullWidth
                 label="Last Name"
                 name="lastname"
+                required
                 value={lastName}
                 onChange={handleInputChange}
 
@@ -366,6 +388,7 @@ event.preventDefault();
                 fullWidth
                 label="Username"
                 name="username"
+                required
                 value={userName}
                 onChange={handleInputChange}
 
@@ -380,6 +403,7 @@ event.preventDefault();
                 fullWidth
                 label="Email"
                 name="email"
+                required
                 value={email}
                 helperText={hasError && "Please enter a valid email."}
                 onBlur={handleBlur}
@@ -398,6 +422,7 @@ event.preventDefault();
                 label="Phone"
                 name="phone"
                 type='number'
+                required
                 value={phone}
                 onChange={handleInputChange}
 
@@ -409,21 +434,11 @@ event.preventDefault();
             >
               <TextField
                 fullWidth
-                label="Type"
-                name="type"
-                select
-                value={type}
-                onChange={handleInputChange}
-
+                label="PAN number"
+                name="pan"
+                required
               >
-              {customerType.map((option) => (
-                      <MenuItem
-                        key={option.value}
-                        value={option.value}
-                      >
-                        {option.label}
-                      </MenuItem>
-                    ))}
+              
               </TextField>
             </Grid>
 
@@ -435,6 +450,7 @@ event.preventDefault();
                 fullWidth
                 label="Company"
                 name="company"
+                required
                 value={company}
                 onChange={handleInputChange}
 
@@ -449,6 +465,7 @@ event.preventDefault();
                 fullWidth
                 label="GST Number"
                 name="gstn"
+                required
                 value={gstn}
                 onChange={handleInputChange}
 
@@ -461,8 +478,9 @@ event.preventDefault();
             >
               <TextField
                 fullWidth
-                label="Address"
+                label="Shipping Address"
                 multiline
+                required
                 minRows={3}
                 name="address"
                 value={address}
@@ -471,7 +489,22 @@ event.preventDefault();
 
               />
             </Grid>
-            <Grid/>
+            <Grid
+              xs={12}
+              md={6}
+            >
+              <TextField
+                fullWidth
+                label="Billing Address"
+                multiline
+                required
+                minRows={3}
+                name="address"
+    
+
+
+              />
+            </Grid>
             <Grid
               xs={12}
               md={6}
@@ -480,6 +513,7 @@ event.preventDefault();
                     fullWidth
                     label="Country"
                     name="country"
+                    required
                     select
                     defaultValue=""
                     value={currentCountry}
@@ -505,6 +539,7 @@ event.preventDefault();
                     fullWidth
                     label="State"
                     name="state"
+                    required
                     select
                     defaultValue=''
                     value={currentState}
@@ -531,6 +566,7 @@ event.preventDefault();
                     fullWidth
                     label="City"
                     name="city"
+                    required
                     select
                     defaultValue=''
                 value={currentCity}
@@ -556,6 +592,7 @@ event.preventDefault();
                 fullWidth
                 label="ZipCode"
                 name="zipcode"
+                required
                 value={zipcode}
                 onChange={handleInputChange}
 
