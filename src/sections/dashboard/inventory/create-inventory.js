@@ -25,8 +25,8 @@ const userOptions = [
     value: 'none'
   },
   {
-    label: 'New Rack',
-    value: 'New Rack'
+    label: 'Add New Rack',
+    value: 'others'
   },
   
 ];
@@ -304,7 +304,7 @@ useEffect(() => {
     
 }
 
-    if ( showAdditionalFields && purchaseId && warehouseId && quantity && weight && size && hsnCode && cost && userId) {
+    if ( showAdditionalFields &&  warehouseId && quantity && weight && hsnCode && cost && userId) {
       try {
         const response = await fetch('http://13.115.56.48:8080/techmadhyam/addInventory', {
           method: 'POST',
@@ -379,6 +379,7 @@ console.log(updatedUserOptions)
                     fullWidth
                     label="Warehouse"
                     name="warehouse"
+                    required
                     select
                     value={warehouseId? warehouseId: ''}
                     onChange={(e) => {
@@ -433,6 +434,7 @@ console.log(updatedUserOptions)
                     fullWidth
                     label="Model"
                     name="category"
+                    required
                     select
                     value={categoryName? categoryName: ''}
                     onChange={(e) => {
@@ -462,6 +464,7 @@ console.log(updatedUserOptions)
                   label="Part Name"
                   name="product"
                   select
+                  required
                   value={selectedId ? selectedId : ''}
                   onChange={(e) => {
                     const selectedProductId = e.target.value;
@@ -496,6 +499,7 @@ console.log(updatedUserOptions)
                     fullWidth
                     label="Rack"
                     name="rack"
+                    required
                     select
                     value={rack}
                     onChange={(event) => {handleCategoryChange(event)}}
@@ -522,8 +526,9 @@ console.log(updatedUserOptions)
           <TextField
 
             fullWidth
-            label="Rack Name"
+            label="New Rack Name"
             name="rack name"
+            required
             value={rackName}
             onChange={handleRack} 
  
@@ -537,8 +542,9 @@ console.log(updatedUserOptions)
           <TextField
 
             fullWidth
-            label="Description"
+            label="Rack Description"
             name="description"
+            required
             value={rackDesc}
             onChange={handleRackDesc} 
             multiline
@@ -555,6 +561,7 @@ console.log(updatedUserOptions)
                     fullWidth
                     label="HSN Code"
                     name="hsncode"
+                    required
                     value={hsnCode}
                     onChange={handleInputChange}
                 >
@@ -580,6 +587,7 @@ console.log(updatedUserOptions)
                 fullWidth
                 label="Weight"
                 name="weight"
+                required
                 value={weight}
                 onChange={handleInputChange}
               />
@@ -593,6 +601,7 @@ console.log(updatedUserOptions)
                 label="Quantity"
                 name="quantity"
                 type='number'
+                required
                 value={quantity}
                 onChange={handleInputChange}
               />
@@ -606,6 +615,7 @@ console.log(updatedUserOptions)
                 label="Cost"
                 name="cost"
                 type='number'
+                required
                 value={cost}
                 onChange={handleInputChange}
               />
@@ -618,6 +628,8 @@ console.log(updatedUserOptions)
                 fullWidth
                 label="CGST"
                 name="cgst"
+                type='number'
+                required
                 value={cgst}
                 onChange={handleInputChange}
               />
@@ -630,6 +642,8 @@ console.log(updatedUserOptions)
                 fullWidth
                 label="SGST"
                 name="sgst"
+                type='number'
+                required
                 value={sgst}
                 onChange={handleInputChange}
               />
@@ -642,6 +656,8 @@ console.log(updatedUserOptions)
                 fullWidth
                 label="IGST"
                 name="igst"
+                type='number'
+                required
                 value={igst}
                 onChange={handleInputChange}
               />
@@ -655,7 +671,8 @@ console.log(updatedUserOptions)
                 <TextField
                 fullWidth
                 label= "Description"
-                name='description'
+                name='description'   
+                required
                 multiline
                 rows={4}
                 maxRows={6}

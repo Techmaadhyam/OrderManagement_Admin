@@ -75,8 +75,8 @@ export const CreateProduct = (props) => {
       value: 'none'
     },
     {
-      label: 'New Model',
-      value: 'New Model'
+      label: 'Add New Model',
+      value: 'Add New Model'
     },
     // {
     //   label: 'ETON STD 2002',
@@ -289,7 +289,7 @@ export const CreateProduct = (props) => {
           <TextField
 
             fullWidth
-            label="New Model"
+            label="Add New Model"
             name="new category"
             value={newCategory}
             onChange={handleNewCategory} 
@@ -303,7 +303,7 @@ export const CreateProduct = (props) => {
           <TextField
 
             fullWidth
-            label="Description"
+            label="Model Description"
             name="description"
             value={desc1}
             onChange={handleDescription1} 

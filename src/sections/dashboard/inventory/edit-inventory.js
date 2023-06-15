@@ -25,7 +25,7 @@ const userOptions = [
     value: 'none'
   },
   {
-    label: 'Others',
+    label: 'Add New Rack',
     value: 'others'
   },
   
@@ -280,12 +280,10 @@ useEffect(() => {
         sgst:parseFloat(sgst),
         cgst:parseFloat(cgst),
         igst:parseFloat(igst),
-        lastModifiedDate: createdDate,
         lastModifiedByUser: {id: userId},
       },
 
       rack:{
-            id: rack,
             name: rackName,
             description: rackDesc,
             createdBy:parseFloat(userId),
@@ -303,6 +301,7 @@ useEffect(() => {
     inventory:{
         
       quantity:parseFloat(quantity),
+      id: state?.inventoryId,
       weight:weight,
       size:size,
       hsncode:hsnCode,
@@ -332,7 +331,7 @@ useEffect(() => {
 }
   console.log(JSON.stringify(inventory))
 
-    if (  purchaseId && warehouseId && quantity && weight && size && hsnCode && rack && cost && description && userId) {
+    if ( showAdditionalFields && warehouseId && quantity && weight  && hsnCode && rack && cost && description && userId) {
       try {
         const response = await fetch('http://13.115.56.48:8080/techmadhyam/addInventory', {
           method: 'POST',
@@ -406,6 +405,7 @@ useEffect(() => {
                     fullWidth
                     label="Warehouse"
                     name="warehouse"
+                    required
                     select
                     value={warehouseId? warehouseId: ''}
                     onChange={(e) => {
@@ -460,6 +460,7 @@ useEffect(() => {
                     fullWidth
                     label="Model"
                     name="category"
+                    required
                     select
                     value={categoryId? categoryId: ''}
                     onChange={(e) => {
@@ -488,6 +489,7 @@ useEffect(() => {
                   fullWidth
                   label="Part Name"
                   name="product"
+                  required
                   select
                   value={selectedId ? selectedId : ''}
                   onChange={(e) => {
@@ -523,6 +525,7 @@ useEffect(() => {
                     fullWidth
                     label="Rack"
                     name="rack"
+                    required
                     select
                     value={rack}
                     onChange={(event) => {handleCategoryChange(event)}}
@@ -549,8 +552,9 @@ useEffect(() => {
           <TextField
 
             fullWidth
-            label="Rack Name"
+            label="New Rack Name"
             name="rack name"
+            required
             value={rackName}
             onChange={handleRack} 
  
@@ -566,6 +570,7 @@ useEffect(() => {
             fullWidth
             label="Description"
             name="description"
+            required
             value={rackDesc}
             onChange={handleRackDesc} 
             multiline
@@ -582,6 +587,7 @@ useEffect(() => {
                     fullWidth
                     label="HSN Code"
                     name="hsncode"
+                    required
                     value={hsnCode}
                     onChange={handleInputChange}
                 >
@@ -606,6 +612,7 @@ useEffect(() => {
               <TextField
                 fullWidth
                 label="Weight"
+                required
                 name="weight"
                 value={weight}
                 onChange={handleInputChange}
@@ -620,6 +627,7 @@ useEffect(() => {
                 label="Quantity"
                 name="quantity"
                 type='number'
+                required
                 value={quantity}
                 onChange={handleInputChange}
               />
@@ -633,6 +641,7 @@ useEffect(() => {
                 label="Cost"
                 name="cost"
                 type='number'
+                required
                 value={cost}
                 onChange={handleInputChange}
               />
@@ -644,6 +653,8 @@ useEffect(() => {
               <TextField
                 fullWidth
                 label="CGST"
+                type='number'
+                required
                 name="cgst"
                 value={cgst}
                 onChange={handleInputChange}
@@ -656,6 +667,8 @@ useEffect(() => {
               <TextField
                 fullWidth
                 label="SGST"
+                type='number'
+                required
                 name="sgst"
                 value={sgst}
                 onChange={handleInputChange}
@@ -669,6 +682,8 @@ useEffect(() => {
                 fullWidth
                 label="IGST"
                 name="igst"
+                type='number'
+                required
                 value={igst}
                 onChange={handleInputChange}
               />
@@ -684,6 +699,7 @@ useEffect(() => {
                 label= "Description"
                 name='description'
                 multiline
+                required
                 rows={4}
                 maxRows={6}
                 value={description}
