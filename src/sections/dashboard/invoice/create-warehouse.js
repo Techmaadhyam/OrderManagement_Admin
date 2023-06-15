@@ -300,6 +300,7 @@ const handleClick = async (event) => {
                     fullWidth
                     label="Name"
                     name="name"
+                    required
                     value={username}
                     onChange={handleInputChange}
                   >
@@ -317,6 +318,7 @@ const handleClick = async (event) => {
                     label="Address"
                     name="address"
                     multiline
+                    required
                     rows={2}
                     value={address}
                     onChange={handleInputChange}   
@@ -335,8 +337,9 @@ const handleClick = async (event) => {
                 <TextField
 
                     fullWidth
-                    label="Contact Name"
+                    label="Warehouse Incharge Name"
                     name="contactname"
+                    required
                     value={contactName}
                     onChange={handleInputChange}   
                   >
@@ -352,6 +355,7 @@ const handleClick = async (event) => {
                     fullWidth
                     label="Phone"
                     name="phone"
+                    required
                     type='number'
                     value={phone}
                     onChange={handleInputChange}   
@@ -369,6 +373,7 @@ const handleClick = async (event) => {
                     label="Country"
                     name="country"
                     select
+                    required
                     defaultValue=''
                     value={currentCountry}
                     onChange={handleCountry}
@@ -393,6 +398,7 @@ const handleClick = async (event) => {
                     label="State"
                     name="state"
                     select
+                    required
                     defaultValue=''
                     value={currentState}
                     onChange={handleState}
@@ -420,6 +426,7 @@ const handleClick = async (event) => {
                 label="City"
                 name="city"
                 select
+                required
                 defaultValue=''
                 value={currentCity}
                 onChange={handleCities}
@@ -445,6 +452,7 @@ const handleClick = async (event) => {
      
                 label="Zip Code"
                 name="zipcode"
+                required
                 value={zipcode}
                 onChange={handleInputChange}
               />
@@ -460,6 +468,7 @@ const handleClick = async (event) => {
                 fullWidth
                 label= "Description"
                 name='description'
+                required
                 multiline
                 rows={4}
                 maxRows={6}

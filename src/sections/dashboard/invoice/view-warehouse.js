@@ -250,7 +250,7 @@ const columns = [
               md={6}
             >
           <TextField
-            label="Name"
+            label="Warehouse Name"
             name="name"
             value={editedRecord.name}
             onChange={handleChange}
