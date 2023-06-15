@@ -58,7 +58,8 @@ const [touched, setTouched] = useState(false);
   setTouched(true);
 };
 
-const hasError = touched && !email.includes("@");
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const hasError = touched && !emailRegex.test(email);
 
  const handleInputChange = (event) => {
   const { name, value } = event.target;

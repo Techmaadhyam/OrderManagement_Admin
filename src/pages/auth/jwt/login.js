@@ -1,4 +1,4 @@
-
+import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import {
   Button,
@@ -24,12 +24,13 @@ import { ToastContainer, toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 
+
 const initialValues = {
   email: '',
   password: '',
   submit: null
 };
-/*
+
 const validationSchema = Yup.object({
   email: Yup
     .string()
@@ -40,10 +41,12 @@ const validationSchema = Yup.object({
     .string()
     .max(255)
     .required('Password is required')
-});*/
+});
 
 const Page = () => {
   const [notification, setNotification] = useState(false);
+
+
 
   const isMounted = useMounted();
   const searchParams = useSearchParams();
@@ -51,6 +54,7 @@ const Page = () => {
   const { issuer, signIn } = useAuth();
   const formik = useFormik({
     initialValues,
+    validationSchema,
     onSubmit: async (values, helpers) => {
       try {
         await signIn(values.email, values.password);
@@ -176,7 +180,7 @@ const Page = () => {
                   error={!!(formik.touched.email && formik.errors.email)}
                   fullWidth
                   helperText={formik.touched.email && formik.errors.email}
-                  label="Username"
+                  label="Email Address"
                   name="email"
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}

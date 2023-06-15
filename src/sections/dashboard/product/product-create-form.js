@@ -155,16 +155,16 @@ export const CreateProduct = (props) => {
           //type: type,
           partnumber: partNumber,
           description: desc2,
-          createdBy: userId,
+          createdBy: parseFloat(userId),
           createdDate: new Date(),
           lastModifiedDate:new Date(),
-          lastModifiedByUser: {id: userId},
+          lastModifiedByUser: {id: parseFloat(userId)},
  
         },
         category: {
           name: newCategory,
           description: desc1,
-          createdBy: userId,
+          createdBy: parseFloat(userId),
           createdDate:new Date(),
         }
       };
@@ -175,10 +175,10 @@ export const CreateProduct = (props) => {
           partnumber: partNumber,
           //type: type,
           description: desc2,
-          createdBy: userId,
+          createdBy: parseFloat(userId),
           createdDate:new Date(),
           lastModifiedDate:new Date(),
-          lastModifiedByUser: {id: userId},
+          lastModifiedByUser: {id: parseFloat(userId)},
           
         },
         category: {

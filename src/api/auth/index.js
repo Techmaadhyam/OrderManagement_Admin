@@ -70,7 +70,7 @@ class AuthApi {
         //const user = mergedUsers.find((user) => user.emailId === email);
 
         if (!users || (users.password !== password)) {
-          reject(new Error('Please check your username and password'));
+          reject(new Error('Please check your email and password'));
           return;
         }
 
