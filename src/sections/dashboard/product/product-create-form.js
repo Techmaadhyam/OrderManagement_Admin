@@ -264,6 +264,7 @@ export const CreateProduct = (props) => {
                     fullWidth
                     label="Model"
                     name="category"
+                    required
                     select
                     value={category}
                     onChange={(event) => {handleCategoryChange(event)}}
@@ -291,6 +292,7 @@ export const CreateProduct = (props) => {
             fullWidth
             label="Add New Model"
             name="new category"
+            required
             value={newCategory}
             onChange={handleNewCategory} 
           >
@@ -305,6 +307,7 @@ export const CreateProduct = (props) => {
             fullWidth
             label="Model Description"
             name="description"
+            required
             value={desc1}
             onChange={handleDescription1} 
             multiline
@@ -321,6 +324,7 @@ export const CreateProduct = (props) => {
                     fullWidth
                     label="Part Name"
                     name="name"
+                    required
                     value={product}
                     onChange={handleProduct} 
                    
@@ -338,6 +342,7 @@ export const CreateProduct = (props) => {
                     fullWidth
                     label="Part Number"
                     name="partNumber"
+                    required
                     value={partNumber}
                     onChange={handlePart} 
                    
@@ -357,6 +362,7 @@ export const CreateProduct = (props) => {
                 fullWidth
                 label= "Description"
                 multiline
+                required
                 rows={4}
                 maxRows={6}
                 value={desc2}

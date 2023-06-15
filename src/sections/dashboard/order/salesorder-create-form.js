@@ -529,6 +529,7 @@ console.log(rows)
                     fullWidth
                     label="Type"
                     name="type"
+                    required
                     select
                     value={type}
                     onChange={handleInputChange}
@@ -550,6 +551,7 @@ console.log(rows)
               <TextField
                 fullWidth
                 label="Payment Mode"
+                required
                 name="payment"
                 value={payment}
                 onChange={handleInputChange}
@@ -562,6 +564,7 @@ console.log(rows)
             fullWidth
             label="Company Name"
             name="user"
+            required
             select
             value={userName}
             onChange={(e) => {
@@ -601,6 +604,7 @@ console.log(rows)
                     label="Quotation"
                     name="quotation"
                     value={quotation}
+                    required
                     select
                     onChange={handleInputChange}
                   >    
@@ -633,6 +637,7 @@ height='50px'/>
                     fullWidth
                     label="Status"
                     name="status"
+                    required
                     value={status}
                     onChange={handleInputChange}
                     select
@@ -656,6 +661,7 @@ height='50px'/>
                 fullWidth
                 label="Contact Name"
                 name="contactName"
+                required
                 value={contactName}
                 onChange={handleInputChange}
               />
@@ -670,6 +676,7 @@ height='50px'/>
                 name="mobileno"
                 value={phone}
                 type='number'
+                required
                 onChange={handleInputChange}
               />
             </Grid>
@@ -683,6 +690,7 @@ height='50px'/>
                 multiline
                 minRows={3}
                 name="address"
+                required
                 value={address}
                 onChange={handleInputChange}   
               />
@@ -733,6 +741,7 @@ height='50px'/>
   label='Part Name'
   name='name'
   select
+  required
   value={productName}
   onChange={(e) => {
     const selectedOption = userData2.find(option => option.inventoryId === e.target.value);
@@ -769,6 +778,7 @@ height='50px'/>
                               fullWidth
                               label="Weight"
                               name="weight"
+                              required
                               value={weight}
                               onChange={(e) => setWeight(e.target.value)}
                               style={{ marginBottom: 10 }}
@@ -781,6 +791,7 @@ height='50px'/>
                               <TextField
                               fullWidth
                               label="SGST"
+                              required
                               name="sgst"
                               type='number'
                               value={sgst}
@@ -796,6 +807,7 @@ height='50px'/>
                               <TextField
                               fullWidth
                               label="IGST"
+                              required
                               name="igst"
                               type='number'
                               value={igst}
@@ -812,6 +824,7 @@ height='50px'/>
                             >
                               <TextField
                               fullWidth
+                              required
                               label="Quantity"
                               name="quantity"
                               type='number'
@@ -833,6 +846,7 @@ height='50px'/>
                               fullWidth
                               label="Cost"
                               name="cost"
+                              required
                               type='number'
                               value={price}
                               onChange={(e) => setPrice(e.target.value)}
@@ -848,6 +862,7 @@ height='50px'/>
                               fullWidth
                               label="Size"
                               name="size"
+                              required
                               value={size}
                               onChange={(e) => setSize(e.target.value)}
                               style={{ marginBottom: 10 }}
@@ -861,6 +876,7 @@ height='50px'/>
                               <TextField
                               fullWidth
                               label="CGST"
+                              required
                               name="cgst"
                               type='number'
                               value={cgst}
@@ -880,6 +896,7 @@ height='50px'/>
                           name="description"
                           multiline
                           rows={4}
+                          required
                           value={description}
                           onChange={(e) => setDescription(e.target.value)}
                           style={{ marginBottom: 10 }}

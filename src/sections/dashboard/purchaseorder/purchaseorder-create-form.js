@@ -737,6 +737,7 @@ let finalAmount = totalAmount.toFixed(2)
             fullWidth
             label="Type"
             name="type"
+            required
             select
             value={type}
             onChange={handleInputChange}
@@ -760,6 +761,7 @@ let finalAmount = totalAmount.toFixed(2)
                 fullWidth
                 label="Payment Mode"
                 name="payment"
+                required
                 value={payment}
                 onChange={handleInputChange}
               />
@@ -772,6 +774,7 @@ let finalAmount = totalAmount.toFixed(2)
                 fullWidth
                 label="Company Name"
                 name="user"
+                required
                 select
                 value={userName}
                 onChange={(e) => {
@@ -808,6 +811,7 @@ let finalAmount = totalAmount.toFixed(2)
                <TextField
                     fullWidth
                     label="Quotation"
+                    required
                     name="quotation"
                     value={quotation}
                     select
@@ -842,6 +846,7 @@ height='50px'/>
                     fullWidth
                     label="Status"
                     name="status"
+                    required
                     value={status}
                     onChange={handleInputChange}
                     select
@@ -864,6 +869,7 @@ height='50px'/>
                 fullWidth
                 label="Contact Name"
                 name="contactName"
+                required
                 value={contactName}
                 onChange={handleInputChange}
               />
@@ -876,6 +882,7 @@ height='50px'/>
                 fullWidth
                 label="Mobile No."
                 name="mobileno"
+                required
                 value={phone}
                 type='number'
                 onChange={handleInputChange}
@@ -888,6 +895,7 @@ height='50px'/>
               <TextField
                 fullWidth
                 label="Address"
+                required
                 multiline
                 minRows={3}
                 name="address"
@@ -937,6 +945,7 @@ height='50px'/>
                           fullWidth
                           label='Part Name'
                           name='name'
+                          required
                           select
                           value={productName}
                           onChange={(e) => {
@@ -962,6 +971,7 @@ height='50px'/>
                               <TextField
                               fullWidth
                               label="Weight"
+                              required
                               name="weight"
                               value={weight}
                               onChange={(e) => setWeight(e.target.value)}
@@ -977,6 +987,7 @@ height='50px'/>
                               label="SGST"
                               name="sgst"
                               type='number'
+                              required
                               value={sgst}
                               onChange={(e) => setSgst(e.target.value)}
                               style={{ marginBottom: 10 }}
@@ -992,6 +1003,7 @@ height='50px'/>
                               label="IGST"
                               name="igst"
                               type='number'
+                              required
                               value={igst}
                               onChange={(e) => setIgst(e.target.value)}
                               style={{ marginBottom: 10 }}
@@ -1008,6 +1020,7 @@ height='50px'/>
                               fullWidth
                               label="Quantity"
                               name="quantity"
+                              required
                               type='number'
                               value={quantity}
                               onChange={(e) => setQuantity(e.target.value)}
@@ -1023,6 +1036,7 @@ height='50px'/>
                               label="Cost"
                               name="cost"
                               type='number'
+                              required
                               value={price}
                               onChange={(e) => setPrice(e.target.value)}
                               style={{ marginBottom: 10 }}
@@ -1037,6 +1051,7 @@ height='50px'/>
                               fullWidth
                               label="Size"
                               name="size"
+                              required
                               value={size}
                               onChange={(e) => setSize(e.target.value)}
                               style={{ marginBottom: 10 }}
@@ -1052,6 +1067,7 @@ height='50px'/>
                               label="CGST"
                               name="cgst"
                               type='number'
+                              required
                               value={cgst}
                               onChange={(e) => setCgst(e.target.value)}
                               style={{ marginBottom: 16 }}
@@ -1068,6 +1084,7 @@ height='50px'/>
                           label="Description"
                           name="description"
                           multiline
+                          required
                           rows={4}
                           value={description}
                           onChange={(e) => setDescription(e.target.value)}

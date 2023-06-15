@@ -457,7 +457,7 @@ const filteredData = technicianData?.filter(item => item.type === 'Technician')
         } catch (error) {
           console.error('API call failed:', error);
         }
-      } else if(contactName && userId && phone && status && comment && terms && updatedRows && userState){
+      } else if(contactName && userId && phone && status  && updatedRows && userState){
         try {
           const response = await fetch('http://13.115.56.48:8080/techmadhyam/addWorkOrderWithItems', {
             method: 'POST',
@@ -535,6 +535,7 @@ const filteredData = technicianData?.filter(item => item.type === 'Technician')
                     label="Type"
                     name="type"
                     select
+                    required
                     value={type}
                     onChange={handleInputChange}
                   >
@@ -578,6 +579,7 @@ height='50px'/>
                 fullWidth
                 label="Company Name"
                 name="user"
+                required
                 select
                 value={userName}
                 onChange={(e) => {
@@ -620,6 +622,7 @@ height='50px'/>
                     value={status}
                     onChange={handleInputChange}
                     select
+                    required
                   >
                     {userOptions.map((option) => (
                       <MenuItem
@@ -640,6 +643,7 @@ height='50px'/>
                 fullWidth
                 label="Technician"
                 name="technician"
+                required
                 select
                 value={technician}
             
@@ -665,6 +669,7 @@ height='50px'/>
                     fullWidth
                     label="Admin Name"
                     name="adminname"
+                    required
                     value={adminName}
                     onChange={handleInputChange}
                 
@@ -680,6 +685,7 @@ height='50px'/>
                     fullWidth
                     label="Admin Email"
                     name="adminemail"
+                    required
                     value={adminEmail}
                     helperText={hasError && "Please enter a valid email."}
                     onBlur={handleBlur}
@@ -698,6 +704,7 @@ height='50px'/>
                     label="Admin Phone"
                     name="adminphone"
                     type='number'
+                    required
                     value={adminPhone}
                     onChange={handleInputChange}
                   >
@@ -712,6 +719,7 @@ height='50px'/>
                     fullWidth
                     label="Incharge Name"
                     name="contactName"
+                    required
                     value={contactName}
                     onChange={handleInputChange}
                 
@@ -727,6 +735,7 @@ height='50px'/>
                     fullWidth
                     label="Incharge Email"
                     name="inchargeemail"
+                    required
                     value={inchargeEmail}
                     helperText={hasError2 && "Please enter a valid email."}
                     onBlur={handleBlur}
@@ -745,6 +754,7 @@ height='50px'/>
                     label="Incharge Phone"
                     name="mobileno"
                     type='number'
+                    required
                     value={phone}
                     onChange={handleInputChange}
                   >
@@ -796,6 +806,7 @@ height='50px'/>
                           label='Part Name'
                           name='name'
                           select
+                          required
                           value={productName}
                           onChange={(e) => {
                             const selectedOption = userData2.find(option => option.productName === e.target.value);
@@ -823,6 +834,7 @@ height='50px'/>
                               label="No. Of Workstations"
                               name="workstation"
                               type='number'
+                              required
                               value={workstation}
                               onChange={(e) => setWorkstation(e.target.value)}
                               style={{ marginBottom: 10 }}
@@ -840,6 +852,7 @@ height='50px'/>
                               fullWidth
                               label="IGST"
                               name="igst"
+                              required
                               type='number'
                               value={igst}
                               onChange={(e) => setIgst(e.target.value)}
@@ -855,6 +868,7 @@ height='50px'/>
                               fullWidth
                               label="Unit Price"
                               name="cost"
+                              required
                               type='number'
                               value={price}
                               onChange={(e) => setPrice(e.target.value)}
@@ -873,6 +887,7 @@ height='50px'/>
                           label="Description"
                           name="description"
                           multiline
+                          required
                           rows={4}
                           value={description}
                           onChange={(e) => setDescription(e.target.value)}

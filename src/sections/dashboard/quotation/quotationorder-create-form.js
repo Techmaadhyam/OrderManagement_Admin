@@ -475,7 +475,18 @@ console.log(currentDate, deliveryIST)
                      
                   </TextField>
             </Grid>
-            <Grid/>
+            <Grid
+              xs={12}
+              md={6}
+            >
+              <TextField
+                fullWidth
+                label="HSN Code"
+                name="hsncode"
+                required
+             
+              />
+            </Grid>
             <Grid
               xs={12}
               md={6}

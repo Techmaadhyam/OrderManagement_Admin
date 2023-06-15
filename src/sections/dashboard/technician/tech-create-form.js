@@ -332,6 +332,7 @@ event.preventDefault();
                 fullWidth
                 label="First Name"
                 name="firstname"
+                required
                 value={firstName}
                 onChange={handleInputChange}
 
@@ -346,6 +347,7 @@ event.preventDefault();
                 fullWidth
                 label="Last Name"
                 name="lastname"
+                required
                 value={lastName}
                 onChange={handleInputChange}
 
@@ -360,6 +362,7 @@ event.preventDefault();
                 fullWidth
                 label="Username"
                 name="username"
+                required
                 value={userName}
                 onChange={handleInputChange}
 
@@ -374,6 +377,7 @@ event.preventDefault();
                 fullWidth
                 label="Email"
                 name="email"
+                required
                 value={email}
                 helperText={hasError && "Please enter a valid email."}
                 onBlur={handleBlur}
@@ -391,6 +395,7 @@ event.preventDefault();
                 fullWidth
                 label="Phone"
                 name="phone"
+                required
                 value={phone}
                 type='number'
                 onChange={handleInputChange}
@@ -405,6 +410,7 @@ event.preventDefault();
                 fullWidth
                 label="Type"
                 name="type"
+                required
             
                 value={type}
           
@@ -421,6 +427,7 @@ event.preventDefault();
                 fullWidth
                 label="Company"
                 name="company"
+                required
                 value={company}
                 onChange={handleInputChange}
 
@@ -449,6 +456,7 @@ event.preventDefault();
                 fullWidth
                 label="Address"
                 multiline
+                required
                 minRows={3}
                 name="address"
                 value={address}
@@ -466,6 +474,7 @@ event.preventDefault();
                     fullWidth
                     label="Country"
                     name="country"
+                    required
                     select
                     defaultValue=""
                     value={currentCountry}
@@ -491,6 +500,7 @@ event.preventDefault();
                     fullWidth
                     label="State"
                     name="state"
+                    required
                     select
                     defaultValue=''
                     value={currentState}
@@ -518,6 +528,7 @@ event.preventDefault();
                     label="City"
                     name="city"
                     select
+                    required
                     defaultValue=''
                 value={currentCity}
                 onChange={handleCities}
@@ -542,6 +553,7 @@ event.preventDefault();
                 fullWidth
                 label="ZipCode"
                 name="zipcode"
+                required
                 value={zipcode}
                 onChange={handleInputChange}
 
