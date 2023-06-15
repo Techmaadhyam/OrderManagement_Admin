@@ -675,7 +675,6 @@ console.log(updatedUserOptions)
                 required
                 multiline
                 rows={4}
-                maxRows={6}
                 value={description}
                 onChange={handleInputChange}
                 />

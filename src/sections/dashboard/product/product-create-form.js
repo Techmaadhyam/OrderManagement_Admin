@@ -364,7 +364,7 @@ export const CreateProduct = (props) => {
                 multiline
                 required
                 rows={4}
-                maxRows={6}
+            
                 value={desc2}
                 onChange={handleDescription2} 
                 />
