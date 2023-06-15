@@ -267,7 +267,7 @@ const navigate = useNavigate();
 const handleClick = async (event) => {
 event.preventDefault();
 
-  if (firstName && lastName && email && phone && type && company && currentCountry && currentState && address && currentCity && zipcode && currentDate) {
+  if (email && phone && type && company && currentCountry && currentState && address && currentCity && zipcode && currentDate) {
     try {
       const response = await fetch('http://13.115.56.48:8080/techmadhyam/addTempUser', {
         method: 'POST',
@@ -350,7 +350,7 @@ event.preventDefault();
             container
             spacing={3}
           >
-              <Grid
+              {/* <Grid
               xs={12}
               md={6}
             >
@@ -379,14 +379,14 @@ event.preventDefault();
 
          
               />
-            </Grid>
+            </Grid> */}
             <Grid
               xs={12}
               md={6}
             >
               <TextField
                 fullWidth
-                label="Username"
+                label="Company Contact Person"
                 name="username"
                 required
                 value={userName}
@@ -401,7 +401,7 @@ event.preventDefault();
             >
               <TextField
                 fullWidth
-                label="Email"
+                label="Company Email"
                 name="email"
                 required
                 value={email}
@@ -419,7 +419,7 @@ event.preventDefault();
             >
               <TextField
                 fullWidth
-                label="Phone"
+                label="Company Phone"
                 name="phone"
                 type='number'
                 required
@@ -448,7 +448,7 @@ event.preventDefault();
             >
               <TextField
                 fullWidth
-                label="Company"
+                label="Company Name"
                 name="company"
                 required
                 value={company}
