@@ -27,6 +27,7 @@ const WorkOrderCreatePage = lazy(() => import('src/pages/dashboard/services/work
 const WorkOrderViewPage = lazy(() => import('src/pages/dashboard/services/workorder/view'));
 const WorkOrderViewDetailPage = lazy(() => import('src/pages/dashboard/services/workorder/viewDetail'));
 const WorkOrderEdit = lazy(() => import('src/pages/dashboard/services/workorder/edit'));
+const WorkOrderDownload = lazy(() => import('src/pages/dashboard/services/workorder/downloadamc'));
 
 
 // Invoice (do not delete)
@@ -235,6 +236,11 @@ export const dashboardRoutes = [
             path: 'workorderedit',
             element: <WorkOrderEdit/>
           },
+          {
+            path: 'workorderdownload',
+            element: <WorkOrderDownload/>
+          },
+
           {
             path: 'technician',
             element: <TechnicianCreatePage />

@@ -28,6 +28,7 @@ export const tokens = {
     view: 'nav.view',
     ecommerce: 'nav.ecommerce',
     invoice: 'nav.invoice',
+    amc: 'nav.amc',
     error: 'nav.error',
     feed: 'nav.feed',
     technician: 'nav.technician',

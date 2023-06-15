@@ -28,6 +28,7 @@ export const en = {
   [tokens.nav.technician]: 'Add Technician',
   [tokens.nav.ecommerce]: 'E-Commerce',
   [tokens.nav.invoice]: 'Invoice',
+  [tokens.nav.amc]: 'Download AMC',
   [tokens.nav.error]: 'Error',
   [tokens.nav.feed]: 'Feed',
   [tokens.nav.fileManager]: 'File Manager',
