@@ -848,6 +848,7 @@ catch(error){
       ),
     },
     {
+      title: 'Download Quotation Spreadsheet',
       dataIndex: 'quotation',
       key: 'quotation',
       render: (_, record) => (
@@ -859,6 +860,7 @@ catch(error){
       ),
     },
     {
+      title: 'Download Quotation PDF',
       dataIndex: 'quotationPdf',
       key: 'quotationPdf',
       render: (_, record) => (
