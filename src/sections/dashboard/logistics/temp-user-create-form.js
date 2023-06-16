@@ -67,7 +67,7 @@ const [zipcode, setZipcode] = useState("");
 const [currentDate, setCurrentDate] = useState('');
 const [gstn, setGstn]= useState('')
 const [touched, setTouched] = useState(false);
-const [addAddress, setAddAddress] = useState("");
+
 
 
 const handleBlur = () => {
@@ -109,9 +109,6 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     case 'address':
       setAddress(value);
         break;
-    case 'add-address':
-      setAddAddress(value);
-            break;
     case 'zipcode':
       setZipcode(value);
         break;
