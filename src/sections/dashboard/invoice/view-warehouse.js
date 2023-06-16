@@ -19,8 +19,20 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './warehouse.css'
-
+import DownloadIcon from '@mui/icons-material/Download';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from '../pdfAssets/vfs_fonts';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@mui/material';
+
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+pdfMake.fonts = {
+  Inter: {
+    normal: 'Inter-Regular.ttf',
+    bold: 'Inter-Bold.ttf',
+    light: 'Inter-Light.ttf',
+    medium: 'Inter-Medium.ttf',
+  }
+}
 
   //get userid 
   const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
@@ -151,6 +163,140 @@ useEffect(() => {
   setCurrentDate(formattedDate);
 }, []);
 
+
+
+const handleWarehouseDownload = async (record) => {
+
+  const date = new Date().toLocaleDateString('IN')
+  //heading 
+  const heading = {
+    text: 'Warehouse Details',
+    font: 'Inter',
+    style: 'header',
+    margin: [0, 0, 0, 10],
+  };
+
+  //content
+  const recordDetails = [
+    {
+      text: 'Warehouse Name: ' + record.name,
+      font: 'Inter',
+      margin: [0, 0, 0, 5],
+    },
+    {
+      text: 'Address: ' + record.address+', '+record.city+', '+record.state+', '+record.country,
+      font: 'Inter',
+      margin: [0, 0, 0, 5],
+    },
+    {
+      text: 'Zip Code: ' + record.zipcode,
+      font: 'Inter',
+      margin: [0, 0, 0, 5],
+    },
+    {
+      text: 'Description: ' + record.description,
+      font: 'Inter',
+      margin: [0, 0, 0, 5],
+    },
+  ];
+
+  //title
+  const inventoryTitle = {
+    text: 'Warehouse Inventory',
+    font: 'Inter',
+    style: 'subheader',
+    margin: [0, 20, 0, 10],
+  };
+
+  const inventoryData = await fetchInventoryData(record.id);
+  // inventory table
+  const inventoryTable = {
+    table: {
+      headerRows: 1,
+      font: 'Inter',
+      widths: [60, 50, '*', '*', 'auto', 'auto','auto', 'auto','auto', 100],
+      body: [
+        [
+          { text: 'Part Name', bold: true },
+          { text: 'Rack', bold: true },
+          { text: 'Quantity', bold: true },
+          { text: 'Weight', bold: true },
+          { text: 'Size', bold: true },
+          { text: 'Cost', bold: true },
+          { text: 'CGST', bold: true },
+          { text: 'SGST', bold: true },
+          { text: 'IGST', bold: true },
+          { text: 'Description', bold: true },
+        ],
+        ...inventoryData.map((item) => [
+          item.productName,
+          item.rackName,
+          item.quantity,
+          item.weight,
+          item.size,
+          item.price,
+          item.cgst,
+          item.sgst,
+          item.igst,
+          item.description,
+        ]),
+      ],
+    },
+    layout: {
+      defaultBorder: true,
+      font: 'Inter',
+      fillColor: function (i) {
+        return i % 2 === 0 ? '#F0F0F0' : null;
+      },
+    },
+  };
+
+  // Define the document structure
+  const docDefinition = {
+    content: [heading, ...recordDetails, inventoryTitle, inventoryTable],
+    header: {
+      margin: [0, 20, 30, 0],
+      text: 'Date: ' + date, //add today's date
+      alignment: 'right',
+      border: [false, false, false, true], // Add a bottom border to the cell
+      
+    },
+    defaultStyle: {
+      font: 'Inter',
+      fontSize: 10, 
+    },
+    styles: {
+      header: {
+        font: 'Inter',
+        fontSize: 14,
+        bold: true,
+        alignment: 'center',
+      },
+      subheader: {
+        font: 'Inter',
+        fontSize: 14,
+        bold: true,
+        alignment: 'left',
+      },
+    },
+    pageMargins: [40, 40, 40, 60],
+  };
+
+  //generate pdf
+  pdfMake.createPdf(docDefinition).download('warehouse_details.pdf');
+};
+
+
+const fetchInventoryData = async (warehouseId) => {
+  try {
+    const response = await axios.get(`http://13.115.56.48:8080/techmadhyam/getInventoryByWareHouseId/${warehouseId}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
  
 const columns = [
   {
@@ -213,6 +359,18 @@ const columns = [
       <IconButton onClick={handleRemoveRow(row.id)}>
         <Icon>
           <Delete />
+        </Icon>
+      </IconButton>
+    ),
+  },
+  {
+    title: 'Warehouse Details',
+    dataIndex: 'actionDownload',
+    key: 'actionDownload',
+    render: (_, record) => (
+      <IconButton onClick={() => handleWarehouseDownload(record)}>
+        <Icon>
+          <DownloadIcon />
         </Icon>
       </IconButton>
     ),
