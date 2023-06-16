@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 import { Seo } from 'src/components/seo';
 import { usePageView } from 'src/hooks/use-page-view';
-import { QuotationOrderCreateForm } from 'src/sections/dashboard/quotation/quotationorder-create-form';
+import { QuotationOrderCreateForm } from 'src/sections/dashboard/quotation/salesquotation-create';
 import { customersApi } from 'src/api/customers';
 import { useMounted } from 'src/hooks/use-mounted';
 import { useState,useCallback, useEffect } from 'react';
