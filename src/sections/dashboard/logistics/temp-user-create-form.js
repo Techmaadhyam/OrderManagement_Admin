@@ -320,7 +320,7 @@ event.preventDefault();
   return (
     <div style={{minWidth: "100%" , marginBottom: '1rem' }}>
     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-      <h2>Create Customer/Vendor</h2>
+      <h2>Add Customer/Vendor</h2>
       <IconWithPopup/>
 
     </div>

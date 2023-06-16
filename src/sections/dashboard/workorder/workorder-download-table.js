@@ -512,7 +512,7 @@ const handleWorkInvoice = async (record) => {
           alignItems: 'center',
         }}
       >
-        <h2>Download Work Order</h2>
+        <h2>Download AMC</h2>
         <IconWithPopup/>
       </div>
       

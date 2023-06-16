@@ -314,7 +314,7 @@ event.preventDefault();
   return (
     <div style={{minWidth: "100%" , marginBottom: '1rem' }}>
     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-      <h2>Create Technician</h2>
+      <h2>Add Technician</h2>
       <IconWithPopup/>
     </div>
     <form>

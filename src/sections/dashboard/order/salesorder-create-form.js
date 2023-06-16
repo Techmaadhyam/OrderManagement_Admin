@@ -243,7 +243,7 @@ const handleDateChange = (date) => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`)
       .then(response => {
         setUserData(prevData => [...prevData, ...response.data]);
-     
+     console.log(response.data)
       })
       .catch(error => {
         console.error(error);
