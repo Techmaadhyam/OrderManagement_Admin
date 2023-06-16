@@ -22,7 +22,6 @@ import './purchase-order.css'
 import IconWithPopup from '../user/user-icon';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import moment from 'moment/moment';
 import { primaryColor } from 'src/primaryColor';
 import EditIcon from '@mui/icons-material/Edit';
 import { Scrollbar } from 'src/components/scrollbar';
@@ -32,9 +31,11 @@ import './customTable.css'
 import { useNavigate } from 'react-router-dom';
 import 'moment-timezone';
 
+
+//get userId
 const userId = parseInt(sessionStorage.getItem('user')|| localStorage.getItem('user'))
 
-
+//set customer type
 const customerType = [
   {
     label: 'Customer',
@@ -46,7 +47,7 @@ const customerType = [
   }
 ];
 
-
+//set status type
 const userOptions = [
   {
     label: 'Draft',
@@ -71,6 +72,7 @@ const userOptions = [
  
 ];
 
+//parts row dimensions
 const tableHeader=[
   {
       id:'product_name',
@@ -82,44 +84,45 @@ const tableHeader=[
     id:'cost',
     name:'Unit Price',
     width: 150,
-},
+  },
   {
-      id:'workstation',
-      name:'No. Of workstations',
-      width: 200,
+    id:'workstation',
+    name:'No. Of workstations',
+    width: 200,
   },
   {
     id:'igst',
     name:'IGST',
     width: 150,
-},
-
+  },
   {
     id:'amount',
     name:'Net Amount',
     width: 150,
-},
-  {
-      id:'add',
-      name:'',
-      width: 50,
   },
   {
-      id:'delete',
-      name:'',
-      width: 50,
+    id:'add',
+    name:'',
+    width: 50,
+  },
+  {
+    id:'delete',
+    name:'',
+    width: 50,
   }
 ];
 
 export const WorkOrderCreateForm = (props) => {
 
 
-  const [userData, setUserData]= useState([])
-  const navigate = useNavigate();
+const [userData, setUserData]= useState([])
+
+//react router haldle state transfer
+const navigate = useNavigate();
 //form state handeling
 const [userName, setUserName] = useState('');
 const [type, setType] = useState("");
-const [deliveryDate, setDeliveryDate] = useState('');
+const [assignmentStart, setAssignmentStart] = useState('');
 const [assignmentEnd, setAssignmentEnd]= useState('')
 const [status, setStatus] = useState("");
 const [contactName,setContactName] = useState('')
@@ -128,50 +131,33 @@ const [adminEmail, setAdminEmail] = useState('');
 const [adminPhone, setAdminPhone] = useState('');
 const [inchargeEmail, setInchargeEmail] = useState('');
 const [phone, setPhone] = useState('');
-const [address, setAddress] = useState("");
 const [tempId, setTempId] = useState();
 const [userState, setUserState] = useState();
 const [terms, setTerms] = useState('');
 const [comment, setComment] = useState('');
-const [category, setCategory] = useState('');
 const [technician, setTechnician] = useState('');
 const [technicianData, setTechnicianData] = useState([]);
 
-const [currentDate, setCurrentDate] = useState('');
 
 //add product state
 const [productName, setProductName] = useState('');
-  const [weight, setWeight] = useState('');
-  const [workstation, setWorkstation] = useState();
-  const [igst, setIgst] = useState();
-  const [quantity, setQuantity] = useState();
-  const [price, setPrice] = useState();
-  const [cgst, setCgst] = useState();
-  const [size, setSize] = useState();
-  const [description, setDescription] = useState('');
-  const [rows, setRows] = useState([]);
-  const [showForm, setShowForm] = useState(false);
-  const [editIndex, setEditIndex] = useState(null);
+const [workstation, setWorkstation] = useState();
+const [igst, setIgst] = useState();
+const [price, setPrice] = useState();
+const [description, setDescription] = useState('');
+//state related to parts row edit, delete, update
+const [rows, setRows] = useState([]);
+const [showForm, setShowForm] = useState(false);
+const [editIndex, setEditIndex] = useState(null);
 
-  const [userData2, setUserData2] = useState([])
-  const [productId, setProductId] = useState()
+const [userData2, setUserData2] = useState([])
+const [productId, setProductId] = useState()
 
-  const [totalAmount, setTotalAmount] = useState(0);
-
-  const [touched, setTouched] = useState(false);
+const [totalAmount, setTotalAmount] = useState(0);
+const [touched, setTouched] = useState(false);
  
 
-  //currentdate
-  useEffect(() => {
-    const today = new Date();
-    const year = today.getFullYear().toString();
-    const month = (today.getMonth() + 1).toString().padStart(2, '0');
-    const day = today.getDate().toString().padStart(2, '0');
-    const formattedDate = `${year}/${month}/${day}`;
-    setCurrentDate(formattedDate);
-  }, []);
-
- const handleInputChange = (event) => {
+const handleInputChange = (event) => {
   const { name, value } = event.target;
 
   switch (name) {
@@ -206,34 +192,31 @@ const [productName, setProductName] = useState('');
       case 'status':
         setStatus(value);
         break;
-    case 'address':
-      setAddress(value);
-        break;
     default:
       break;
   }
 };
 
-
+//email validation
 const handleBlur = () => {
   setTouched(true);
 };
-
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const hasError = touched && !emailRegex.test(adminEmail);
-  const hasError2 = touched && !emailRegex.test(inchargeEmail);
+const hasError = touched && !emailRegex.test(adminEmail);
+const hasError2 = touched && !emailRegex.test(inchargeEmail);
 
 
-
+//assignment start and end
 const handleDateStart = (date) => {
-  setDeliveryDate(date);
+  setAssignmentStart(date);
 
 };
 const handleDateEnd = (date) => {
   setAssignmentEnd(date)
 };
-   //get temp user
-   useEffect(() => {
+
+//get temp user
+useEffect(() => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`)
       .then(response => {
         setUserData(prevData => [...prevData, ...response.data]);
@@ -255,26 +238,20 @@ const handleDateEnd = (date) => {
       });
   }, []);
 
-  const deliveryDateAntd = deliveryDate;
-  const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
-  //const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('YYYY/MM/DD') : '';
-  //const date = moment.tz(formattedDeliveryDate, 'YYYY/MM/DD', 'Asia/Kolkata');
-  
-  const deliveryIST = deliveryDateJS;
-
+//convert assignment start date to iso string
+const deliveryDateAntd = assignmentStart;
+const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
+const deliveryIST = deliveryDateJS;
+//convert assignment  end date to iso string
 const deliveryDateAntd2 = assignmentEnd;
 const deliveryDateJS2 = deliveryDateAntd2 ? deliveryDateAntd2.toDate() : null;
-
 const deliveryIST2 = deliveryDateJS2
 
 
 const filteredData = technicianData?.filter(item => item.type === 'Technician')
 
-  //////////////
-  //add product//
-  /////////////
-
-  const handleRemoveRow = (idx) => () => {
+//handles row delete
+const handleRemoveRow = (idx) => () => {
     const updatedRows = rows.filter((_, index) => index !== idx);
     setRows(updatedRows);
   
@@ -287,21 +264,23 @@ const filteredData = technicianData?.filter(item => item.type === 'Technician')
     );
   
     setTotalAmount(calculatedTotalAmount);
-  };
+};
 
-  const toggleForm = () => {
+//show/hide popup form
+const toggleForm = () => {
     setShowForm((prevState) => !prevState);
     setEditIndex(null);
     clearFormFields();
-  };
+};
 
-  const handleModalClick = (event) => {
+const handleModalClick = (event) => {
     if (event.target.classList.contains('modal')) {
       toggleForm();
     }
-  };
+};
 
-  const handleSubmit = (e) => {
+//handle parts submission
+const handleSubmit = (e) => {
     e.preventDefault();
   
     if (
@@ -317,12 +296,9 @@ const filteredData = technicianData?.filter(item => item.type === 'Technician')
         workOrderId: null,
         unitPrice: parseFloat(price),
         description,
-        //createdBy: userId,
         workstationcount: parseFloat(workstation),
         igst: parseFloat(igst),
         comment: comment,
-        //createdDate: currentDate,
-        //lastModifiedDate: currentDate,
       };
   
       let updatedRows;
@@ -351,35 +327,29 @@ const filteredData = technicianData?.filter(item => item.type === 'Technician')
       setTotalAmount(calculatedTotalAmount);
     }
   };
-  const handleEditRow = (idx, row) => {
+
+//handle row edit
+const handleEditRow = (idx, row) => {
   setProductName(row.productName);
-  setWeight(row.weight);
-  setQuantity(row.quantity);
   setPrice(row.unitPrice);
-  setCgst(row.cgst);
   setIgst(row.igst)
   setWorkstation(row.workstationcount)
-  setSize(row.size)
   setDescription(row.description);
   setEditIndex(idx);
   setShowForm(true);
 };
   
-
-  const clearFormFields = () => {
+//handle clear form on save/close
+const clearFormFields = () => {
     setProductName('');
-    setWeight('');
-    setQuantity('');
     setPrice('');
-    setCgst('');
-    setSize('')
     setIgst('')
     setWorkstation('')
     setDescription('');
-  };
+};
 
-  //
-  useEffect(() => {
+//get parts
+useEffect(() => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllItem/${userId}`)
       .then(response => {
         setUserData2(response.data);
@@ -387,23 +357,20 @@ const filteredData = technicianData?.filter(item => item.type === 'Technician')
       .catch(error => {
         console.error(error);
       });
-  }, []);
+}, []);
 
 
-
-  const updatedRows = rows.map(({ productName, ...rest }) => ({
+//exclude product name from rows and include comments
+const updatedRows = rows.map(({ productName, ...rest }) => ({
     ...rest,
     comment : comment,
     
-  }));
+}));
 
-  console.log(deliveryIST, deliveryIST2)
-  //post request
-  const handleClick = async (event) => {
+//handle work order submission
+const handleClick = async (event) => {
 
     let finalAmount = totalAmount.toFixed(2)
-
-  
 
     event.preventDefault();
     
@@ -452,7 +419,7 @@ const filteredData = technicianData?.filter(item => item.type === 'Technician')
       
           navigate('/dashboard/services/workorderDetail', { state: data });
           console.log(data)
-    });
+          });
           } 
         } catch (error) {
           console.error('API call failed:', error);
@@ -501,14 +468,13 @@ const filteredData = technicianData?.filter(item => item.type === 'Technician')
       
           navigate('/dashboard/workorder/viewDetail', { state: data });
           console.log(data)
-    });
+          });
           } 
         } catch (error) {
           console.error('API call failed:', error);
-        }
       }
-    
-    }
+   }
+}
 
 
 
@@ -553,23 +519,21 @@ const filteredData = technicianData?.filter(item => item.type === 'Technician')
               xs={12}
               md={4}
             >
-                <DatePicker placeholder="Assignment Start Date"
+              <DatePicker placeholder="Assignment Start Date"
                 onChange={handleDateStart}
                 className="css-dev-only-do-not-override-htwhyh"
                 style={{ height: '58px', width: '250px' , color: 'red'}}
-
-height='50px'/>
+                height='50px'/>
             </Grid>
             <Grid
               xs={12}
               md={4}
             >
-                     <DatePicker placeholder="Assignment End Date"
+              <DatePicker placeholder="Assignment End Date"
                 onChange={handleDateEnd}
                 className="css-dev-only-do-not-override-htwhyh"
                 style={{ height: '58px', width: '250px' , color: 'red'}}
-
-height='50px'/>
+                height='50px'/>
             </Grid>
             <Grid
               xs={12}
@@ -615,7 +579,6 @@ height='50px'/>
               md={4}
             >
               <TextField
-
                     fullWidth
                     label="Status"
                     name="status"
@@ -639,16 +602,13 @@ height='50px'/>
               md={4}
             >
              <TextField
-
                 fullWidth
                 label="Technician"
                 name="technician"
                 required
                 select
                 value={technician}
-            
                 onChange={handleInputChange}
-
                 >
                 {filteredData?.map((option) => (
                   <MenuItem
@@ -665,14 +625,12 @@ height='50px'/>
               md={4}
             >
               <TextField
-
                     fullWidth
                     label="Admin Name"
                     name="adminname"
                     required
                     value={adminName}
                     onChange={handleInputChange}
-                
                   >
                   </TextField>
             </Grid>
@@ -681,7 +639,6 @@ height='50px'/>
               md={4}
             >
            <TextField
-
                     fullWidth
                     label="Admin Email"
                     name="adminemail"
@@ -699,7 +656,6 @@ height='50px'/>
               md={4}
             >
               <TextField
-
                     fullWidth
                     label="Admin Phone"
                     name="adminphone"
@@ -715,7 +671,6 @@ height='50px'/>
               md={4}
             >
               <TextField
-
                     fullWidth
                     label="Incharge Name"
                     name="contactName"
@@ -731,7 +686,6 @@ height='50px'/>
               md={4}
             >
               <TextField
-
                     fullWidth
                     label="Incharge Email"
                     name="inchargeemail"
@@ -749,7 +703,6 @@ height='50px'/>
               md={4}
             >
               <TextField
-
                     fullWidth
                     label="Incharge Phone"
                     name="mobileno"
@@ -760,9 +713,6 @@ height='50px'/>
                   >
                   </TextField>
             </Grid>
-           
-           
-            
           </Grid>
         </CardContent>
         <Divider/>
@@ -789,7 +739,6 @@ height='50px'/>
             </Button>
           </Box>
         </Grid>
-
           {showForm && (
             <div className='modal' 
             onClick={handleModalClick}>
@@ -824,7 +773,6 @@ height='50px'/>
                           ))}
                           </TextField>
                           </Grid>
-                          
                             <Grid
                             xs={12}
                             md={6}
@@ -838,10 +786,8 @@ height='50px'/>
                               value={workstation}
                               onChange={(e) => setWorkstation(e.target.value)}
                               style={{ marginBottom: 10 }}
-                          
                               />
                             </Grid>
-                            
                           </div>
                           <div className='popup-right'>
                           <Grid
@@ -857,7 +803,6 @@ height='50px'/>
                               value={igst}
                               onChange={(e) => setIgst(e.target.value)}
                               style={{ marginBottom: 10 }}
-                          
                               />
                             </Grid>
                             <Grid
@@ -873,7 +818,6 @@ height='50px'/>
                               value={price}
                               onChange={(e) => setPrice(e.target.value)}
                               style={{ marginBottom: 10 }}
-                          
                               />
                             </Grid>
                             </div>     
@@ -913,7 +857,6 @@ height='50px'/>
                       </div>
                     )}
                   </div>
-
                     <Scrollbar>
                       <Table sx={{ minWidth: 800, overflowX: 'auto' }}>
                         <TableHead>
@@ -976,7 +919,6 @@ height='50px'/>
                 md={6}
               >
               <label style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Total Amount : {totalAmount.toFixed(2)}</label>
-      
               </Grid>
               <Grid
                 xs={12}
@@ -988,7 +930,6 @@ height='50px'/>
               fullWidth
               multiline
               rows={4}
-     
               value={terms}
               onChange={(e) => setTerms(e.target.value)}
             />
@@ -1003,7 +944,6 @@ height='50px'/>
               fullWidth
               multiline
               rows={2}
- 
               value={comment}
               onChange={(e) => setComment(e.target.value)} 
             />
