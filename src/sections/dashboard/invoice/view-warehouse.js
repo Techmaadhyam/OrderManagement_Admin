@@ -214,7 +214,7 @@ const handleWarehouseDownload = async (record) => {
     table: {
       headerRows: 1,
       font: 'Inter',
-      widths: [60, 50, '*', '*', 'auto', 'auto','auto', 'auto','auto', 100],
+      widths: [60, 40, '*', '*', 30, 'auto','auto', 'auto','auto', 100],
       body: [
         [
           { text: 'Part Name', bold: true },
