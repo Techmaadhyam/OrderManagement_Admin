@@ -28,6 +28,13 @@ const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
       value: 'Vendor'
     }
   ];
+  const addressOption = [
+    {
+      label: 'Add Address',
+      value: 'address'
+    },
+
+  ];
 
 
 export const TempUserCreateForm = (props) => {
@@ -60,6 +67,7 @@ const [zipcode, setZipcode] = useState("");
 const [currentDate, setCurrentDate] = useState('');
 const [gstn, setGstn]= useState('')
 const [touched, setTouched] = useState(false);
+const [addAddress, setAddAddress] = useState("");
 
 
 const handleBlur = () => {
@@ -101,6 +109,9 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     case 'address':
       setAddress(value);
         break;
+    case 'add-address':
+      setAddAddress(value);
+            break;
     case 'zipcode':
       setZipcode(value);
         break;
@@ -479,6 +490,32 @@ event.preventDefault();
             >
               <TextField
                 fullWidth
+                label="Address"
+                name="add-address"
+                select
+                required
+                value={addAddress}
+                onChange={handleInputChange}
+
+              >
+            {addressOption?.map((option) => (
+                      <MenuItem
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                      </TextField>
+            </Grid>
+            <Grid/>
+            { addAddress && ( <>
+            <Grid
+              xs={12}
+              md={6}
+            >
+              <TextField
+                fullWidth
                 label="Shipping Address"
                 multiline
                 required
@@ -490,22 +527,7 @@ event.preventDefault();
 
               />
             </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-                fullWidth
-                label="Billing Address"
-                multiline
-                required
-                minRows={3}
-                name="address"
-    
-
-
-              />
-            </Grid>
+            <Grid/>
             <Grid
               xs={12}
               md={6}
@@ -530,7 +552,6 @@ event.preventDefault();
                     ))}
                   </TextField>
             </Grid>
-            <Grid/>
             <Grid
               xs={12}
               md={6}
@@ -558,7 +579,6 @@ event.preventDefault();
                     ))}             
                 </TextField>
             </Grid>
-            <Grid/>
             <Grid
               xs={12}
               md={6}
@@ -584,7 +604,6 @@ event.preventDefault();
                     ))} 
                       </TextField>
             </Grid>
-            <Grid/>
             <Grid
               xs={12}
               md={6}
@@ -599,6 +618,114 @@ event.preventDefault();
 
               />
             </Grid>
+            <Grid
+              xs={12}
+              md={6}
+            >
+              <TextField
+                fullWidth
+                label="Billing Address"
+                multiline
+                required
+                minRows={3}
+                name="address"
+    
+
+
+              />
+            </Grid>
+            <Grid/>
+            <Grid
+              xs={12}
+              md={6}
+            >
+              <TextField
+                    fullWidth
+                    label="Country"
+                    name="country2"
+                    required
+                    select
+                    defaultValue=""
+                    value={currentCountry}
+                    onChange={handleCountry}
+                  >
+                     {userOptions?.map((option) => (
+                      <MenuItem
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+            </Grid>
+            
+            <Grid
+              xs={12}
+              md={6}
+            >
+                <TextField
+
+                    fullWidth
+                    label="State"
+                    name="state2"
+                    required
+                    select
+                    defaultValue=''
+                   
+                    onFocus={handleDefaultState}
+                   
+                > 
+                {userOptionsState?.map((option) => (
+                      <MenuItem
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))}             
+                </TextField>
+            </Grid>
+           
+            <Grid
+              xs={12}
+              md={6}
+            >
+               <TextField
+                    fullWidth
+                    label="City"
+                    name="city2"
+                    required
+                    select
+                    defaultValue=''
+            
+             
+              >
+                  {userOptionsCities?.map((option) => (
+                      <MenuItem
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))} 
+                      </TextField>
+            </Grid>
+            
+            <Grid
+              xs={12}
+              md={6}
+            >
+              <TextField
+                fullWidth
+                label="ZipCode"
+                name="zipcode2"
+                required
+              
+
+              />
+            </Grid>
+            </> )}
           </Grid>
         </CardContent>
         <Divider/>

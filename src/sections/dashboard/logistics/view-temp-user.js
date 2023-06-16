@@ -499,7 +499,7 @@ const handleCompanyCancel = () => {
           alignItems: 'center',
         }}
       >
-        <h2>View Customer</h2>
+        <h2>View Customer/Vendor</h2>
         <IconWithPopup/>
       </div>
       <Box sx={{ position: 'relative', overflowX: 'auto' }}>
