@@ -10,7 +10,7 @@ const QuotationBuyPage = lazy(() => import('src/pages/dashboard/quotation/buyQuo
 const QuotationSellPage = lazy(() => import('src/pages/dashboard/quotation/sellQuotation'));
 const QuotationServicePage = lazy(() => import('src/pages/dashboard/quotation/serviceQuotation'));
 const QuotationViewPage = lazy(() => import('src/pages/dashboard/quotation/view'));
-const QuotationInvoicePage = lazy(() => import('src/pages/dashboard/quotation/invoice'));
+// const QuotationInvoicePage = lazy(() => import('src/pages/dashboard/quotation/invoice'));
 const QuotationViewDetailPage = lazy(() => import('src/pages/dashboard/quotation/viewDetail'));
 const QuotationEditPage = lazy(() => import('src/pages/dashboard/quotation/edit'));
 const QuotationServiceEditPage = lazy(() => import('src/pages/dashboard/quotation/editserviceQuotation'));
@@ -103,10 +103,10 @@ export const dashboardRoutes = [
                 path: ':courseId',
                 element: <QuotationViewPage />
               },
-              {
-                path: 'invoice',
-                element: <QuotationInvoicePage/>
-              },
+              // {
+              //   path: 'invoice',
+              //   element: <QuotationInvoicePage/>
+              // },
               {
                 path: 'viewDetail',
                 element: <QuotationViewDetailPage/>

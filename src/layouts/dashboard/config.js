@@ -158,10 +158,10 @@ export const useSections = () => {
                 ]
               },
            
-              {
-                title: t(tokens.nav.downloadQuotation),
-                path: paths.dashboard.quotation.invoice
-              }
+              // {
+              //   title: t(tokens.nav.downloadQuotation),
+              //   path: paths.dashboard.quotation.invoice
+              // }
             ]
           },
           {

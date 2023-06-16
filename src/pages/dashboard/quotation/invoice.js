@@ -4,7 +4,7 @@ import { customersApi } from 'src/api/customers';
 import { Seo } from 'src/components/seo';
 import { useMounted } from 'src/hooks/use-mounted';
 import { usePageView } from 'src/hooks/use-page-view';
-import QuotationDownloadTable from 'src/sections/dashboard/quotation/quotation-download-table';
+
 
 const useCustomer = () => {
   const isMounted = useMounted();
@@ -52,7 +52,7 @@ const Page = () => {
       >
         <Container maxWidth="lg">
           <Stack spacing={4}>
-            <QuotationDownloadTable customer={customer} />
+           
           </Stack>
         </Container>
       </Box>

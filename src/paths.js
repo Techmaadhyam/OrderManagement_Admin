@@ -52,7 +52,7 @@ export const paths = {
       index: 'dashboard/quotation',
       buy: '/dashboard/quotation/buy',
       view: '/dashboard/quotation/:courseId',
-      invoice: '/dashboard/quotation/invoice',
+      //invoice: '/dashboard/quotation/invoice',
       viewDetail: '/dashboard/quotation/viewDetail',
       edit: '/dashboard/quotation/edit',
       sell: '/dashboard/quotation/sell',
