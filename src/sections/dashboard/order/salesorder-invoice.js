@@ -200,32 +200,9 @@ const handleInvoicePdf = async (record ,heading,dateData,noData) => {
               const response = await axios.get(`http://13.115.56.48:8080/techmadhyam/getAllSalesOrderDetails/${record.id}`)
                 setInvoiceData(response.data);
                 console.log(response.data)
-                 const handleTempGst = async (tempId) =>{
-                        try{
-                            const tempGst = await axios.get(`http://13.115.56.48:8080/techmadhyam/getTempUserById/${tempId}`)
-                            setTempGstNumber(tempGst.data.gstNumber);                            
-                        }
-                        catch(error){
-                            console.log(error);
-                        }
-                    }
-                        const handleGst = async (Id) =>{
-                        try{
-                            const Gst = await axios.get(`http://13.115.56.48:8080/techmadhyam/getUserById/${Id}`)
-                            setmainGstNumber(Gst.data.gstNumber);
-                        }
-                        catch(error){
-                            console.log(error);
-                        }
-                    }
-                    if (record.tempUserId) {
-                        setUserMain(false);
-                        
-                        handleTempGst(record.tempUserId);
-                    } else {
-                      setUserMain(true);
-                        handleGst(record.userId)
-                    }
+
+          const tempInv = await axios.get(`http://13.115.56.48:8080/techmadhyam/getTempUserById/${record.tempUserId}`)
+
                 const rowData = response.data.map((product,index) => {
                  let invent = JSON.parse(product.inventory);
                  let TotalBD = product.price*product.quantity;
@@ -248,10 +225,9 @@ const handleInvoicePdf = async (record ,heading,dateData,noData) => {
                             alignment: 'left',
                           },
                           {stack: [
-                            {text: `${record.createdByUser.companyName}`, style: 'header'},
-                            { text: `${record.createdByUser.address}, ${record.createdByUser.city}, ${record.createdByUser.pincode}, ${record.createdByUser.state}, ${record.createdByUser.country}`, style: 'subheader' },
-                      { text: `GSTIN: ${record.createdByUser.gstNumber}`, style: 'subheader'},
-                      { text: 'PAN: AAGFT5872R', style: 'subheader'},
+                            {text: `${tempInv.data.companyName}`, style: 'header'},
+                            { text: `${tempInv.data.address}, ${tempInv.data.city}, ${tempInv.data.pincode}, ${tempInv.data.state}, ${tempInv.data.country}`, style: 'subheader' },
+                      { text: `GSTIN: ${tempInv.data.gstNumber}`, style: 'subheader'},
                         ],
                         margin: [20, 0, 0, 0],
                       },
@@ -277,8 +253,8 @@ const handleInvoicePdf = async (record ,heading,dateData,noData) => {
                             [
                               { text: '', border: [false, false, false, false] },
                               { text: record.id, style: 'tableCell',border: [true, false, true, false] },
-                              { text: formatDate(record.createdByUser.createdDate), style: 'tableCell', border: [true, false, true, false] },
-                              { text: record.tempUserId || record.userId, style: 'tableCell',border: [true, false, true, false] },
+                              { text: formatDate(record.createdDate), style: 'tableCell', border: [true, false, true, false] },
+                              { text: `notInAPI`, style: 'tableCell',border: [true, false, true, false] },
                               { text: record.contactPhone, style: 'tableCell',border: [true, false, true, false] },
                               { text: '1234', style: 'tableCell',border: [true, false, true, false] },
                             ],
@@ -299,7 +275,7 @@ const handleInvoicePdf = async (record ,heading,dateData,noData) => {
                             [
                               { text: `${record.deliveryAddress}\n${record.city} - ${record.pinCode}\n${record.state}\n${record.country}`, style: 'tableCell',border: [true, false, true, false] },
                               { text: `${record.deliveryAddress}\n${record.city} - ${record.pinCode}\n${record.state}\n${record.country}`, style: 'tableCell', border: [true, false, true, false] },
-                              { text: `${userMain ? mainGstNumber : tempGstNumber}`, style: 'tableCell',border: [true, false, true, false] },
+                              { text: `notInAPI`, style: 'tableCell',border: [true, false, true, false] },
                               { text: `Mode of Payment: ${record.paymentMode}`, style: 'tableLabel',border: [true, false, true, false] },
                             ],
                           ],
@@ -423,8 +399,8 @@ const handleChallanPdf = async (record) => {
                 console.log(response.data)
                  const handleTempGst = async (tempId) =>{
                         try{
-                            const tempGst = await axios.get(`http://13.115.56.48:8080/techmadhyam/getTempUserById/${tempId}`)
-                            setTempGstNumber(tempGst.data.gstNumber);                            
+                            const tempInv = await axios.get(`http://13.115.56.48:8080/techmadhyam/getTempUserById/${tempId}`)
+                            setTempGstNumber(tempInv.data.gstNumber);                            
                         }
                         catch(error){
                             console.log(error);

@@ -241,13 +241,13 @@ const handleQuotation = async (record) => {
     
     infoData.forEach((rowData, rowIndex) => {
       rowData.forEach((cellData, colIndex) => {
-        const cell = worksheet.getCell(rowIndex + 3, colIndex + 7);
+        const cell = worksheet.getCell(rowIndex + 3, colIndex + 3);
         cell.value = cellData;
         cell.font = { size: 10, bold: true, name: 'Arial' };
         cell.alignment = { vertical: 'middle', horizontal: 'left' };
       });
     });
-    worksheet.mergeCells('C7:F7');
+    worksheet.mergeCells('A8:D8');
     const tableOneData = [
       ['Name:', `${record.createdByUser.companyName}`], 
       ['Address:', `${record.createdByUser.address} ${record.createdByUser.city} ${record.createdByUser.state} ${record.createdByUser.country}`], 
@@ -257,31 +257,31 @@ const handleQuotation = async (record) => {
     ];
     tableOneData.forEach((rowData, rowIndex) => {
       rowData.forEach((cellData, colIndex) => {
-        const cell = worksheet.getCell(rowIndex + 9, colIndex + 3);
+        const cell = worksheet.getCell(rowIndex + 10, colIndex + 1);
         cell.value = cellData;
         cell.font = { size: 10, bold: true, name: 'Arial' };
         cell.alignment = { vertical: 'middle', horizontal: 'left' };
       });
     });
-    worksheet.getCell('C7').value = 'Company Address';
-    worksheet.getCell('C7').fill = {
+    worksheet.getCell('A8').value = 'Company Address';
+    worksheet.getCell('A8').fill = {
       type: 'pattern',
       pattern: 'solid',
       fgColor: { argb: '87CEEB' }, // Sky blue color
     };
-    worksheet.getCell('C7').alignment = { vertical: 'middle', horizontal: 'center' };
-    worksheet.getCell('C7').font = { size: 10, bold: true, name: 'Arial' };
-    worksheet.getCell('I7').font = { size: 10, bold: true, name: 'Arial' };
-    worksheet.getCell('I7').alignment = { vertical: 'middle', horizontal: 'center' };
-    worksheet.mergeCells('C8:F8');
-    worksheet.mergeCells('C14:F14');
-    worksheet.mergeCells('D9:F9');
-    worksheet.mergeCells('D10:F10');
-    worksheet.mergeCells('D11:F11');
-    worksheet.mergeCells('D12:F12');
-    worksheet.mergeCells('D13:F13');
+    worksheet.getCell('A8').alignment = { vertical: 'middle', horizontal: 'center' };
+    worksheet.getCell('A8').font = { size: 10, bold: true, name: 'Arial' };
+    worksheet.getCell('G8').font = { size: 10, bold: true, name: 'Arial' };
+    worksheet.getCell('G8').alignment = { vertical: 'middle', horizontal: 'center' };
+    worksheet.mergeCells('A9:D9');
+    worksheet.mergeCells('A15:D15');
+    worksheet.mergeCells('B10:D10');
+    worksheet.mergeCells('B11:D11');
+    worksheet.mergeCells('B12:D12');
+    worksheet.mergeCells('B13:D13');
+    worksheet.mergeCells('B14:D14');
     
-    worksheet.mergeCells('I7:L7');
+    worksheet.mergeCells('G8:J8');
     const tableTwoData = [
       ['Name:', `${temp.firstName} ${temp.lastName}`], 
       ['Address:', `${temp.address} ${temp.city} ${temp.state} ${temp.country}`], 
@@ -291,49 +291,49 @@ const handleQuotation = async (record) => {
     ];
     tableTwoData.forEach((rowData, rowIndex) => {
       rowData.forEach((cellData, colIndex) => {
-        const cell = worksheet.getCell(rowIndex + 9, colIndex + 9);
+        const cell = worksheet.getCell(rowIndex + 10, colIndex + 7);
         cell.value = cellData;
         cell.font = { size: 10, bold: true, name: 'Arial' };
         cell.alignment = { vertical: 'middle', horizontal: 'left' };
       });
     });
-    worksheet.getCell('I7').value = 'Customer Address';
-    worksheet.getCell('I7').fill = {
+    worksheet.getCell('G8').value = 'Customer Address';
+    worksheet.getCell('G8').fill = {
       type: 'pattern',
       pattern: 'solid',
       fgColor: { argb: '87CEEB' }, // Sky blue color
     };
-    worksheet.mergeCells('I8:L8');
-    worksheet.mergeCells('I14:L14');
-    worksheet.mergeCells('J9:L9');
-    worksheet.mergeCells('J10:L10');
-    worksheet.mergeCells('J11:L11');
-    worksheet.mergeCells('J12:L12');
-    worksheet.mergeCells('J13:L13');
+    worksheet.mergeCells('G9:J9');
+    worksheet.mergeCells('G15:J15');
+    worksheet.mergeCells('H10:J10');
+    worksheet.mergeCells('H11:J11');
+    worksheet.mergeCells('H12:J12');
+    worksheet.mergeCells('H13:J13');
+    worksheet.mergeCells('H14:J14');
 
     // Set Border for tables
     const tableBorder = { style: 'medium', color: { argb: '80808080' } };
     
     // Set border for cells E8 to E14 (left border)
-    for (let row = 8; row <= 14; row++) {
-      worksheet.getCell(`I${row}`).border = { left: tableBorder };
+    for (let row = 9; row <= 15; row++) {
+      worksheet.getCell(`G${row}`).border = { left: tableBorder };
     }
     // Set border for cells G8 to G14 (right border)
-    for (let row = 8; row <= 14; row++) {
-      worksheet.getCell(`L${row}`).border = { right: tableBorder };
+    for (let row = 9; row <= 15; row++) {
+      worksheet.getCell(`J${row}`).border = { right: tableBorder };
     }
-    for (let row = 8; row <= 14; row++) {
-      worksheet.getCell(`C${row}`).border = { left: tableBorder };
+    for (let row = 9; row <= 15; row++) {
+      worksheet.getCell(`A${row}`).border = { left: tableBorder };
     }
     // Set border for cells G8 to G14 (right border)
-    for (let row = 8; row <= 14; row++) {
-      worksheet.getCell(`F${row}`).border = { right: tableBorder };
+    for (let row = 9; row <= 15; row++) {
+      worksheet.getCell(`D${row}`).border = { right: tableBorder };
     }
-    worksheet.getCell('C14').border = { bottom: tableBorder ,left: tableBorder, right: tableBorder};
-    worksheet.getCell('C8').border = { left: tableBorder , right: tableBorder};
-    worksheet.getCell('I14').border = { bottom: tableBorder ,left: tableBorder, right: tableBorder};
-    worksheet.getCell('I8').border = { left: tableBorder , right: tableBorder};
-    worksheet.getCell('I7').border = {
+    worksheet.getCell('A15').border = { bottom: tableBorder ,left: tableBorder, right: tableBorder};
+    worksheet.getCell('A9').border = { left: tableBorder , right: tableBorder};
+    worksheet.getCell('G15').border = { bottom: tableBorder ,left: tableBorder, right: tableBorder};
+    worksheet.getCell('G9').border = { left: tableBorder , right: tableBorder};
+    worksheet.getCell('G8').border = {
       top: tableBorder,
       left: tableBorder,
       bottom: tableBorder,
@@ -341,24 +341,24 @@ const handleQuotation = async (record) => {
     };
     
     // Set border for cell A7 (top, bottom, left, right borders)
-    worksheet.getCell('C7').border = {
+    worksheet.getCell('A8').border = {
       top: tableBorder,
       left: tableBorder,
       bottom: tableBorder,
       right: tableBorder,
     };
-    worksheet.getRow(16).height = 45;
-    worksheet.mergeCells('A16:L16');
-    worksheet.getCell('A16').value = `Note/Remarks: ${record.comments}`;
-    worksheet.getCell('A16').font = { size: 10, bold: true, name: 'Arial' };
-    worksheet.getCell('A16').alignment = { vertical: 'middle', horizontal: 'left' };
-    worksheet.getCell('A16').border = {
+    worksheet.getRow(17).height = 45;
+    worksheet.mergeCells('A17:L17');
+    worksheet.getCell('A17').value = `Note/Remarks: ${record.comments}`;
+    worksheet.getCell('A17').font = { size: 10, bold: true, name: 'Arial' };
+    worksheet.getCell('A17').alignment = { vertical: 'middle', horizontal: 'left' };
+    worksheet.getCell('A17').border = {
       top: tableBorder,
       left: tableBorder,
       bottom: tableBorder,
       right: tableBorder,
     };
-    const table2Headers = [
+    const productTableHeaders = [
       'S.No.',
       'PRODUCT NAME',
       'DESCRIPTION',
@@ -372,10 +372,10 @@ const handleQuotation = async (record) => {
       'IGST',
       'AMOUNT',
     ];
-    table2Headers.forEach((header, index) => {
-      worksheet.getCell(18, index + 1).value = header;
-      worksheet.getCell(18, index + 1).font = { bold: true, size: 9, name: 'Arial' };
-      worksheet.getCell(18, index + 1).fill = {
+    productTableHeaders.forEach((header, index) => {
+      worksheet.getCell(19, index + 1).value = header;
+      worksheet.getCell(19, index + 1).font = { bold: true, size: 9, name: 'Arial' };
+      worksheet.getCell(19, index + 1).fill = {
         type: 'pattern',
         pattern: 'solid',
         fgColor: { argb: '87CEEB' },
@@ -387,7 +387,7 @@ const handleQuotation = async (record) => {
       worksheet.getColumn(7).width = 20;
     worksheet.getColumn(8).width = 20;
     });
-    for (let row = 18; row <= 18; row++) {
+    for (let row = 19; row <= 19; row++) {
       for (let col = 1; col <= 12; col++) {
         const cell = worksheet.getCell(row, col);
         cell.border = {
@@ -398,13 +398,13 @@ const handleQuotation = async (record) => {
         };
       }
     }
-    worksheet.getCell('A18').border = {
+    worksheet.getCell('A19').border = {
       top: tableBorder,
       left: tableBorder,
       bottom: tableBorder,
       right: { style: 'thin', color: { argb: '80808080' } },
     };
-    worksheet.getCell('L18').border = {
+    worksheet.getCell('L19').border = {
       top: tableBorder,
       left: { style: 'thin', color: { argb: '80808080' } },
       bottom: tableBorder,
@@ -435,7 +435,7 @@ const handleQuotation = async (record) => {
     });
     rowData.forEach((row, rowIndex) => {
       Object.keys(row).forEach((key, columnIndex) => {
-        const cell = worksheet.getCell(19 + rowIndex, columnIndex + 1);
+        const cell = worksheet.getCell(20 + rowIndex, columnIndex + 1);
         cell.value = row[key];
         cell.font = { bold: true, size: 9, name: 'Arial' };
         cell.alignment = { vertical: 'middle', horizontal: 'center' };
@@ -447,31 +447,54 @@ const handleQuotation = async (record) => {
         };
       });
     });
-    const editableRow = worksheet.lastRow.number + 2;
+    const editableRow = worksheet.lastRow.number + 4;
     const thankYouCell = worksheet.getCell(editableRow, 2);
     thankYouCell.value = 'THANK YOU FOR YOUR BUSINESS!';
     thankYouCell.font = { bold: true, size: 9, name: 'Arial' };
-
+    thankYouCell.border = {
+      top: tableBorder,
+      left: tableBorder,
+      right: tableBorder,
+    };
+    worksheet.mergeCells(`B${editableRow+1}:C${editableRow+1}`);
     const signatureCell = worksheet.getCell(editableRow + 1, 2);
     signatureCell.value = 'Signature/Stamp:';
     signatureCell.font = { size: 9, name: 'Arial' };
+    signatureCell.border = {
+      left: tableBorder,
+      right: tableBorder,
+    };
 
     const placeCell = worksheet.getCell(editableRow + 2, 2);
     placeCell.value = 'Place:';
     placeCell.font = { size: 9, name: 'Arial' };
+    placeCell.border = {
+      left: tableBorder,
+    };
     const placeCell2 = worksheet.getCell(editableRow + 2, 3);
     placeCell2.value = 'Hyderabad';
     placeCell2.font = { size: 9, name: 'Arial' };
+    placeCell2.border = {
+      right: tableBorder,
+    };
 
     const DateCell = worksheet.getCell(editableRow + 3, 2);
     DateCell.value = `Date:`;
     DateCell.font = { size: 9, name: 'Arial' };
+    DateCell.border = {
+      left: tableBorder,
+      bottom: tableBorder,
+    };
     
     const DateCell2 = worksheet.getCell(editableRow + 3, 3);
     const currentDate = new Date();
     DateCell2.value = `${currentDate.getFullYear()}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}/${currentDate.getDate().toString().padStart(2, '0')}`
     worksheet.mergeCells(`B${editableRow}:C${editableRow}`);
     DateCell2.font = { size: 9, name: 'Arial' };
+    DateCell2.border = {      
+      right: tableBorder,
+      bottom: tableBorder,
+    };
    
     // Save the workbook as a file
     workbook.xlsx.writeBuffer().then((buffer) => {
