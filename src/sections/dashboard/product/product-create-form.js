@@ -219,7 +219,7 @@ export const CreateProduct = (props) => {
   return (
     <div style={{minWidth: "100%", marginBottom: '1rem' }}>
 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-      <h2>Add Parts/Products</h2>
+      <h2>Add Parts / Products</h2>
       <IconWithPopup/>
     </div>
     <form>

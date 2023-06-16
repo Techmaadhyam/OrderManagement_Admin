@@ -516,7 +516,7 @@ const columns = [
           alignItems: 'center',
         }}
       >
-        <h2>View Parts</h2>
+        <h2>View Parts / Products</h2>
         <IconWithPopup/>
       </div>
       {/* <TextField
