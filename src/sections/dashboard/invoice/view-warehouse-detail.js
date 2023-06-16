@@ -31,6 +31,11 @@ const columns = [
     key: 'productName',
   },
   {
+    title: 'Rack',
+    dataIndex: "rackName",
+    key: 'rackName'
+  },
+  {
       title: 'Quantity',
       dataIndex: 'quantity',
       key: 'quantity',
@@ -85,6 +90,7 @@ export const ViewWarehouseDetail = (props) => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getInventoryByWareHouseId/${state?.id}`)
       .then(response => {
        setRowData(response.data)
+       console.log(response.data)
 
       })
       .catch(error => {
