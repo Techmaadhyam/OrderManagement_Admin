@@ -306,11 +306,11 @@ const handleInvoicePdf = async (record ,heading,dateData,noData) => {
                       },
                       {
                         table: {
-                          heights:[50],
+                          heights:[100],
                           widths: ['*','*'],
                           body: [
                             [
-                                  { text: 'REMARKS', alignment: 'left', style: 'tableLabel',  border: [true, false, false, true] },
+                                  { text: 'REMARKS', alignment: 'left', style: 'tableLabel',  border: [true, false, false, true], margin: [0,40,0,0] },
                                 
                                 {
                                     stack:[
@@ -347,7 +347,7 @@ const handleInvoicePdf = async (record ,heading,dateData,noData) => {
                                 },
                                 {
                                     stack:[
-                                        { text: `${record.createdByUser.companyName}`,bold:true,alignment:'center', style: 'tableLabel'},
+                                        { text: `${tempInv.data.companyName}`,bold:true,alignment:'center', style: 'tableLabel'},
                                         { text: `Authorize Signature`, margin:[0,40,0,0],alignment:'center', style: 'tableLabel'},
                                     ],
                                     border: [false, false, true, true],margin:[0,20,0,0], alignment:'right'
@@ -397,32 +397,10 @@ const handleChallanPdf = async (record) => {
               const response = await axios.get(`http://13.115.56.48:8080/techmadhyam/getAllSalesOrderDetails/${record.id}`)
                 setInvoiceData(response.data);
                 console.log(response.data)
-                 const handleTempGst = async (tempId) =>{
-                        try{
-                            const tempInv = await axios.get(`http://13.115.56.48:8080/techmadhyam/getTempUserById/${tempId}`)
-                            setTempGstNumber(tempInv.data.gstNumber);                            
-                        }
-                        catch(error){
-                            console.log(error);
-                        }
-                    }
-                        const handleGst = async (Id) =>{
-                        try{
-                            const Gst = await axios.get(`http://13.115.56.48:8080/techmadhyam/getUserById/${Id}`)
-                            setmainGstNumber(Gst.data.gstNumber);
-                        }
-                        catch(error){
-                            console.log(error);
-                        }
-                    }
-                    if (record.tempUserId) {
-                        setUserMain(false);
-                        
-                        handleTempGst(record.tempUserId);
-                    } else {
-                      setUserMain(true);
-                        handleGst(record.userId)
-                    }
+
+          const tempInv = await axios.get(`http://13.115.56.48:8080/techmadhyam/getTempUserById/${record.tempUserId}`)
+
+
                 const rowData = response.data.map((product,index) => {
                 //  let invent = JSON.parse(product.inventory);
                     return [index+1, product.productName,'',product.quantity]
@@ -440,9 +418,9 @@ const handleChallanPdf = async (record) => {
                             alignment: 'left',
                           },
                           {stack: [
-                            {text: `${record.createdByUser.companyName}`, style: 'header'},
-                            { text: `${record.createdByUser.address}, ${record.createdByUser.city}, ${record.createdByUser.pincode}, ${record.createdByUser.state}, ${record.createdByUser.country}`, style: 'subheader' },
-                      { text: `GSTIN: ${record.createdByUser.gstNumber}`, style: 'subheader'},
+                            {text: `${tempInv.data.companyName}`, style: 'header'},
+                            { text: `${tempInv.data.address}, ${tempInv.data.city}, ${tempInv.data.pincode}, ${tempInv.data.state}, ${tempInv.data.country}`, style: 'subheader' },
+                      { text: `GSTIN: ${tempInv.data.gstNumber}`, style: 'subheader'},
                       { text: 'PAN: AAGFT5872R', style: 'subheader'},
                         ],
                         margin: [20, 0, 0, 0],
@@ -487,7 +465,7 @@ const handleChallanPdf = async (record) => {
                             [
                               { text: `${record.deliveryAddress}\n${record.city} - ${record.pinCode}\n${record.state}\n${record.country}`, style: 'tableCell',border: [true, false, true, false] },
                               { text: `${record.deliveryAddress}\n${record.city} - ${record.pinCode}\n${record.state}\n${record.country}`, style: 'tableCell', border: [true, false, true, false] },
-                              { text: `${userMain ? mainGstNumber : tempGstNumber}`, style: 'tableCell',border: [true, false, true, false] },
+                              { text: `${record.gstNumber}`, style: 'tableCell',border: [true, false, true, false] },
                             ],
                           ],
                         },
@@ -508,11 +486,11 @@ const handleChallanPdf = async (record) => {
                       },
                       {
                         table: {
-                          heights:[50],
+                          heights:[100],
                           widths: ['*'],
                           body: [
                             [
-                                  { text: 'NOTE:  Standby Returnable Basis, Kindly share the WO', alignment: 'left', style: 'tableLabel',  border: [true, false, true, true] },
+                                  { text: 'NOTE:  Standby Returnable Basis, Kindly share the WO', alignment: 'left', style: 'tableLabel',  border: [true, false, true, true], margin:[0,40,0,0] },
                             ],
                             
                           ],
@@ -542,7 +520,7 @@ const handleChallanPdf = async (record) => {
                                 },
                                 {
                                     stack:[
-                                        { text: `For ${record.createdByUser.companyName}`,bold:true, style: 'tableLabel',alignment:'center'},
+                                        { text: `For ${tempInv.data.companyName}`,bold:true, style: 'tableLabel',alignment:'center'},
                                         { text: `Authorize Signature`, margin:[0,40,0,0], style: 'tableLabel',alignment:'center'},
                                     ],
                                     border: [false, false, true, true], margin:[0,20,0,0], alignment:'right'

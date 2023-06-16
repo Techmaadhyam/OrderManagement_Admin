@@ -1,4 +1,3 @@
-
 import {
   Typography,
   IconButton,
@@ -26,6 +25,19 @@ import 'react-toastify/dist/ReactToastify.css';
 import SearchIcon from '@mui/icons-material/Search';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import imgUrl from '../pdfAssets/imageDataUrl';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from '../pdfAssets/vfs_fonts';
+
+
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+pdfMake.fonts = {
+  Inter: {
+    normal: 'Inter-Regular.ttf',
+    bold: 'Inter-Bold.ttf',
+    light: 'Inter-Light.ttf',
+    medium: 'Inter-Medium.ttf',
+  }
+}
 
 
 const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
@@ -192,6 +204,31 @@ const filteredList = updatedUser.filter(product => {
  
   return companyMatch
 });
+
+const numberToWords = require('number-to-words');
+    const convertAmountToWords = (amount) => {
+    const rupees = Math.floor(amount);
+    const paisa = Math.round((amount - rupees) * 100);
+  
+    const rupeesInWords = numberToWords.toWords(rupees); // Convert rupees to words
+    const paisaInWords = numberToWords.toWords(paisa); // Convert paisa to words
+  
+    let result = '';
+  
+    if (rupees > 0) {
+      result += `${rupeesInWords} rupees`;
+    }
+  
+    if (paisa > 0) {
+      if (rupees > 0) {
+        result += ' and ';
+      }
+      result += `${paisaInWords} paisa`;
+    }
+  
+    return result;
+  };
+  
 
 const handleQuotation = async (record) => {
   console.log(record);
@@ -509,7 +546,217 @@ const handleQuotation = async (record) => {
     console.log(error);
   }
 };
+const handleQuotationPdf = async (record)=>{
+  console.log(record);
+  try{
+    const response = await axios.get(`http://13.115.56.48:8080/techmadhyam/getAllQuotationDetails/${record.id}`)
+      
+      console.log(response.data)
 
+const tempInv = await axios.get(`http://13.115.56.48:8080/techmadhyam/getTempUserById/${record.tempUserId}`)
+
+const rowData = response.data.map((product, index) => {
+  const totalAmount = (
+    product.price * product.quantity +
+    (product.price * product.quantity * product.cgst) / 100 +
+    (product.price * product.quantity * product.sgst) / 100 +
+    (product.price * product.quantity * product.igst) / 100
+  ).toFixed(2);
+
+  return [
+    index + 1,
+    product.productName,
+    product.description,
+    product.id,
+    product.quantity,
+    product.weight,
+    product.size,
+    product.price,
+    product.cgst,
+    product.sgst,
+    product.igst,
+    totalAmount,
+  ];
+});
+      const docDefinition = {
+          pageOrientation: 'landscape',
+          defaultStyle: {
+            font: 'Inter'},
+          content: [
+            {
+              columns: [
+                {
+                  image: imgUrl,
+                  width: 150,
+                  alignment: 'left',
+                },
+                {stack: [
+                  {text: `${tempInv.data.companyName}`, style: 'header'},
+                  { text: `${tempInv.data.address}, ${tempInv.data.city}, ${tempInv.data.pincode}, ${tempInv.data.state}, ${tempInv.data.country}`, style: 'subheader' },
+            { text: `GSTIN: ${tempInv.data.gstNumber}`, style: 'subheader'},
+              ],
+              margin: [20, 0, 0, 0],
+            },
+            
+            { text: 'ORIGINAL', style: 'header', alignment: 'center' },
+              
+            { text: 'QUOTATION', style: 'header', alignment: 'right' },
+              ]},
+            {
+              style: 'newTable',
+              
+              table: {
+                widths: ['*','auto', 'auto', 'auto', 'auto', 'auto'],
+                body: [
+                  [
+                    { text: '', border: [false, false, false, false] },
+                    { text: `Quotation Number:`, style: 'tableLabel', border: [true, true, true, false]},
+                    { text: `Quotation Date:`, style: 'tableLabel', border: [true, true, true, false]},
+                    { text: 'Customer ID:', style: 'tableLabel', border: [true, true, true, false] },
+                    { text: 'Customer Contact:', style: 'tableLabel', border: [true, true, true, false] },
+                    { text: 'Customer PO No.:', style: 'tableLabel', border: [true, true, true, false] },
+                  ],
+                  [
+                    { text: '', border: [false, false, false, false] },
+                    { text: record.id, style: 'tableCell',border: [true, false, true, false] },
+                    { text: formatDate(record.createdDate), style: 'tableCell', border: [true, false, true, false] },
+                    { text: `notInAPI`, style: 'tableCell',border: [true, false, true, false] },
+                    { text: record.contactPhoneNumber, style: 'tableCell',border: [true, false, true, false] },
+                    { text: '1234', style: 'tableCell',border: [true, false, true, false] },
+                  ],
+                ],
+              },
+            },
+            {
+              style: 'infoTable',
+              table: {
+                widths: ['*', '*', '*'],
+                body: [
+                  [
+                    { text: `Bill To: A.P SINGH`, style: 'tableLabel', border: [true, true, true, false]},
+                    { text: `Ship To: G.P SINGH`, style: 'tableLabel', border: [true, true, true, false] },
+                    { text: 'Customer GST Registration information', style: 'tableLabel' },
+                    // { text: 'Mode of Dispatch: Courier', style: 'tableLabel', border: [true, true, true, true]},
+                  ],
+                  [
+                    { text: `ADDRESS`, style: 'tableCell',border: [true, false, true, false] },
+                    { text: `ADDRESS`, style: 'tableCell', border: [true, false, true, false] },
+                    { text: `notInAPI`, style: 'tableCell',border: [true, false, true, false] },
+                    // { text: `Mode of Payment: ${record.paymentMode}`, style: 'tableLabel',border: [true, false, true, false] },
+                  ],
+                ],
+              },
+            },
+            {
+              style: 'table',
+              table: {
+                  heights:['auto', 'auto'],
+                  widths: ['auto',"*",'auto','auto','auto','auto','auto','auto','auto','auto','auto','auto'],
+                body: [
+                  
+                  [{ text: 'S.No.', style: 'tableLabel' },
+                  { text: 'Product Name', style: 'tableLabel'},
+                  { text: 'Product Description', style: 'tableLabel' },
+                  { text: 'HSN/SAC Code', style: 'tableLabel' },
+                  { text: 'Qty', style: 'tableLabel' },
+                  { text: 'Weight', style: 'tableLabel' },
+                  { text: 'Size', style: 'tableLabel' },
+                  { text: 'Cost', style: 'tableLabel' },
+                  { text: 'CGST', style: 'tableLabel' },
+                  { text: 'SGST', style: 'tableLabel' },
+                  { text: 'IGST', style: 'tableLabel' },
+                  { text: 'Amount', style: 'tableLabel' },],
+                  ...rowData,
+                ],
+              },
+            },
+            {
+              table: {
+                heights:[100],
+                widths: ['*','*'],
+                body: [
+                  [
+                        { text: 'REMARKS', alignment: 'left', style: 'tableLabel',  border: [true, false, false, true], margin:[0,40,0,0] },
+                      
+                      {
+                          stack:[
+                              { text: `Total: ${record.totalAmount}`, alignment: 'right', style: 'tableLabel'},
+                              { text: `Total in words: ${convertAmountToWords(record.totalAmount)}`, alignment: 'right', style: 'tableLabel'},
+                          ],
+                          border: [false, false, true, true] , margin:[0,20,20,0]
+                      }
+                  ],
+                  
+                ],
+              },
+            },
+            {
+              table: {
+                widths: ['*','*','*'],
+                body: [
+                  [
+                        {
+                          stack:[
+                              { text: 'Terms & Conditions',bold: true, style: 'tableLabel'},
+                              { text: `${record.termsAndCondition}`, style:'tableLabel'}
+                      
+                      ],
+                      border: [true, false, false, true],margin:[0,20,0,0], alignment:'left'
+                  },
+                      
+                      {
+                          stack:[
+                              { text: `Received In Good Condition`,bold:true, style: 'tableLabel'},
+                              { text: `Customer Signature`, margin:[0,40,0,0], style: 'tableLabel'},
+                          ],
+                          border: [false, false, false, true],margin:[0,20,0,0], alignment:'center'
+                      },
+                      {
+                          stack:[
+                              { text: `${tempInv.data.companyName}`,bold:true,alignment:'center', style: 'tableLabel'},
+                              { text: `Authorize Signature`, margin:[0,40,0,0],alignment:'center', style: 'tableLabel'},
+                          ],
+                          border: [false, false, true, true],margin:[0,20,0,0], alignment:'right'
+                      },
+                  ],
+                  
+                ],
+              },
+            },
+            
+          ],
+          styles: {
+              header: {
+                fontSize: 16,
+                bold: true,
+                margin: [0, 0, 0, 5],
+              },
+              subheader: {
+                  fontSize: 14,
+                  bold: true,
+                  marginBottom: 5,
+                  },
+              tableLabel: {
+                bold: true,
+                // border: [false, false, false, true],
+              },
+              tableCell: {
+                fillColor: '#ffffff',
+              },
+              tableHeader: {
+                fillColor: '#eeeeee',
+                bold: true,
+              },
+            },
+           
+          };
+    
+        pdfMake.createPdf(docDefinition).download('quotation.pdf');
+}
+catch(error){
+  console.log(error)
+}
+}
   const columns = [
     {
       title: 'Quotation Order Number',
@@ -605,6 +852,17 @@ const handleQuotation = async (record) => {
       key: 'quotation',
       render: (_, record) => (
         <IconButton  onClick={() => handleQuotation(record)}>
+          <Icon>
+              <DownloadIcon />
+          </Icon>
+        </IconButton>
+      ),
+    },
+    {
+      dataIndex: 'quotationPdf',
+      key: 'quotationPdf',
+      render: (_, record) => (
+        <IconButton  onClick={() => handleQuotationPdf(record)}>
           <Icon>
               <DownloadIcon />
           </Icon>
