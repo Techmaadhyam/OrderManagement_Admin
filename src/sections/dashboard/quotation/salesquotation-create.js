@@ -328,8 +328,8 @@ const handleDateChange = (date) => {
       size
     ) {
       const newRow = {
-        //inventoryId: inventoryId,
-        inventory: {id: inventoryId},
+
+        //inventory: {id: inventoryId},
         quotationId: null,
         productDescription,
         productId,
