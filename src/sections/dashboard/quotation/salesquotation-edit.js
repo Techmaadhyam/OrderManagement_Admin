@@ -20,7 +20,7 @@ import {
 import { DatePicker } from 'antd';
 import './purchase-order.css'
 import IconWithPopup from '../user/user-icon';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import axios from 'axios';
 import moment from 'moment/moment';
 import { primaryColor } from 'src/primaryColor';
@@ -32,8 +32,8 @@ import './customTable.css'
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
-import './customTable.css'
 import 'moment-timezone';
+
 
 const userId = parseInt(sessionStorage.getItem('user')|| localStorage.getItem('user'))
 const dateFormat = 'M/D/YYYY, h:mm:ss A';
@@ -84,15 +84,35 @@ const tableHeader=[
       
   },
   {
-    id:'cost',
-    name:'Unit Price',
+      id:'quantity',
+      name:'Quantity',
+      width: 200,
+  },
+  {
+      id:'weight',
+      name:'Weight',
+      width: 150,
+  },
+  {
+    id:'size',
+    name:'Size',
     width: 150,
 },
   {
-      id:'workstation',
-      name:'No. Of workstations',
-      width: 200,
+      id:'cost',
+      name:'Cost',
+      width: 150,
   },
+  {
+      id:'cgst',
+      name:'CGST',
+      width: 150,
+  },
+  {
+    id:'sgst',
+    name:'SCGST',
+    width: 150,
+},
   {
     id:'igst',
     name:'IGST',
@@ -116,8 +136,7 @@ const tableHeader=[
   }
 ];
 
-
-export const QuotationServiceEditForm = (props) => {
+export const QuotationOrderEditForm = (props) => {
 
   const location = useLocation();
   const state = location.state;
@@ -130,14 +149,9 @@ console.log(state)
 //form state handeling
 
 const [type, setType] = useState(state?.type||"");
-
 const [deliveryDate, setDeliveryDate] = useState(dayjs(state?.originalDeliveryDate|| ''));
 const [status, setStatus] = useState(state?.status || "");
 const [contactName,setContactName] = useState(state?.contactPersonName ||'')
-const [adminName,setAdminName] = useState(state?.adminPersonName ||'')
-const [adminEmail, setAdminEmail] = useState(state?.adminEmail ||'');
-const [adminPhone, setAdminPhone] = useState(state?.adminPhoneNumber ||'');
-const [inchargeEmail, setInchargeEmail] = useState(state?.contactEmail ||'');
 const [phone, setPhone] = useState(state?.contactPhoneNumber ||'');
 const [address, setAddress] = useState(state?.deliveryAddress || "");
 const [tempId, setTempId] = useState(state?.tempUserId);
@@ -145,7 +159,6 @@ const [userState, setUserState] = useState(state?.userId);
 const [terms, setTerms] = useState(state?.termsAndCondition || '');
 const [comment, setComment] = useState(state?.comments||'');
 const [user, setUser] = useState('')
-const [category, setCategory] = useState('Service Quotation');
 
 
 const [currentDate, setCurrentDate] = useState('');
@@ -162,7 +175,6 @@ const [productName, setProductName] = useState('');
   const [description, setDescription] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
-  const [workstation, setWorkstation] = useState();
 
   const [userData2, setUserData2] = useState([])
   const [productId, setProductId] = useState()
@@ -170,10 +182,22 @@ const [productName, setProductName] = useState('');
   const [totalAmount, setTotalAmount] = useState(0);
 
   const [rowData, setRowData] =useState()
-  const [dDate, setDDate] =useState(state?.deliveryDate)
+  const [dDate, setDDate] =useState()
 
   const [Id, setId] = useState()
-  const [touched, setTouched] = useState(false);
+
+      // country, state, city API access token
+      const [accessToken, setAccessToken] = useState(null);
+
+
+
+      //state management for countries,states and cities
+      const [countries, setCountries] = useState([]);
+      const [states, setStates]= useState([])
+      const [cities, setCities]= useState([])
+      const [currentCountry, setCurrentCountry]= useState('India')
+      const [currentState, setCurrentState]= useState('')
+      const [currentCity, setCurrentCity] =useState('')
 
 
       //deleted row
@@ -201,7 +225,152 @@ const [productName, setProductName] = useState('');
     setCurrentDate(formattedDate);
   }, []);
 
-  const handleInputChange = (event) => {
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://www.universal-tutorial.com/api/getaccesstoken', {
+          headers: {
+            'Accept': 'application/json',
+            'api-token': '8HWETQvEFegKi6tGPUkSWDiQKfW8UdZxPqbzHX6JdShA3YShkrgKuHUbnTMkd11QGkE',
+            'user-email': 'mithesh.dev.work@gmail.com'
+          }
+        });
+  
+        if (!response.ok) {
+          throw new Error('Failed to fetch access token');
+        }
+  
+        const data = await response.json();
+  
+        setAccessToken(data.auth_token);
+  
+      } catch (error) {
+        console.error(error);
+  
+      }
+    };
+  
+    fetchData();
+  }, []);
+  //fetches country list for dropdown and pushesh it to state which is later mapped 
+  const fetchCountries = useCallback(async () => {
+    try {
+      const response = await fetch("https://www.universal-tutorial.com/api/countries/", {
+        headers: {
+          "Authorization": "Bearer " + accessToken,
+          "Accept": "application/json"
+        }
+      });
+  
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setCountries(data);
+    } catch (error) {
+      console.error("Error fetching countries:", error);
+    }
+  }, [accessToken]);
+  
+  //using useeffect to prevent fetch request being called on render
+  useEffect(()=>{
+    fetchCountries()
+  },[fetchCountries])
+  
+  //mapping countries to MUI select input field
+  const userOptionsCountry = useMemo(() => {
+    return countries.map(country => ({
+      label: country.country_name,
+      value: country.country_name
+    }));
+  }, [countries]);
+  
+  //mapping states to MUI select input field
+  const userOptionsState = useMemo(() => {
+    return states.map(state => ({
+      label: state.state_name,
+      value: state.state_name
+    }));
+  }, [states]);
+  
+  //mapping cities to MUI select input field
+  const userOptionsCities = useMemo(() => {
+    return cities.map(city => ({
+      label: city.city_name,
+      value: city.city_name
+    }));
+  }, [cities]);
+  
+  //fetches states list for dropdown and pushesh it to setStates which is later mapped 
+  const handleCountry = async (event) => {
+    try {
+      setCurrentCountry(event.target.value);
+      const response = await fetch(`https://www.universal-tutorial.com/api/states/${event.target.value}`, {
+        headers: {
+          "Authorization": "Bearer " + accessToken,
+          "Accept": "application/json"
+        }
+      });
+  
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setStates(data);
+    } catch (error) {
+      console.error("Error fetching states:", error);
+    }
+  };
+  
+  //fetches cities list for dropdown and pushesh it to setCities which is later mapped 
+  const handleState = async (event) => {
+    try {
+      setCurrentState(event.target.value);
+      const response = await fetch(`https://www.universal-tutorial.com/api/cities/${event.target.value}`, {
+        headers: {
+          "Authorization": "Bearer " + accessToken,
+          "Accept": "application/json"
+        }
+      });
+  
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setCities(data);
+    } catch (error) {
+      console.error("Error fetching states:", error);
+    }
+  };
+  
+  //sets default country to India and fetches state list for India and is pushed to setStates
+  const handleDefaultState = async () => {
+  try {;
+  if (currentCountry === 'India') {
+    const response = await fetch('https://www.universal-tutorial.com/api/states/India', {
+      headers: {
+        "Authorization": "Bearer " + accessToken,
+        "Accept": "application/json"
+      }
+    });
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const data = await response.json();
+    setStates(data);
+  }
+  } catch (error) {
+  console.error("Error fetching states:", error);
+  }
+  };
+  
+  //sets current city value in MUI select field onchange event
+  const handleCities = async (event) => {
+  setCurrentCity(event.target.value);
+  }
+
+ const handleInputChange = (event) => {
   const { name, value } = event.target;
 
   switch (name) {
@@ -211,18 +380,6 @@ const [productName, setProductName] = useState('');
           break;
       case 'contactName':
         setContactName(value);
-        break;
-      case 'adminname':
-        setAdminName(value);
-        break;
-      case 'adminemail':
-        setAdminEmail(value);
-        break;
-      case 'adminphone':
-        setAdminPhone(value);
-        break;
-      case 'inchargeemail':
-        setInchargeEmail(value);
         break;
       case 'mobileno':
         setPhone(value);
@@ -241,13 +398,6 @@ const [productName, setProductName] = useState('');
   }
 };
 
-const handleBlur = () => {
-  setTouched(true);
-};
-
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const hasError = touched && !emailRegex.test(adminEmail);
-const hasError2 = touched && !emailRegex.test(inchargeEmail);
    //get temp user
    useEffect(() => {
     const request1 = axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`);
@@ -272,8 +422,7 @@ const hasError2 = touched && !emailRegex.test(inchargeEmail);
  
   const deliveryDateAntd = deliveryDate;
   const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
-
-
+  
   const deliveryIST = deliveryDateJS;
 
 
@@ -297,10 +446,12 @@ const hasError2 = touched && !emailRegex.test(inchargeEmail);
     
       const calculatedTotalAmount = updatedRows.reduce(
         (total, row) =>
-        total +
-        row.workstationCount * row.price +
-          (row.workstationCount * row.price * row.igst) / 100,
-      0
+          total +
+          row.quantity * row.price +
+          (row.quantity * row.price * row.cgst) / 100 +
+          (row.quantity * row.price * row.igst) / 100 +
+          (row.quantity * row.price * row.sgst) / 100,
+        0
       );
     
       setTotalAmount(calculatedTotalAmount);
@@ -323,24 +474,32 @@ const hasError2 = touched && !emailRegex.test(inchargeEmail);
     e.preventDefault();
   
     if (
-     
+      quantity &&
+      price &&
+      cgst &&
       productName &&
-      workstation &&
+      sgst &&
       igst &&
-      description
+      description &&
+      weight &&
+      size
     ) {
       const newRow = {
         id: Id,
         productId,
         productName,
+        weight,
+        quantity: parseFloat(quantity),
         price: parseFloat(price),
+        cgst: parseFloat(cgst),
         description,
-        workstationCount: parseFloat(workstation),
         createdBy: userId,
+        size: size,
+        sgst: parseFloat(sgst),
         igst: parseFloat(igst),
         comments: comment,
-        createdDate: new Date(),
-        lastModifiedDate: new Date()
+        createdDate:new Date(),
+        lastModifiedDate: new Date(),
    
       };
   
@@ -361,10 +520,12 @@ const hasError2 = touched && !emailRegex.test(inchargeEmail);
   
       const calculatedTotalAmount = updatedRows.reduce(
         (total, row) =>
-        total +
-        row.workstationCount * row.price +
-          (row.workstationCount * row.price * row.igst) / 100,
-      0
+          total +
+          row.quantity * row.price +
+          (row.quantity * row.price * row.cgst) / 100 +
+          (row.quantity * row.price * row.igst) / 100 +
+          (row.quantity * row.price * row.sgst) / 100,
+        0
       );
   
       setTotalAmount(calculatedTotalAmount);
@@ -376,7 +537,7 @@ const hasError2 = touched && !emailRegex.test(inchargeEmail);
 
   const handleEditRow = (idx, row) => {
 
-console.log(idx, row)
+
 
     const selectedOption = userData2.find((option) => option.productName === row.productName);
     const selectedProductId = selectedOption ? selectedOption.id : '';
@@ -386,7 +547,6 @@ console.log(idx, row)
   setProductName(row.productName);
   setWeight(row.weight);
   setQuantity(row.quantity);
-  setWorkstation(row.workstationCount)
   setPrice(row.price);
   setCgst(row.cgst);
   setIgst(row.igst)
@@ -408,7 +568,6 @@ console.log(idx, row)
     setIgst('')
     setSgst('')
     setDescription('');
-    setWorkstation('')
   };
 
   //
@@ -447,8 +606,7 @@ console.log(idx, row)
           deliveryDate: dDate,
           deliveryAddress: address,
           createdBy: userId,
-          lastModifiedDate: currentDate,
-
+          lastModifiedDate:new Date(),
           comments : comment,
           termsAndCondition: terms,
           totalAmount: finalAmount,
@@ -457,7 +615,7 @@ console.log(idx, row)
         deletedQuotationDetails: deleteRows
   })
     
-      if (contactName && userId && phone && status && comment && terms && updatedRows) {
+      if (contactName) {
         try {
           const response = await fetch('http://13.115.56.48:8080/techmadhyam/addQuoatation', {
             method: 'POST',
@@ -473,10 +631,6 @@ console.log(idx, row)
                   userId: userState,
                   contactPersonName: contactName,
                   contactPhoneNumber: phone,    
-                  contactEmail: inchargeEmail,
-                  adminPersonName: adminName,
-                  adminPhoneNumber: adminPhone,
-                  adminEmail: adminEmail,   
                   status: status,
                   category: state?.category ,
                   type: type,
@@ -512,7 +666,7 @@ console.log(idx, row)
   return (
     <div style={{minWidth: "100%" }}>
     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-      <h2>Edit Quotation Order</h2>
+      <h2>Edit Sales Quotation Order</h2>
       <IconWithPopup/>
     </div>
     <form>
@@ -525,7 +679,7 @@ console.log(idx, row)
           >
             <Grid
               xs={12}
-              md={4}
+              md={6}
             >
           <TextField
                     fullWidth
@@ -547,28 +701,19 @@ console.log(idx, row)
             </Grid>
             <Grid
               xs={12}
-              md={4}
+              md={6}
             >
-                <DatePicker placeholder="Delivery Date"
-                onChange={handleDateChange}
-                defaultValue={deliveryDate} 
-                format= "YYYY/MM/DD"
-                className="css-dev-only-do-not-override-htwhyh"
-                style={{ height: '58px', width: '250px' , color: 'red'}}
-                
+              <TextField
+                fullWidth
+                label="HSN Code"
+                name="hsncode"
+                required
              
-
-height='50px'/>
-
+              />
             </Grid>
             <Grid
               xs={12}
-              md={4}
-            >
-            </Grid>
-            <Grid
-              xs={12}
-              md={4}
+              md={6}
             >    <TextField
             fullWidth
             label="Company Name"
@@ -603,10 +748,26 @@ height='50px'/>
           ))}
           </TextField>   
             </Grid>
- 
+            <Grid/>
             <Grid
               xs={12}
-              md={4}
+              md={6}
+            >
+                <DatePicker placeholder="Delivery Date"
+                onChange={handleDateChange}
+                defaultValue={deliveryDate} 
+                format= "YYYY/MM/DD"
+                className="css-dev-only-do-not-override-htwhyh"
+                style={{ height: '58px', width: '250px' , color: 'red'}}
+                
+             
+
+height='50px'/>
+
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
             >
               <TextField
 
@@ -629,71 +790,11 @@ height='50px'/>
             </Grid>
             <Grid
               xs={12}
-              md={4}
-            >
-              <TextField
-
-                    fullWidth
-                    label="Category"
-                    name="category"
-                    value={category}
-                  >
-                  </TextField>
-            </Grid>
-            <Grid
-              xs={12}
-              md={4}
-            >
-              <TextField
-
-                    fullWidth
-                    label="Admin Name"
-                    name="adminname"
-                    value={adminName}
-                    onChange={handleInputChange}
-                
-                  >
-                  </TextField>
-            </Grid>
-            <Grid
-              xs={12}
-              md={4}
-            >
-              <TextField
-
-                    fullWidth
-                    label="Admin Email"
-                    name="adminemail"
-                    helperText={hasError && "Please enter a valid email."}
-                    onBlur={handleBlur}
-                    error={hasError}
-                    value={adminEmail}
-                    onChange={handleInputChange}
-                  >
-                  </TextField>
-            </Grid>
-            <Grid
-              xs={12}
-              md={4}
-            >
-              <TextField
-
-                    fullWidth
-                    label="Admin Phone"
-                    type='number'
-                    name="adminphone"
-                    value={adminPhone}
-                    onChange={handleInputChange}
-                  >
-                  </TextField>
-            </Grid>
-            <Grid
-              xs={12}
-              md={4}
+              md={6}
             >
               <TextField
                 fullWidth
-                label="Incharge Name"
+                label="Contact Name"
                 name="contactName"
                 value={contactName}
                 onChange={handleInputChange}
@@ -701,32 +802,120 @@ height='50px'/>
             </Grid>
             <Grid
               xs={12}
-              md={4}
+              md={6}
             >
               <TextField
-
+                fullWidth
+                label="Mobile No."
+                name="mobileno"
+                type='number'
+                value={phone}
+                onChange={handleInputChange}
+              />
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
+            >
+              <TextField
+                fullWidth
+                label="Shipping Address"
+                multiline
+                minRows={3}
+                name="address"
+                value={address}
+                onChange={handleInputChange}   
+              />
+            </Grid>
+            <Grid/>
+            <Grid
+              xs={12}
+              md={6}
+            >
+              <TextField
                     fullWidth
-                    label="Incharge Email"
-                    name="inchargeemail"
-                    helperText={hasError2 && "Please enter a valid email."}
-                    onBlur={handleBlur}
-                    error={hasError2}
-                    value={inchargeEmail}
-                    onChange={handleInputChange}
+                    label="Country"
+                    name="country"
+                    required
+                    select
+                    defaultValue=""
+                    value={currentCountry}
+                    onChange={handleCountry}
                   >
+                     {userOptionsCountry?.map((option) => (
+                      <MenuItem
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))}
                   </TextField>
             </Grid>
             <Grid
               xs={12}
-              md={4}
+              md={6}
+            >
+                <TextField
+
+                    fullWidth
+                    label="State"
+                    name="state"
+                    required
+                    select
+                    defaultValue=''
+                    value={currentState}
+                    onChange={handleState}
+                    onFocus={handleDefaultState}
+                   
+                > 
+                {userOptionsState?.map((option) => (
+                      <MenuItem
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))}             
+                </TextField>
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
+            >
+               <TextField
+                    fullWidth
+                    label="City"
+                    name="city"
+                    required
+                    select
+                    defaultValue=''
+                value={currentCity}
+                onChange={handleCities}
+             
+              >
+                  {userOptionsCities?.map((option) => (
+                      <MenuItem
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))} 
+                      </TextField>
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
             >
               <TextField
                 fullWidth
-                label="Incharge Phone"
-                type='number'
-                name="mobileno"
-                value={phone}
-                onChange={handleInputChange}
+                label="ZipCode"
+                name="zipcode"
+                required
+                // value={zipcode}
+                // onChange={handleInputChange}
+
               />
             </Grid>
           </Grid>
@@ -759,7 +948,7 @@ height='50px'/>
           {showForm && (
             <div className='modal' 
             onClick={handleModalClick}>
-              <div className='modal-content-service'>
+              <div className='modal-content'>
                 <h5 className='product-detail-heading'>Add Part Details</h5>
                 <form className='form'>
                   {/* Form fields */}
@@ -790,25 +979,34 @@ height='50px'/>
                           </TextField>
                           </Grid>
                           <Grid
+                          xs={12}
+                          md={6}
+                          >
+                              <TextField
+                              fullWidth
+                              label="Weight"
+                              name="weight"
+                              value={weight}
+                              onChange={(e) => setWeight(e.target.value)}
+                              style={{ marginBottom: 10 }}
+                            />
+                          </Grid>
+                            <Grid
                             xs={12}
                             md={6}
                             >
                               <TextField
                               fullWidth
-                              label="No. Of Workstations"
-                              name="workstation"
+                              label="SGST"
+                              name="sgst"
                               type='number'
-                              value={workstation}
-                              onChange={(e) => setWorkstation(e.target.value)}
+                              value={sgst}
+                              onChange={(e) => setSgst(e.target.value)}
                               style={{ marginBottom: 10 }}
                           
                               />
                             </Grid>
-                           
-                          
-                          </div>
-                          <div className='popup-right'>
-                          <Grid
+                            <Grid
                             xs={12}
                             md={6}
                             >
@@ -823,19 +1021,63 @@ height='50px'/>
                           
                               />
                             </Grid>
+                          </div>
+                          <div className='popup-right'>
+                          <Grid
+                            xs={12}
+                            md={6}
+                            >
+                              <TextField
+                              fullWidth
+                              label="Quantity"
+                              name="quantity"
+                              type='number'
+                              value={quantity}
+                              onChange={(e) => setQuantity(e.target.value)}
+                              style={{ marginBottom: 15 }}
+                              />
+                            </Grid>
                             <Grid
                             xs={12}
                             md={6}
                             >
                               <TextField
                               fullWidth
-                              label="Unit Price"
+                              label="Cost"
                               name="cost"
                               type='number'
                               value={price}
                               onChange={(e) => setPrice(e.target.value)}
                               style={{ marginBottom: 10 }}
                           
+                              />
+                            </Grid>
+                            <Grid
+                            xs={12}
+                            md={6}
+                            >
+                              <TextField
+                              fullWidth
+                              label="Size"
+                              name="size"
+                              value={size}
+                              onChange={(e) => setSize(e.target.value)}
+                              style={{ marginBottom: 10 }}
+                          
+                              />
+                            </Grid>
+                            <Grid
+                            xs={12}
+                            md={6}
+                            >
+                              <TextField
+                              fullWidth
+                              label="CGST"
+                              name="cgst"
+                              type='number'
+                              value={cgst}
+                              onChange={(e) => setCgst(e.target.value)}
+                              style={{ marginBottom: 16 }}
                               />
                             </Grid>
                             </div>     
@@ -860,7 +1102,7 @@ height='50px'/>
                               className='submit' 
                               
                               onClick={toggleForm}>
-                                Cancel
+                               Cancel
                               </button>
                               <button style={{ background: `${primaryColor}` }} 
                               className='submit' 
@@ -895,19 +1137,34 @@ height='50px'/>
                                 <div>{row.description}</div>
                               </TableCell>
                               <TableCell>
+                                 <div>{row.quantity}</div>
+                              </TableCell>
+                              <TableCell>
+                                <div>{row.weight}</div>
+                              </TableCell>
+                              <TableCell>
+                                <div>{row.size}</div>
+                              </TableCell>
+                              <TableCell>
                                 <div>{row.price}</div>
                               </TableCell>
                               <TableCell>
-                                <div>{row.workstationCount}</div>
+                                <div>{row.cgst}</div>
+                              </TableCell>
+                              <TableCell>
+                                <div>{row.sgst}</div>
                               </TableCell>
                               <TableCell>
                                 <div>{row.igst}</div>
                               </TableCell>
+                           
                               <TableCell>
                               <div>
-                              {(
-                              ((row.workstationCount * row.price) +
-                              ((row.workstationCount * row.price) * row.igst/ 100)).toFixed(2)
+                                {(
+                                  ((row.quantity * row.price) +
+                                  ((row.quantity * row.price) * row.cgst/ 100) +
+                                  ((row.quantity * row.price) * row.igst / 100) +
+                                  ((row.quantity * row.price) * row.sgst / 100)).toFixed(2)
                                 )}
                               </div>
                               </TableCell>
@@ -949,7 +1206,7 @@ height='50px'/>
               fullWidth
               multiline
               rows={4}
-              maxRows={8}
+
               value={terms}
               onChange={(e) => setTerms(e.target.value)}
             />
@@ -964,7 +1221,7 @@ height='50px'/>
               fullWidth
               multiline
               rows={2}
-              maxRows={4}
+        
               value={comment}
               onChange={(e) => setComment(e.target.value)} 
             />
@@ -992,6 +1249,6 @@ height='50px'/>
   );
 };
 
-QuotationServiceEditForm.propTypes = {
+QuotationOrderEditForm.propTypes = {
   customer: PropTypes.object.isRequired
 };

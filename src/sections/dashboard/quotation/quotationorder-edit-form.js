@@ -666,7 +666,7 @@ const [productName, setProductName] = useState('');
   return (
     <div style={{minWidth: "100%" }}>
     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-      <h2>Edit Quotation Order</h2>
+      <h2>Edit Purchase Quotation Order</h2>
       <IconWithPopup/>
     </div>
     <form>

@@ -147,10 +147,12 @@ const handleCategoryChange = (event) => {
   };
 
   const handleNavigation = record => {
-    if (record.category === 'Sales Quotation' || record.category === 'Purchase Quotation') {
+    if (record.category === 'Purchase Quotation') {
       navigate('/dashboard/quotation/edit', { state: record });
     } else if (record.category === 'Service Quotation') {
       navigate('/dashboard/quotation/editService', { state: record });
+    } else if(record.category === 'Sales Quotation') {
+      navigate('/dashboard/quotation/editSales', { state: record });
     }
   };
   //company search
