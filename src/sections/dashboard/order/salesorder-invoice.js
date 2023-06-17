@@ -209,7 +209,7 @@ const handleInvoicePdf = async (record ,heading,dateData,noData) => {
                  let TotalAD = TotalBD - product.discountAmount;
                 let TotalGST = product.cgst + product.sgst + product.igst;
                 let TotalGSTAmount = (TotalAD * TotalGST) / 100;
-                    return [index+1, product.productName, invent.hsncode, product.price, product.quantity, TotalBD, product.discountAmount, TotalAD, product.cgst, product.sgst, product.igst, 
+                    return [index+1, product.description, invent.hsncode, product.price, product.quantity, TotalBD, product.discountAmount, TotalAD, product.cgst, product.sgst, product.igst, 
                     TotalAD + TotalGSTAmount]
                     });
                 const docDefinition = {
@@ -273,8 +273,8 @@ const handleInvoicePdf = async (record ,heading,dateData,noData) => {
                               { text: 'Mode of Dispatch: Courier', style: 'tableLabel', border: [true, true, true, true]},
                             ],
                             [
-                              { text: `${record.deliveryAddress}\n${record.city} - ${record.pinCode}\n${record.state}\n${record.country}`, style: 'tableCell',border: [true, false, true, false] },
-                              { text: `${record.deliveryAddress}\n${record.city} - ${record.pinCode}\n${record.state}\n${record.country}`, style: 'tableCell', border: [true, false, true, false] },
+                              { text: `${tempInv.data.address}, ${tempInv.data.city}, ${tempInv.data.pincode}, ${tempInv.data.state}, ${tempInv.data.country}`, style: 'tableCell',border: [true, false, true, false] },
+                              { text: `${record.deliveryAddress}`, style: 'tableCell', border: [true, false, true, false] },
                               { text: `notInAPI`, style: 'tableCell',border: [true, false, true, false] },
                               { text: `Mode of Payment: ${record.paymentMode}`, style: 'tableLabel',border: [true, false, true, false] },
                             ],
@@ -403,7 +403,7 @@ const handleChallanPdf = async (record) => {
 
                 const rowData = response.data.map((product,index) => {
                 //  let invent = JSON.parse(product.inventory);
-                    return [index+1, product.productName,'',product.quantity]
+                    return [index+1, product.description,'',product.quantity]
                     });
                 const docDefinition = {
                     pageOrientation: 'landscape',
@@ -463,8 +463,8 @@ const handleChallanPdf = async (record) => {
                               { text: 'Customer GST Registration information', style: 'tableLabel' },
                             ],
                             [
-                              { text: `${record.deliveryAddress}\n${record.city} - ${record.pinCode}\n${record.state}\n${record.country}`, style: 'tableCell',border: [true, false, true, false] },
-                              { text: `${record.deliveryAddress}\n${record.city} - ${record.pinCode}\n${record.state}\n${record.country}`, style: 'tableCell', border: [true, false, true, false] },
+                              { text: `${tempInv.data.address}, ${tempInv.data.city}, ${tempInv.data.pincode}, ${tempInv.data.state}, ${tempInv.data.country}`, style: 'tableCell',border: [true, false, true, false] },
+                              { text: `${record.deliveryAddress}`, style: 'tableCell', border: [true, false, true, false] },
                               { text: `${record.gstNumber}`, style: 'tableCell',border: [true, false, true, false] },
                             ],
                           ],
