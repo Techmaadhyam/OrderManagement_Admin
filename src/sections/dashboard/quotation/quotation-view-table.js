@@ -29,6 +29,7 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from '../pdfAssets/vfs_fonts';
 
 
+
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 pdfMake.fonts = {
   Inter: {
@@ -65,6 +66,7 @@ const QuotationViewTable = () => {
   const [quotationData, setQuotationData] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [searchText, setSearchText] = useState('');
+  const [service, setService] = useState(true);
 
 
   const navigate = useNavigate();
@@ -147,12 +149,10 @@ const handleCategoryChange = (event) => {
   };
 
   const handleNavigation = record => {
-    if (record.category === 'Purchase Quotation') {
+    if (record.category === 'Sales Quotation' || record.category === 'Purchase Quotation') {
       navigate('/dashboard/quotation/edit', { state: record });
     } else if (record.category === 'Service Quotation') {
       navigate('/dashboard/quotation/editService', { state: record });
-    } else if(record.category === 'Sales Quotation') {
-      navigate('/dashboard/quotation/editSales', { state: record });
     }
   };
   //company search
@@ -261,7 +261,7 @@ const handleQuotation = async (record) => {
       pattern: 'solid',
       fgColor: { argb: '87CEEB' }, // Sky blue color
     };
-    worksheet.mergeCells('A1:L1');
+    worksheet.mergeCells('A1:K1');
     worksheet.mergeCells('A2:B6');
     const image = workbook.addImage({
       base64: imgUrl,
@@ -274,8 +274,8 @@ const handleQuotation = async (record) => {
     const infoData = [
       ['Quotation Date:', `${record.createdDate}`], 
       ['Quotation No.:', `${record.id}`], 
-      ['Customer Name:', `${temp.firstName} ${temp.lastName}`], 
-      ['Customer Contact:', `${temp.mobile}`], 
+      ['Customer Name:', `${record.contactPersonName}`], 
+      ['Customer Contact:', `${record.contactPhoneNumber}`], 
     ];
     
     infoData.forEach((rowData, rowIndex) => {
@@ -288,11 +288,11 @@ const handleQuotation = async (record) => {
     });
     worksheet.mergeCells('A8:D8');
     const tableOneData = [
-      ['Name:', `${record.createdByUser.companyName}`], 
-      ['Address:', `${record.createdByUser.address} ${record.createdByUser.city} ${record.createdByUser.state} ${record.createdByUser.country}`], 
-      ['Contact:', `${record.createdByUser.mobile}`], 
-      ['Email:', `${record.createdByUser.emailId}`], 
-      ['GSTIN:', `${record.createdByUser.gstNumber}`], 
+      ['Name:', `${temp.companyName}`], 
+      ['Address:', `${temp.address} ${temp.city} ${temp.state} ${temp.country}`], 
+      ['Contact:', `${temp.mobile}`], 
+      ['Email:', `${temp.emailId}`], 
+      ['GSTIN:', `${temp.gstNumber}`], 
     ];
     tableOneData.forEach((rowData, rowIndex) => {
       rowData.forEach((cellData, colIndex) => {
@@ -302,7 +302,7 @@ const handleQuotation = async (record) => {
         cell.alignment = { vertical: 'middle', horizontal: 'left' };
       });
     });
-    worksheet.getCell('A8').value = 'Company Address';
+    worksheet.getCell('A8').value = 'Company Details';
     worksheet.getCell('A8').fill = {
       type: 'pattern',
       pattern: 'solid',
@@ -322,9 +322,9 @@ const handleQuotation = async (record) => {
     
     worksheet.mergeCells('G8:J8');
     const tableTwoData = [
-      ['Name:', `${temp.firstName} ${temp.lastName}`], 
-      ['Address:', `${temp.address} ${temp.city} ${temp.state} ${temp.country}`], 
-      ['Contact:', `${temp.mobile}`], 
+      ['Name:', `${record.contactPersonName}`], 
+      ['Address:', `Tonk Road, Jaipur, Rajasthan`],
+      ['Contact:', `${record.contactPhoneNumber}`], 
       ['Email:', `${temp.emailId}`], 
       ['GSTIN:', `${temp.gstNumber}`], 
     ];
@@ -336,7 +336,7 @@ const handleQuotation = async (record) => {
         cell.alignment = { vertical: 'middle', horizontal: 'left' };
       });
     });
-    worksheet.getCell('G8').value = 'Customer Address';
+    worksheet.getCell('G8').value = 'Customer Details';
     worksheet.getCell('G8').fill = {
       type: 'pattern',
       pattern: 'solid',
@@ -387,7 +387,7 @@ const handleQuotation = async (record) => {
       right: tableBorder,
     };
     worksheet.getRow(17).height = 45;
-    worksheet.mergeCells('A17:L17');
+    worksheet.mergeCells('A17:K17');
     worksheet.getCell('A17').value = `Note/Remarks: ${record.comments}`;
     worksheet.getCell('A17').font = { size: 10, bold: true, name: 'Arial' };
     worksheet.getCell('A17').alignment = { vertical: 'middle', horizontal: 'left' };
@@ -397,10 +397,17 @@ const handleQuotation = async (record) => {
       bottom: tableBorder,
       right: tableBorder,
     };
-    const productTableHeaders = [
+    let productTableHeaders = [];
+    record.category === 'Service Quotation'? 
+    productTableHeaders = [
       'S.No.',
-      'PRODUCT NAME',
-      'DESCRIPTION',
+      'PRODUCT DESCRIPTION',
+      'WORKSTATIONS',
+      'COST',
+      'IGST',
+    ]:productTableHeaders = [ 
+      'S.No.',
+      'PRODUCT DESCRIPTION',
       'HSN/SAC',
       'QUANTITY',
       'WEIGHT',
@@ -411,6 +418,7 @@ const handleQuotation = async (record) => {
       'IGST',
       'AMOUNT',
     ];
+    
     productTableHeaders.forEach((header, index) => {
       worksheet.getCell(19, index + 1).value = header;
       worksheet.getCell(19, index + 1).font = { bold: true, size: 9, name: 'Arial' };
@@ -422,33 +430,45 @@ const handleQuotation = async (record) => {
       if (index !==  0&& index !== 1) {
         worksheet.getColumn(index + 1).width = header.length + 8;
       }
-      worksheet.getColumn(2).width = 16;
+      worksheet.getColumn(2).width = 20;
       worksheet.getColumn(7).width = 20;
     worksheet.getColumn(8).width = 20;
     });
-    for (let row = 19; row <= 19; row++) {
-      for (let col = 1; col <= 12; col++) {
-        const cell = worksheet.getCell(row, col);
-        cell.border = {
-          top: tableBorder,
-          // left: tableBorder,
-          bottom: tableBorder,
-          right: { style: 'thin', color: { argb: '80808080' } },
-        };
+    if (record.category === 'Service Quotation') {
+      
+      for (let row = 19; row <= 19; row++) {
+        for (let col = 1; col <= 5; col++) {
+          const cell = worksheet.getCell(row, col);
+          cell.border = {
+            top: tableBorder,
+            // left: tableBorder,
+            bottom: tableBorder,
+            right: { style: 'thin', color: { argb: '80808080' } },
+          };
+        }
+      }
+    }else{
+
+      for (let row = 19; row <= 19; row++) {
+        for (let col = 1; col <= 11; col++) {
+          const cell = worksheet.getCell(row, col);
+          cell.border = {
+            top: tableBorder,
+            // left: tableBorder,
+            bottom: tableBorder,
+            right: { style: 'thin', color: { argb: '80808080' } },
+          };
+        }
       }
     }
+
     worksheet.getCell('A19').border = {
       top: tableBorder,
       left: tableBorder,
       bottom: tableBorder,
       right: { style: 'thin', color: { argb: '80808080' } },
     };
-    worksheet.getCell('L19').border = {
-      top: tableBorder,
-      left: { style: 'thin', color: { argb: '80808080' } },
-      bottom: tableBorder,
-      right: tableBorder,
-    };
+    
     const rowData = response.data.map((product, index) => {
       const totalAmount = (
         product.price * product.quantity +
@@ -456,21 +476,29 @@ const handleQuotation = async (record) => {
         (product.price * product.quantity * product.sgst) / 100 +
         (product.price * product.quantity * product.igst) / 100
       ).toFixed(2);
-
-      return {
-        id: index + 1,
-        productName: product.productName,
-        productDescription: product.description,
-        hsn: product.id,
-        quantity: product.quantity,
-        weight: product.weight,
-        size: product.size,
-        price: product.price,
-        cgst: product.cgst,
-        sgst: product.sgst,
-        igst: product.igst,
-        total: totalAmount,
-      };
+      if (product.cgst=== 0 && product.sgst=== 0) {
+        return{
+          id: index + 1,
+          productDescription: product.description,
+          workstationCount: product.workstationCount,
+          price: product.price,
+          igst: product.igst,
+        }
+      }else{
+        return {
+          id: index + 1,
+          productDescription: product.description,
+          hsn: product.id,
+          quantity: product.quantity,
+          weight: product.weight,
+          size: product.size,
+          price: product.price,
+          cgst: product.cgst,
+          sgst: product.sgst,
+          igst: product.igst,
+          total: totalAmount,
+        };
+      }
     });
     rowData.forEach((row, rowIndex) => {
       Object.keys(row).forEach((key, columnIndex) => {
@@ -511,7 +539,7 @@ const handleQuotation = async (record) => {
       left: tableBorder,
     };
     const placeCell2 = worksheet.getCell(editableRow + 2, 3);
-    placeCell2.value = 'Hyderabad';
+    placeCell2.value = `${temp.state}`;
     placeCell2.font = { size: 9, name: 'Arial' };
     placeCell2.border = {
       right: tableBorder,
@@ -526,8 +554,8 @@ const handleQuotation = async (record) => {
     };
     
     const DateCell2 = worksheet.getCell(editableRow + 3, 3);
-    const currentDate = new Date();
-    DateCell2.value = `${currentDate.getFullYear()}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}/${currentDate.getDate().toString().padStart(2, '0')}`
+    
+    DateCell2.value = `${record.createdDate}`
     worksheet.mergeCells(`B${editableRow}:C${editableRow}`);
     DateCell2.font = { size: 9, name: 'Arial' };
     DateCell2.border = {      
@@ -557,6 +585,37 @@ const handleQuotationPdf = async (record)=>{
 
 const tempInv = await axios.get(`http://13.115.56.48:8080/techmadhyam/getTempUserById/${record.tempUserId}`)
 
+
+
+const headerData = response.data.map(product => {
+  
+  if (product.cgst!==0 && product.sgst!==0) {
+    setService(false)
+    return [{ text: 'S.No.', style: 'tableLabel' },
+    { text: 'Product Description', style: 'tableLabel' },
+    { text: 'HSN/SAC Code', style: 'tableLabel' },
+    { text: 'Qty', style: 'tableLabel' },
+    { text: 'Weight', style: 'tableLabel' },
+    { text: 'Size', style: 'tableLabel' },
+    { text: 'Cost', style: 'tableLabel' },
+    { text: 'CGST', style: 'tableLabel' },
+    { text: 'SGST', style: 'tableLabel' },
+    { text: 'IGST', style: 'tableLabel' },
+    { text: 'Amount', style: 'tableLabel' },]
+  }
+  else{
+    return [{ text: 'S.No.', style: 'tableLabel' },
+    
+    { text: 'Product Description', style: 'tableLabel' },
+    
+    
+    
+    { text: 'Workstation Count', style: 'tableLabel' },
+    { text: 'IGST', style: 'tableLabel' },
+    { text: 'Cost', style: 'tableLabel' },]
+  }
+  
+})
 const rowData = response.data.map((product, index) => {
   const totalAmount = (
     product.price * product.quantity +
@@ -565,9 +624,17 @@ const rowData = response.data.map((product, index) => {
     (product.price * product.quantity * product.igst) / 100
   ).toFixed(2);
 
+  if (product.cgst===0 && product.sgst===0) {
+    return [
+      index + 1,
+      product.description,
+     product.workstationCount, 
+      product.igst,
+      product.price,
+    ];
+  }
   return [
     index + 1,
-    product.productName,
     product.description,
     product.id,
     product.quantity,
@@ -579,6 +646,8 @@ const rowData = response.data.map((product, index) => {
     product.igst,
     totalAmount,
   ];
+  
+  
 });
       const docDefinition = {
           pageOrientation: 'landscape',
@@ -653,21 +722,10 @@ const rowData = response.data.map((product, index) => {
               style: 'table',
               table: {
                   heights:['auto', 'auto'],
-                  widths: ['auto',"*",'auto','auto','auto','auto','auto','auto','auto','auto','auto','auto'],
+                  widths: record.category==='Service Quotation'?['auto', '*', 'auto', 'auto', 'auto']:['auto', '*', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
                 body: [
+                  ...headerData,
                   
-                  [{ text: 'S.No.', style: 'tableLabel' },
-                  { text: 'Product Name', style: 'tableLabel'},
-                  { text: 'Product Description', style: 'tableLabel' },
-                  { text: 'HSN/SAC Code', style: 'tableLabel' },
-                  { text: 'Qty', style: 'tableLabel' },
-                  { text: 'Weight', style: 'tableLabel' },
-                  { text: 'Size', style: 'tableLabel' },
-                  { text: 'Cost', style: 'tableLabel' },
-                  { text: 'CGST', style: 'tableLabel' },
-                  { text: 'SGST', style: 'tableLabel' },
-                  { text: 'IGST', style: 'tableLabel' },
-                  { text: 'Amount', style: 'tableLabel' },],
                   ...rowData,
                 ],
               },
