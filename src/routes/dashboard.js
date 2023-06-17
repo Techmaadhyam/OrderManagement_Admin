@@ -29,6 +29,13 @@ const WorkOrderViewDetailPage = lazy(() => import('src/pages/dashboard/services/
 const WorkOrderEdit = lazy(() => import('src/pages/dashboard/services/workorder/edit'));
 const WorkOrderDownload = lazy(() => import('src/pages/dashboard/services/workorder/downloadamc'));
 
+// AMC (do not delete)
+const AMCCreatePage = lazy(() => import('src/pages/dashboard/services/AMC/create'));
+const AMCViewPage = lazy(() => import('src/pages/dashboard/services/AMC/view'));
+const AMCViewDetailPage = lazy(() => import('src/pages/dashboard/services/AMC/viewDetail'));
+const AMCOrderEdit = lazy(() => import('src/pages/dashboard/services/AMC/edit'));
+//const WorkOrderDownload = lazy(() => import('src/pages/dashboard/services/workorder/downloadamc'));
+
 
 // Invoice (do not delete)
 const InvoiceListPage = lazy(() => import('src/pages/dashboard/invoices/list'));
@@ -239,6 +246,21 @@ export const dashboardRoutes = [
           {
             path: 'workorderdownload',
             element: <WorkOrderDownload/>
+          },
+          {
+            path: 'amc',
+            element: <AMCCreatePage />
+          },
+          {
+            path: 'amcview',
+            element: <AMCViewPage />
+          },
+          {
+            path: 'amcDetail',
+            element: <AMCViewDetailPage/>
+          },{
+            path: 'amcedit',
+            element: <AMCOrderEdit/>
           },
 
           {

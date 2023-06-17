@@ -550,7 +550,7 @@ console.log(idx, row)
             // Redirect to home page upon successful submission
         
            response.json().then(data => {
-            navigate('/dashboard/workorder/viewDetail', { state: data });
+            navigate('/dashboard/services/workorderDetail', { state: data });
             console.log(data)
       
     });

@@ -112,7 +112,7 @@ const tableHeader=[
   }
 ];
 
-export const WorkOrderCreateForm = (props) => {
+export const AmcCreateForm = (props) => {
 
 
 const [userData, setUserData]= useState([])
@@ -417,7 +417,7 @@ const handleClick = async (event) => {
            response.json().then(data => {
     
       
-          navigate('/dashboard/services/workorderDetail', { state: data });
+          navigate('/dashboard/services/amcrDetail', { state: data });
           console.log(data)
           });
           } 
@@ -466,7 +466,7 @@ const handleClick = async (event) => {
            response.json().then(data => {
     
       
-          navigate('/dashboard/services/workorderDetail', { state: data });
+          navigate('/dashboard/services/amcrDetail', { state: data });
           console.log(data)
           });
           } 
@@ -481,7 +481,7 @@ const handleClick = async (event) => {
   return (
     <div style={{minWidth: "100%" }}>
     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-      <h2>Create Work Order</h2>
+      <h2>Create AMC</h2>
       <IconWithPopup/>
     </div>
     <form>
@@ -963,7 +963,7 @@ const handleClick = async (event) => {
               align="right"
               onClick={handleClick}
             >
-              Create Workorder
+              Create AMC
             </Button>
           </Box>
         </Grid>
@@ -971,6 +971,6 @@ const handleClick = async (event) => {
   );
 };
 
-WorkOrderCreateForm.propTypes = {
+AmcCreateForm.propTypes = {
   customer: PropTypes.object.isRequired
 };

@@ -84,6 +84,11 @@ export const paths = {
         workorderedit: '/dashboard/services/workorderedit',
         workorderdownload: '/dashboard/services/workorderdownload',
 
+        createAMC: '/dashboard/services/amc',
+        AMCview: '/dashboard/services/amcview',
+        AMCDetail: '/dashboard/services/amcDetail',
+        AMCedit: '/dashboard/services/amcedit',
+
         createTechnician: '/dashboard/services/technician',
         technicianview: '/dashboard/services/technicianview',
         technicianDetail: '/dashboard/services/technicianDetail',

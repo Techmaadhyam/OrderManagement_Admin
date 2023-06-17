@@ -245,6 +245,22 @@ export const useSections = () => {
                 ]
               },
               {
+                title: t(tokens.nav.addAmc),
+             
+             
+                items: [
+                  {
+                    title: t(tokens.nav.create),
+                    path: paths.dashboard.services.createAMC
+                  },
+                  {
+                    title: t(tokens.nav.view),
+                    path: paths.dashboard.services.AMCview
+                  },
+              
+                ]
+              },
+              {
                 title: t(tokens.nav.technician),
              
              
