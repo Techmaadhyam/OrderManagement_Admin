@@ -21,7 +21,7 @@ import {
 import { DatePicker } from 'antd';
 import './sales-order.css'
 import IconWithPopup from '../user/user-icon';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import axios from 'axios';
 import moment from 'moment';
 import { primaryColor } from 'src/primaryColor';
@@ -197,6 +197,20 @@ const [productName, setProductName] = useState('');
   const [productDescription, setProductDescription] = useState('');
   const [allQuotation, setAllQuotation] = useState([])
 
+
+      // country, state, city API access token
+      const [accessToken, setAccessToken] = useState(null);
+
+
+
+      //state management for countries,states and cities
+      const [countries, setCountries] = useState([]);
+      const [states, setStates]= useState([])
+      const [cities, setCities]= useState([])
+      const [currentCountry, setCurrentCountry]= useState('India')
+      const [currentState, setCurrentState]= useState('')
+      const [currentCity, setCurrentCity] =useState('')
+
   useEffect(() => {
     axios.get(`http://13.115.56.48:8080/techmadhyam/getAllSalesOrderDetails/${state?.id || state?.soRecord?.id}`)
       .then(response => {
@@ -251,6 +265,151 @@ const [productName, setProductName] = useState('');
     const formattedDate = `${year}/${month}/${day}`;
     setCurrentDate(formattedDate);
   }, []);
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://www.universal-tutorial.com/api/getaccesstoken', {
+          headers: {
+            'Accept': 'application/json',
+            'api-token': '8HWETQvEFegKi6tGPUkSWDiQKfW8UdZxPqbzHX6JdShA3YShkrgKuHUbnTMkd11QGkE',
+            'user-email': 'mithesh.dev.work@gmail.com'
+          }
+        });
+  
+        if (!response.ok) {
+          throw new Error('Failed to fetch access token');
+        }
+  
+        const data = await response.json();
+  
+        setAccessToken(data.auth_token);
+  
+      } catch (error) {
+        console.error(error);
+  
+      }
+    };
+  
+    fetchData();
+  }, []);
+  //fetches country list for dropdown and pushesh it to state which is later mapped 
+  const fetchCountries = useCallback(async () => {
+    try {
+      const response = await fetch("https://www.universal-tutorial.com/api/countries/", {
+        headers: {
+          "Authorization": "Bearer " + accessToken,
+          "Accept": "application/json"
+        }
+      });
+  
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setCountries(data);
+    } catch (error) {
+      console.error("Error fetching countries:", error);
+    }
+  }, [accessToken]);
+  
+  //using useeffect to prevent fetch request being called on render
+  useEffect(()=>{
+    fetchCountries()
+  },[fetchCountries])
+  
+  //mapping countries to MUI select input field
+  const userOptionsCountry = useMemo(() => {
+    return countries.map(country => ({
+      label: country.country_name,
+      value: country.country_name
+    }));
+  }, [countries]);
+  
+  //mapping states to MUI select input field
+  const userOptionsState = useMemo(() => {
+    return states.map(state => ({
+      label: state.state_name,
+      value: state.state_name
+    }));
+  }, [states]);
+  
+  //mapping cities to MUI select input field
+  const userOptionsCities = useMemo(() => {
+    return cities.map(city => ({
+      label: city.city_name,
+      value: city.city_name
+    }));
+  }, [cities]);
+  
+  //fetches states list for dropdown and pushesh it to setStates which is later mapped 
+  const handleCountry = async (event) => {
+    try {
+      setCurrentCountry(event.target.value);
+      const response = await fetch(`https://www.universal-tutorial.com/api/states/${event.target.value}`, {
+        headers: {
+          "Authorization": "Bearer " + accessToken,
+          "Accept": "application/json"
+        }
+      });
+  
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setStates(data);
+    } catch (error) {
+      console.error("Error fetching states:", error);
+    }
+  };
+  
+  //fetches cities list for dropdown and pushesh it to setCities which is later mapped 
+  const handleState = async (event) => {
+    try {
+      setCurrentState(event.target.value);
+      const response = await fetch(`https://www.universal-tutorial.com/api/cities/${event.target.value}`, {
+        headers: {
+          "Authorization": "Bearer " + accessToken,
+          "Accept": "application/json"
+        }
+      });
+  
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setCities(data);
+    } catch (error) {
+      console.error("Error fetching states:", error);
+    }
+  };
+  
+  //sets default country to India and fetches state list for India and is pushed to setStates
+  const handleDefaultState = async () => {
+  try {;
+  if (currentCountry === 'India') {
+    const response = await fetch('https://www.universal-tutorial.com/api/states/India', {
+      headers: {
+        "Authorization": "Bearer " + accessToken,
+        "Accept": "application/json"
+      }
+    });
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const data = await response.json();
+    setStates(data);
+  }
+  } catch (error) {
+  console.error("Error fetching states:", error);
+  }
+  };
+  
+  //sets current city value in MUI select field onchange event
+  const handleCities = async (event) => {
+  setCurrentCity(event.target.value);
+  }
 
  const handleInputChange = (event) => {
   const { name, value } = event.target;
@@ -796,12 +955,103 @@ height='50px'/>
             >
               <TextField
                 fullWidth
-                label="Address"
+                label="Shipping Address"
                 multiline
                 minRows={3}
                 name="address"
                 value={address}
                 onChange={handleInputChange}   
+              />
+            </Grid>
+            <Grid/>
+            <Grid
+              xs={12}
+              md={6}
+            >
+              <TextField
+                    fullWidth
+                    label="Country"
+                    name="country"
+                    required
+                    select
+                    defaultValue=""
+                    value={currentCountry}
+                    onChange={handleCountry}
+                  >
+                     {userOptionsCountry?.map((option) => (
+                      <MenuItem
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
+            >
+                <TextField
+
+                    fullWidth
+                    label="State"
+                    name="state"
+                    required
+                    select
+                    defaultValue=''
+                    value={currentState}
+                    onChange={handleState}
+                    onFocus={handleDefaultState}
+                   
+                > 
+                {userOptionsState?.map((option) => (
+                      <MenuItem
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))}             
+                </TextField>
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
+            >
+               <TextField
+                    fullWidth
+                    label="City"
+                    name="city"
+                    required
+                    select
+                    defaultValue=''
+                value={currentCity}
+                onChange={handleCities}
+             
+              >
+                  {userOptionsCities?.map((option) => (
+                      <MenuItem
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))} 
+                      </TextField>
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
+            >
+              <TextField
+                fullWidth
+                label="ZipCode"
+                name="zipcode"
+                required
+                // value={zipcode}
+                // onChange={handleInputChange}
+
               />
             </Grid>
           </Grid>

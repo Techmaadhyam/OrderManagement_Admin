@@ -257,7 +257,7 @@ const [productName, setProductName] = useState('');
   },[fetchCountries])
   
   //mapping countries to MUI select input field
-  const userOptions = useMemo(() => {
+  const userOptionsCountry = useMemo(() => {
     return countries.map(country => ({
       label: country.country_name,
       value: country.country_name
@@ -788,7 +788,7 @@ height='50px'/>
                     value={currentCountry}
                     onChange={handleCountry}
                   >
-                     {userOptions?.map((option) => (
+                     {userOptionsCountry?.map((option) => (
                       <MenuItem
                         key={option.value}
                         value={option.value}
