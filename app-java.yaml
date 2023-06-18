@@ -1,0 +1,6 @@
+runtime: java11
+env: standard
+
+handlers:
+  - url: /.*
+    script: this field is required, but ignored
