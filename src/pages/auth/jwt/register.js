@@ -74,6 +74,7 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [currentDate, setCurrentDate] = useState('');
   const [gstn, setGstn]= useState('')
+  const [pan, setPan]= useState('')
 
   const [step, setStep] = useState(1);
   const [touched, setTouched] = useState(false);
@@ -105,6 +106,9 @@ const Register = () => {
       case 'gstn':
           setGstn(value);
           break;
+      case 'pan':
+          setPan(value);
+            break;
       case 'type':
         setType(value);
           break;
@@ -363,6 +367,7 @@ const handleCities = async (event) => {
               country: currentCountry,
               type: type,
               gstNumber: gstn,
+              pandcard: pan,
               createdDate:new Date(),
               unpdatedDate:new Date()
             })
@@ -557,13 +562,26 @@ const handleCities = async (event) => {
         
             <Grid
               xs={12}
-              md={12}
+              md={6}
             >
               <TextField
                     fullWidth
                     label="Company"
                     name="company"
                     value={company}
+                    onChange={handleInputChange}
+                  >
+                  </TextField>
+            </Grid>
+            <Grid
+              xs={12}
+              md={6}
+            >
+              <TextField
+                    fullWidth
+                    label="PAN Number"
+                    name="pan"
+                    value={pan}
                     onChange={handleInputChange}
                   >
                   </TextField>
