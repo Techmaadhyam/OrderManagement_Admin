@@ -597,7 +597,7 @@ console.log(currentDate)
   }, []);
 
 console.log(deliveryIST)
-  const updatedRows = rows.map(({ productName, productDescription, ...rest }) => rest);
+  const updatedRows = rows.map(({ productName, productDescription, productId, ...rest }) => rest);
   //post request
 
   
@@ -616,19 +616,19 @@ console.log(deliveryIST)
             body: JSON.stringify({
               salesOrder:{
                   quotationId: quotation,
-                  userId: userState,
-                  tempUserId :tempId,
+                  //companyuser: {id: userState} ,
+                  tempUser : {id:tempId},
                   contactPerson: contactName,
                   contactPhone: phone,    
                   status: status,
                   paymentMode: payment,
                   type: type,
                   deliveryDate: deliveryIST,
-                  address: address,
+                  deliveryAddress: address,
                   city: currentCity,
                   state: currentState,
                   country: currentCountry,
-                  pincode: zipcode,
+                  pinCode: zipcode,
                   createdBy: userId,
                   createdDate: new Date(),
                   lastModifiedDate: new Date(),

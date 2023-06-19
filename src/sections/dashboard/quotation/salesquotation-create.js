@@ -582,7 +582,7 @@ const handleDateChange = (date) => {
 
 console.log(currentDate, deliveryIST)
 
-  const updatedRows = rows.map(({ productName,productDescription, ...rest }) => rest);
+  const updatedRows = rows.map(({ productName, productDescription, productId, ...rest }) => rest);
   //post request
   const handleClick = async (event) => {
 
@@ -601,19 +601,19 @@ console.log(currentDate, deliveryIST)
             },
             body: JSON.stringify({
               quotation:{
-                  tempUserId :tempId,
-                  userId: userState,
+                  //companyuser: {id: userState} ,
+                  tempUser : {id:tempId},
                   contactPersonName: contactName,
                   contactPhoneNumber: phone,   
                   status: status,
                   type: type,
                   deliveryDate: deliveryIST,
                   createdBy: userId,
-                  address: address,
+                  deliveryAddress: address,
                   city: currentCity,
                   state: currentState,
                   country: currentCountry,
-                  pincode: zipcode,
+                  pinCode: zipcode,
                   createdDate: new Date(),
                   lastModifiedDate: new Date(),
                   comments : comment,

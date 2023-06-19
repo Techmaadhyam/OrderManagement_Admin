@@ -300,7 +300,7 @@ export const ViewPurchaseOrder = (props) => {
           label="Username"
         >
           <Typography variant="subtitle2">
-          {tempuser.firstName+' '+tempuser.lastName}
+          {state?.createdByUser.firstName+' '+state?.createdByUser.lastName}
           </Typography>
         </PropertyListItem>
         <Divider />

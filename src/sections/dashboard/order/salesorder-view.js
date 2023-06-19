@@ -79,7 +79,7 @@ const columns = [
 export const ViewSalesOrder = (props) => {
   const location = useLocation();
   const state = location.state;
-
+console.log(state)
 
 
 
@@ -152,7 +152,7 @@ export const ViewSalesOrder = (props) => {
           label="Username"
         >
           <Typography variant="subtitle2">
-          {tempuser.firstName+' '+tempuser.lastName}
+          {state?.createdByUser.firstName+' '+state?.createdByUser.lastName}
           </Typography>
         </PropertyListItem>
         <Divider />

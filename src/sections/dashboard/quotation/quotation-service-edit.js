@@ -479,8 +479,8 @@ console.log(idx, row)
               quotation:{
                   id: state?.id,
                   createdBy: userId,
-                  tempUserId :tempId,
-                  userId: userState,
+                  //companyuser: {id: userState} ,
+                  tempUser : {id:tempId},
                   contactPersonName: contactName,
                   contactPhoneNumber: phone,    
                   contactEmail: inchargeEmail,

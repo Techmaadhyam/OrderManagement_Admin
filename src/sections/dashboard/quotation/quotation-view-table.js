@@ -116,7 +116,11 @@ const QuotationViewTable = () => {
     return formattedItem;
   });
 
-  const dataWithKeys = formattedArray?.map((item) => ({ ...item, key: item.id }));
+  const dataWithKeys = formattedArray?.map((item) => ({
+    ...item,
+    companyName: item.tempUser?.companyName, 
+    key: item.id 
+  }));
 
   const filteredData = selectedCategory
   ? dataWithKeys.filter((item) => item.category === selectedCategory)
@@ -177,39 +181,8 @@ const handleCompanyCancel = () => {
   setSearchText('');
 };
 
-
-
-  //get company name
-useEffect(() => {
-  const request1 = axios.get(apiUrl +`getAllTempUsers/${userId}`);
-  const request2 = axios.get(apiUrl +`getAllUsersBasedOnType/${userId}`);
-
-  Promise.all([request1, request2])
-    .then(([response1, response2]) => {
-      const tempUsersData = response1.data;
-      const usersData1 = response2.data;
-      const combinedData = [...tempUsersData, ...usersData1];
-      setUserData1(combinedData);
-     
-    })
-    .catch(error => {
-      console.error(error);
-    });
-}, []);
-
-const updatedUser = filteredData?.map((item) => {
-  if (item.tempUserId !== 0) {
-    const matchedCompany = userData1.find(
-      (u) => u.id === item.tempUserId || u.id === item.userId
-    );
-    if (matchedCompany) {
-      return { ...item, companyName: matchedCompany.companyName };
-    }
-  }
-  return item;
-});
   
-const filteredList = updatedUser.filter(product => {
+const filteredList = dataWithKeys.filter(product => {
   const companyMatch = product.companyName?.toLowerCase().includes(searchText.toLowerCase());
  
   return companyMatch
