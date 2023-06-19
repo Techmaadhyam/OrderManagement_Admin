@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import { formatDistanceStrict } from 'date-fns';
 import ArrowRightIcon from '@untitled-ui/icons-react/build/esm/ArrowRight';
 import RefreshCcw01Icon from '@untitled-ui/icons-react/build/esm/RefreshCcw01';
+import ShoppingCart01Icon from 'src/icons/untitled-ui/duocolor/shopping-cart-01';
+import InventoryTwoToneIcon from '@mui/icons-material/InventoryTwoTone';
 import {
   Avatar,
   Badge,
@@ -16,17 +18,25 @@ import {
   ListItemAvatar,
   ListItemText,
   SvgIcon,
-  Typography
+  Typography,
 } from '@mui/material';
 import { customLocale } from 'src/utils/date-locale';
+import React, { useState, useEffect } from 'react';
 
-export const OverviewInbox = (props) => {
+
+
+export const OverviewTask = (props) => {
+
+ 
+
   const { messages } = props;
+
+  
 
   return (
     <Card>
       <CardHeader
-        title="Inbox"
+        title="Today's Task"
         action={(
           <IconButton color="inherit">
             <SvgIcon fontSize="small">
@@ -36,11 +46,7 @@ export const OverviewInbox = (props) => {
         )}
       />
       <List disablePadding>
-        {messages.map((message) => {
-          const ago = formatDistanceStrict(message.createdAt, new Date(), {
-            addSuffix: true,
-            locale: customLocale
-          });
+      {messages?.map((message) => {
 
           return (
             <ListItem
@@ -53,23 +59,18 @@ export const OverviewInbox = (props) => {
               }}
             >
               <ListItemAvatar>
-                {message.senderOnline
-                  ? (
-                    <Badge
-                      anchorOrigin={{
-                        horizontal: 'right',
-                        vertical: 'bottom'
-                      }}
-                      color="success"
-                      variant="dot"
-                    >
-                      <Avatar src={message.senderAvatar} />
-                    </Badge>
-                  )
-                  : (
-                    <Avatar src={message.senderAvatar} />
-                  )}
-              </ListItemAvatar>
+              {message?.category === 'poList' ? (
+
+                <Avatar>
+                  <ShoppingCart01Icon />
+                </Avatar>
+
+            ) : (
+              <Avatar>
+                <InventoryTwoToneIcon />
+              </Avatar>
+            )}
+          </ListItemAvatar>
               <ListItemText
                 disableTypography
                 primary={(
@@ -81,7 +82,7 @@ export const OverviewInbox = (props) => {
                     }}
                     variant="subtitle2"
                   >
-                    {message.senderName}
+                    {message?.companyName}
                   </Typography>
                 )}
                 secondary={(
@@ -94,7 +95,7 @@ export const OverviewInbox = (props) => {
                     }}
                     variant="body2"
                   >
-                    {message.content}
+                    {message?.contactPerson}
                   </Typography>
                 )}
                 sx={{ pr: 2 }}
@@ -104,30 +105,17 @@ export const OverviewInbox = (props) => {
                 sx={{ whiteSpace: 'nowrap' }}
                 variant="caption"
               >
-                {ago}
+       
               </Typography>
             </ListItem>
           );
         })}
       </List>
-      <Divider />
-      <CardActions>
-        <Button
-          color="inherit"
-          endIcon={(
-            <SvgIcon>
-              <ArrowRightIcon />
-            </SvgIcon>
-          )}
-          size="small"
-        >
-          Go to chat
-        </Button>
-      </CardActions>
+
     </Card>
   );
 };
 
-OverviewInbox.propTypes = {
+OverviewTask.propTypes = {
   messages: PropTypes.array.isRequired
 };

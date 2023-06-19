@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
 import ArrowRightIcon from '@untitled-ui/icons-react/build/esm/ArrowRight';
 import { Box, Button, Card, CardActions, Divider, Stack, SvgIcon, Typography } from '@mui/material';
+import ReceiptCheckIcon from 'src/icons/untitled-ui/duocolor/receipt-check';
 
-export const OverviewPendingIssues = (props) => {
+export const TotalWareHouseCount = (props) => {
   const { amount } = props;
 
   return (
@@ -20,17 +21,16 @@ export const OverviewPendingIssues = (props) => {
         }}
       >
         <div>
-          <img
-            src="/assets/iconly/iconly-glass-info.svg"
-            width={48}
-          />
+        <SvgIcon fontSize="large">
+                <ReceiptCheckIcon />
+              </SvgIcon>
         </div>
         <Box sx={{ flexGrow: 1 }}>
           <Typography
             color="text.secondary"
             variant="body2"
           >
-            Pending Issues
+           Total WareHouse Count
           </Typography>
           <Typography
             color="text.primary"
@@ -40,24 +40,11 @@ export const OverviewPendingIssues = (props) => {
           </Typography>
         </Box>
       </Stack>
-      <Divider />
-      <CardActions>
-        <Button
-          color="inherit"
-          endIcon={(
-            <SvgIcon>
-              <ArrowRightIcon />
-            </SvgIcon>
-          )}
-          size="small"
-        >
-          See all issues
-        </Button>
-      </CardActions>
+    
     </Card>
   );
 };
 
-OverviewPendingIssues.propTypes = {
+TotalWareHouseCount.propTypes = {
   amount: PropTypes.number.isRequired
 };

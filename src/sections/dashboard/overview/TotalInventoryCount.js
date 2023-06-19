@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
 import ArrowRightIcon from '@untitled-ui/icons-react/build/esm/ArrowRight';
 import { Box, Button, Card, CardActions, Divider, Stack, SvgIcon, Typography } from '@mui/material';
+import ShoppingBag03Icon from 'src/icons/untitled-ui/duocolor/shopping-bag-03';
 
-export const OverviewOpenTickets = (props) => {
+export const TotalInventoryCount = (props) => {
   const { amount } = props;
 
   return (
@@ -20,17 +21,16 @@ export const OverviewOpenTickets = (props) => {
         }}
       >
         <div>
-          <img
-            src="/assets/iconly/iconly-glass-paper.svg"
-            width={48}
-          />
+        <SvgIcon fontSize="large">
+                <ShoppingBag03Icon />
+        </SvgIcon>
         </div>
         <Box sx={{ flexGrow: 1 }}>
           <Typography
             color="text.secondary"
             variant="body2"
           >
-            Open tickets
+            Total Inventory Count
           </Typography>
           <Typography
             color="text.primary"
@@ -40,24 +40,11 @@ export const OverviewOpenTickets = (props) => {
           </Typography>
         </Box>
       </Stack>
-      <Divider />
-      <CardActions>
-        <Button
-          color="inherit"
-          endIcon={(
-            <SvgIcon>
-              <ArrowRightIcon />
-            </SvgIcon>
-          )}
-          size="small"
-        >
-          See all tickets
-        </Button>
-      </CardActions>
+   
     </Card>
   );
 };
 
-OverviewOpenTickets.propTypes = {
+TotalInventoryCount.propTypes = {
   amount: PropTypes.number.isRequired
 };

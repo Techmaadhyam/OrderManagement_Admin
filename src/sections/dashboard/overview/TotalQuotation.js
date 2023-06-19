@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
 import ArrowRightIcon from '@untitled-ui/icons-react/build/esm/ArrowRight';
 import { Box, Button, Card, CardActions, Divider, Stack, SvgIcon, Typography } from '@mui/material';
+import LayoutAlt02Icon from 'src/icons/untitled-ui/duocolor/layout-alt-02';
 
-export const OverviewDoneTasks = (props) => {
+export const TotalQuotation = (props) => {
   const { amount } = props;
 
   return (
@@ -20,17 +21,16 @@ export const OverviewDoneTasks = (props) => {
         }}
       >
         <div>
-          <img
-            src="/assets/iconly/iconly-glass-tick.svg"
-            width={48}
-          />
+        <SvgIcon fontSize="large">
+        <LayoutAlt02Icon />
+              </SvgIcon>
         </div>
         <Box sx={{ flexGrow: 1 }}>
           <Typography
             color="text.secondary"
             variant="body2"
           >
-            Done Tasks
+        Total Open Quotation
           </Typography>
           <Typography
             color="text.primary"
@@ -40,24 +40,10 @@ export const OverviewDoneTasks = (props) => {
           </Typography>
         </Box>
       </Stack>
-      <Divider />
-      <CardActions>
-        <Button
-          color="inherit"
-          endIcon={(
-            <SvgIcon>
-              <ArrowRightIcon />
-            </SvgIcon>
-          )}
-          size="small"
-        >
-          See all tasks
-        </Button>
-      </CardActions>
     </Card>
   );
 };
 
-OverviewDoneTasks.propTypes = {
+TotalQuotation.propTypes = {
   amount: PropTypes.number.isRequired
 };
