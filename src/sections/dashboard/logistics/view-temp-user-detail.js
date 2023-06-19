@@ -58,10 +58,10 @@ export const ViewTemporaryUserDetail = (props) => {
         <PropertyList>
         <PropertyListItem
           align={align}
-          label="Name"
+          label="Company Contact Person"
         >
           <Typography variant="subtitle2">
-            {state?.userName}
+            {state?.contactpersonname}
           </Typography>
         </PropertyListItem>
         <Divider />

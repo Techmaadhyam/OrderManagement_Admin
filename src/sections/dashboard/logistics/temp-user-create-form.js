@@ -68,6 +68,7 @@ const [zipcode, setZipcode] = useState("");
 const [currentDate, setCurrentDate] = useState('');
 const [gstn, setGstn]= useState('')
 const [touched, setTouched] = useState(false);
+const [pan, setPan]= useState('')
 
 
 
@@ -107,6 +108,9 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       case 'gstn':
         setGstn(value);
         break;
+      case 'pan':
+          setPan(value);
+            break;
     case 'address':
       setAddress(value);
         break;
@@ -287,15 +291,16 @@ event.preventDefault();
         },
         body: JSON.stringify({
 
-          firstName : firstName,
-          lastName: lastName,
-          userName: userName,
+      
+          userName: email,
+          contactpersonname: userName,
           companyName: company,
           emailId: email,
           mobile: phone,
           address: address,
           type: type,
           gstNumber: gstn,
+          pandcard: pan,
           pincode: zipcode,
           city: currentCity,
           state: currentState,
@@ -447,6 +452,9 @@ event.preventDefault();
                 label="PAN number"
                 name="pan"
                 required
+                value={pan}
+                onChange={handleInputChange}
+
               >
               
               </TextField>

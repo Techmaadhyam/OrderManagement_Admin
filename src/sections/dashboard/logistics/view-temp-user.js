@@ -129,9 +129,9 @@ const handleSaveRecord = async (editedRecord) => {
   console.log(JSON.stringify({
 
     id: editedRecord.id,
-    firstName : editedRecord.firstName,
-    lastName: editedRecord.lastName,
-    userName: editedRecord.userName,
+
+    userName: editedRecord.emailId,
+    contactpersonname: editedRecord?.contactpersonname,
     companyName: editedRecord.companyName,
     emailId: editedRecord.emailId,
     mobile: editedRecord.mobile,
@@ -141,6 +141,7 @@ const handleSaveRecord = async (editedRecord) => {
     city: editedRecord.city,
     gstNumber: editedRecord.gstNumber,
     state: editedRecord.state,
+    pancard: editedRecord?.pancard,
     country: editedRecord.country,
     createdBy: editedRecord.createdBy,
     lastModifiedDate: new Date(currentDate)
@@ -159,7 +160,7 @@ const handleSaveRecord = async (editedRecord) => {
           id: editedRecord.id,
           firstName : editedRecord.firstName,
           lastName: editedRecord.lastName,
-          userName: editedRecord.userName,
+          userName: editedRecord.emailId,
           companyName: editedRecord.companyName,
           emailId: editedRecord.emailId,
           gstNumber: editedRecord.gstNumber,
@@ -170,6 +171,7 @@ const handleSaveRecord = async (editedRecord) => {
           city: editedRecord.city,
           state: editedRecord.state,
           country: editedRecord.country,
+          pancard: editedRecord?.pancard,
           createdByUser: {id: editedRecord.createdByUser.id},
           lastModifiedDate: new Date(),
           lastModifiedByUser: {id: userId},
