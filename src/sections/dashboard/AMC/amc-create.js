@@ -393,6 +393,7 @@ const handleClick = async (event) => {
                   adminEmail: adminEmail,   
                   status: status,
                   type: type,
+                  category: 'amc',
                   startdate: deliveryIST,
                   enddate: deliveryIST2,
                   createdByUser: {id: userId},
@@ -443,6 +444,7 @@ const handleClick = async (event) => {
                   adminEmail: adminEmail,   
                   status: status,
                   type: type,
+                  category: 'amc',
                   startdate: deliveryIST,
                   enddate: deliveryIST2,
                   createdByUser: {id: userId},
@@ -467,7 +469,7 @@ const handleClick = async (event) => {
            response.json().then(data => {
     
       
-          navigate('/dashboard/services/amcrDetail', { state: data });
+          navigate('/dashboard/services/amcDetail', { state: data });
           console.log(data)
           });
           } 

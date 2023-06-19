@@ -90,7 +90,9 @@ import {
       return formattedItem;
     });
   
-    const dataWithKeys = formattedArray?.map((item) => ({ ...item, key: item.id }));
+    const dataWithKeys = formattedArray
+    ?.filter(item => item.category === "amc")
+    .map(item => ({ ...item, key: item.id }));
   
   
     //toast notification from toastify library
