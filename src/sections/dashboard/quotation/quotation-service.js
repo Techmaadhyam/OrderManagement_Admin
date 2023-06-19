@@ -119,7 +119,8 @@ export const QuotationServiceCreateForm = (props) => {
 //form state handeling
 const [userName, setUserName] = useState('');
 const [type, setType] = useState("");
-const [deliveryDate, setDeliveryDate] = useState('');
+const [assignmentStart, setAssignmentStart] = useState('');
+const [assignmentEnd, setAssignmentEnd]= useState('')
 const [status, setStatus] = useState("");
 const [contactName,setContactName] = useState('')
 const [adminName,setAdminName] = useState('')
@@ -166,7 +167,16 @@ const [productName, setProductName] = useState('');
     const formattedDate = `${year}/${month}/${day}`;
     setCurrentDate(formattedDate);
   }, []);
-  console.log(workstation)
+
+//assignment start and end
+const handleDateStart = (date) => {
+  setAssignmentStart(date);
+
+};
+const handleDateEnd = (date) => {
+  setAssignmentEnd(date)
+};
+
  const handleInputChange = (event) => {
   const { name, value } = event.target;
 
@@ -214,9 +224,6 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const hasError = touched && !emailRegex.test(adminEmail);
 const hasError2 = touched && !emailRegex.test(inchargeEmail);
 
-const handleDateChange = (date) => {
-  setDeliveryDate(date);
-};
    //get temp user
    useEffect(() => {
     axios.get(apiUrl +`getAllTempUsers/${userId}`)
@@ -238,17 +245,14 @@ const handleDateChange = (date) => {
       });
   }, []);
 
-  const deliveryDateAntd = deliveryDate;
-  const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
-
-
-  const deliveryIST = deliveryDateJS;
-
-
-
-  //////////////
-  //add product//
-  /////////////
+  //convert assignment start date to iso string
+const deliveryDateAntd = assignmentStart;
+const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
+const deliveryIST = deliveryDateJS;
+//convert assignment  end date to iso string
+const deliveryDateAntd2 = assignmentEnd;
+const deliveryDateJS2 = deliveryDateAntd2 ? deliveryDateAntd2.toDate() : null;
+const deliveryIST2 = deliveryDateJS2
 
   const handleRemoveRow = (idx) => () => {
     const updatedRows = rows.filter((_, index) => index !== idx);
@@ -394,7 +398,8 @@ const handleDateChange = (date) => {
                   adminEmail: adminEmail,   
                   status: status,
                   type: type,
-                  deliveryDate: deliveryIST,
+                  startdate: deliveryIST,
+                  enddate: deliveryIST2,
                   createdBy: userId,
                   createdDate: new Date(),
                   lastModifiedDate: new Date(),
@@ -468,18 +473,23 @@ const handleDateChange = (date) => {
               xs={12}
               md={4}
             >
-                <DatePicker placeholder="Delivery Date"
-                onChange={handleDateChange}
+              <DatePicker placeholder="Assignment Start Date"
+                onChange={handleDateStart}
                 className="css-dev-only-do-not-override-htwhyh"
                 style={{ height: '58px', width: '250px' , color: 'red'}}
-
-height='50px'/>
+                height='50px'/>
             </Grid>
             <Grid
               xs={12}
               md={4}
             >
+              <DatePicker placeholder="Assignment End Date"
+                onChange={handleDateEnd}
+                className="css-dev-only-do-not-override-htwhyh"
+                style={{ height: '58px', width: '250px' , color: 'red'}}
+                height='50px'/>
             </Grid>
+        
             <Grid
               xs={12}
               md={4}

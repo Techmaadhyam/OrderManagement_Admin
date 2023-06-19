@@ -132,7 +132,8 @@ console.log(state)
 
 const [type, setType] = useState(state?.type||"");
 
-const [deliveryDate, setDeliveryDate] = useState(dayjs(state?.originalDeliveryDate|| ''));
+const [deliveryDate, setDeliveryDate] = useState(dayjs(state?.startdate|| ''));
+const [assignmentEnd, setAssignmentEnd]= useState(dayjs(state?.enddate|| ''))
 const [status, setStatus] = useState(state?.status || "");
 const [contactName,setContactName] = useState(state?.contactPersonName ||'')
 const [adminName,setAdminName] = useState(state?.adminPersonName ||'')
@@ -273,14 +274,22 @@ const hasError2 = touched && !emailRegex.test(inchargeEmail);
  
   const deliveryDateAntd = deliveryDate;
   const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
-
-
   const deliveryIST = deliveryDateJS;
 
+ 
+  const deliveryDateAntd2 = assignmentEnd;
+  const deliveryDateJS2 = deliveryDateAntd2 ? deliveryDateAntd2.toDate() : null;
+  const deliveryIST2 = deliveryDateJS2;
 
-  const handleDateChange = (date) => {
-    setDeliveryDate(date);
-  };
+
+ //assignment start and end
+ const handleDateChange = (date) => {
+  setDeliveryDate(date);
+};
+
+const handleDateEnd = (date) => {
+  setAssignmentEnd(date)
+};
 
   //////////////
   //add product//
@@ -481,7 +490,8 @@ console.log(idx, row)
                   status: status,
                   category: state?.category ,
                   type: type,
-                  deliveryDate: deliveryIST,
+                  startdate: deliveryIST,
+                  enddate: deliveryIST2,
                   lastModifiedDate: new Date(),
                   lastModifiedByUser: {id: userId},
                   comments : comment,
@@ -550,22 +560,25 @@ console.log(idx, row)
               xs={12}
               md={4}
             >
-                <DatePicker placeholder="Delivery Date"
+              <DatePicker placeholder="Assignment Start Date"
                 onChange={handleDateChange}
                 defaultValue={deliveryDate} 
-                format= "YYYY/MM/DD"
+                format='YYYY/MM/DD'
                 className="css-dev-only-do-not-override-htwhyh"
                 style={{ height: '58px', width: '250px' , color: 'red'}}
-                
-             
-
-height='50px'/>
-
+                height='50px'/>
             </Grid>
             <Grid
               xs={12}
               md={4}
             >
+              <DatePicker placeholder="Assignment End Date"
+                onChange={handleDateEnd}
+                defaultValue={assignmentEnd}
+                format='YYYY/MM/DD'
+                className="css-dev-only-do-not-override-htwhyh"
+                style={{ height: '58px', width: '250px' , color: 'red'}}
+                height='50px'/>
             </Grid>
             <Grid
               xs={12}
