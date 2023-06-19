@@ -136,18 +136,6 @@ console.log(state)
         )}
         <PropertyListItem
           align={align}
-          label="Assignment Start Date"
-          value={startdate}
-        />
-        <Divider />
-        <PropertyListItem
-          align={align}
-          label="Assignment End Date"
-          value={enddate}
-        />
-        <Divider />
-        <PropertyListItem
-          align={align}
           label="Incharge Name"
           value={state?.contactPersonName|| state?.workorder?.contactPersonName}
         />

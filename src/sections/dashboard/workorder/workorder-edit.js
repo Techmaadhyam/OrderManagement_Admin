@@ -133,9 +133,6 @@ console.log(state)
 const [type, setType] = useState(state?.type||"");
 
 
-const [deliveryDate, setDeliveryDate] = useState(dayjs(state?.originalstartdate|| ''));
-const [assignmentEnd, setAssignmentEnd]= useState(dayjs(state?.originalenddate|| ''))
-
 const [status, setStatus] = useState(state?.status || "");
 const [contactName,setContactName] = useState(state?.contactPersonName ||'')
 const [adminName,setAdminName] = useState(state?.adminPersonName ||'')
@@ -175,8 +172,7 @@ const [productName, setProductName] = useState('');
   const [totalAmount, setTotalAmount] = useState(0);
 
   const [rowData, setRowData] =useState()
-  const [dDate, setDDate] =useState(state?.startdate)
-  const [dDate2, setDDate2] =useState(state?.enddate)
+
 
   const [Id, setId] = useState()
 
@@ -282,24 +278,9 @@ const [productName, setProductName] = useState('');
   }, [state?.tempUserId, state?.userId]);
  
 
-  const deliveryDateAntd = deliveryDate;
-  const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
-  const deliveryIST = deliveryDateJS;
-
- 
-  const deliveryDateAntd2 = assignmentEnd;
-  const deliveryDateJS2 = deliveryDateAntd2 ? deliveryDateAntd2.toDate() : null;
-  const deliveryIST2 = deliveryDateJS2;
-
   const filteredData = technicianData?.filter(item => item.type === 'Technician')
 
-  const handleDateChange = (date) => {
-    setDeliveryDate(date);
-  };
-
-  const handleDateEnd = (date) => {
-    setAssignmentEnd(date)
-  };
+ 
 
   //////////////
   //add product//
@@ -445,7 +426,7 @@ console.log(idx, row)
 
 
   
-  console.log(deliveryIST, deliveryIST2)
+
   const updatedRows = rowData?.map(({ productName, ...rest }) => rest);
   const deleteRows= deletedRows?.map(({ productName, ...rest }) => rest);
 
@@ -478,12 +459,11 @@ console.log(idx, row)
                 adminEmail: adminEmail,   
                 status: status,
                 type: type,
-                startdate: deliveryIST,
-                enddate: deliveryIST2,
                 createdByUser: {id: userId},
                 createdDate: new Date(),
                 lastModifiedDate: new Date(),
                 comments : comment,
+                category: 'workorder',
                 lastModifiedByUser: {id: userId},
                 termsAndCondition: terms,
                 //totalAmount: finalAmount,
@@ -528,8 +508,7 @@ console.log(idx, row)
                 adminEmail: adminEmail,   
                 status: status,
                 type: type,
-                startdate: deliveryIST,
-                enddate: deliveryIST2,
+                category: 'workorder',
                 createdByUser: {id: userId},
                 createdDate: new Date(),
                 lastModifiedDate: new Date(),
@@ -604,26 +583,14 @@ console.log(idx, row)
               xs={12}
               md={4}
             >
-                <DatePicker placeholder="Delivery Date"
-                onChange={handleDateChange}
-                defaultValue={deliveryDate} 
-                format= "YYYY/MM/DD"
-                className="css-dev-only-do-not-override-htwhyh"
-                style={{ height: '58px', width: '250px' , color: 'red'}}
-                height='50px'/>
+               
 
             </Grid>
             <Grid
               xs={12}
               md={4}
             >
-                <DatePicker placeholder="Assignment End Date"
-                onChange={handleDateEnd}
-                defaultValue={assignmentEnd}
-                format= "YYYY/MM/DD"
-                className="css-dev-only-do-not-override-htwhyh"
-                style={{ height: '58px', width: '250px' , color: 'red'}}
-                height='50px'/>
+                
             </Grid>
             <Grid
               xs={12}

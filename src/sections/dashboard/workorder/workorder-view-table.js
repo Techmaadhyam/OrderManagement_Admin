@@ -78,11 +78,9 @@ import {
       }
     
       if (formattedItem.startdate) {
-        formattedItem.originalstartdate =formattedItem.startdate
         formattedItem.startdate = formatDate(formattedItem.startdate);
       }
       if (formattedItem.enddate) {
-        formattedItem.originalenddate =formattedItem.enddate
         formattedItem.enddate = formatDate(formattedItem.enddate);
       }
     
@@ -90,7 +88,9 @@ import {
       return formattedItem;
     });
   
-    const dataWithKeys = formattedArray?.map((item) => ({ ...item, key: item.id }));
+    const dataWithKeys = formattedArray
+    ?.filter(item => item.category === "workorder")
+    .map(item => ({ ...item, key: item.id }));
   
   
     //toast notification from toastify library
@@ -212,16 +212,6 @@ import {
         title: 'Order Date',
         key: 'createdDate',
         dataIndex: 'createdDate',
-      },
-      {
-        title: 'Assignment Start Date',
-        key: 'startdate',
-        dataIndex: 'startdate',
-      },
-      {
-        title: 'Assignment End Date',
-        key: 'enddate',
-        dataIndex: 'enddate',
       },
       {
         title: 'Status',

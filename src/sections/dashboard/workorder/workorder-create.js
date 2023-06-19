@@ -122,8 +122,6 @@ const navigate = useNavigate();
 //form state handeling
 const [userName, setUserName] = useState('');
 const [type, setType] = useState("");
-const [assignmentStart, setAssignmentStart] = useState('');
-const [assignmentEnd, setAssignmentEnd]= useState('')
 const [status, setStatus] = useState("");
 const [contactName,setContactName] = useState('')
 const [adminName,setAdminName] = useState('')
@@ -206,14 +204,6 @@ const hasError = touched && !emailRegex.test(adminEmail);
 const hasError2 = touched && !emailRegex.test(inchargeEmail);
 
 
-//assignment start and end
-const handleDateStart = (date) => {
-  setAssignmentStart(date);
-
-};
-const handleDateEnd = (date) => {
-  setAssignmentEnd(date)
-};
 
 //get temp user
 useEffect(() => {
@@ -238,14 +228,7 @@ useEffect(() => {
       });
   }, []);
 
-//convert assignment start date to iso string
-const deliveryDateAntd = assignmentStart;
-const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
-const deliveryIST = deliveryDateJS;
-//convert assignment  end date to iso string
-const deliveryDateAntd2 = assignmentEnd;
-const deliveryDateJS2 = deliveryDateAntd2 ? deliveryDateAntd2.toDate() : null;
-const deliveryIST2 = deliveryDateJS2
+
 
 
 const filteredData = technicianData?.filter(item => item.type === 'Technician')
@@ -392,8 +375,7 @@ const handleClick = async (event) => {
                   adminEmail: adminEmail,   
                   status: status,
                   type: type,
-                  startdate: deliveryIST,
-                  enddate: deliveryIST2,
+                  category: 'workorder',
                   createdByUser: {id: userId},
                   createdDate: new Date(),
                   lastModifiedDate: new Date(),
@@ -442,8 +424,8 @@ const handleClick = async (event) => {
                   adminEmail: adminEmail,   
                   status: status,
                   type: type,
-                  startdate: deliveryIST,
-                  enddate: deliveryIST2,
+                  category: 'workorder',
+         
                   createdByUser: {id: userId},
                   createdDate: new Date(),
                   lastModifiedDate: new Date(),
@@ -519,21 +501,13 @@ const handleClick = async (event) => {
               xs={12}
               md={4}
             >
-              <DatePicker placeholder="Assignment Start Date"
-                onChange={handleDateStart}
-                className="css-dev-only-do-not-override-htwhyh"
-                style={{ height: '58px', width: '250px' , color: 'red'}}
-                height='50px'/>
+            
             </Grid>
             <Grid
               xs={12}
               md={4}
             >
-              <DatePicker placeholder="Assignment End Date"
-                onChange={handleDateEnd}
-                className="css-dev-only-do-not-override-htwhyh"
-                style={{ height: '58px', width: '250px' , color: 'red'}}
-                height='50px'/>
+           
             </Grid>
             <Grid
               xs={12}
