@@ -21,7 +21,7 @@ export const TotalSO = (props) => {
         }}
       >
         <div>
-        <SvgIcon fontSize="large">
+        <SvgIcon fontSize="large" color="primary">
         <InventoryTwoToneIcon />
               </SvgIcon>
         </div>

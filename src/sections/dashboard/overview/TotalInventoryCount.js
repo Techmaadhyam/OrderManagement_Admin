@@ -21,7 +21,7 @@ export const TotalInventoryCount = (props) => {
         }}
       >
         <div>
-        <SvgIcon fontSize="large">
+        <SvgIcon fontSize="large" color="primary">
                 <ShoppingBag03Icon />
         </SvgIcon>
         </div>

@@ -21,7 +21,7 @@ export const TotalWareHouseCount = (props) => {
         }}
       >
         <div>
-        <SvgIcon fontSize="large">
+        <SvgIcon fontSize="large" color="primary">
                 <ReceiptCheckIcon />
               </SvgIcon>
         </div>

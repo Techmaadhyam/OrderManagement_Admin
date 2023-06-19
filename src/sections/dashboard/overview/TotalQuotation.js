@@ -21,7 +21,7 @@ export const TotalQuotation = (props) => {
         }}
       >
         <div>
-        <SvgIcon fontSize="large">
+        <SvgIcon fontSize="large" color="primary">
         <LayoutAlt02Icon />
               </SvgIcon>
         </div>

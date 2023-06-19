@@ -21,7 +21,6 @@ import { TotalPO } from 'src/sections/dashboard/overview/TotalPO';
 import { TotalSO } from 'src/sections/dashboard/overview/TotalSO';
 import { TotalQuotation } from 'src/sections/dashboard/overview/TotalQuotation';
 import IconWithPopup from '../../sections/dashboard/user/user-icon';
-import ShoppingCart01Icon from 'src/icons/untitled-ui/duocolor/shopping-cart-01';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { apiUrl } from 'src/config';
@@ -42,8 +41,7 @@ const Page = () => {
   const [quotation, setQuotation] = useState(0);
   const [tasks, setTasks] = useState();
   const [tasks2, setTasks2] = useState();
-  const [tempData, setTempData]=useState()
-  const [isFirstEffectComplete, setIsFirstEffectComplete] = useState(false);
+
 
 
 
@@ -79,31 +77,11 @@ const Page = () => {
     fetchData();
   }, []);
   
-  useEffect(() => {
-    const request1 = axios.get(apiUrl + `getAllTempUsers/${userId}`);
-    const request2 = axios.get(apiUrl + `getAllUsersBasedOnType/${userId}`);
-  
-    Promise.all([request1, request2])
-      .then(([response1, response2]) => {
-        const tempUsersData = response1.data;
-        const usersData = response2.data;
-        const combinedData = [...tempUsersData, ...usersData];
-  
-        setTempData(combinedData);
-        setIsFirstEffectComplete(true);
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }, []);
   
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (!isFirstEffectComplete) {
-          return; 
-        }
-  
+      
         const response = await axios.get(apiUrl + `getAllTodaysTask/${userId}`);
         console.log(response.data);
   
@@ -115,31 +93,7 @@ const Page = () => {
         let combinedList2 =[
           ...response.data.woList.map(obj => ({ ...obj, category: "woList" }))
         ];
-        console.log(combinedList2)
-  
-        if (tempData) {
-          combinedList?.forEach(obj => {
-            const match = tempData.find(data => (
-              (data.tempId !== null && data.tempId !== 0 && data.tempId === obj.tempId) ||
-              (data.userId !== null && data.userId !== 0 && data.userId === obj.userId)
-            ));
-            if (match) {
-              obj.companyName = match.companyName;
-            }
-          });
-        }
-        if (tempData) {
-          combinedList2?.forEach(obj => {
-            const match = tempData.find(data => (
-              (data.tempId !== null && data.tempId !== 0 && data.tempId === obj.tempId) ||
-              (data.userId !== null && data.userId !== 0 && data.userId === obj.userId)
-            ));
-            if (match) {
-              obj.companyName = match.companyName;
-            }
-          });
-        }
-
+ 
   
         setTasks(combinedList);
         setTasks2(combinedList2)
@@ -149,7 +103,7 @@ const Page = () => {
     };
   
     fetchData();
-  }, [isFirstEffectComplete, tempData]);
+  }, []);
 
 
 

@@ -22,7 +22,7 @@ export const TotalPO = (props) => {
         }}
       >
         <div>
-        <SvgIcon fontSize="large">
+        <SvgIcon fontSize="large" color="primary">
         <ShoppingCart01Icon />
               </SvgIcon>
         </div>

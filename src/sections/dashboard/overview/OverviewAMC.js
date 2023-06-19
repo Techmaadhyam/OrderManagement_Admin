@@ -4,6 +4,7 @@ import ArrowRightIcon from '@untitled-ui/icons-react/build/esm/ArrowRight';
 import RefreshCcw01Icon from '@untitled-ui/icons-react/build/esm/RefreshCcw01';
 import ShoppingCart01Icon from 'src/icons/untitled-ui/duocolor/shopping-cart-01';
 import InventoryTwoToneIcon from '@mui/icons-material/InventoryTwoTone';
+import React, { useState, useEffect } from 'react';
 import {
   Avatar,
   Badge,
@@ -18,27 +19,82 @@ import {
   ListItemAvatar,
   ListItemText,
   SvgIcon,
-  Typography
+  Typography,
+  InputBase,
+  Icon
 } from '@mui/material';
 import { customLocale } from 'src/utils/date-locale';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import SearchIcon from '@mui/icons-material/Search';
 
 export const OverviewAMC = (props) => {
   const { messages } = props;
 
+  function formatDate(dateString) {
+    const parsedDate = new Date(dateString);
+    const year = parsedDate.getFullYear();
+    const month = String(parsedDate.getMonth() + 1).padStart(2, '0');
+    const day = String(parsedDate.getDate()).padStart(2, '0');
+    return `${year}/${month}/${day}`;
+  }
+
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchText, setSearchText] = useState('');
+
+
+    const filteredMessages = messages?.filter(message =>
+      message?.noncompany.companyName.toLowerCase().includes(searchText.toLowerCase())
+    );
+
+    
+  //company search
+const handleCompanyClick = () => {
+  setIsSearching(true);
+};
+
+const handleCompanyInputChange = event => {
+  setSearchText(event.target.value);
+};
+
+const handleCompanyCancel = () => {
+  setIsSearching(false);
+  setSearchText('');
+};
+
   return (
     <Card>
     <CardHeader
-      title="AMC List"
-      action={(
-        <IconButton color="inherit">
-          <SvgIcon fontSize="small">
-            <RefreshCcw01Icon />
-          </SvgIcon>
-        </IconButton>
-      )}
+    title={
+      <>
+          {!isSearching && (
+            <>
+              AMC List
+              <IconButton onClick={handleCompanyClick}>
+                <SearchIcon />
+              </IconButton>
+            </>
+          )}
+          {isSearching && (
+            <>
+              <InputBase
+                value={searchText}
+                onChange={handleCompanyInputChange}
+                placeholder="Search company..."
+              />
+              <IconButton onClick={handleCompanyCancel}>
+                <Icon>
+                  <HighlightOffIcon />
+                </Icon>
+              </IconButton>
+            </>
+          )}
+        </>
+      }
+     
     />
-    <List disablePadding>
-    {messages?.map((message) => {
+        <List disablePadding>
+
+    {filteredMessages?.map((message) => {
 
         return (
           <ListItem
@@ -74,7 +130,7 @@ export const OverviewAMC = (props) => {
                   }}
                   variant="subtitle2"
                 >
-                  {message?.companyName}
+                  {message?.noncompany.companyName}
                 </Typography>
               )}
               secondary={(
@@ -97,7 +153,7 @@ export const OverviewAMC = (props) => {
               sx={{ whiteSpace: 'nowrap' }}
               variant="caption"
             >
-     
+            {formatDate(message.enddate)}
             </Typography>
           </ListItem>
         );

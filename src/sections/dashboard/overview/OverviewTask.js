@@ -4,6 +4,7 @@ import ArrowRightIcon from '@untitled-ui/icons-react/build/esm/ArrowRight';
 import RefreshCcw01Icon from '@untitled-ui/icons-react/build/esm/RefreshCcw01';
 import ShoppingCart01Icon from 'src/icons/untitled-ui/duocolor/shopping-cart-01';
 import InventoryTwoToneIcon from '@mui/icons-material/InventoryTwoTone';
+import SearchIcon from '@mui/icons-material/Search';
 import {
   Avatar,
   Badge,
@@ -19,34 +20,126 @@ import {
   ListItemText,
   SvgIcon,
   Typography,
+  TextField,
+  InputBase,
+  Icon,
+  MenuItem
 } from '@mui/material';
 import { customLocale } from 'src/utils/date-locale';
 import React, { useState, useEffect } from 'react';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 
+const customerType = [
+  {
+    label: 'Draft',
+    value: 'Draft'
+  },
+  {
+    label: 'Waiting for Approval',
+    value: 'Waiting for Approval'
+  },
+  {
+    label: 'Cancelled',
+    value: 'Cancelled'
+  },
+  {
+    label: 'Approved',
+    value: 'Approved'
+  },
+  {
+    label: 'Delivered',
+    value: 'Delivered'
+  },
+];
 
 export const OverviewTask = (props) => {
 
- 
+
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchText, setSearchText] = useState('');
+  const [type, setType] = useState("");
 
   const { messages } = props;
+  const filteredMessages = messages?.filter(message =>
+      message?.tempUser.companyName.toLowerCase().includes(searchText.toLowerCase())
+  );
 
-  
+  const filteredType = type ? filteredMessages?.filter(message => message?.status === type) : filteredMessages;
 
-  return (
+//company search
+const handleCompanyClick = () => {
+  setIsSearching(true);
+};
+
+const handleCompanyInputChange = event => {
+  setSearchText(event.target.value);
+};
+
+const handleCompanyCancel = () => {
+  setIsSearching(false);
+  setSearchText('');
+};
+
+const handleInputChange = (event) => {
+  setType(event.target.value);
+};
+
+return (
     <Card>
       <CardHeader
-        title="Today's Task"
-        action={(
-          <IconButton color="inherit">
-            <SvgIcon fontSize="small">
-              <RefreshCcw01Icon />
-            </SvgIcon>
-          </IconButton>
+  title={
+    <>
+        {!isSearching && (
+          <>
+            Today's Task
+            <IconButton onClick={handleCompanyClick}>
+              <SearchIcon />
+            </IconButton>
+          </>
         )}
-      />
+        {isSearching && (
+          <>
+            <InputBase
+              value={searchText}
+              onChange={handleCompanyInputChange}
+              placeholder="Search company..."
+            />
+            <IconButton onClick={handleCompanyCancel}>
+              <Icon>
+                <HighlightOffIcon />
+              </Icon>
+            </IconButton>
+          </>
+        )}
+      </>
+    }
+    
+      action={(
+        <TextField
+        fullWidth
+        label="Type"
+        name="type"
+        value={type}
+        select
+        onChange={handleInputChange}
+        sx={{ width: 200 }}
+
+      >
+        {customerType.map((option) => (
+          <MenuItem
+            key={option.value}
+            value={option.value}
+          >
+            {option.label}
+          </MenuItem>
+        ))} 
+      </TextField>
+      )}
+    
+  />
       <List disablePadding>
-      {messages?.map((message) => {
+      {filteredType?.map((message) => {
 
           return (
             <ListItem
@@ -82,7 +175,7 @@ export const OverviewTask = (props) => {
                     }}
                     variant="subtitle2"
                   >
-                    {message?.companyName}
+                    {message?.tempUser.companyName}
                   </Typography>
                 )}
                 secondary={(
@@ -105,7 +198,7 @@ export const OverviewTask = (props) => {
                 sx={{ whiteSpace: 'nowrap' }}
                 variant="caption"
               >
-       
+              {message?.status}
               </Typography>
             </ListItem>
           );

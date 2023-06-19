@@ -21,7 +21,7 @@ export const TotalCost = (props) => {
         }}
       >
         <div>
-        <SvgIcon fontSize="large">
+        <SvgIcon fontSize="large" color="primary">
                 <PaymentsTwoToneIcon />
               </SvgIcon>
         </div>
