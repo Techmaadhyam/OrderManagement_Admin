@@ -31,6 +31,7 @@ import './customTable.css'
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
+import { apiUrl } from 'src/config';
 
 
 
@@ -216,7 +217,7 @@ const [productName, setProductName] = useState('');
   const [deletedRows, setDeletedRows] = useState([]);
 
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllPurchaseOrderDetails/${state?.id || state?.purchaseOrderRec?.id}`)
+    axios.get(apiUrl +`getAllPurchaseOrderDetails/${state?.id || state?.purchaseOrderRec?.id}`)
       .then(response => {
        setRowData(response.data)
        setTotalAmount(state?.totalAmount)
@@ -418,8 +419,8 @@ const [productName, setProductName] = useState('');
 
    //get temp user
    useEffect(() => {
-    const request1 = axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`);
-    const request2 = axios.get(`http://13.115.56.48:8080/techmadhyam/getAllUsersBasedOnType/${userId}`);
+    const request1 = axios.get(apiUrl +`getAllTempUsers/${userId}`);
+    const request2 = axios.get(apiUrl +`getAllUsersBasedOnType/${userId}`);
   
     Promise.all([request1, request2])
       .then(([response1, response2]) => {
@@ -443,7 +444,7 @@ const [productName, setProductName] = useState('');
   const deliveryIST = deliveryDateJS;
 
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllQuotations/${userId}`)
+    axios.get(apiUrl +`getAllQuotations/${userId}`)
       .then(response => {
         const filteredQuotations = response.data.filter(item => item.status === "Delivered");
         setAllQuotation(filteredQuotations);
@@ -601,7 +602,7 @@ const [productName, setProductName] = useState('');
 
   //
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllItem/${userId}`)
+    axios.get(apiUrl +`getAllItem/${userId}`)
       .then(response => {
         setUserData2(response.data);
       })
@@ -650,7 +651,7 @@ const [productName, setProductName] = useState('');
     
       if (contactName && address && userId && phone && status && address && comment && terms && updatedRows) {
         try {
-          const response = await fetch('http://13.115.56.48:8080/techmadhyam/createPurchaseOrder', {
+          const response = await fetch(apiUrl +'createPurchaseOrder', {
             method: 'POST',
             headers: {
     
@@ -712,7 +713,7 @@ const [productName, setProductName] = useState('');
                 formData.append('fileWrapper',JSON.stringify(jsonBodyData));
 
                 try {
-                  const uploadResponse = await fetch('http://13.115.56.48:8080/techmadhyam/upload', {
+                  const uploadResponse = await fetch(apiUrl +'upload', {
                     method: 'POST',
                     body: formData
                   });
@@ -760,7 +761,7 @@ const [productName, setProductName] = useState('');
                 formData.append('fileWrapper',JSON.stringify(jsonBodyData));
 
                 try {
-                  const uploadResponse = await fetch('http://13.115.56.48:8080/techmadhyam/upload', {
+                  const uploadResponse = await fetch(apiUrl +'upload', {
                     method: 'POST',
                     body: formData
                   });
@@ -807,7 +808,7 @@ const [productName, setProductName] = useState('');
                 formData.append('fileWrapper',JSON.stringify(jsonBodyData));
 
                 try {
-                  const uploadResponse = await fetch('http://13.115.56.48:8080/techmadhyam/upload', {
+                  const uploadResponse = await fetch(apiUrl +'upload', {
                     method: 'POST',
                     body: formData
                   });
@@ -893,7 +894,7 @@ const [productName, setProductName] = useState('');
     useEffect(() => {
       const getFile = async () => {
         try {
-          const fileResponse = await fetch(`http://13.115.56.48:8080/techmadhyam/getAllFiles/PurchaseOrder/${state?.id || state?.purchaseOrderRec?.id}`);
+          const fileResponse = await fetch(apiUrl +`getAllFiles/PurchaseOrder/${state?.id || state?.purchaseOrderRec?.id}`);
           if (fileResponse.ok) {
             const fileData = await fileResponse.json();
             console.log(fileData)

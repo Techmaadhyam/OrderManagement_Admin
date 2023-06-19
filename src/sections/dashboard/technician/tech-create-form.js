@@ -13,6 +13,7 @@ import { Box } from '@mui/system';
 import IconWithPopup from '../user/user-icon';
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { apiUrl } from 'src/config';
 
 
   //get userid 
@@ -264,7 +265,7 @@ event.preventDefault();
 
   if (firstName && lastName && email && phone && type && company && currentCountry && currentState && address && currentCity && zipcode && currentDate) {
     try {
-      const response = await fetch('http://13.115.56.48:8080/techmadhyam/addTempUser', {
+      const response = await fetch(apiUrl +'addTempUser', {
         method: 'POST',
         headers: {
 

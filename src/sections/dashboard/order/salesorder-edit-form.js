@@ -35,6 +35,7 @@ import { useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { apiUrl } from 'src/config';
 
 
 
@@ -212,7 +213,7 @@ const [productName, setProductName] = useState('');
       const [currentCity, setCurrentCity] =useState('')
 
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllSalesOrderDetails/${state?.id || state?.soRecord?.id}`)
+    axios.get(apiUrl +`getAllSalesOrderDetails/${state?.id || state?.soRecord?.id}`)
       .then(response => {
         const updatedData = response.data.map(obj => {
           let parsedInventoryId;
@@ -241,7 +242,7 @@ const [productName, setProductName] = useState('');
   }, [state?.id, state?.soRecord?.id, state?.totalAmount]);
 //inventory 
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getInventoryByUserId/${userId}`)
+    axios.get(apiUrl +`getInventoryByUserId/${userId}`)
       .then(response => {
         setInventoryData(response.data);
         console.log(response.data);
@@ -447,8 +448,8 @@ const [productName, setProductName] = useState('');
 
    //get temp user
    useEffect(() => {
-    const request1 = axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`);
-    const request2 = axios.get(`http://13.115.56.48:8080/techmadhyam/getAllUsersBasedOnType/${userId}`);
+    const request1 = axios.get(apiUrl +`getAllTempUsers/${userId}`);
+    const request2 = axios.get(apiUrl +`getAllUsersBasedOnType/${userId}`);
   
     Promise.all([request1, request2])
       .then(([response1, response2]) => {
@@ -478,7 +479,7 @@ console.log(deliveryDate)
 console.log(deliveryIST)
 
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllQuotations/${userId}`)
+    axios.get(apiUrl +`getAllQuotations/${userId}`)
       .then(response => {
         const filteredQuotations = response.data.filter(item => item.status === "Delivered");
         setAllQuotation(filteredQuotations);
@@ -666,7 +667,7 @@ const notify = (type, message) => {
 
   //get all parts
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllItem/${userId}`)
+    axios.get(apiUrl +`getAllItem/${userId}`)
       .then(response => {
         setUserData2(response.data);
       })
@@ -714,7 +715,7 @@ const notify = (type, message) => {
     
       if (contactName && address && userId && phone && status && address && comment && terms && updatedRows) {
         try {
-          const response = await fetch('http://13.115.56.48:8080/techmadhyam/createSalesOrder', {
+          const response = await fetch(apiUrl +'createSalesOrder', {
             method: 'POST',
             headers: {
     

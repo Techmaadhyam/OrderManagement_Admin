@@ -20,6 +20,7 @@ import { Scrollbar } from 'src/components/scrollbar';
 import { Table } from 'antd';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import { apiUrl } from 'src/config';
 
 
 
@@ -87,7 +88,7 @@ export const ViewWarehouseDetail = (props) => {
 
 
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getInventoryByWareHouseId/${state?.id}`)
+    axios.get(apiUrl +`getInventoryByWareHouseId/${state?.id}`)
       .then(response => {
        setRowData(response.data)
        console.log(response.data)

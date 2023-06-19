@@ -25,6 +25,7 @@ import IconWithPopup from '../user/user-icon';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect } from 'react';
+import { apiUrl } from 'src/config';
 
 
 
@@ -105,7 +106,7 @@ export const ViewPurchaseOrder = (props) => {
   const align = 'horizontal' 
  
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getTempUserById/${state?.tempUserId || state?.purchaseOrderRec?.tempUserId || state?.userId}`)
+    axios.get(apiUrl +`getTempUserById/${state?.tempUserId || state?.purchaseOrderRec?.tempUserId || state?.userId}`)
       .then(response => {
        setTempuser(response.data)
       })
@@ -115,7 +116,7 @@ export const ViewPurchaseOrder = (props) => {
   }, [state?.tempUserId, state?.purchaseOrderRec?.tempUserId, state?.userId]);
 
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllPurchaseOrderDetails/${state?.id || state?.purchaseOrderRec?.id}`)
+    axios.get(apiUrl +`getAllPurchaseOrderDetails/${state?.id || state?.purchaseOrderRec?.id}`)
       .then(response => {
        setRowData(response.data)
 
@@ -158,7 +159,7 @@ export const ViewPurchaseOrder = (props) => {
   useEffect(() => {
     const getFile = async () => {
       try {
-        const fileResponse = await fetch(`http://13.115.56.48:8080/techmadhyam/getAllFiles/PurchaseOrder/${state?.id || state?.purchaseOrderRec?.id}`);
+        const fileResponse = await fetch(apiUrl +`getAllFiles/PurchaseOrder/${state?.id || state?.purchaseOrderRec?.id}`);
         if (fileResponse.ok) {
           const fileData = await fileResponse.json();
           console.log(fileData)

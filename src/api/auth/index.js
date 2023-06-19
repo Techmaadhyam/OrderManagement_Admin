@@ -2,6 +2,7 @@
 import {  JWT_EXPIRES_IN, JWT_SECRET, sign } from 'src/utils/jwt';
 //import { users } from './data';
 import axios from 'axios';
+import { apiUrl } from 'src/config';
 
 const STORAGE_KEY = 'users';
 
@@ -40,7 +41,7 @@ class AuthApi {
   async signIn(request) {
     const { email, password } = request;
     await axios
-      .get(`http://13.115.56.48:8080/techmadhyam/getUserByUsername/${email}`)
+      .get(apiUrl + `getUserByUsername/${email}`)
       .then((response) => {
         console.log(response.data);
           if(response && response.data && response.data.length > 0 && password === response.data[0].password){
@@ -88,7 +89,7 @@ class AuthApi {
   async signUp(request) {
     const { email, password } = request;
     await axios
-      .get(`http://13.115.56.48:8080/techmadhyam/getUserByUsername/${email}`)
+      .get(apiUrl +`getUserByUsername/${email}`)
       .then((response) => {
         console.log(response.data);
           if(response && response.data && response.data.length > 0 && password === response.data[0].password){

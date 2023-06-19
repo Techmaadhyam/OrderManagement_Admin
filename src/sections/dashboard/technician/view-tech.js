@@ -22,6 +22,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import SearchIcon from '@mui/icons-material/Search';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import './customer.css'
+import { apiUrl } from 'src/config';
 
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, MenuItem } from '@mui/material';
 
@@ -50,7 +51,7 @@ const ViewTechnician = () => {
   
  
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`)
+    axios.get(apiUrl +`getAllTempUsers/${userId}`)
       .then(response => {
         setUserData(response.data);
         console.log(response.data);
@@ -92,7 +93,7 @@ const notify = (type, message) => {
 
 const handleRemoveRow = (id) => async () => {
   try {
-    await axios.delete(`http://13.115.56.48:8080/techmadhyam/deleteTempUserId/${id}`);
+    await axios.delete(apiUrl +`deleteTempUserId/${id}`);
     const updatedRows = userData.filter(item => item.id !== id);
     setUserData(updatedRows);
     notify(
@@ -134,7 +135,7 @@ const handleSaveRecord = async (editedRecord) => {
 
   if (currentDate) {
     try {
-      const response = await fetch('http://13.115.56.48:8080/techmadhyam/addTempUser', {
+      const response = await fetch(apiUrl +'addTempUser', {
         method: 'POST',
         headers: {
 

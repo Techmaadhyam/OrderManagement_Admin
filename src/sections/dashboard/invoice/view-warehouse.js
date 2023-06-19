@@ -19,6 +19,7 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './warehouse.css'
+import { apiUrl } from 'src/config';
 import DownloadIcon from '@mui/icons-material/Download';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from '../pdfAssets/vfs_fonts';
@@ -48,7 +49,7 @@ const ViewWarehouse = () => {
   const navigate = useNavigate();
   
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllWareHouse/${userId}`)
+    axios.get(apiUrl +`getAllWareHouse/${userId}`)
       .then(response => {
         setUserData(response.data);
         console.log(response.data);
@@ -77,7 +78,7 @@ const notify = (type, message) => {
 
 const handleRemoveRow = (id) => async () => {
   try {
-    await axios.delete(`http://13.115.56.48:8080/techmadhyam/deleteWareHouseById/${id}`);
+    await axios.delete(apiUrl +`deleteWareHouseById/${id}`);
     const updatedRows = userData.filter(item => item.id !== id);
     setUserData(updatedRows);
     notify(
@@ -115,7 +116,7 @@ const handleSaveRecord = async (editedRecord) => {
 
   if (currentDate) {
     try {
-      const response = await fetch('http://13.115.56.48:8080/techmadhyam/addWareHouse', {
+      const response = await fetch(apiUrl +'addWareHouse', {
         method: 'POST',
         headers: {
 
@@ -289,7 +290,7 @@ const handleWarehouseDownload = async (record) => {
 
 const fetchInventoryData = async (warehouseId) => {
   try {
-    const response = await axios.get(`http://13.115.56.48:8080/techmadhyam/getInventoryByWareHouseId/${warehouseId}`);
+    const response = await axios.get(apiUrl +`getInventoryByWareHouseId/${warehouseId}`);
     return response.data;
   } catch (error) {
     console.error(error);

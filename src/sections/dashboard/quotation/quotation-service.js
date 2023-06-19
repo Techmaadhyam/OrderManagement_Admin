@@ -31,7 +31,7 @@ import { Delete } from '@mui/icons-material';
 import './customTable.css'
 import { useNavigate } from 'react-router-dom';
 import 'moment-timezone';
-
+import { apiUrl } from 'src/config';
 const userId = parseInt(sessionStorage.getItem('user')|| localStorage.getItem('user'))
 
 
@@ -219,7 +219,7 @@ const handleDateChange = (date) => {
 };
    //get temp user
    useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`)
+    axios.get(apiUrl +`getAllTempUsers/${userId}`)
       .then(response => {
         setUserData(prevData => [...prevData, ...response.data]);
      
@@ -228,7 +228,7 @@ const handleDateChange = (date) => {
         console.error(error);
       });
   
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllUsersBasedOnType/${userId}`)
+    axios.get(apiUrl +`getAllUsersBasedOnType/${userId}`)
       .then(response => {
         setUserData(prevData => [...prevData, ...response.data]);
 
@@ -356,7 +356,7 @@ const handleDateChange = (date) => {
 
   //
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllItem/${userId}`)
+    axios.get(apiUrl +`getAllItem/${userId}`)
       .then(response => {
         setUserData2(response.data);
       })
@@ -376,7 +376,7 @@ const handleDateChange = (date) => {
     
       if (contactName && userId && phone && status && comment && terms && updatedRows) {
         try {
-          const response = await fetch('http://13.115.56.48:8080/techmadhyam/addQuoatation', {
+          const response = await fetch(apiUrl +'addQuoatation', {
             method: 'POST',
             headers: {
     

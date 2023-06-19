@@ -28,3 +28,5 @@ export const gtmConfig = {
 export const mapboxConfig = {
   apiKey: process.env.REACT_APP_MAPBOX_API_KEY
 };
+
+export const apiUrl = 'http://54.249.72.60:8080/techmadhyam/';

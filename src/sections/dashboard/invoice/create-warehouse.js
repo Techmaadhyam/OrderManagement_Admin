@@ -14,6 +14,7 @@ import { Box } from '@mui/system';
 import IconWithPopup from '../user/user-icon';
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { apiUrl } from 'src/config';
 
   //get userid 
   const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
@@ -238,7 +239,7 @@ const handleClick = async (event) => {
 
     if (username && currentCountry && currentState && address && description && currentCity && zipcode && currentDate) {
       try {
-        const response = await fetch('http://13.115.56.48:8080/techmadhyam/addWareHouse', {
+        const response = await fetch(apiUrl +'addWareHouse', {
           method: 'POST',
           headers: {
 

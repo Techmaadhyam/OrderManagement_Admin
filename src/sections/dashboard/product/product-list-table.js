@@ -31,6 +31,7 @@ import {
 import { Scrollbar } from 'src/components/scrollbar';
 import { SeverityPill } from 'src/components/severity-pill';
 
+
 const categoryOptions = [
   {
     label: 'Healthcare',

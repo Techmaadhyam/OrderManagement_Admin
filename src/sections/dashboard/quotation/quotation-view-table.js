@@ -27,6 +27,7 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import imgUrl from '../pdfAssets/imageDataUrl';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from '../pdfAssets/vfs_fonts';
+import { apiUrl } from 'src/config';
 
 
 
@@ -73,7 +74,7 @@ const QuotationViewTable = () => {
   
  
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllQuotations/${userId}`)
+    axios.get(apiUrl +`getAllQuotations/${userId}`)
       .then(response => {
         setUserData(response.data);
         console.log(response.data)
@@ -136,7 +137,7 @@ const handleCategoryChange = (event) => {
  //delete row
   const handleRemoveRow = (id) => async () => {
     try {
-      await axios.delete(`http://13.115.56.48:8080/techmadhyam/deleteQuotationId/${id}`);
+      await axios.delete(apiUrl +`deleteQuotationId/${id}`);
       const updatedRows = userData.filter(item => item.id !== id);
       setUserData(updatedRows);
       notify(
@@ -149,10 +150,12 @@ const handleCategoryChange = (event) => {
   };
 
   const handleNavigation = record => {
-    if (record.category === 'Sales Quotation' || record.category === 'Purchase Quotation') {
+    if (record.category === 'Sales Quotation') {
       navigate('/dashboard/quotation/edit', { state: record });
     } else if (record.category === 'Service Quotation') {
       navigate('/dashboard/quotation/editService', { state: record });
+    } else if(record.category === 'Sales Quotation') {
+      navigate('/dashboard/quotation/editSales', { state: record });
     }
   };
   //company search
@@ -173,8 +176,8 @@ const handleCompanyCancel = () => {
 
   //get company name
 useEffect(() => {
-  const request1 = axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`);
-  const request2 = axios.get(`http://13.115.56.48:8080/techmadhyam/getAllUsersBasedOnType/${userId}`);
+  const request1 = axios.get(apiUrl +`getAllTempUsers/${userId}`);
+  const request2 = axios.get(apiUrl +`getAllUsersBasedOnType/${userId}`);
 
   Promise.all([request1, request2])
     .then(([response1, response2]) => {
@@ -235,8 +238,8 @@ const numberToWords = require('number-to-words');
 const handleQuotation = async (record) => {
   console.log(record);
   try {
-    const response = await axios.get(`http://13.115.56.48:8080/techmadhyam/getAllQuotationDetails/${record.id}`);
-    const tempResponse = await axios.get(`http://13.115.56.48:8080/techmadhyam/getTempUserById/${record.tempUserId}`);
+    const response = await axios.get(apiUrl +`getAllQuotationDetails/${record.id}`);
+    const tempResponse = await axios.get(apiUrl +`getTempUserById/${record.tempUserId}`);
     const temp = tempResponse.data;
 
     const workbook = new ExcelJS.Workbook();
@@ -579,11 +582,11 @@ const handleQuotation = async (record) => {
 const handleQuotationPdf = async (record)=>{
   console.log(record);
   try{
-    const response = await axios.get(`http://13.115.56.48:8080/techmadhyam/getAllQuotationDetails/${record.id}`)
+    const response = await axios.get(apiUrl +`getAllQuotationDetails/${record.id}`)
       
       console.log(response.data)
 
-const tempInv = await axios.get(`http://13.115.56.48:8080/techmadhyam/getTempUserById/${record.tempUserId}`)
+const tempInv = await axios.get(apiUrl +`getTempUserById/${record.tempUserId}`)
 
 
 

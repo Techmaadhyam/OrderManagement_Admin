@@ -20,6 +20,7 @@ import { useLocation } from 'react-router-dom';
 
 
 
+
 export const ViewTemporaryUserDetail = (props) => {
 
   const location = useLocation();

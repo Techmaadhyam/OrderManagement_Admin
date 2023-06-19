@@ -23,6 +23,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import SearchIcon from '@mui/icons-material/Search';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import './inventory.css'
+import { apiUrl } from 'src/config';
 
   //get userid 
   const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
@@ -61,7 +62,7 @@ const ViewInventory = () => {
   
  
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getInventoryByUserId/${userId}`)
+    axios.get(apiUrl +`getInventoryByUserId/${userId}`)
       .then(response => {
         setUserData(response.data);
         console.log(response.data);
@@ -98,7 +99,7 @@ const notify = (type, message) => {
 
 const handleRemoveRow = (id) => async () => {
   try {
-    await axios.delete(`http://13.115.56.48:8080/techmadhyam/deleteInventoryById/${id}`);
+    await axios.delete(apiUrl +`deleteInventoryById/${id}`);
     const updatedRows = userData.filter(item => item.inventoryId  !== id);
     setUserData(updatedRows);
     notify(

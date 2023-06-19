@@ -16,7 +16,7 @@ import { useState} from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import { apiUrl } from 'src/config';
 
 
   //get userid 
@@ -59,7 +59,7 @@ export const CreateProduct = (props) => {
 
   //get category using userid
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllCategorys/${userId}`)
+    axios.get(apiUrl +`getAllCategorys/${userId}`)
       .then(response => {
    
         setData(response.data);
@@ -195,7 +195,7 @@ export const CreateProduct = (props) => {
       },
     };
    console.log(JSON.stringify(requestBody))
-    axios.post('http://13.115.56.48:8080/techmadhyam/addProduct', JSON.stringify(requestBody), config)
+    axios.post(apiUrl +'addProduct', JSON.stringify(requestBody), config)
       .then(response => {
         // Handle successful response
         console.log(response.data);

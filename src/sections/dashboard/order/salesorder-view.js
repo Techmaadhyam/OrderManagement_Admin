@@ -22,6 +22,7 @@ import IconWithPopup from '../user/user-icon';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect } from 'react';
+import { apiUrl } from 'src/config';
 
 
 
@@ -89,7 +90,7 @@ export const ViewSalesOrder = (props) => {
   const align = 'horizontal' 
 
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getTempUserById/${state?.tempUserId || state?.soRecord?.tempUserId || state?.userId}`)
+    axios.get(apiUrl +`getTempUserById/${state?.tempUserId || state?.soRecord?.tempUserId || state?.userId}`)
       .then(response => {
        setTempuser(response.data)
       })
@@ -99,7 +100,7 @@ export const ViewSalesOrder = (props) => {
   }, [state?.tempUserId, state?.soRecord?.tempUserId, state?.userId]);
 
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllSalesOrderDetails/${state?.id || state?.soRecord?.id}`)
+    axios.get(apiUrl +`getAllSalesOrderDetails/${state?.id || state?.soRecord?.id}`)
       .then(response => {
        setRowData(response.data)
        console.log(response.data)

@@ -26,6 +26,7 @@ import pdfMake from 'pdfmake/build/pdfmake';
 // import pdfFonts from 'pdfmake/build/vfs_fonts';
 import SearchIcon from '@mui/icons-material/Search';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import { apiUrl } from 'src/config';
 import imgUrl from '../pdfAssets/imageDataUrl';
 import pdfFonts from '../pdfAssets/vfs_fonts';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -50,7 +51,7 @@ const WorkOrderDownloadTable = () => {
   
  
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllWorkOrders/${userId}`)
+    axios.get(apiUrl +`getAllWorkOrders/${userId}`)
       .then(response => {
         setUserData(response.data);
         console.log(response.data)
@@ -119,7 +120,7 @@ const WorkOrderDownloadTable = () => {
  //delete row
   const handleRemoveRow = (id) => async () => {
     try {
-      await axios.delete(`http://13.115.56.48:8080/techmadhyam/deleteWorkOrderById/${id}`);
+      await axios.delete(apiUrl +`deleteWorkOrderById/${id}`);
       const updatedRows = userData.filter(item => item.id !== id);
       setUserData(updatedRows);
       notify(
@@ -184,7 +185,7 @@ console.log(filteredList);
 const handleWorkInvoice = async (record) => {
   console.log(record);
   try{
-        const response = await axios.get(`http://13.115.56.48:8080/techmadhyam/getAllWorkOrderItems/${record.id}`)
+        const response = await axios.get(apiUrl +`getAllWorkOrderItems/${record.id}`)
           setInvoiceData(response.data);
           console.log(response.data)
           const rowData = response.data.map((item,index) => {

@@ -23,6 +23,7 @@ import {
   import 'react-toastify/dist/ReactToastify.css';
   import SearchIcon from '@mui/icons-material/Search';
   import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+  import { apiUrl } from 'src/config';
   
   
   const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
@@ -40,7 +41,7 @@ import {
     
    
     useEffect(() => {
-      axios.get(`http://13.115.56.48:8080/techmadhyam/getAllWorkOrders/${userId}`)
+      axios.get(apiUrl +`getAllWorkOrders/${userId}`)
         .then(response => {
           setUserData(response.data);
           console.log(response.data)
@@ -108,7 +109,7 @@ import {
    //delete row
     const handleRemoveRow = (id) => async () => {
       try {
-        await axios.delete(`http://13.115.56.48:8080/techmadhyam/deleteWorkOrderById/${id}`);
+        await axios.delete(apiUrl +`deleteWorkOrderById/${id}`);
         const updatedRows = userData.filter(item => item.id !== id);
         setUserData(updatedRows);
         notify(

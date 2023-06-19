@@ -30,6 +30,7 @@ import { Delete } from '@mui/icons-material';
 import './customTable.css'
 import { useNavigate } from 'react-router-dom';
 import 'moment-timezone';
+import { apiUrl } from 'src/config';
 
 
 //get userId
@@ -217,7 +218,7 @@ const handleDateEnd = (date) => {
 
 //get temp user
 useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`)
+    axios.get(apiUrl + `getAllTempUsers/${userId}`)
       .then(response => {
         setUserData(prevData => [...prevData, ...response.data]);
         setTechnicianData(response.data)
@@ -228,7 +229,7 @@ useEffect(() => {
         console.error(error);
       });
   
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllUsersBasedOnType/${userId}`)
+    axios.get(apiUrl + `getAllUsersBasedOnType/${userId}`)
       .then(response => {
         setUserData(prevData => [...prevData, ...response.data]);
 
@@ -350,7 +351,7 @@ const clearFormFields = () => {
 
 //get parts
 useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllItem/${userId}`)
+    axios.get(apiUrl + `getAllItem/${userId}`)
       .then(response => {
         setUserData2(response.data);
       })
@@ -376,7 +377,7 @@ const handleClick = async (event) => {
     
       if (contactName && userId && phone && status && comment && terms && updatedRows && tempId) {
         try {
-          const response = await fetch('http://13.115.56.48:8080/techmadhyam/addWorkOrderWithItems', {
+          const response = await fetch(apiUrl + 'addWorkOrderWithItems', {
             method: 'POST',
             headers: {
     
@@ -426,7 +427,7 @@ const handleClick = async (event) => {
         }
       } else if(contactName && userId && phone && status  && updatedRows && userState){
         try {
-          const response = await fetch('http://13.115.56.48:8080/techmadhyam/addWorkOrderWithItems', {
+          const response = await fetch(apiUrl + 'addWorkOrderWithItems', {
             method: 'POST',
             headers: {
     

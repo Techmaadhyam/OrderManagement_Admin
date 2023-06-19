@@ -16,6 +16,7 @@ import IconWithPopup from '../user/user-icon';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { apiUrl } from 'src/config';
 
 const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
 
@@ -73,7 +74,7 @@ console.log(selectedName, createdDate)
 
   //get warehouse data
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllWareHouse/${userId}`)
+    axios.get(apiUrl +`getAllWareHouse/${userId}`)
       .then(response => {
 
         setWarehouse(response.data)
@@ -87,7 +88,7 @@ console.log(selectedName, createdDate)
   //get purchase order
    
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllPurchaseOrderByUser/${userId}`)
+    axios.get(apiUrl +`getAllPurchaseOrderByUser/${userId}`)
       .then(response => {
 
         setPurchaseOrder(response.data)
@@ -99,7 +100,7 @@ console.log(selectedName, createdDate)
   }, []);
 //get category
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllCategorys/${userId}`)
+    axios.get(apiUrl +`getAllCategorys/${userId}`)
       .then(response => {
         setCategory(response.data);
         console.log(response.data);
@@ -111,7 +112,7 @@ console.log(selectedName, createdDate)
 
   //get Product
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllItem/${userId}`)
+    axios.get(apiUrl +`getAllItem/${userId}`)
       .then(response => {
         setProduct(response.data);
         console.log(response.data);
@@ -132,7 +133,7 @@ console.log(selectedName, createdDate)
   }, []);
 
 useEffect(() => {
-  axios.get(`http://13.115.56.48:8080/techmadhyam/getInventoryByUserId/${userId}`)
+  axios.get(apiUrl +`getInventoryByUserId/${userId}`)
     .then(response => {
       setUserData(response.data);
       console.log(response.data);
@@ -306,7 +307,7 @@ useEffect(() => {
 
     if ( showAdditionalFields &&  warehouseId && quantity && weight && hsnCode && cost && userId) {
       try {
-        const response = await fetch('http://13.115.56.48:8080/techmadhyam/addInventory', {
+        const response = await fetch(apiUrl +'addInventory', {
           method: 'POST',
           headers: {
   
@@ -329,7 +330,7 @@ useEffect(() => {
       }
     } else if (showAdditionalFields === false){
       try {
-        const response = await fetch('http://13.115.56.48:8080/techmadhyam/addInventory', {
+        const response = await fetch(apiUrl +'addInventory', {
           method: 'POST',
           headers: {
   

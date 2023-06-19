@@ -32,6 +32,7 @@ import './customTable.css'
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import 'moment-timezone';
+import { apiUrl } from 'src/config';
 
 
 
@@ -381,7 +382,7 @@ const handleDateChange = (date) => {
 };
    //get temp user
    useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`)
+    axios.get(apiUrl +`getAllTempUsers/${userId}`)
       .then(response => {
         setUserData(prevData => [...prevData, ...response.data]);
      
@@ -390,7 +391,7 @@ const handleDateChange = (date) => {
         console.error(error);
       });
   
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllUsersBasedOnType/${userId}`)
+    axios.get(apiUrl +`getAllUsersBasedOnType/${userId}`)
       .then(response => {
         setUserData(prevData => [...prevData, ...response.data]);
 
@@ -531,7 +532,7 @@ const handleDateChange = (date) => {
 
   //
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllItem/${userId}`)
+    axios.get(apiUrl +`getAllItem/${userId}`)
       .then(response => {
         setUserData2(response.data);
       })
@@ -554,7 +555,7 @@ console.log(currentDate, deliveryIST)
     
       if (contactName && address && userId && phone && status && address  && updatedRows) {
         try {
-          const response = await fetch('http://13.115.56.48:8080/techmadhyam/addQuoatation', {
+          const response = await fetch(apiUrl +'addQuoatation', {
             method: 'POST',
             headers: {
     

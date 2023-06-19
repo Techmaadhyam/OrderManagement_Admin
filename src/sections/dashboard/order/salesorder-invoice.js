@@ -18,6 +18,7 @@ import { useEffect, useState } from 'react';
 import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SearchIcon from '@mui/icons-material/Search';
+import { apiUrl } from 'src/config';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import imgUrl from '../pdfAssets/imageDataUrl.js';
 import pdfMake from 'pdfmake/build/pdfmake';
@@ -68,7 +69,7 @@ const SalesOrderInvoice = (props) => {
 
  
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllSalesOrderDetailByUser/${userId}`)
+    axios.get(apiUrl +`getAllSalesOrderDetailByUser/${userId}`)
       .then(response => {
         setUserData(response.data);
         console.log(response.data);
@@ -149,8 +150,8 @@ const handleCompanyCancel = () => {
 };
 
 useEffect(() => {
-  const request1 = axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`);
-  const request2 = axios.get(`http://13.115.56.48:8080/techmadhyam/getAllUsersBasedOnType/${userId}`);
+  const request1 = axios.get(apiUrl +`getAllTempUsers/${userId}`);
+  const request2 = axios.get(apiUrl +`getAllUsersBasedOnType/${userId}`);
 
   Promise.all([request1, request2])
     .then(([response1, response2]) => {
@@ -197,11 +198,11 @@ const handleTypeChange = (event) => {
 const handleInvoicePdf = async (record ,heading,dateData,noData) => {
   console.log(record);
         try{
-              const response = await axios.get(`http://13.115.56.48:8080/techmadhyam/getAllSalesOrderDetails/${record.id}`)
+              const response = await axios.get(apiUrl +`getAllSalesOrderDetails/${record.id}`)
                 setInvoiceData(response.data);
                 console.log(response.data)
 
-          const tempInv = await axios.get(`http://13.115.56.48:8080/techmadhyam/getTempUserById/${record.tempUserId}`)
+          const tempInv = await axios.get(apiUrl +`getTempUserById/${record.tempUserId}`)
 
                 const rowData = response.data.map((product,index) => {
                  let invent = JSON.parse(product.inventory);
@@ -394,11 +395,11 @@ const handleInvoicePdf = async (record ,heading,dateData,noData) => {
 const handleChallanPdf = async (record) => {
   console.log(record);
         try{
-              const response = await axios.get(`http://13.115.56.48:8080/techmadhyam/getAllSalesOrderDetails/${record.id}`)
+              const response = await axios.get(apiUrl +`getAllSalesOrderDetails/${record.id}`)
                 setInvoiceData(response.data);
                 console.log(response.data)
 
-          const tempInv = await axios.get(`http://13.115.56.48:8080/techmadhyam/getTempUserById/${record.tempUserId}`)
+          const tempInv = await axios.get(apiUrl +`getTempUserById/${record.tempUserId}`)
 
 
                 const rowData = response.data.map((product,index) => {

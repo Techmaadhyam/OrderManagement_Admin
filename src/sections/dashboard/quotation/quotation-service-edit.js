@@ -34,6 +34,7 @@ import { useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
 import './customTable.css'
 import 'moment-timezone';
+import { apiUrl } from 'src/config';
 
 const userId = parseInt(sessionStorage.getItem('user')|| localStorage.getItem('user'))
 const dateFormat = 'M/D/YYYY, h:mm:ss A';
@@ -180,7 +181,7 @@ const [productName, setProductName] = useState('');
   const [deletedRows, setDeletedRows] = useState([]);
 
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllQuotationDetails/${state?.id || state?.quotation?.id}`)
+    axios.get(apiUrl +`getAllQuotationDetails/${state?.id || state?.quotation?.id}`)
       .then(response => {
        setRowData(response.data)
        setTotalAmount(state?.totalAmount)
@@ -250,8 +251,8 @@ const hasError = touched && !emailRegex.test(adminEmail);
 const hasError2 = touched && !emailRegex.test(inchargeEmail);
    //get temp user
    useEffect(() => {
-    const request1 = axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`);
-    const request2 = axios.get(`http://13.115.56.48:8080/techmadhyam/getAllUsersBasedOnType/${userId}`);
+    const request1 = axios.get(apiUrl +`getAllTempUsers/${userId}`);
+    const request2 = axios.get(apiUrl +`getAllUsersBasedOnType/${userId}`);
   
     Promise.all([request1, request2])
       .then(([response1, response2]) => {
@@ -413,7 +414,7 @@ console.log(idx, row)
 
   //
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllItem/${userId}`)
+    axios.get(apiUrl +`getAllItem/${userId}`)
       .then(response => {
         setUserData2(response.data);
       })
@@ -459,7 +460,7 @@ console.log(idx, row)
     
       if (contactName && userId && phone && status && comment && terms && updatedRows) {
         try {
-          const response = await fetch('http://13.115.56.48:8080/techmadhyam/addQuoatation', {
+          const response = await fetch(apiUrl +'addQuoatation', {
             method: 'POST',
             headers: {
     

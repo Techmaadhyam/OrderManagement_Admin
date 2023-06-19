@@ -26,6 +26,7 @@ import { useLocation } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { apiUrl } from 'src/config';
 
 
 export const ViewProductDetail = (props) => {
@@ -84,7 +85,7 @@ export const ViewProductDetail = (props) => {
     if (editedData?.category && editedData?.description) {
         try {
   
-          const response = fetch(`http://13.115.56.48:8080/techmadhyam/addCategory`, {
+          const response = fetch(apiUrl +`addCategory`, {
             method: 'POST',
             headers: {
     

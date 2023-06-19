@@ -22,6 +22,7 @@ import IconWithPopup from '../user/user-icon';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect } from 'react';
+import { apiUrl } from 'src/config';
 
 
 
@@ -113,7 +114,7 @@ console.log(state)
 
   useEffect(() => {
 
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getTempUserById/${state?.tempUserId || state?.quotation?.tempUserId}`)
+    axios.get(apiUrl +`getTempUserById/${state?.tempUserId || state?.quotation?.tempUserId}`)
       .then(response => {
        setTempuser(response.data)
       })
@@ -123,7 +124,7 @@ console.log(state)
   }, [state?.quotation?.tempUserId, state?.tempUserId]);
 
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllQuotationDetails/${state?.id || state?.quotation?.id}`)
+    axios.get(apiUrl +`getAllQuotationDetails/${state?.id || state?.quotation?.id}`)
       .then(response => {
        setRowData(response.data)
        console.log(response.data)

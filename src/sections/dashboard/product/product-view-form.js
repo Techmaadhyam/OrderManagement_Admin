@@ -20,6 +20,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import SearchIcon from '@mui/icons-material/Search';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import './product.css'
+import { apiUrl } from 'src/config';
 
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, MenuItem, InputBase } from '@mui/material';
 
@@ -63,7 +64,7 @@ const ViewProduct = () => {
   
  
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllItem/${userId}`)
+    axios.get(apiUrl +`getAllItem/${userId}`)
       .then(response => {
         setUserData(response.data);
         console.log(response.data);
@@ -102,7 +103,7 @@ const notify = (type, message) => {
 
 const handleRemoveRow = (id) => async () => {
   try {
-    await axios.delete(`http://13.115.56.48:8080/techmadhyam/deleteItemById/${id}`);
+    await axios.delete(apiUrl +`deleteItemById/${id}`);
     const updatedRows = userData.filter(item => item.id !== id);
     setUserData(updatedRows);
     notify(
@@ -143,7 +144,7 @@ const handleSaveRecord = async (editedRecord) => {
 
   if (currentDate) {
     try {
-      const response = await fetch('http://13.115.56.48:8080/techmadhyam/addProduct', {
+      const response = await fetch(apiUrl +'addProduct', {
         method: 'POST',
         headers: {
 

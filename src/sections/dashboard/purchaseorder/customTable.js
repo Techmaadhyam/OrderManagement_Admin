@@ -22,6 +22,7 @@ import { primaryColor } from 'src/primaryColor';
 import EditIcon from '@mui/icons-material/Edit';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { apiUrl } from 'src/config';
 
 
 
@@ -159,7 +160,7 @@ const CustomTable = () => {
 
   //
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllItem/${userId}`)
+    axios.get(apiUrl +`getAllItem/${userId}`)
       .then(response => {
         setUserData(response.data);
         console.log(response.data);

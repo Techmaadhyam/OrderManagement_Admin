@@ -23,6 +23,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SearchIcon from '@mui/icons-material/Search';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import { apiUrl } from 'src/config';
 
 
 const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
@@ -54,7 +55,7 @@ const SalesOrderViewList = () => {
   
  
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllSalesOrderDetailByUser/${userId}`)
+    axios.get(apiUrl +`getAllSalesOrderDetailByUser/${userId}`)
       .then(response => {
         setUserData(response.data);
         console.log(response.data)
@@ -111,7 +112,7 @@ const notify = (type, message) => {
 
 const handleRemoveRow = (id) => async () => {
   try {
-    await axios.delete(`http://13.115.56.48:8080/techmadhyam/deleteSalesOrderId/${id}`);
+    await axios.delete(apiUrl +`deleteSalesOrderId/${id}`);
     const updatedRows = userData.filter(item => item.id !== id);
     setUserData(updatedRows);
     notify(
@@ -143,8 +144,8 @@ const handleCompanyCancel = () => {
 
  
 useEffect(() => {
-  const request1 = axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`);
-  const request2 = axios.get(`http://13.115.56.48:8080/techmadhyam/getAllUsersBasedOnType/${userId}`);
+  const request1 = axios.get(apiUrl +`getAllTempUsers/${userId}`);
+  const request2 = axios.get(apiUrl +`getAllUsersBasedOnType/${userId}`);
 
   Promise.all([request1, request2])
     .then(([response1, response2]) => {

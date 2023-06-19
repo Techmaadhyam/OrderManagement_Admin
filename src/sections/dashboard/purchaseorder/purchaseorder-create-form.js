@@ -31,6 +31,7 @@ import { Delete } from '@mui/icons-material';
 import './customTable.css'
 import { useNavigate } from 'react-router-dom';
 import 'moment-timezone';
+import { apiUrl } from 'src/config';
 
 
 
@@ -402,7 +403,7 @@ const handleDateChange = (date) => {
 };
    //get temporary user data
    useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllTempUsers/${userId}`)
+    axios.get(apiUrl +`getAllTempUsers/${userId}`)
       .then(response => {
       
         setUserData(prevData => [...prevData, ...response.data]);
@@ -413,7 +414,7 @@ const handleDateChange = (date) => {
         console.error(error);
       });
     //get user data
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllUsersBasedOnType/${userId}`)
+    axios.get(apiUrl +`getAllUsersBasedOnType/${userId}`)
       .then(response => {
         setUserData(prevData => [...prevData, ...response.data]);
 
@@ -425,7 +426,7 @@ const handleDateChange = (date) => {
 
 //get quotation data
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllQuotations/${userId}`)
+    axios.get(apiUrl +`getAllQuotations/${userId}`)
       .then(response => {
         const filteredQuotations = response.data.filter(item => item.status === "Delivered");
         setAllQuotation(filteredQuotations);
@@ -575,7 +576,7 @@ const deliveryIST = deliveryDateJS;
 
   //get all parts details
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllItem/${userId}`)
+    axios.get(apiUrl +`getAllItem/${userId}`)
       .then(response => {
         setUserData2(response.data);
         console.log(response.data)
@@ -609,7 +610,7 @@ let finalAmount = totalAmount.toFixed(2)
     
       if (1+1===2) {
         try {
-          const response = await fetch('http://13.115.56.48:8080/techmadhyam/createPurchaseOrder', {
+          const response = await fetch(apiUrl +'createPurchaseOrder', {
             method: 'POST',
             headers: {
     
@@ -693,7 +694,7 @@ let finalAmount = totalAmount.toFixed(2)
                 formData.append('fileWrapper',JSON.stringify(jsonBodyData));
 
                 try {
-                  const uploadResponse = await fetch('http://13.115.56.48:8080/techmadhyam/upload', {
+                  const uploadResponse = await fetch(apiUrl +'upload', {
                     method: 'POST',
                     body: formData
                   });
@@ -741,7 +742,7 @@ let finalAmount = totalAmount.toFixed(2)
                 formData.append('fileWrapper',JSON.stringify(jsonBodyData));
 
                 try {
-                  const uploadResponse = await fetch('http://13.115.56.48:8080/techmadhyam/upload', {
+                  const uploadResponse = await fetch(apiUrl +'upload', {
                     method: 'POST',
                     body: formData
                   });
@@ -788,7 +789,7 @@ let finalAmount = totalAmount.toFixed(2)
                 formData.append('fileWrapper',JSON.stringify(jsonBodyData));
 
                 try {
-                  const uploadResponse = await fetch('http://13.115.56.48:8080/techmadhyam/upload', {
+                  const uploadResponse = await fetch(apiUrl +'upload', {
                     method: 'POST',
                     body: formData
                   });

@@ -21,7 +21,7 @@ import { primaryColor } from 'src/primaryColor';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
-
+import { apiUrl } from 'src/config';
 
 
 const customerType = [
@@ -157,6 +157,7 @@ const Register = () => {
     console.log(formattedDate)
     setCurrentDate(formattedDate);
   }, []);
+
 
   //fetches API token
   useEffect(() => {
@@ -347,7 +348,7 @@ const handleCities = async (event) => {
     if (password === confirmPassword) {
       if (firstName && lastName && email && phone  && company && type && currentCountry && currentState && currentCity && zipcode && password && currentDate) {
         try {
-          const response = await fetch('http://13.115.56.48:8080/techmadhyam/addUser', {
+          const response = await fetch( apiUrl + 'addUser', {
             method: 'POST',
             headers: {
 

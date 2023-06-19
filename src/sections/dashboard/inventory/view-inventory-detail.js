@@ -19,6 +19,7 @@ import IconWithPopup from '../user/user-icon';
 import { useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { apiUrl } from 'src/config';
 
 const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
 
@@ -36,7 +37,7 @@ export const ViewInventoryDetail = (props) => {
   const align = 'horizontal' 
 
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getInventoryByUserId/${userId}`)
+    axios.get(apiUrl +`getInventoryByUserId/${userId}`)
       .then(response => {
         setUserData(response.data);
     

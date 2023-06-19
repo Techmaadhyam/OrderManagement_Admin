@@ -22,6 +22,7 @@ import IconWithPopup from '../user/user-icon';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect } from 'react';
+import { apiUrl } from 'src/config';
 
 
 
@@ -68,7 +69,7 @@ console.log(state)
 
 
   useEffect(() => {
-    axios.get(`http://13.115.56.48:8080/techmadhyam/getAllWorkOrderItems/${state?.id || state?.workorder?.id}`)
+    axios.get(apiUrl +`getAllWorkOrderItems/${state?.id || state?.workorder?.id}`)
       .then(response => {
        setRowData(response.data)
        console.log(response.data)
