@@ -34,6 +34,8 @@ import { useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
 import 'moment-timezone';
 import { apiUrl } from 'src/config';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const userId = parseInt(sessionStorage.getItem('user')|| localStorage.getItem('user'))
@@ -187,6 +189,10 @@ const [productName, setProductName] = useState('');
 
   const [Id, setId] = useState()
 
+  const [inventoryData, setInventoryData] =useState()
+  const [inventoryId, setInventoryId] = useState()
+  const [productDescription, setProductDescription] = useState('');
+
       // country, state, city API access token
       const [accessToken, setAccessToken] = useState(null);
 
@@ -206,8 +212,23 @@ const [productName, setProductName] = useState('');
 
   useEffect(() => {
     axios.get(apiUrl +`getAllQuotationDetails/${state?.id || state?.quotation?.id}`)
-      .then(response => {
-       setRowData(response.data)
+    .then(response => {
+      const updatedData = response.data.map(obj => {
+        let parsedInventoryId;
+        try {
+          const parsedInventory = JSON.parse(obj.inventory);
+          parsedInventoryId = parsedInventory.id;
+        } catch (error) {
+          console.error("Error parsing inventory JSON for object:", obj, error);
+          parsedInventoryId = null;
+        }
+
+        return {
+          ...obj,
+          inventory: { id: parsedInventoryId }
+        };
+      });
+       setRowData(updatedData)
        setTotalAmount(state?.totalAmount)
       
       })
@@ -215,6 +236,17 @@ const [productName, setProductName] = useState('');
         console.error(error);
       });
   }, [state?.id, state?.quotation?.id , state?.totalAmount]);
+
+  useEffect(() => {
+    axios.get(apiUrl +`getInventoryByUserId/${userId}`)
+      .then(response => {
+        setInventoryData(response.data);
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
 
   //currentdate
   useEffect(() => {
@@ -469,9 +501,21 @@ const [productName, setProductName] = useState('');
       toggleForm();
     }
   };
+ //toast notification from toastify library
+const notify = (type, message) => {
+  toast[type](message, {
+    position: "top-right",
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
+};
 
   const handleSubmit = (e) => {
-
     e.preventDefault();
   
     if (
@@ -485,11 +529,24 @@ const [productName, setProductName] = useState('');
       weight &&
       size
     ) {
+     const selectedOption = inventoryData.find((option) => option.inventoryId === inventoryId);
+  
+    if (parseInt(quantity) > selectedOption.quantity) {
+      notify(
+        "error",
+        `Insufficient Quantity in Inventory. Quantity must be below ${selectedOption.quantity}`
+      );
+      return;
+    }
+
       const newRow = {
         id: Id,
+        inventory: {id: inventoryId},
+        productDescription,
         productId,
         productName,
         weight,
+        quotationId: null,
         quantity: parseFloat(quantity),
         price: parseFloat(price),
         cgst: parseFloat(cgst),
@@ -499,9 +556,8 @@ const [productName, setProductName] = useState('');
         sgst: parseFloat(sgst),
         igst: parseFloat(igst),
         comments: comment,
-        createdDate:new Date(),
+        createdDate: new Date(),
         lastModifiedDate: new Date(),
-   
       };
   
       let updatedRows;
@@ -514,6 +570,8 @@ const [productName, setProductName] = useState('');
         updatedRows = [...rowData, newRow];
         setRowData(updatedRows);
       }
+
+    
   
       clearFormFields();
       setShowForm(false);
@@ -539,37 +597,40 @@ const [productName, setProductName] = useState('');
   const handleEditRow = (idx, row) => {
 
 
-
-    const selectedOption = userData2.find((option) => option.productName === row.productName);
-    const selectedProductId = selectedOption ? selectedOption.id : '';
-
-  setId(row.id)
-  setProductId(selectedProductId);
-  setProductName(row.productName);
-  setWeight(row.weight);
-  setQuantity(row.quantity);
-  setPrice(row.price);
-  setCgst(row.cgst);
-  setIgst(row.igst)
-  setSgst(row.sgst)
-  setSize(row.size)
-  setDescription(row.description);
-  setEditIndex(idx);
-  setShowForm(true);
-};
+    const selectedOption = inventoryData.find((option) => option.productName === row.productName);
+    const selectedProductId = selectedOption ? selectedOption.productId : '';
   
-
-  const clearFormFields = () => {
-    setProductName('');
-    setWeight('');
-    setQuantity('');
-    setPrice('');
-    setCgst('');
-    setSize('')
-    setIgst('')
-    setSgst('')
-    setDescription('');
+  
+  
+    setId(row.id)
+    setProductId(selectedProductId);
+    setInventoryId(row.inventory.id)
+    setProductName(row.inventory.id);
+    setWeight(row.weight);
+    setQuantity(row.quantity);
+    setPrice(row.price);
+    setCgst(row.cgst);
+    setIgst(row.igst)
+    setSgst(row.sgst)
+    setSize(row.size)
+    setDescription(row.description);
+    setEditIndex(idx);
+    setShowForm(true);
   };
+    
+  
+    const clearFormFields = () => {
+      setProductName('');
+      setWeight('');
+      setQuantity('');
+      setPrice('');
+      setCgst('');
+      setSize('')
+      setIgst('')
+      setSgst('')
+      setDescription('');
+      setId(undefined)
+    };
 
   //
   useEffect(() => {
@@ -584,8 +645,8 @@ const [productName, setProductName] = useState('');
 
 
   
-  const updatedRows = rowData?.map(({ productName, ...rest }) => rest);
-  const deleteRows= deletedRows?.map(({ productName, ...rest }) => rest);
+  const updatedRows = rowData?.map(({ productName, productDescription, ...rest }) => rest);
+  const deleteRows= deletedRows?.map(({ productName, productDescription, ...rest }) => rest);
 
   //post request
   const handleClick = async (event) => {
@@ -957,26 +1018,37 @@ height='50px'/>
                     <div className='popup-left'>
                       <Grid xs={12} 
                             md={6}>
-                        <TextField
-                          fullWidth
-                          label='Part Name'
-                          name='name'
-                          select
-                          value={productName}
-                          onChange={(e) => {
-                            const selectedOption = userData2.find(option => option.productName === e.target.value);
-                            setProductId(selectedOption.id);
-                            setProductName(e.target.value);
-                            setDescription(selectedOption.description)
-                          }}
-                          style={{ marginBottom: 10 }}
-                        >
-                          {userData2?.map((option) => (
-                            <MenuItem key={option.id} 
-                            value={option.productName}>
-                              {option.productName}
-                            </MenuItem>
-                          ))}
+                       <TextField
+                            fullWidth
+                            label='Part Name'
+                            name='name'
+                            select
+                            value={productName}
+                            onChange={(e) => {
+                              const selectedOption = inventoryData.find(option => option.inventoryId === e.target.value);
+                              if (selectedOption) {
+                                setProductId(selectedOption.productId);
+                                setProductName(e.target.value);
+                                setWeight(selectedOption.weight);
+                                setSgst(selectedOption.sgst);
+                                setCgst(selectedOption.cgst);
+                                setIgst(selectedOption.igst);
+                                setQuantity(1);
+                                setSize(selectedOption.size);
+                                setPrice(selectedOption.price);
+                                setInventoryId(selectedOption.inventoryId)
+                                setDescription(selectedOption.productDescription);
+                                setProductDescription(selectedOption.productDescription)
+                              }
+                            }}
+                            style={{ marginBottom: 10 }}
+                          >
+                            {inventoryData.map((option) => (
+                              <MenuItem key={option.inventoryId} 
+                              value={option.inventoryId}>
+                                {option.productName}
+                              </MenuItem>
+                            ))}
                           </TextField>
                           </Grid>
                           <Grid
@@ -1034,7 +1106,12 @@ height='50px'/>
                               name="quantity"
                               type='number'
                               value={quantity}
-                              onChange={(e) => setQuantity(e.target.value)}
+                              onChange={(e) => {
+                                const inputValue = e.target.value;
+                                if (inputValue >= 0) {
+                                  setQuantity(inputValue);
+                                }
+                              }}
                               style={{ marginBottom: 15 }}
                               />
                             </Grid>
