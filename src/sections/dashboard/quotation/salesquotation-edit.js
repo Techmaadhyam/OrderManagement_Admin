@@ -736,6 +736,17 @@ const notify = (type, message) => {
 
   return (
     <div style={{minWidth: "100%" }}>
+       <ToastContainer
+                     position="top-right"
+                     autoClose={4000}
+                     hideProgressBar={false}
+                     newestOnTop={false}
+                     closeOnClick
+                     rtl={false}
+                     pauseOnFocusLoss
+                     draggable
+                     pauseOnHover
+                     theme="light"/>
     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
       <h2>Edit Sales Quotation Order</h2>
       <IconWithPopup/>
