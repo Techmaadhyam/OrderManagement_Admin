@@ -32,25 +32,14 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 const customerType = [
   {
-    label: 'Draft',
-    value: 'Draft'
+    label: 'Purchase',
+    value: 'poList'
   },
   {
-    label: 'Waiting for Approval',
-    value: 'Waiting for Approval'
+    label: 'Sales',
+    value: 'soList'
   },
-  {
-    label: 'Cancelled',
-    value: 'Cancelled'
-  },
-  {
-    label: 'Approved',
-    value: 'Approved'
-  },
-  {
-    label: 'Delivered',
-    value: 'Delivered'
-  },
+
 ];
 
 export const OverviewTask = (props) => {
@@ -65,7 +54,7 @@ export const OverviewTask = (props) => {
       message?.tempUser.companyName.toLowerCase().includes(searchText.toLowerCase())
   );
 
-  const filteredType = type ? filteredMessages?.filter(message => message?.status === type) : filteredMessages;
+  const filteredType = type ? filteredMessages?.filter(message => message?.category === type) : filteredMessages;
 
 //company search
 const handleCompanyClick = () => {
@@ -123,7 +112,7 @@ return (
         value={type}
         select
         onChange={handleInputChange}
-        sx={{ width: 200 }}
+        sx={{ width: 150 }}
 
       >
         {customerType.map((option) => (
