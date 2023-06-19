@@ -118,7 +118,7 @@ const handleSaveRecord = async (editedRecord) => {
     id: editedRecord.id,
     firstName : editedRecord.firstName,
     lastName: editedRecord.lastName,
-    userName: editedRecord.userName,
+    userName: editedRecord.emailId,
     companyName: editedRecord.companyName,
     emailId: editedRecord.emailId,
     mobile: editedRecord.mobile,
