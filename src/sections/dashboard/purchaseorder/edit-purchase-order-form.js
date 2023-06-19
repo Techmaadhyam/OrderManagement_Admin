@@ -207,9 +207,10 @@ const [productName, setProductName] = useState('');
     const [countries, setCountries] = useState([]);
     const [states, setStates]= useState([])
     const [cities, setCities]= useState([])
-    const [currentCountry, setCurrentCountry]= useState('India')
-    const [currentState, setCurrentState]= useState('')
-    const [currentCity, setCurrentCity] =useState('')
+    const [currentCountry, setCurrentCountry]= useState(state?.country ||'')
+    const [currentState, setCurrentState]= useState(state?.state ||'')
+    const [currentCity, setCurrentCity] =useState(state?.city ||'')
+    const [zipcode, setZipcode]= useState(state?.pincode ||'')
 
  
 
@@ -409,6 +410,9 @@ const [productName, setProductName] = useState('');
       case 'status':
         setStatus(value);
         break;
+        case 'zipcode':
+          setZipcode(value);
+          break;
     case 'address':
       setAddress(value);
         break;
@@ -635,10 +639,11 @@ const [productName, setProductName] = useState('');
           paymentMode: payment,
           type: type,
           deliveryDate: dDate,
-          deliveryAddress: address,
-          city: null,
-          state:null,
-          country: null,
+          address: address,
+          city: currentCity,
+          state: currentState,
+          country: currentCountry,
+          pincode: zipcode,
           createdBy: userId,
           lastModifiedDate: new Date(),
           comments : comment,
@@ -1244,9 +1249,8 @@ height='50px'/>
                 label="ZipCode"
                 name="zipcode"
                 required
-                // value={zipcode}
-                // onChange={handleInputChange}
-
+                value={zipcode}
+                onChange={handleInputChange}
               />
             </Grid>
           </Grid>

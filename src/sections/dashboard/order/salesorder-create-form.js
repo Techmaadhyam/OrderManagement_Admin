@@ -191,6 +191,7 @@ const [productName, setProductName] = useState('');
   const [currentCountry, setCurrentCountry]= useState('India')
   const [currentState, setCurrentState]= useState('')
   const [currentCity, setCurrentCity] =useState('')
+  const [zipcode, setZipcode]= useState('')
 
   //currentdate
   useEffect(() => {
@@ -386,6 +387,9 @@ const notify = (type, message) => {
       case 'status':
         setStatus(value);
         break;
+      case 'zipcode':
+          setZipcode(value);
+          break;
     case 'address':
       setAddress(value);
         break;
@@ -620,10 +624,11 @@ console.log(deliveryIST)
                   paymentMode: payment,
                   type: type,
                   deliveryDate: deliveryIST,
-                  deliveryAddress: address,
-                  city: null,
-                  state:null,
-                  country: null,
+                  address: address,
+                  city: currentCity,
+                  state: currentState,
+                  country: currentCountry,
+                  pincode: zipcode,
                   createdBy: userId,
                   createdDate: new Date(),
                   lastModifiedDate: new Date(),
@@ -939,8 +944,8 @@ height='50px'/>
                 label="ZipCode"
                 name="zipcode"
                 required
-                // value={zipcode}
-                // onChange={handleInputChange}
+                value={zipcode}
+                onChange={handleInputChange}
 
               />
             </Grid>

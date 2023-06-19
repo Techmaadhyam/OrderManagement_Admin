@@ -207,6 +207,7 @@ export const PurchaseOrderCreateForm = (props) => {
     const [currentCountry, setCurrentCountry]= useState('India')
     const [currentState, setCurrentState]= useState('')
     const [currentCity, setCurrentCity] =useState('')
+    const [zipcode, setZipcode]= useState('')
 
 
   //get currentdate
@@ -390,6 +391,9 @@ export const PurchaseOrderCreateForm = (props) => {
       case 'status':
         setStatus(value);
         break;
+      case 'zipcode':
+          setZipcode(value);
+          break;
     case 'address':
       setAddress(value);
         break;
@@ -628,10 +632,11 @@ let finalAmount = totalAmount.toFixed(2)
                   paymentMode: payment,
                   type: type,
                   deliveryDate: deliveryIST,
-                  deliveryAddress: address,
-                  city: null,
-                  state:null,
-                  country: null,
+                  address: address,
+                  city: currentCity,
+                  state: currentState,
+                  country: currentCountry,
+                  pincode: zipcode,
                   createdBy: userId,
                   createdDate: new Date(),
                   lastModifiedDate: new Date(),
@@ -672,6 +677,7 @@ let finalAmount = totalAmount.toFixed(2)
               let performaInvoiceData = null;
               let approvedInvoiceData = null;
               let deliveryChallanData = null;
+
 
               // Performa Invoice upload
               if (performaInvoiceFile) {
@@ -815,6 +821,8 @@ let finalAmount = totalAmount.toFixed(2)
                 }
               }
 
+
+
               if (performaInvoiceData || approvedInvoiceData || deliveryChallanData) {
                 navigate('/dashboard/purchaseorder/viewDetail', {
                   state: {
@@ -822,6 +830,12 @@ let finalAmount = totalAmount.toFixed(2)
                     performaInvoice: performaInvoiceData,
                     approvedInvoice: approvedInvoiceData,
                     deliveryChallan: deliveryChallanData
+                  }
+                });
+              } else {
+                navigate('/dashboard/purchaseorder/viewDetail', {
+                  state: {
+                    data: data,
                   }
                 });
               }
@@ -1148,8 +1162,8 @@ height='50px'/>
                 label="ZipCode"
                 name="zipcode"
                 required
-                // value={zipcode}
-                // onChange={handleInputChange}
+                value={zipcode}
+                onChange={handleInputChange}
 
               />
             </Grid>

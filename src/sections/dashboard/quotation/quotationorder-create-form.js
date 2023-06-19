@@ -178,6 +178,7 @@ const [productName, setProductName] = useState('');
   const [currentCountry, setCurrentCountry]= useState('India')
   const [currentState, setCurrentState]= useState('')
   const [currentCity, setCurrentCity] =useState('')
+  const [zipcode, setZipcode]= useState('')
  
   const location = useLocation();
 
@@ -370,6 +371,9 @@ const [productName, setProductName] = useState('');
       case 'status':
         setStatus(value);
         break;
+        case 'zipcode':
+          setZipcode(value);
+          break;
     case 'address':
       setAddress(value);
         break;
@@ -574,6 +578,11 @@ console.log(currentDate, deliveryIST)
                   createdDate: new Date(),
                   lastModifiedDate: new Date(),
                   comments : comment,
+                  address: address,
+                  city: currentCity,
+                  state: currentState,
+                  country: currentCountry,
+                  pincode: zipcode,
                   category: category,
                   lastModifiedByUser: {id: userId},
                   termsAndCondition: terms,
@@ -860,8 +869,8 @@ height='50px'/>
                 label="ZipCode"
                 name="zipcode"
                 required
-                // value={zipcode}
-                // onChange={handleInputChange}
+                value={zipcode}
+                onChange={handleInputChange}
 
               />
             </Grid>
