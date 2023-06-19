@@ -236,10 +236,10 @@ export const useSections = () => {
                     title: t(tokens.nav.view),
                     path: paths.dashboard.services.workorderview
                   },
-                  {
-                    title: t(tokens.nav.amc),
-                    path: paths.dashboard.services.workorderdownload
-                  },
+                  // {
+                  //   title: t(tokens.nav.amc),
+                  //   path: paths.dashboard.services.workorderdownload
+                  // },
 
               
                 ]

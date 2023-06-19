@@ -38,7 +38,7 @@ pdfMake.fonts = {
     medium: 'Inter-Medium.ttf',
   }
 }
-const userId = sessionStorage.getItem('user');
+const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
 
 
 const WorkOrderDownloadTable = () => {
@@ -101,7 +101,10 @@ const WorkOrderDownloadTable = () => {
     return formattedItem;
   });
 
-  const dataWithKeys = formattedArray?.map((item) => ({ ...item, key: item.id }));
+  const dataWithKeys = formattedArray
+    ?.filter(item => item.category === "workorder")
+    .map(item => ({ ...item, key: item.id }));
+  
 
 
   //toast notification from toastify library
@@ -245,7 +248,7 @@ const handleWorkInvoice = async (record) => {
                           {text: 'Email', style: 'workDetails'},
                         ],alignment: 'right', margin: [40, 0, 0, 0],},
                         {stack: [
-                          {text: `${record.technicianInfo.firstName} ${record.technicianInfo.lastName}`, style: 'workDetails'},
+                          {text: `${record.technicianInfo.userName}`, style: 'workDetails'},
                           {text: `${record.technicianInfo.mobile}`, style: 'workDetails'},
                           {text: `${record.technicianInfo.emailId} `, style: 'workDetails'},
                         ], alignment: 'right'},
