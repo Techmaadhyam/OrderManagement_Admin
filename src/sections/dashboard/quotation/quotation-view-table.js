@@ -63,7 +63,7 @@ const categoryBuySell = [
 const QuotationViewTable = () => {
   const [userData, setUserData]= useState([])
   const [userData1, setUserData1]= useState([])
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('Purchase Quotation');
   const [quotationData, setQuotationData] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [searchText, setSearchText] = useState('');
@@ -107,7 +107,12 @@ const QuotationViewTable = () => {
       formattedItem.originalDeliveryDate =formattedItem.deliveryDate
       formattedItem.deliveryDate = formatDate(formattedItem.deliveryDate);
     }
-  
+    if (formattedItem.startdate) {
+      formattedItem.startdate = formatDate(formattedItem.startdate);
+    }
+    if (formattedItem.enddate) {
+      formattedItem.enddate = formatDate(formattedItem.enddate);
+    }
     return formattedItem;
   });
 
@@ -150,7 +155,7 @@ const handleCategoryChange = (event) => {
   };
 
   const handleNavigation = record => {
-    if (record.category === 'Sales Quotation') {
+    if (record.category === 'Purchase Quotation') {
       navigate('/dashboard/quotation/edit', { state: record });
     } else if (record.category === 'Service Quotation') {
       navigate('/dashboard/quotation/editService', { state: record });
@@ -209,6 +214,8 @@ const filteredList = updatedUser.filter(product => {
  
   return companyMatch
 });
+
+
 
 const numberToWords = require('number-to-words');
     const convertAmountToWords = (amount) => {
@@ -947,7 +954,30 @@ catch(error){
     },
   ];
 
+  const orderDateIndex = columns.findIndex(column => column.key === 'createdDate');
+  const insertIndex = orderDateIndex + 1;
+  const deliveryDateIndex = columns.findIndex(column => column.key === 'deliveryDate');
 
+// Check if filteredList array has category === "service_quotation"
+if (deliveryDateIndex !== -1 && filteredList.some(item => item.category === "Service Quotation")) {
+  // Remove the "Delivery Date" column from the columns array
+  columns.splice(deliveryDateIndex, 1);
+}
+
+  if (filteredList.some(item => item.category === "Service Quotation")) {
+    columns.splice(insertIndex, 0, 
+      {
+        title: 'Assignment Start Date',
+        key: 'startdate',
+        dataIndex: 'startdate',
+      },
+      {
+        title: 'Assignment End Date',
+        key: 'enddate',
+        dataIndex: 'enddate',
+      }
+    );
+  }
    
 
   return (
@@ -963,21 +993,16 @@ catch(error){
         <IconWithPopup/>
       </div>
       
-      <TextField
-
-      label="Category"
-      name="category"
-      sx={{ minWidth: 250 }}
-      value={selectedCategory}
-      onChange={handleCategoryChange}
-
-
-      select
+            <TextField
+        label="Category"
+        name="category"
+        sx={{ minWidth: 250 }}
+        value={selectedCategory}
+        onChange={handleCategoryChange}
+        select
       >
-     <MenuItem value="">All</MenuItem>
         {categoryBuySell.map((option) => (
-          <MenuItem key={option.value} 
-          value={option.value}>
+          <MenuItem key={option.value} value={option.value}>
             {option.label}
           </MenuItem>
         ))}
