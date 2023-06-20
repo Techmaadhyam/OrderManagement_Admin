@@ -202,7 +202,7 @@ const handleInvoicePdf = async (record ,heading,dateData,noData) => {
                 setInvoiceData(response.data);
                 console.log(response.data)
 
-          const tempInv = await axios.get(apiUrl +`getTempUserById/${record.tempUserId}`)
+          
 
                 const rowData = response.data.map((product,index) => {
                  let invent = JSON.parse(product.inventory);
@@ -222,13 +222,13 @@ const handleInvoicePdf = async (record ,heading,dateData,noData) => {
                         columns: [
                           {
                             image: imgUrl,
-                            width: 150,
+                            width: 100,
                             alignment: 'left',
                           },
                           {stack: [
-                            {text: `${tempInv.data.companyName}`, style: 'header'},
-                            { text: `${tempInv.data.address}, ${tempInv.data.city}, ${tempInv.data.pincode}, ${tempInv.data.state}, ${tempInv.data.country}`, style: 'subheader' },
-                      { text: `GSTIN: ${tempInv.data.gstNumber}`, style: 'subheader'},
+                            {text: `${record.createdByUser.companyName}`, style: 'header'},
+                            { text: `${record.createdByUser.address}, ${record.createdByUser.city}, ${record.createdByUser.pincode}, ${record.createdByUser.state}, ${record.createdByUser.country}`, style: 'subheader' },
+                      { text: `GSTIN: ${record.createdByUser.gstNumber}`, style: 'subheader'},
                         ],
                         margin: [20, 0, 0, 0],
                       },
@@ -255,9 +255,9 @@ const handleInvoicePdf = async (record ,heading,dateData,noData) => {
                               { text: '', border: [false, false, false, false] },
                               { text: record.id, style: 'tableCell',border: [true, false, true, false] },
                               { text: formatDate(record.createdDate), style: 'tableCell', border: [true, false, true, false] },
-                              { text: `notInAPI`, style: 'tableCell',border: [true, false, true, false] },
+                              { text: record.tempUser.id, style: 'tableCell',border: [true, false, true, false] },
                               { text: record.contactPhone, style: 'tableCell',border: [true, false, true, false] },
-                              { text: '1234', style: 'tableCell',border: [true, false, true, false] },
+                              { text: record.pinCode, style: 'tableCell',border: [true, false, true, false] },
                             ],
                           ],
                         },
@@ -268,15 +268,15 @@ const handleInvoicePdf = async (record ,heading,dateData,noData) => {
                           widths: ['*', '*', '*', '*'],
                           body: [
                             [
-                              { text: `Bill To: ${record.contactPerson}`, style: 'tableLabel', border: [true, true, true, false]},
+                              { text: `Bill To: ${record.tempUser.companyName}`, style: 'tableLabel', border: [true, true, true, false]},
                               { text: `Ship To: ${record.contactPerson}`, style: 'tableLabel', border: [true, true, true, false] },
                               { text: 'Customer GST Registration information', style: 'tableLabel' },
                               { text: 'Mode of Dispatch: Courier', style: 'tableLabel', border: [true, true, true, true]},
                             ],
                             [
-                              { text: `${tempInv.data.address}, ${tempInv.data.city}, ${tempInv.data.pincode}, ${tempInv.data.state}, ${tempInv.data.country}`, style: 'tableCell',border: [true, false, true, false] },
-                              { text: `${record.deliveryAddress}`, style: 'tableCell', border: [true, false, true, false] },
-                              { text: `notInAPI`, style: 'tableCell',border: [true, false, true, false] },
+                              { text: `${record.tempUser.address}, ${record.tempUser.city}, ${record.tempUser.state},${record.tempUser.pincode}, ${record.tempUser.country}`, style: 'tableCell',border: [true, false, true, false] },
+                              { text: `${record.deliveryAddress}, ${record.city}, ${record.state}, ${record.pinCode}, ${record.country}`, style: 'tableCell', border: [true, false, true, false] },
+                              { text: record.tempUser.gstNumber, style: 'tableCell',border: [true, false, true, false] },
                               { text: `Mode of Payment: ${record.paymentMode}`, style: 'tableLabel',border: [true, false, true, false] },
                             ],
                           ],
@@ -285,7 +285,7 @@ const handleInvoicePdf = async (record ,heading,dateData,noData) => {
                       {
                         style: 'table',
                         table: {
-                            heights:['auto', 'auto'],
+                            
                             widths: ['auto',"*",'auto','auto','auto','auto','auto','auto','auto','auto','auto','auto'],
                           body: [
                             
@@ -307,11 +307,11 @@ const handleInvoicePdf = async (record ,heading,dateData,noData) => {
                       },
                       {
                         table: {
-                          heights:[100],
+                          heights:[50],
                           widths: ['*','*'],
                           body: [
                             [
-                                  { text: 'REMARKS', alignment: 'left', style: 'tableLabel',  border: [true, false, false, true], margin: [0,40,0,0] },
+                                  { text: 'REMARKS', alignment: 'left', style: 'tableLabel',  border: [true, false, false, true], margin: [0,10,0,0] },
                                 
                                 {
                                     stack:[
@@ -348,7 +348,7 @@ const handleInvoicePdf = async (record ,heading,dateData,noData) => {
                                 },
                                 {
                                     stack:[
-                                        { text: `${tempInv.data.companyName}`,bold:true,alignment:'center', style: 'tableLabel'},
+                                        { text: `${record.createdByUser.companyName}`,bold:true,alignment:'center', style: 'tableLabel'},
                                         { text: `Authorize Signature`, margin:[0,40,0,0],alignment:'center', style: 'tableLabel'},
                                     ],
                                     border: [false, false, true, true],margin:[0,20,0,0], alignment:'right'
@@ -362,7 +362,7 @@ const handleInvoicePdf = async (record ,heading,dateData,noData) => {
                     ],
                     styles: {
                         header: {
-                          fontSize: 16,
+                          fontSize: 15,
                           bold: true,
                           margin: [0, 0, 0, 5],
                         },
@@ -398,10 +398,6 @@ const handleChallanPdf = async (record) => {
               const response = await axios.get(apiUrl +`getAllSalesOrderDetails/${record.id}`)
                 setInvoiceData(response.data);
                 console.log(response.data)
-
-          const tempInv = await axios.get(apiUrl +`getTempUserById/${record.tempUserId}`)
-
-
                 const rowData = response.data.map((product,index) => {
                 //  let invent = JSON.parse(product.inventory);
                     return [index+1, product.description,'',product.quantity]
@@ -419,10 +415,9 @@ const handleChallanPdf = async (record) => {
                             alignment: 'left',
                           },
                           {stack: [
-                            {text: `${tempInv.data.companyName}`, style: 'header'},
-                            { text: `${tempInv.data.address}, ${tempInv.data.city}, ${tempInv.data.pincode}, ${tempInv.data.state}, ${tempInv.data.country}`, style: 'subheader' },
-                      { text: `GSTIN: ${tempInv.data.gstNumber}`, style: 'subheader'},
-                      { text: 'PAN: AAGFT5872R', style: 'subheader'},
+                            {text: `${record.createdByUser.companyName}`, style: 'header'},
+                            { text: `${record.createdByUser.address}, ${record.createdByUser.city}, ${record.createdByUser.pincode}, ${record.createdByUser.state}, ${record.createdByUser.country}`, style: 'subheader' },
+                      { text: `GSTIN: ${record.createdByUser.gstNumber}`, style: 'subheader'},
                         ],
                         margin: [20, 0, 0, 0],
                       },
@@ -446,8 +441,8 @@ const handleChallanPdf = async (record) => {
                             [
                               { text: '', border: [false, false, false, false]},
                               { text: record.id, style: 'tableCell',border: [true, false, true, false] },
-                              { text: formatDate(record.createdByUser.createdDate), style: 'tableCell', border: [true, false, true, false] },
-                              { text: record.tempUserId || record.userId, style: 'tableCell',border: [true, false, true, false] },
+                              { text: formatDate(record.createdDate), style: 'tableCell', border: [true, false, true, false] },
+                              { text: record.tempUser.id, style: 'tableCell',border: [true, false, true, false] },
                               { text: record.contactPhone, style: 'tableCell',border: [true, false, true, false] },
                             ],
                           ],
@@ -459,14 +454,14 @@ const handleChallanPdf = async (record) => {
                           widths: ['*', '*', '*'],
                           body: [
                             [
-                              { text: `Bill To: ${record.contactPerson}`, style: 'tableLabel', border: [true, true, true, false]},
+                              { text: `Bill To: ${record.tempUser.companyName}`, style: 'tableLabel', border: [true, true, true, false]},
                               { text: `Ship To: ${record.contactPerson}`, style: 'tableLabel', border: [true, true, true, false] },
                               { text: 'Customer GST Registration information', style: 'tableLabel' },
                             ],
                             [
-                              { text: `${tempInv.data.address}, ${tempInv.data.city}, ${tempInv.data.pincode}, ${tempInv.data.state}, ${tempInv.data.country}`, style: 'tableCell',border: [true, false, true, false] },
-                              { text: `${record.deliveryAddress}`, style: 'tableCell', border: [true, false, true, false] },
-                              { text: `${record.gstNumber}`, style: 'tableCell',border: [true, false, true, false] },
+                              { text: `${record.tempUser.address}, ${record.tempUser.city}, ${record.tempUser.state},${record.tempUser.pincode}, ${record.tempUser.country}`, style: 'tableCell',border: [true, false, true, false] },
+                              { text: `${record.deliveryAddress}, ${record.city}, ${record.state}, ${record.pinCode}, ${record.country}`, style: 'tableCell', border: [true, false, true, false] },
+                              { text: record.tempUser.gstNumber, style: 'tableCell',border: [true, false, true, false] },
                             ],
                           ],
                         },
@@ -487,11 +482,11 @@ const handleChallanPdf = async (record) => {
                       },
                       {
                         table: {
-                          heights:[100],
+                          heights:[50],
                           widths: ['*'],
                           body: [
                             [
-                                  { text: 'NOTE:  Standby Returnable Basis, Kindly share the WO', alignment: 'left', style: 'tableLabel',  border: [true, false, true, true], margin:[0,40,0,0] },
+                                  { text: 'NOTE:  Standby Returnable Basis, Kindly share the WO', alignment: 'left', style: 'tableLabel',  border: [true, false, true, true], margin:[0,10,0,0] },
                             ],
                             
                           ],
@@ -499,7 +494,7 @@ const handleChallanPdf = async (record) => {
                       },
                       {
                         table: {
-                          heights:[100],
+                          // heights:[100],
                           widths: ['*','*','*'],
                           body: [
                             [
@@ -521,7 +516,7 @@ const handleChallanPdf = async (record) => {
                                 },
                                 {
                                     stack:[
-                                        { text: `For ${tempInv.data.companyName}`,bold:true, style: 'tableLabel',alignment:'center'},
+                                        { text: `For ${record.createdByUser.companyName}`,bold:true, style: 'tableLabel',alignment:'center'},
                                         { text: `Authorize Signature`, margin:[0,40,0,0], style: 'tableLabel',alignment:'center'},
                                     ],
                                     border: [false, false, true, true], margin:[0,20,0,0], alignment:'right'
@@ -535,7 +530,7 @@ const handleChallanPdf = async (record) => {
                     ],
                     styles: {
                         header: {
-                          fontSize: 16,
+                          fontSize: 15,
                           bold: true,
                           margin: [0, 0, 0, 5],
                         },

@@ -220,8 +220,7 @@ const handleQuotation = async (record) => {
   console.log(record);
   try {
     const response = await axios.get(apiUrl +`getAllQuotationDetails/${record.id}`);
-    const tempResponse = await axios.get(apiUrl +`getTempUserById/${record.tempUserId}`);
-    const temp = tempResponse.data;
+    
 
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Sheet 1');
@@ -272,11 +271,11 @@ const handleQuotation = async (record) => {
     });
     worksheet.mergeCells('A8:D8');
     const tableOneData = [
-      ['Name:', `${temp.companyName}`], 
-      ['Address:', `${temp.address} ${temp.city} ${temp.state} ${temp.country}`], 
-      ['Contact:', `${temp.mobile}`], 
-      ['Email:', `${temp.emailId}`], 
-      ['GSTIN:', `${temp.gstNumber}`], 
+      ['Name:', `${record.createdByUser.companyName}`], 
+      ['Address:', `${record.createdByUser.address} ${record.createdByUser.city} ${record.createdByUser.state}, ${record.createdByUser.pincode} ${record.createdByUser.country}`], 
+      ['Contact:', `${record.createdByUser.mobile}`], 
+      ['Email:', `${record.createdByUser.emailId}`], 
+      ['GSTIN:', `${record.createdByUser.gstNumber}`], 
     ];
     tableOneData.forEach((rowData, rowIndex) => {
       rowData.forEach((cellData, colIndex) => {
@@ -307,10 +306,10 @@ const handleQuotation = async (record) => {
     worksheet.mergeCells('G8:J8');
     const tableTwoData = [
       ['Name:', `${record.contactPersonName}`], 
-      ['Address:', `Tonk Road, Jaipur, Rajasthan`],
+      ['Address:', `${record.deliveryAddress}, ${record.city}, ${record.state}, ${record.pinCode}, ${record.country}`],
       ['Contact:', `${record.contactPhoneNumber}`], 
-      ['Email:', `${temp.emailId}`], 
-      ['GSTIN:', `${temp.gstNumber}`], 
+      ['Email:', `${record.tempUser.emailId}`], 
+      ['GSTIN:', `${record.tempUser.gstNumber}`], 
     ];
     tableTwoData.forEach((rowData, rowIndex) => {
       rowData.forEach((cellData, colIndex) => {
@@ -523,7 +522,7 @@ const handleQuotation = async (record) => {
       left: tableBorder,
     };
     const placeCell2 = worksheet.getCell(editableRow + 2, 3);
-    placeCell2.value = `${temp.state}`;
+    placeCell2.value = `${record.createdByUser.state}`;
     placeCell2.font = { size: 9, name: 'Arial' };
     placeCell2.border = {
       right: tableBorder,
@@ -567,7 +566,6 @@ const handleQuotationPdf = async (record)=>{
       
       console.log(response.data)
 
-const tempInv = await axios.get(apiUrl +`getTempUserById/${record.tempUserId}`)
 
 
 
@@ -646,9 +644,9 @@ const rowData = response.data.map((product, index) => {
                   alignment: 'left',
                 },
                 {stack: [
-                  {text: `${tempInv.data.companyName}`, style: 'header'},
-                  { text: `${tempInv.data.address}, ${tempInv.data.city}, ${tempInv.data.pincode}, ${tempInv.data.state}, ${tempInv.data.country}`, style: 'subheader' },
-            { text: `GSTIN: ${tempInv.data.gstNumber}`, style: 'subheader'},
+                  {text: `${record.createdByUser.companyName}`, style: 'header'},
+                  { text: `${record.createdByUser.address}, ${record.createdByUser.city}, ${record.createdByUser.pincode}, ${record.createdByUser.state}, ${record.createdByUser.country}`, style: 'subheader' },
+            { text: `GSTIN: ${record.createdByUser.gstNumber}`, style: 'subheader'},
               ],
               margin: [20, 0, 0, 0],
             },
@@ -675,9 +673,9 @@ const rowData = response.data.map((product, index) => {
                     { text: '', border: [false, false, false, false] },
                     { text: record.id, style: 'tableCell',border: [true, false, true, false] },
                     { text: formatDate(record.createdDate), style: 'tableCell', border: [true, false, true, false] },
-                    { text: `notInAPI`, style: 'tableCell',border: [true, false, true, false] },
+                    { text: record.tempUser.id, style: 'tableCell',border: [true, false, true, false] },
                     { text: record.contactPhoneNumber, style: 'tableCell',border: [true, false, true, false] },
-                    { text: '1234', style: 'tableCell',border: [true, false, true, false] },
+                    { text: record.pinCode, style: 'tableCell',border: [true, false, true, false] },
                   ],
                 ],
               },
@@ -688,15 +686,15 @@ const rowData = response.data.map((product, index) => {
                 widths: ['*', '*', '*'],
                 body: [
                   [
-                    { text: `Bill To: A.P SINGH`, style: 'tableLabel', border: [true, true, true, false]},
-                    { text: `Ship To: G.P SINGH`, style: 'tableLabel', border: [true, true, true, false] },
+                    { text: `Bill To: ${record.tempUser.companyName}`, style: 'tableLabel', border: [true, true, true, false]},
+                    { text: `Ship To: ${record.contactPerson}`, style: 'tableLabel', border: [true, true, true, false] },
                     { text: 'Customer GST Registration information', style: 'tableLabel' },
                     // { text: 'Mode of Dispatch: Courier', style: 'tableLabel', border: [true, true, true, true]},
                   ],
                   [
-                    { text: `ADDRESS`, style: 'tableCell',border: [true, false, true, false] },
-                    { text: `ADDRESS`, style: 'tableCell', border: [true, false, true, false] },
-                    { text: `notInAPI`, style: 'tableCell',border: [true, false, true, false] },
+                    { text: `${record.tempUser.address}, ${record.tempUser.city}, ${record.tempUser.state},${record.tempUser.pincode}, ${record.tempUser.country}`, style: 'tableCell',border: [true, false, true, false] },
+                    { text: `${record.deliveryAddress}, ${record.city}, ${record.state}, ${record.pinCode}, ${record.country}`, style: 'tableCell', border: [true, false, true, false] },
+                    { text: record.tempUser.gstNumber, style: 'tableCell',border: [true, false, true, false] },
                     // { text: `Mode of Payment: ${record.paymentMode}`, style: 'tableLabel',border: [true, false, true, false] },
                   ],
                 ],
@@ -716,11 +714,11 @@ const rowData = response.data.map((product, index) => {
             },
             {
               table: {
-                heights:[100],
+                heights:[50],
                 widths: ['*','*'],
                 body: [
                   [
-                        { text: 'REMARKS', alignment: 'left', style: 'tableLabel',  border: [true, false, false, true], margin:[0,40,0,0] },
+                        { text: 'REMARKS', alignment: 'left', style: 'tableLabel',  border: [true, false, false, true], margin:[0,10,0,0] },
                       
                       {
                           stack:[
@@ -757,7 +755,7 @@ const rowData = response.data.map((product, index) => {
                       },
                       {
                           stack:[
-                              { text: `${tempInv.data.companyName}`,bold:true,alignment:'center', style: 'tableLabel'},
+                              { text: `${record.createdByUser.companyName}`,bold:true,alignment:'center', style: 'tableLabel'},
                               { text: `Authorize Signature`, margin:[0,40,0,0],alignment:'center', style: 'tableLabel'},
                           ],
                           border: [false, false, true, true],margin:[0,20,0,0], alignment:'right'
@@ -771,7 +769,7 @@ const rowData = response.data.map((product, index) => {
           ],
           styles: {
               header: {
-                fontSize: 16,
+                fontSize: 15,
                 bold: true,
                 margin: [0, 0, 0, 5],
               },
