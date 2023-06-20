@@ -164,10 +164,10 @@ console.log(state)
         />
         <Divider />
         <PropertyListItem
-          align={align}
-          label="Quotation"
-          value={String(state?.quotationId || state?.soRecord?.quotationId)}
-        />
+            align={align}
+            label="Quotation"
+            value={String(state?.quotationId || state?.soRecord?.quotationId || 0)}
+          />
         <Divider />
         <PropertyListItem
           align={align}

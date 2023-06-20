@@ -767,7 +767,7 @@ console.log(rows)
                     label="Quotation"
                     name="quotation"
                     value={quotation}
-                    required
+             
                     select
                     onChange={handleInputChange}
                   >    

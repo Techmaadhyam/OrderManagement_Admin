@@ -984,7 +984,7 @@ let finalAmount = totalAmount.toFixed(2)
                <TextField
                     fullWidth
                     label="Quotation"
-                    required
+              
                     name="quotation"
                     value={quotation}
                     select
