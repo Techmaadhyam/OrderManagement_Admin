@@ -4,6 +4,7 @@ import ArrowRightIcon from '@untitled-ui/icons-react/build/esm/ArrowRight';
 import RefreshCcw01Icon from '@untitled-ui/icons-react/build/esm/RefreshCcw01';
 import ShoppingCart01Icon from 'src/icons/untitled-ui/duocolor/shopping-cart-01';
 import InventoryTwoToneIcon from '@mui/icons-material/InventoryTwoTone';
+import PendingActionsTwoToneIcon from '@mui/icons-material/PendingActionsTwoTone';
 import React, { useState, useEffect } from 'react';
 import {
   Avatar,
@@ -41,8 +42,9 @@ export const OverviewAMC = (props) => {
   const [isSearching, setIsSearching] = useState(false);
   const [searchText, setSearchText] = useState('');
 
+  const sortedMessages = messages?.sort((a, b) => new Date(a.enddate) - new Date(b.enddate));
 
-    const filteredMessages = messages?.filter(message =>
+    const filteredMessages = sortedMessages?.filter(message =>
       message?.noncompany.companyName.toLowerCase().includes(searchText.toLowerCase())
     );
 
@@ -115,7 +117,7 @@ const handleCompanyCancel = () => {
 
           ) : (
             <Avatar>
-              <InventoryTwoToneIcon />
+              <PendingActionsTwoToneIcon/>
             </Avatar>
           )}
         </ListItemAvatar>
