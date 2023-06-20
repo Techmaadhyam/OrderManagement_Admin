@@ -182,7 +182,7 @@ const handleCompanyCancel = () => {
 };
 
   
-const filteredList = dataWithKeys.filter(product => {
+const filteredList = filteredData.filter(product => {
   const companyMatch = product.companyName?.toLowerCase().includes(searchText.toLowerCase());
  
   return companyMatch

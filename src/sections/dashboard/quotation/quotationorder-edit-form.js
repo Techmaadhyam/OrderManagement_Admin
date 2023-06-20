@@ -159,7 +159,7 @@ const [tempId, setTempId] = useState(state?.tempUserId);
 const [userState, setUserState] = useState(state?.userId);
 const [terms, setTerms] = useState(state?.termsAndCondition || '');
 const [comment, setComment] = useState(state?.comments||'');
-const [user, setUser] = useState('')
+const [user, setUser] = useState(state?.tempUser.companyName ||'')
 
 
 const [currentDate, setCurrentDate] = useState('');
@@ -199,7 +199,7 @@ const [productName, setProductName] = useState('');
       const [currentCountry, setCurrentCountry]= useState(state?.country ||'')
       const [currentState, setCurrentState]= useState(state?.state ||'')
       const [currentCity, setCurrentCity] =useState(state?.city ||'')
-      const [zipcode, setZipcode]= useState(state?.pincode ||'')
+      const [zipcode, setZipcode]= useState(state?.pinCode ||'')
 
 
       //deleted row
@@ -417,7 +417,7 @@ const [productName, setProductName] = useState('');
   
         const selecteduserId = combinedData.find((option) => (option.id !== 0 && option.id === state?.tempUserId) || option.id === state?.userId);
         const selecteduser = selecteduserId ? selecteduserId.companyName : '';
-        setUser(selecteduser);
+
       })
       .catch(error => {
         console.error(error);

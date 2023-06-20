@@ -152,7 +152,7 @@ console.log(state)
           label="Username"
         >
           <Typography variant="subtitle2">
-          {state?.createdByUser.firstName+' '+state?.createdByUser.lastName}
+          {state?.createdByUser?.firstName+' '+state?.createdByUser?.lastName}
           </Typography>
         </PropertyListItem>
         <Divider />

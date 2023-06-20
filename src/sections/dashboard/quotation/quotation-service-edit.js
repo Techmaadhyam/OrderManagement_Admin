@@ -146,7 +146,7 @@ const [tempId, setTempId] = useState(state?.tempUserId);
 const [userState, setUserState] = useState(state?.userId);
 const [terms, setTerms] = useState(state?.termsAndCondition || '');
 const [comment, setComment] = useState(state?.comments||'');
-const [user, setUser] = useState('')
+const [user, setUser] = useState(state?.tempUser.companyName ||'')
 const [category, setCategory] = useState('Service Quotation');
 
 
@@ -264,7 +264,7 @@ const hasError2 = touched && !emailRegex.test(inchargeEmail);
   
         const selecteduserId = combinedData.find((option) => (option.id !== 0 && option.id === state?.tempUserId) || option.id === state?.userId);
         const selecteduser = selecteduserId ? selecteduserId.companyName : '';
-        setUser(selecteduser);
+
       })
       .catch(error => {
         console.error(error);

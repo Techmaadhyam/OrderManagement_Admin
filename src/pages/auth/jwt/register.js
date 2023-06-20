@@ -368,7 +368,7 @@ const handleCities = async (event) => {
               country: currentCountry,
               type: type,
               gstNumber: gstn,
-              pandcard: pan,
+              pandCard: pan,
               createdDate:new Date(),
               unpdatedDate:new Date()
             })
