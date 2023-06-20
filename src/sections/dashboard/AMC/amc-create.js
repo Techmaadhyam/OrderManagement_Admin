@@ -419,7 +419,7 @@ const handleClick = async (event) => {
            response.json().then(data => {
     
       
-          navigate('/dashboard/services/amcrDetail', { state: data });
+          navigate('/dashboard/services/amcDetail', { state: data });
           console.log(data)
           });
           } 
