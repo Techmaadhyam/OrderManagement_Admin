@@ -158,7 +158,7 @@ const [status, setStatus] = useState(state?.status || "");
 const [contactName,setContactName] = useState(state?.contactPerson||'')
 const [phone, setPhone] = useState(state?.contactPhone||'');
 const [address, setAddress] = useState(state?.deliveryAddress || "");
-const [tempId, setTempId] = useState(state?.tempUserId);
+const [tempId, setTempId] = useState(state?.tempUser?.id);
 const [terms, setTerms] = useState(state?.termsAndCondition || '');
 const [comment, setComment] = useState(state?.comments||'');
 const [user, setUser] = useState(state?.tempUser.companyName ||'');
@@ -386,6 +386,58 @@ const [productName, setProductName] = useState('');
       console.error("Error fetching states:", error);
     }
   };
+
+  useEffect(() => {
+    const fetchStates = async () => {
+      try {
+        const response = await axios.get(`https://www.universal-tutorial.com/api/states/${currentCountry}`, {
+          headers: {
+            'Authorization': 'Bearer ' + accessToken,
+            'Accept': 'application/json'
+          }
+        });
+
+        if (response.status === 200) {
+          const data = response.data;
+          setStates(data);
+        } else {
+          throw new Error('Network response was not ok');
+        }
+      } catch (error) {
+        console.error('Error fetching states:', error);
+      }
+    };
+
+    if (currentCountry && accessToken) {
+      fetchStates();
+    }
+  }, [currentCountry, accessToken]);
+
+  useEffect(() => {
+    const fetchCities = async () => {
+      try {
+        const response = await axios.get(`https://www.universal-tutorial.com/api/cities/${currentState}`, {
+          headers: {
+            'Authorization': 'Bearer ' + accessToken,
+            'Accept': 'application/json'
+          }
+        });
+
+        if (response.status === 200) {
+          const data = response.data;
+          setCities(data);
+        } else {
+          throw new Error('Network response was not ok');
+        }
+      } catch (error) {
+        console.error('Error fetching states:', error);
+      }
+    };
+
+    if (currentState && accessToken) {
+      fetchCities();
+    }
+  }, [currentState, accessToken]);
   
   //sets default country to India and fetches state list for India and is pushed to setStates
   const handleDefaultState = async () => {
@@ -585,7 +637,7 @@ const notify = (type, message) => {
         productId,
         productName,
         weight,
-        quotationId: null,
+        quotationId: quotation,
         quantity: parseFloat(quantity),
         price: parseFloat(price),
         cgst: parseFloat(cgst),
@@ -691,35 +743,6 @@ const notify = (type, message) => {
     
     
     event.preventDefault();
-
-    console.log({
-      salesOrder:{
-          id: state?.id,
-          quotationId:null,
-          userId: userState,
-          tempUserId :tempId,
-          contactPerson: contactName,
-          contactPhone: phone,    
-          status: status,
-          paymentMode: payment,
-          deliveryDate: dDate,
-          deliveryAddress: address,
-          city: currentCity,
-          state: currentState,
-          country: currentCountry,
-          pinCode: zipcode,
-          city: null,
-          state:null,
-          country: null,
-          lastModifiedDate: new Date(),
-          comments : comment,
-          termsAndCondition: terms,
-          totalAmount: finalAmount,
-          lastModifiedByUser: {id: userId},
-      },
-          salesOrderDetails: updatedRows,
-          deletedSODetails: deleteRows
-  })
     
       if (contactName && address && userId && phone && status && address && comment && terms && updatedRows) {
         try {
@@ -732,7 +755,7 @@ const notify = (type, message) => {
             body: JSON.stringify({
               salesOrder:{
                   id: state?.id,
-                  quotationId:null,
+                  quotationId: quotation,
                   //companyuser: {id: userState} ,
                   tempUser : {id:tempId},
                   contactPerson: contactName,
@@ -748,6 +771,7 @@ const notify = (type, message) => {
                   pinCode: zipcode,
                   createdBy: userId,
                   lastModifiedDate:new Date(),
+                  createdDate: state?.originalcreatedDate,
                   comments : comment,
                   termsAndCondition: terms,
                   totalAmount: finalAmount,
@@ -774,8 +798,6 @@ const notify = (type, message) => {
     
     };
 
-    console.log(dDate)
-    console.log(inventoryData)
 
   return (
     <div style={{minWidth: "100%" }}>

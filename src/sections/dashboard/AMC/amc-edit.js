@@ -482,7 +482,7 @@ console.log(idx, row)
                 startdate: deliveryIST,
                 enddate: deliveryIST2,
                 createdByUser: {id: userId},
-                createdDate: new Date(),
+                createdDate: state?.originalcreatedDate,
                 lastModifiedDate: new Date(),
                 comments : comment,
                 lastModifiedByUser: {id: userId},
@@ -502,7 +502,7 @@ console.log(idx, row)
             // Redirect to home page upon successful submission
         
            response.json().then(data => {
-            navigate('/dashboard/services/amcrDetail', { state: data });
+            navigate('/dashboard/services/amcDetail', { state: data });
             console.log(data)
       
     });
@@ -533,7 +533,7 @@ console.log(idx, row)
                 startdate: deliveryIST,
                 enddate: deliveryIST2,
                 createdByUser: {id: userId},
-                createdDate: new Date(),
+                createdDate: state?.originalcreatedDate,
                 lastModifiedDate: new Date(),
                 comments : comment,
                 lastModifiedByUser: {id: userId},
@@ -553,7 +553,7 @@ console.log(idx, row)
             // Redirect to home page upon successful submission
         
            response.json().then(data => {
-            navigate('/dashboard/services/amcrDetail', { state: data });
+            navigate('/dashboard/services/amcDetail', { state: data });
             console.log(data)
       
     });

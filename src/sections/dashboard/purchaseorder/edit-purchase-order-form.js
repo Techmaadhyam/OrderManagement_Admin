@@ -154,7 +154,7 @@ const [status, setStatus] = useState(state?.status || "");
 const [contactName,setContactName] = useState(state?.contactPerson ||'')
 const [phone, setPhone] = useState(state?.contactPhone||'');
 const [address, setAddress] = useState(state?.deliveryAddress || "");
-const [tempId, setTempId] = useState(state?.tempUserId);
+const [tempId, setTempId] = useState(state?.tempUser.id);
 const [terms, setTerms] = useState(state?.termsAndCondition || '');
 const [comment, setComment] = useState(state?.comments||'');
 const [user, setUser] = useState(state?.tempUser.companyName ||'')
@@ -294,7 +294,7 @@ const [productName, setProductName] = useState('');
   
   //mapping countries to MUI select input field
   const userOptionsCountry = useMemo(() => {
-    return countries.map(country => ({
+    return countries?.map(country => ({
       label: country.country_name,
       value: country.country_name
     }));
@@ -302,7 +302,7 @@ const [productName, setProductName] = useState('');
   
   //mapping states to MUI select input field
   const userOptionsState = useMemo(() => {
-    return states.map(state => ({
+    return states?.map(state => ({
       label: state.state_name,
       value: state.state_name
     }));
@@ -310,7 +310,7 @@ const [productName, setProductName] = useState('');
   
   //mapping cities to MUI select input field
   const userOptionsCities = useMemo(() => {
-    return cities.map(city => ({
+    return cities?.map(city => ({
       label: city.city_name,
       value: city.city_name
     }));
@@ -329,6 +329,7 @@ const [productName, setProductName] = useState('');
   
       if (!response.ok) {
         throw new Error("Network response was not ok");
+        
       }
       const data = await response.json();
       setStates(data);
@@ -357,6 +358,58 @@ const [productName, setProductName] = useState('');
       console.error("Error fetching states:", error);
     }
   };
+  useEffect(() => {
+    const fetchStates = async () => {
+      try {
+        const response = await axios.get(`https://www.universal-tutorial.com/api/states/${currentCountry}`, {
+          headers: {
+            'Authorization': 'Bearer ' + accessToken,
+            'Accept': 'application/json'
+          }
+        });
+
+        if (response.status === 200) {
+          const data = response.data;
+          setStates(data);
+        } else {
+          throw new Error('Network response was not ok');
+        }
+      } catch (error) {
+        console.error('Error fetching states:', error);
+      }
+    };
+
+    if (currentCountry && accessToken) {
+      fetchStates();
+    }
+  }, [currentCountry, accessToken]);
+
+  useEffect(() => {
+    const fetchCities = async () => {
+      try {
+        const response = await axios.get(`https://www.universal-tutorial.com/api/cities/${currentState}`, {
+          headers: {
+            'Authorization': 'Bearer ' + accessToken,
+            'Accept': 'application/json'
+          }
+        });
+
+        if (response.status === 200) {
+          const data = response.data;
+          setCities(data);
+        } else {
+          throw new Error('Network response was not ok');
+        }
+      } catch (error) {
+        console.error('Error fetching states:', error);
+      }
+    };
+
+    if (currentState && accessToken) {
+      fetchCities();
+    }
+  }, [currentState, accessToken]);
+
   
   //sets default country to India and fetches state list for India and is pushed to setStates
   const handleDefaultState = async () => {
@@ -383,6 +436,8 @@ const [productName, setProductName] = useState('');
   const handleCities = async (event) => {
   setCurrentCity(event.target.value);
   }
+
+  console.log(currentCountry, currentState, currentCity)
 
  const handleInputChange = (event) => {
   const { name, value } = event.target;
@@ -622,37 +677,7 @@ const [productName, setProductName] = useState('');
   //post request
   const handleClick = async (event) => {
     let finalAmount = parseFloat(totalAmount.toFixed(2))
-
-    
-    
     event.preventDefault();
-
-    console.log({
-      purchaseOrder:{
-          id: state?.id,
-          quotationId: quotation,
-          companyuser: {id: userState} ,
-          tempUser : {id:tempId},
-          contactPerson: contactName,
-          contactPhone: phone,    
-          status: status,
-          paymentMode: payment,
-          type: type,
-          deliveryDate: dDate,
-          address: address,
-          city: currentCity,
-          state: currentState,
-          country: currentCountry,
-          pincode: zipcode,
-          createdBy: userId,
-          lastModifiedDate: new Date(),
-          comments : comment,
-          termsAndCondition: terms,
-          totalAmount: finalAmount,
-      },
-          purchaseOrderDetails: updatedRows,
-          deletedPODetails: deleteRows
-  })
     
       if (contactName && address && userId && phone && status && address && comment && terms && updatedRows) {
         try {
@@ -681,6 +706,7 @@ const [productName, setProductName] = useState('');
                   pinCode: zipcode,
                   createdBy: userId,
                   lastModifiedDate:new Date(),
+                  createdDate: state?.originalcreatedDate,
                   comments : comment,
                   termsAndCondition: terms,
                   totalAmount: finalAmount,
@@ -984,7 +1010,7 @@ const handleFileDecode = (fileDecode, fileNames) => {
   setDeliveryChallanFile(deliveryFile);
 };
 
-console.log(performaInvoiceFile, approvedInvoiceFile, deliveryChallanFile)
+
 
   return (
     <div style={{minWidth: "100%" }}>

@@ -142,7 +142,7 @@ const [adminPhone, setAdminPhone] = useState(state?.adminPhoneNumber ||'');
 const [inchargeEmail, setInchargeEmail] = useState(state?.contactEmail ||'');
 const [phone, setPhone] = useState(state?.contactPhoneNumber ||'');
 const [address, setAddress] = useState(state?.deliveryAddress || "");
-const [tempId, setTempId] = useState(state?.tempUserId);
+const [tempId, setTempId] = useState(state?.tempUser.id);
 const [userState, setUserState] = useState(state?.userId);
 const [terms, setTerms] = useState(state?.termsAndCondition || '');
 const [comment, setComment] = useState(state?.comments||'');
@@ -184,7 +184,28 @@ const [productName, setProductName] = useState('');
   useEffect(() => {
     axios.get(apiUrl +`getAllQuotationDetails/${state?.id || state?.quotation?.id}`)
       .then(response => {
-       setRowData(response.data)
+        const updatedData = response.data.map(obj => {
+          let parsedProductId;
+          let parsedProductName;
+          try {
+            const parsedProduct = JSON.parse(obj.product);
+            parsedProductId = parsedProduct.id;
+            parsedProductName = parsedProduct.productName
+          } catch (error) {
+            console.error("Error parsing product JSON for object:", obj, error);
+            parsedProductId = null;
+            parsedProductName= null
+          }
+  
+          return {
+            ...obj,
+            productName: parsedProductName,
+            productId: parsedProductId ,
+            product:{id: parsedProductId}
+          };
+        });
+
+       setRowData(updatedData)
        setTotalAmount(state?.totalAmount)
       
       })
@@ -341,7 +362,7 @@ const handleDateEnd = (date) => {
     ) {
       const newRow = {
         id: Id,
-        productId,
+        product: {id : productId},
         productName,
         price: parseFloat(price),
         description,
@@ -434,39 +455,15 @@ console.log(idx, row)
 
 
   
-  const updatedRows = rowData?.map(({ productName, ...rest }) => rest);
+  const updatedRows = rowData?.map(({ productName, inventory, productId,  ...rest }) => rest);
   const deleteRows= deletedRows?.map(({ productName, ...rest }) => rest);
 
   //post request
   const handleClick = async (event) => {
     let finalAmount = parseFloat(totalAmount.toFixed(2))
 
-    
-    
     event.preventDefault();
 
-    console.log({
-      quotation:{
-          id: state?.id,
-          userId: userState,
-          tempUserId :tempId,
-          contactPerson: contactName,
-          contactPhone: phone,    
-          status: status,
-          type: type,
-          deliveryDate: dDate,
-          deliveryAddress: address,
-          createdBy: userId,
-          lastModifiedDate: currentDate,
-
-          comments : comment,
-          termsAndCondition: terms,
-          totalAmount: finalAmount,
-      },
-        quotationDetails: updatedRows,
-        deletedQuotationDetails: deleteRows
-  })
-    
       if (contactName && userId && phone && status && comment && terms && updatedRows) {
         try {
           const response = await fetch(apiUrl +'addQuoatation', {
@@ -494,6 +491,7 @@ console.log(idx, row)
                   enddate: deliveryIST2,
                   lastModifiedDate: new Date(),
                   lastModifiedByUser: {id: userId},
+                  createdDate: state?.originalcreatedDate,
                   comments : comment,
                   termsAndCondition: terms,
                   totalAmount: finalAmount,

@@ -257,6 +257,7 @@ useEffect(() => {
         sgst:parseFloat(sgst),
         cgst:parseFloat(cgst),
         igst:parseFloat(igst),
+        createdDate: new Date(),
         lastModifiedByUser: {id: userId},
       },
 
@@ -290,6 +291,7 @@ useEffect(() => {
       sgst:parseFloat(sgst),
       cgst:parseFloat(cgst),
       igst:parseFloat(igst),
+      createdDate: new Date(),
       lastModifiedByUser: {id: userId},
     },
 

@@ -96,6 +96,7 @@ const QuotationViewTable = () => {
     const formattedItem = { ...item }; 
   
     if (formattedItem.createdDate) {
+      formattedItem.originalcreatedDate =formattedItem.createdDate
       formattedItem.createdDate = formatDate(formattedItem.createdDate);
     }
   

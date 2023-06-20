@@ -157,7 +157,7 @@ const [status, setStatus] = useState(state?.status || "");
 const [contactName,setContactName] = useState(state?.contactPersonName ||'')
 const [phone, setPhone] = useState(state?.contactPhoneNumber ||'');
 const [address, setAddress] = useState(state?.deliveryAddress || "");
-const [tempId, setTempId] = useState(state?.tempUserId);
+const [tempId, setTempId] = useState(state?.tempUser.id);
 const [userState, setUserState] = useState(state?.userId);
 const [terms, setTerms] = useState(state?.termsAndCondition || '');
 const [comment, setComment] = useState(state?.comments||'');
@@ -377,6 +377,58 @@ const [productName, setProductName] = useState('');
       console.error("Error fetching states:", error);
     }
   };
+
+  useEffect(() => {
+    const fetchStates = async () => {
+      try {
+        const response = await axios.get(`https://www.universal-tutorial.com/api/states/${currentCountry}`, {
+          headers: {
+            'Authorization': 'Bearer ' + accessToken,
+            'Accept': 'application/json'
+          }
+        });
+
+        if (response.status === 200) {
+          const data = response.data;
+          setStates(data);
+        } else {
+          throw new Error('Network response was not ok');
+        }
+      } catch (error) {
+        console.error('Error fetching states:', error);
+      }
+    };
+
+    if (currentCountry && accessToken) {
+      fetchStates();
+    }
+  }, [currentCountry, accessToken]);
+
+  useEffect(() => {
+    const fetchCities = async () => {
+      try {
+        const response = await axios.get(`https://www.universal-tutorial.com/api/cities/${currentState}`, {
+          headers: {
+            'Authorization': 'Bearer ' + accessToken,
+            'Accept': 'application/json'
+          }
+        });
+
+        if (response.status === 200) {
+          const data = response.data;
+          setCities(data);
+        } else {
+          throw new Error('Network response was not ok');
+        }
+      } catch (error) {
+        console.error('Error fetching states:', error);
+      }
+    };
+
+    if (currentState && accessToken) {
+      fetchCities();
+    }
+  }, [currentState, accessToken]);
   
   //sets default country to India and fetches state list for India and is pushed to setStates
   const handleDefaultState = async () => {
@@ -655,32 +707,9 @@ const notify = (type, message) => {
   //post request
   const handleClick = async (event) => {
     let finalAmount = parseFloat(totalAmount.toFixed(2))
-
-    
     
     event.preventDefault();
 
-    console.log({
-      quotation:{
-          id: state?.id,
-          userId: userState,
-          tempUserId :tempId,
-          contactPerson: contactName,
-          contactPhone: phone,    
-          status: status,
-          type: type,
-          deliveryDate: dDate,
-          deliveryAddress: address,
-          createdBy: userId,
-          lastModifiedDate:new Date(),
-          comments : comment,
-          termsAndCondition: terms,
-          totalAmount: finalAmount,
-      },
-        quotationDetails: updatedRows,
-        deletedQuotationDetails: deleteRows
-  })
-    
       if (contactName) {
         try {
           const response = await fetch(apiUrl +'addQuoatation', {
@@ -708,6 +737,7 @@ const notify = (type, message) => {
                   deliveryDate: deliveryIST,
                   lastModifiedDate: new Date(),
                   lastModifiedByUser: {id: userId},
+                  createdDate: state?.originalcreatedDate,
                   comments : comment,
                   termsAndCondition: terms,
                   totalAmount: finalAmount,

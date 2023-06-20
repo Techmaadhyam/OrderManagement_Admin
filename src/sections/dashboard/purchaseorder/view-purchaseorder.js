@@ -118,6 +118,7 @@ export const ViewPurchaseOrder = (props) => {
   useEffect(() => {
     axios.get(apiUrl +`getAllPurchaseOrderDetails/${state?.id || state?.purchaseOrderRec?.id}`)
       .then(response => {
+        console.log(response.data)
        setRowData(response.data)
 
       })

@@ -292,7 +292,7 @@ const deliveryIST2 = deliveryDateJS2
       description
     ) {
       const newRow = {
-        productId,
+        product: {id : productId},
         productName,
         quotationId: null,
         price: parseFloat(price),

@@ -79,6 +79,7 @@ const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
     const formattedItem = { ...item }; 
   
     if (formattedItem.createdDate) {
+      formattedItem.originalcreatedDate =formattedItem.createdDate
       formattedItem.createdDate = formatDate(formattedItem.createdDate);
     }
   

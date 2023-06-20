@@ -462,7 +462,7 @@ const handleDateChange = (date) => {
       size
     ) {
       const newRow = {
-        productId,
+        product: {id: productId},
         productName,
         weight,
         quotationId: null,
