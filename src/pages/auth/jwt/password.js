@@ -53,7 +53,7 @@ import {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [registeredId, setRegisteredId]  = useState("");
+    const [registeredData, setRegisteredData]  = useState("");
 
 
   
@@ -101,8 +101,8 @@ import {
         if (data.length === 0) {
           alert('No user found with the provided email');
         } else {
-          const firstUserId = data[0].id;
-          setRegisteredId(firstUserId)
+          const firstUser = data[0];
+          setRegisteredData(firstUser)
           console.log(data); 
           setStep(step + 1);
         }
@@ -117,7 +117,7 @@ import {
     };
   
   
-  console.log(registeredId)
+
     //fetches API token
     
     const images = [
@@ -170,9 +170,24 @@ import {
                 'Content-Type': 'application/json'
               },
               body: JSON.stringify({
-                id: registeredId,
+                id: registeredData.id,
                 password: password,
-                updatedDate:new Date()
+        
+                companyName: registeredData.companyName,
+                userName : registeredData.emailId,
+                firstName: registeredData.firstName,
+                lastName: registeredData.lastName,
+                emailId: registeredData.emailId,
+                mobile: `+91 ${registeredData.mobile}`,
+                address: registeredData.address,
+                city: registeredData.city,
+                state:registeredData.state,
+                country: registeredData.country,
+                type: registeredData.type,
+                gstNumber: registeredData.gstNumber,
+                pandcard: registeredData.pandcard,
+                createdDate: registeredData.createdDate,
+                unpdatedDate:new Date()
               })
             });
             
@@ -185,7 +200,7 @@ import {
                 "success",
                 "You have successfully changed Password. Please Log In."
               );
-              localStorage.setItem('notification', true);
+              //localStorage.setItem('notification', true);
               //window.location.href = paths.index;
              
     });
