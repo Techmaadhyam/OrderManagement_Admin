@@ -448,7 +448,7 @@ import {
                    >
                      <TextField
                            fullWidth
-                           label="Confirm Password"
+                           label="Confirm New Password"
                            name="confirmpassword"
                            type='password'
                            value={confirmPassword}
