@@ -143,6 +143,8 @@ console.log(state)
     return `${year}/${month}/${day}`;
   }
   const formattedDate = formatDate(state?.quotation?.deliveryDate);
+  const startdate = formatDate(state?.quotation?.startdate);
+  const enddate = formatDate(state?.quotation?.enddate);
 
   return (
     <div style={{minWidth: "100%", marginTop: "1rem"  }}>
@@ -184,12 +186,15 @@ console.log(state)
           value={String(state?.id || state?.quotation?.id)}
         />
         <Divider />
-        <PropertyListItem
+        {state?.category !== "Service Quotation"  &&
+        <>
+         <PropertyListItem
           align={align}
           label="DeliveryDate"
           value={state?.deliveryDate || formattedDate}
         />
         <Divider />
+        </> }
         <PropertyListItem
           align={align}
           label="Contact Name"
@@ -204,6 +209,18 @@ console.log(state)
         <Divider />
         {state?.adminPersonName && (
           <>
+            <PropertyListItem
+              align={align}
+              label="Assignment Start Date"
+              value={state?.startdate || startdate}
+            />
+            <Divider />
+            <PropertyListItem
+              align={align}
+              label="Assignment End Date"
+              value={state?.enddate || enddate}
+            />  
+            <Divider />
             <PropertyListItem
               align={align}
               label="Admin Name"
