@@ -239,6 +239,7 @@ const [productName, setProductName] = useState('');
       });
   }, [state?.id, state?.quotation?.id , state?.totalAmount]);
 
+
   //currentdate
   useEffect(() => {
     const today = new Date();

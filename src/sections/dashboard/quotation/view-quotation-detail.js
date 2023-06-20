@@ -176,7 +176,8 @@ console.log(state)
           label="User Name"
         >
           <Typography variant="subtitle2">
-          {state?.createdByUser?.firstName+' '+state?.createdByUser?.lastName}
+          {(state?.createdByUser?.firstName || state?.quotation?.createdByUser?.firstName) + ' ' +
+   (state?.createdByUser?.lastName || state?.quotation?.createdByUser?.lastName)}
           </Typography>
         </PropertyListItem>
         <Divider />

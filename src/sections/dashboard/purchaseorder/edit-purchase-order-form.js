@@ -220,7 +220,28 @@ const [productName, setProductName] = useState('');
   useEffect(() => {
     axios.get(apiUrl +`getAllPurchaseOrderDetails/${state?.id || state?.purchaseOrderRec?.id}`)
       .then(response => {
-       setRowData(response.data)
+        const updatedData = response.data.map(obj => {
+          let parsedProductId;
+          let parsedProductName;
+          try {
+            const parsedProduct = JSON.parse(obj.product);
+            parsedProductId = parsedProduct.id;
+            parsedProductName = parsedProduct.productName
+          } catch (error) {
+            console.error("Error parsing product JSON for object:", obj, error);
+            parsedProductId = null;
+            parsedProductName= null
+          }
+  
+          return {
+            ...obj,
+            productName: parsedProductName,
+            productId: parsedProductId ,
+            product:{id: parsedProductId}
+          };
+        });
+
+       setRowData(updatedData)
        setTotalAmount(state?.totalAmount)
       })
       .catch(error => {
@@ -578,7 +599,7 @@ const [productName, setProductName] = useState('');
     ) {
       const newRow = {
         id: Id,
-        productId,
+        product: {id : productId},
         productName,
         weight,
         quotationId: quotation,
@@ -657,6 +678,7 @@ const [productName, setProductName] = useState('');
     setIgst('')
     setSgst('')
     setDescription('');
+    setId(undefined)
   };
 
   //
@@ -672,7 +694,7 @@ const [productName, setProductName] = useState('');
 
 
   
-  const updatedRows = rowData?.map(({ productName, ...rest }) => rest);
+  const updatedRows = rowData?.map(({ productName, inventory, productId,  ...rest }) => rest);
   const deleteRows= deletedRows?.map(({ productName, ...rest }) => rest);
   //post request
   const handleClick = async (event) => {

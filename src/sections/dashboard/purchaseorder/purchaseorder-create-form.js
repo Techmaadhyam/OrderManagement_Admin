@@ -504,7 +504,7 @@ const deliveryIST = deliveryDateJS;
       size
     ) {
       const newRow = {
-        productId,
+        product: {id: productId},
         productName,
         weight,
         quotationId: quotation,
