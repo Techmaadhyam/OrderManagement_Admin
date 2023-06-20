@@ -23,6 +23,7 @@ const FirebaseRegisterPage = lazy(() => import('src/pages/auth/firebase/register
 // JWT
 const JwtLoginPage = lazy(() => import('src/pages/auth/jwt/login'));
 const JwtRegisterPage = lazy(() => import('src/pages/auth/jwt/register'));
+const JWTForgotPasswordPage = lazy(() => import('src/pages/auth/jwt/password'));
 
 export const authRoutes = [
   {
@@ -108,10 +109,7 @@ export const authRoutes = [
         path: 'jwt',
         element: (
           <IssuerGuard issuer={Issuer.JWT}>
-
-              <AuthLayout>
                 <Outlet />
-              </AuthLayout>
       
           </IssuerGuard>
         ),
@@ -123,6 +121,10 @@ export const authRoutes = [
           {
             path: 'register',
             element: <JwtRegisterPage />
+          },
+          {
+            path: 'password',
+            element: <JWTForgotPasswordPage />
           }
         ]
       }

@@ -10,6 +10,7 @@ import Register from 'src/pages/auth/jwt/register';
 
 
 
+
 export const Layout = (props) => {
  
   return (

@@ -23,6 +23,8 @@ import { primaryColor } from 'src/primaryColor';
 import { ToastContainer, toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
+import { fontStyle } from '@mui/system';
 
 
 const initialValues = {
@@ -35,8 +37,8 @@ const validationSchema = Yup.object({
   email: Yup
     .string()
     .email('Must be a valid email')
-    .max(255)
-    .required('Email is required'),
+    .max(255),
+
   password: Yup
     .string()
     .max(255)
@@ -46,7 +48,8 @@ const validationSchema = Yup.object({
 const Page = () => {
   const [notification, setNotification] = useState(false);
 
-
+  //react router haldle state transfer
+  const navigate = useNavigate();
 
   const isMounted = useMounted();
   const searchParams = useSearchParams();
@@ -91,6 +94,8 @@ const Page = () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, []);
+
+
   
   useEffect(() => {
     if (notification) {
@@ -130,26 +135,22 @@ const Page = () => {
           draggable
           pauseOnHover
           theme="light"/>
-         <Typography
-          sx={{ ml: 3, mt: 3, fontSize: '1.2rem'}}
-          variant="subtitle2"
-          color="text.primary"
-        >
-          Hello! Welcome to TechMaadhyam
-        </Typography>
+      
              <CardHeader
-           title={(
+              titleTypographyProps={{variant:'h5' }}
+            title= "Hello! Welcome to TechMaadhyam"
+           subheader={(
               <Typography
                 color="text.secondary"
                 variant="body2"
-                sx={{mt:-4}}
+                
                 
               >
                 If you don&apos;t have an account.
                 &nbsp;
                 <Link
                   component={RouterLink}
-                  //href={paths.auth.jwt.register}
+                  href={paths.auth.jwt.register}
                   underline="hover"
                   variant="subtitle2"
                 >
@@ -165,7 +166,8 @@ const Page = () => {
           alignItems: 'center',
           textAlign: 'center',
           marginTop: '20px',
-          marginBottom: '-10px'
+          marginBottom: '-10px',
+          fontStyle: 'inherit'
         }}
         
           >Log In</h3>
@@ -204,12 +206,12 @@ const Page = () => {
               >
                 Forgot Password?
                 &nbsp;
-                <Link
-                  component={RouterLink}
-                  //href={paths.auth.jwt.register}
-                  underline="hover"
-                  variant="subtitle2"
-                >
+                <Link 
+                //onClick={handlePassword}
+                component={RouterLink}
+                href={paths.auth.jwt.forgotPassword}
+                underline="hover" 
+                variant="subtitle2">
                   Click Here
                 </Link>
                 
