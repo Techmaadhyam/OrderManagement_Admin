@@ -187,6 +187,7 @@ import {
                 gstNumber: registeredData.gstNumber,
                 pandcard: registeredData.pandcard,
                 createdDate: registeredData.createdDate,
+                pincode:registeredData.pincode,
                 unpdatedDate:new Date()
               })
             });

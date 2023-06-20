@@ -369,6 +369,7 @@ const handleCities = async (event) => {
               type: type,
               gstNumber: gstn,
               pandcard: pan,
+              pincode: zipcode,
               createdDate:new Date(),
               unpdatedDate:new Date()
             })
