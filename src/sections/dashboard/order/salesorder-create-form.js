@@ -849,6 +849,20 @@ height='50px'/>
             >
               <TextField
                 fullWidth
+                label="Mode of Delivery"
+                
+                name="delivery"
+                required
+      
+              />
+            </Grid>
+            <Grid/>
+            <Grid
+              xs={12}
+              md={6}
+            >
+              <TextField
+                fullWidth
                 label="Shipping Address"
                 multiline
                 minRows={3}
