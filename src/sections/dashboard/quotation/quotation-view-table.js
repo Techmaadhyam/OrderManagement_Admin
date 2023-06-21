@@ -687,7 +687,7 @@ const rowData = response.data.map((product, index) => {
                 body: [
                   [
                     { text: `Bill To: ${record.tempUser.companyName}`, style: 'tableLabel', border: [true, true, true, false]},
-                    { text: `Ship To: ${record.contactPerson}`, style: 'tableLabel', border: [true, true, true, false] },
+                    { text: `Ship To: ${record.contactPersonName}`, style: 'tableLabel', border: [true, true, true, false] },
                     { text: 'Customer GST Registration information', style: 'tableLabel' },
                     // { text: 'Mode of Dispatch: Courier', style: 'tableLabel', border: [true, true, true, true]},
                   ],
@@ -706,7 +706,25 @@ const rowData = response.data.map((product, index) => {
                   heights:['auto', 'auto'],
                   widths: record.category==='Service Quotation'?['auto', '*', 'auto', 'auto', 'auto']:['auto', '*', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
                 body: [
-                  ...headerData,
+                  record.category === 'Service Quotation' ? [
+                    { text: 'S.No.', style: 'tableLabel' },
+                    { text: 'Product Description', style: 'tableLabel' },
+                    { text: 'Workstation Count', style: 'tableLabel' },
+                    { text: 'IGST', style: 'tableLabel' },
+                    { text: 'Cost', style: 'tableLabel' },
+                  ] : [
+                    { text: 'S.No.', style: 'tableLabel' },
+                    { text: 'Product Description', style: 'tableLabel' },
+                    { text: 'HSN/SAC Code', style: 'tableLabel' },
+                    { text: 'Qty', style: 'tableLabel' },
+                    { text: 'Weight', style: 'tableLabel' },
+                    { text: 'Size', style: 'tableLabel' },
+                    { text: 'Cost', style: 'tableLabel' },
+                    { text: 'CGST', style: 'tableLabel' },
+                    { text: 'SGST', style: 'tableLabel' },
+                    { text: 'IGST', style: 'tableLabel' },
+                    { text: 'Amount', style: 'tableLabel' }
+                  ],
                   
                   ...rowData,
                 ],
@@ -1008,3 +1026,4 @@ if (deliveryDateIndex !== -1 && filteredList.some(item => item.category === "Ser
     };
     
     export default  QuotationViewTable;
+

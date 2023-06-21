@@ -1,4 +1,3 @@
-
 import {
   Typography,
   IconButton,
@@ -222,7 +221,7 @@ const handleWorkInvoice = async (record) => {
                       {text: `${record.createdByUser.companyName}`, style: 'header'},
                       { text: `${record.createdByUser.address}, ${record.createdByUser.city}, ${record.createdByUser.pincode}, ${record.createdByUser.state}, ${record.createdByUser.country}`, style: 'subheader' },
                 { text: `GSTIN: ${record.createdByUser.gstNumber}`, style: 'subheader'},
-                { text: 'PAN: AAGFT5872R', style: 'subheader'},
+                { text: `PAN: ${record.createdByUser.pancard}`, style: 'subheader'},
                   ],
                   margin: [20, 0, 0, 0],
                 },
