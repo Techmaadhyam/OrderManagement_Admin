@@ -92,6 +92,11 @@ export const ViewPurchaseOrder = (props) => {
         key: 'igst',
         dataIndex: 'igst',
       },
+      {
+        title: 'Net Amount',
+        key: 'netAmount',
+        dataIndex: 'netAmount',
+      },
   
   ]
 
@@ -118,9 +123,20 @@ export const ViewPurchaseOrder = (props) => {
   useEffect(() => {
     axios.get(apiUrl +`getAllPurchaseOrderDetails/${state?.id || state?.purchaseOrderRec?.id}`)
       .then(response => {
-        console.log(response.data)
-       setRowData(response.data)
-
+        const modifiedData = response.data.map(item => {
+          const { quantity, price, cgst, igst, sgst } = item;
+          const netAmount = (
+            (quantity * price) +
+            ((quantity * price) * cgst / 100) +
+            ((quantity * price) * igst / 100) +
+            ((quantity * price) * sgst / 100)
+          ).toFixed(2);
+  
+          return { ...item, netAmount };
+        });
+  
+        setRowData(modifiedData);
+      
       })
       .catch(error => {
         console.error(error);

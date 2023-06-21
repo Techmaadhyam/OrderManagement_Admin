@@ -70,6 +70,11 @@ const columns = [
       key: 'igst',
       dataIndex: 'igst',
     },
+    {
+      title: 'Net Amount',
+      key: 'netAmount',
+      dataIndex: 'netAmount',
+    },
  
 ];
 
@@ -94,6 +99,11 @@ const columns2=[
     dataIndex:'igst',
     title:'IGST',
    key: 'igst',
+},
+{
+  title: 'Net Amount',
+  key: 'netAmount2',
+  dataIndex: 'netAmount2',
 },
 
 ];
@@ -126,9 +136,25 @@ console.log(state)
   useEffect(() => {
     axios.get(apiUrl +`getAllQuotationDetails/${state?.id || state?.quotation?.id}`)
       .then(response => {
-       setRowData(response.data)
-       console.log(response.data)
-     
+        const modifiedData = response.data.map(item => {
+          const { quantity, price, cgst, igst, sgst, workstationCount  } = item;
+          const netAmount = (
+            (quantity * price) +
+            ((quantity * price) * cgst / 100) +
+            ((quantity * price) * igst / 100) +
+            ((quantity * price) * sgst / 100)
+          ).toFixed(2);
+
+          const netAmount2 = (
+            ((workstationCount * price) +
+            ((workstationCount * price) * igst/ 100)).toFixed(2)
+              )
+  
+          return { ...item, netAmount , netAmount2 };
+        });
+  
+        setRowData(modifiedData);
+      
       })
       .catch(error => {
         console.error(error);

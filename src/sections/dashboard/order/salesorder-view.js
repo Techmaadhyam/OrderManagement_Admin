@@ -70,6 +70,11 @@ const columns = [
       key: 'igst',
       dataIndex: 'igst',
     },
+    {
+      title: 'Net Amount',
+      key: 'netAmount',
+      dataIndex: 'netAmount',
+    },
   
 ];
 
@@ -102,9 +107,20 @@ console.log(state)
   useEffect(() => {
     axios.get(apiUrl +`getAllSalesOrderDetails/${state?.id || state?.soRecord?.id}`)
       .then(response => {
-       setRowData(response.data)
-       console.log(response.data)
-
+        const modifiedData = response.data.map(item => {
+          const { quantity, price, cgst, igst, sgst } = item;
+          const netAmount = (
+            (quantity * price) +
+            ((quantity * price) * cgst / 100) +
+            ((quantity * price) * igst / 100) +
+            ((quantity * price) * sgst / 100)
+          ).toFixed(2);
+  
+          return { ...item, netAmount };
+        });
+  
+        setRowData(modifiedData);
+      
       })
       .catch(error => {
         console.error(error);

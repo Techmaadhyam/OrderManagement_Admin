@@ -26,7 +26,7 @@ const User = () => {
       .catch(error => {
         console.error(error);
       });
-  }, [userData]);
+  }, []);
 
   const handleClick =() =>{
     

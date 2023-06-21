@@ -334,7 +334,7 @@ console.log(user)
         Id: Id,
         product: {id: productId},
         productName,
-        workOrderId: null,
+        workOrderId: state?.id,
         unitPrice: parseFloat(price),
         description,
         //createdBy: userId,
