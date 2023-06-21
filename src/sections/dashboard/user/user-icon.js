@@ -5,12 +5,41 @@ import './user.css';
 import { paths } from 'src/paths';
 import { RouterLink } from 'src/components/router-link';
 import { primaryColor } from 'src/primaryColor';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { apiUrl } from 'src/config';
+import { useNavigate } from 'react-router-dom';
+
+const mail = sessionStorage.getItem('mail')
 
 const User = () => {
+  const navigate = useNavigate();
+
+  const [userData, setUserData]= useState()
+
+  useEffect(() => {
+    axios.get(apiUrl + `getUserByUsername/${mail}`)
+      .then(response => {
+    
+        setUserData(response.data[0]);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, [userData]);
+
+  const handleClick =() =>{
+    
+    navigate('/dashboard/social/profile', {
+      state: userData,
+    });
+  }
+
   return (
     <Link style={{color: '#111927'}}
-    component={RouterLink}
-    href= {paths.dashboard.social.profile}>
+ 
+    onClick={handleClick}
+    >
       <Box className="popup-container" 
       sx={{backgroundColor: `${primaryColor}`
     }}
@@ -21,9 +50,9 @@ const User = () => {
           </SvgIcon>
         </ButtonBase>
         <div className="popup-content">
-          <span className='title'>Tech Maadhyam</span>
-          <span className='user'>User: Max Ray</span>
-          <span className='mail'>Mail: maxray@xyz.com</span>
+          <span className='title'>TechMaadhyam</span>
+          <span className='user'>User: {userData?.firstName+' '+userData?.lastName}</span>
+          <span className='mail'>Mail: {userData?.userName}</span>
         </div>
       </Box>
     </Link>

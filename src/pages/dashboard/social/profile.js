@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import {
   Box,
@@ -21,6 +22,7 @@ import { PropertyListItem } from 'src/components/property-list-item';
 
 
 const useProfile = () => {
+
   const isMounted = useMounted();
   const [profile, setProfile] = useState(null);
 
@@ -48,6 +50,11 @@ const useProfile = () => {
 
 export const Page = () => {
   const profile = useProfile();
+
+
+  const location = useLocation();
+  const state = location.state;
+console.log(state)
 
   usePageView();
 
@@ -106,56 +113,50 @@ const handleLogout = () => {
           label="First Name"
         >
           <Typography variant="subtitle2">
-            {data.firstName}
+            {state?.firstName}
           </Typography>
         </PropertyListItem>
         <Divider />
         <PropertyListItem
           align={align}
           label="Last Name"
-          value={data.lastName}
+          value={state?.lastName}
         />
         <Divider />
         <PropertyListItem
           align={align}
           label="Email"
-          value={data.email}
+          value={state?.userName}
         />
         <Divider />
         <PropertyListItem
           align={align}
           label="Phone"
-          value={data.phone}
-        />
-        <Divider />
-        <PropertyListItem
-          align={align}
-          label="Username"
-          value={data.username}
+          value={state?.mobile}
         />
         <Divider />
         <PropertyListItem
           align={align}
           label="Company"
-          value={data.company}
+          value={state?.companyName}
         />
         <Divider />
         <PropertyListItem
           align={align}
           label="Type"
-          value={data.type}
+          value={state?.type}
         />
         <Divider />
         <PropertyListItem
           align={align}
           label="Address"
-          value={data.address}
+          value={state?.address+', '+state?.city+', '+state?.state+', '+state?.country}
         />
         <Divider />
         <PropertyListItem
           align={align}
           label="ZipCode"
-          value={data.zipCode}
+          value={state?.pincode}
         >
         </PropertyListItem>
       </PropertyList>

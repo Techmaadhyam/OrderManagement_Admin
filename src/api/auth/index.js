@@ -47,6 +47,7 @@ class AuthApi {
           if(response && response.data && response.data.length > 0 && password === response.data[0].password){
             users = response.data[0];
             window.sessionStorage.setItem('user', response.data[0].id);
+            window.sessionStorage.setItem('mail', response.data[0].userName);
             localStorage.setItem('user', response.data[0].id);
             //const accessToken = sign({ userId: user.id }, user.id, null);
             //const accessToken = sign({ userId: user.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });

@@ -176,7 +176,7 @@ import {
                 firstName: registeredData.firstName,
                 lastName: registeredData.lastName,
                 emailId: registeredData.emailId,
-                mobile: `+91 ${registeredData.mobile}`,
+                mobile: registeredData.mobile,
                 address: registeredData.address,
                 city: registeredData.city,
                 state:registeredData.state,
