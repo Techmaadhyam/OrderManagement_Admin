@@ -170,7 +170,7 @@ console.log(tasks2)
               xs={12}
               md={4}
             >
-              <TotalCost amount={total} />
+              <TotalCost amount={total.toLocaleString("en-IN")} />
             </Grid>
             <Grid
               xs={12}
