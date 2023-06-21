@@ -23,7 +23,8 @@ import {
   TextField,
   InputBase,
   Icon,
-  MenuItem
+  MenuItem,
+  Pagination
 } from '@mui/material';
 import { customLocale } from 'src/utils/date-locale';
 import React, { useState, useEffect } from 'react';
@@ -42,12 +43,19 @@ const customerType = [
 
 ];
 
+const countPerPage = 5;
+
 export const OverviewTask = (props) => {
 
 
   const [isSearching, setIsSearching] = useState(false);
   const [searchText, setSearchText] = useState('');
   const [type, setType] = useState("");
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Calculate total number of pages
+
 
   const { messages } = props;
   const filteredMessages = messages?.filter(message =>
@@ -72,6 +80,50 @@ const handleCompanyCancel = () => {
 
 const handleInputChange = (event) => {
   setType(event.target.value);
+};
+
+const getStatusAvatarStyle = (status) => {
+  let backgroundColor;
+  let color;
+
+  switch (status) {
+    case 'Approved':
+      backgroundColor = '#dbf0aa';
+      color= '#919e05'
+      break;
+    case 'Draft':
+      backgroundColor = '#ffeab0';
+      color= '#ED8B00'
+      break;
+    case 'Delivered':
+      backgroundColor = '#c9ffb0';
+      color= '#06b004'
+      break;
+    case 'Waiting for Approval':
+      backgroundColor = '#e1e3e1';
+      color= '#99a399'
+      break;
+    case 'Cancelled':
+      backgroundColor = '#ffd4d4'
+      color= '#ff1919'
+      break;
+    default:
+      backgroundColor = '';
+  }
+
+  return {
+    color: color, backgroundColor: backgroundColor
+  };
+};
+
+const totalPages = Math.ceil(filteredType.length / countPerPage);
+
+const startIndex = (currentPage - 1) * countPerPage;
+const endIndex = startIndex + countPerPage;
+const currentMessages = filteredType.slice(startIndex, endIndex);
+
+const handlePageChange = (event, page) => {
+  setCurrentPage(page);
 };
 
 return (
@@ -127,8 +179,9 @@ return (
       )}
     
   />
+  <Divider/>
       <List disablePadding>
-      {filteredType?.map((message) => {
+      {currentMessages?.map((message) => {
 
           return (
             <ListItem
@@ -140,15 +193,13 @@ return (
                 }
               }}
             >
-              <ListItemAvatar>
-              {message?.category === 'poList' ? (
-
-                <Avatar>
-                  <ShoppingCart01Icon />
-                </Avatar>
-
+           <ListItemAvatar>
+           {message?.category === 'poList' ? (
+              <Avatar style={getStatusAvatarStyle(message?.status)}>
+                <ShoppingCart01Icon />
+              </Avatar>
             ) : (
-              <Avatar>
+              <Avatar style={getStatusAvatarStyle(message?.status)}>
                 <InventoryTwoToneIcon />
               </Avatar>
             )}
@@ -193,7 +244,13 @@ return (
           );
         })}
       </List>
-
+      <Pagination
+        count={totalPages}
+        page={currentPage}
+        onChange={handlePageChange}
+        size="small"
+        sx={{ mt: 2, mb: 2, justifyContent: 'center' }}
+      /> 
     </Card>
   );
 };

@@ -39,8 +39,8 @@ const Page = () => {
   const [so, setSo] = useState(0);
   const [po, setPo] = useState(0);
   const [quotation, setQuotation] = useState(0);
-  const [tasks, setTasks] = useState();
-  const [tasks2, setTasks2] = useState();
+  const [tasks, setTasks] = useState([]);
+  const [tasks2, setTasks2] = useState([]);
 
 
 

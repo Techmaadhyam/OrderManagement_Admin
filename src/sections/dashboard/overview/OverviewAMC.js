@@ -22,14 +22,22 @@ import {
   SvgIcon,
   Typography,
   InputBase,
-  Icon
+  Icon,
+  TextField,
+  Pagination
 } from '@mui/material';
 import { customLocale } from 'src/utils/date-locale';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import SearchIcon from '@mui/icons-material/Search';
 
+const countPerPage = 5;
+
 export const OverviewAMC = (props) => {
   const { messages } = props;
+
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchText, setSearchText] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
 
   function formatDate(dateString) {
     const parsedDate = new Date(dateString);
@@ -38,9 +46,6 @@ export const OverviewAMC = (props) => {
     const day = String(parsedDate.getDate()).padStart(2, '0');
     return `${year}/${month}/${day}`;
   }
-
-  const [isSearching, setIsSearching] = useState(false);
-  const [searchText, setSearchText] = useState('');
 
   const sortedMessages = messages?.sort((a, b) => new Date(a.enddate) - new Date(b.enddate));
 
@@ -62,6 +67,31 @@ const handleCompanyCancel = () => {
   setIsSearching(false);
   setSearchText('');
 };
+
+const getEndDateIconStyle = (enddate) => {
+  const timeDifference = new Date(enddate) - new Date();
+  const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+  if (daysDifference <= 5) {
+    return {  backgroundColor: '#ffd4d4', color: '#ff1919' };
+  } else if (daysDifference <= 10) {
+    return {  backgroundColor: '#ffeab0', color: '#ED8B00' };
+  } else {
+    return {  backgroundColor: '#c9ffb0', color: '#06b004' };
+  }
+};
+
+
+const totalPages = Math.ceil(filteredMessages.length / countPerPage);
+
+const startIndex = (currentPage - 1) * countPerPage;
+const endIndex = startIndex + countPerPage;
+const currentMessages = filteredMessages.slice(startIndex, endIndex);
+
+const handlePageChange = (event, page) => {
+  setCurrentPage(page);
+};
+
 
   return (
     <Card>
@@ -92,11 +122,11 @@ const handleCompanyCancel = () => {
           )}
         </>
       }
-     
     />
+    <Divider/>
         <List disablePadding>
 
-    {filteredMessages?.map((message) => {
+    {currentMessages?.map((message) => {
 
         return (
           <ListItem
@@ -111,12 +141,12 @@ const handleCompanyCancel = () => {
             <ListItemAvatar>
             {message?.category === 'poList' ? (
 
-              <Avatar>
+              <Avatar style={getEndDateIconStyle(message?.enddate)}>
                 <ShoppingCart01Icon />
               </Avatar>
 
           ) : (
-            <Avatar>
+            <Avatar style={getEndDateIconStyle(message?.enddate)}>
               <PendingActionsTwoToneIcon/>
             </Avatar>
           )}
@@ -161,7 +191,13 @@ const handleCompanyCancel = () => {
         );
       })}
     </List>
-
+    <Pagination
+        count={totalPages}
+        page={currentPage}
+        onChange={handlePageChange}
+        size="small"
+        sx={{ mt: 2, mb: 2, justifyContent: 'center' }}
+      /> 
   </Card>
   );
 };
