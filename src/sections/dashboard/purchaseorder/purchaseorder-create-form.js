@@ -688,7 +688,7 @@ let finalAmount = totalAmount.toFixed(2)
 
                let file = performaInvoiceFile;
                 jsonBodyData.fileId = 0;
-                jsonBodyData.fileName = performaInvoiceFile?.name;
+                jsonBodyData.fileName = 'proforma_invoice';
                 jsonBodyData.fileType = performaInvoiceFile?.type;
                 jsonBodyData.referenceId = data.purchaseOrderRec?.id;
                 jsonBodyData.referenceType = 'PurchaseOrder';
@@ -736,7 +736,7 @@ let finalAmount = totalAmount.toFixed(2)
 
                let file = approvedInvoiceFile;
                 jsonBodyData.fileId = 0;
-                jsonBodyData.fileName = approvedInvoiceFile?.name;
+                jsonBodyData.fileName = 'approved_invoice';
                 jsonBodyData.fileType = approvedInvoiceFile?.type;
                 jsonBodyData.referenceId = data.purchaseOrderRec?.id;
                 jsonBodyData.referenceType = 'PurchaseOrder';
@@ -783,7 +783,7 @@ let finalAmount = totalAmount.toFixed(2)
 
                let file = deliveryChallanFile;
                 jsonBodyData.fileId = 0;
-                jsonBodyData.fileName = deliveryChallanFile?.name;
+                jsonBodyData.fileName = 'delivery_challan';
                 jsonBodyData.fileType = deliveryChallanFile?.type;
                 jsonBodyData.referenceId = data.purchaseOrderRec?.id;
                 jsonBodyData.referenceType = 'PurchaseOrder';
@@ -886,7 +886,7 @@ let finalAmount = totalAmount.toFixed(2)
     };
 
     console.log('Performa Invoice File:', performaInvoiceFile?.name);
-    console.log('Performa Invoice File:', performaInvoiceFile?.type);
+
 
 
   return (
@@ -1490,7 +1490,7 @@ height='50px'/>
             md={6}
             style={{marginTop: "20px"}}
             >  
-            <label style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Upload Documents: </label>
+            <label style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Upload Documents In PDF Format: </label>
             <Box sx={{ mt: 2 , mb: 2}}
             display="flex"
             justifyContent="start"

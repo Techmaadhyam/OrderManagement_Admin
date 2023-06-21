@@ -44,7 +44,7 @@ export const ViewPurchaseOrder = (props) => {
   const deliveryChallan =location.state.deliveryChallan?.file
  
 
-  console.log(approvedInvoice)
+  console.log(performaInvoice, approvedInvoice, deliveryChallan )
   console.log(state)
 
 
@@ -160,44 +160,48 @@ export const ViewPurchaseOrder = (props) => {
   useEffect(() => {
     const getFile = async () => {
       try {
-        const fileResponse = await fetch(apiUrl +`getAllFiles/PurchaseOrder/${state?.id || state?.purchaseOrderRec?.id}`);
+        const fileResponse = await fetch(apiUrl + `getAllFiles/PurchaseOrder/${state?.id || state?.purchaseOrderRec?.id}`);
         if (fileResponse.ok) {
           const fileData = await fileResponse.json();
-          console.log(fileData)
-        
-      
-          const fileDecodeData = {
-            perfoma: fileData[0]?.fileData,
-            approved: fileData.length > 1 ? fileData[1]?.fileData : null,
-            delivery: fileData.length > 2 ? fileData[2]?.fileData : null
-          };
+          console.log(fileData);
   
-          const fileNamesData = {
-            perfoma: fileData[0]?.fileName,
-            approved: fileData.length > 1 ? fileData[1]?.fileName : null,
-            delivery: fileData.length > 2 ? fileData[2]?.fileName : null
-          };
+          const fileDecodeData = {};
+          const fileNamesData = {};
+          const fileIdData = {};
   
-          const fileIdData = {
-            perfoma: fileData[0]?.id,
-            approved: fileData.length > 1 ? fileData[1]?.id : null,
-            delivery: fileData.length > 2 ? fileData[2]?.id : null
-          };
-
+          fileData.forEach(file => {
+            switch (file.fileName) {
+              case 'proforma_invoice':
+                fileDecodeData.perfoma = file.fileData;
+                fileNamesData.perfoma = file.fileName;
+                fileIdData.perfoma = file.id;
+                break;
+              case 'approved_invoice':
+                fileDecodeData.approved = file.fileData;
+                fileNamesData.approved = file.fileName;
+                fileIdData.approved = file.id;
+                break;
+              case 'delivery_challan':
+                fileDecodeData.delivery = file.fileData;
+                fileNamesData.delivery = file.fileName;
+                fileIdData.delivery = file.id;
+                break;
+              default:
+                break;
+            }
+          });
   
           handleFileDecode(fileDecodeData, fileNamesData);
-       
         } else {
           console.error('Unable to fetch the file');
         }
       } catch (error) {
         console.error(error);
-    
       }
     };
   
     getFile();
-  },  [state?.id, state?.purchaseOrderRec?.id]);
+  }, [state?.id, state?.purchaseOrderRec?.id]);
 
   const decodeAndCreateURL = (base64String) => {
     if (!base64String) {

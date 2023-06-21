@@ -754,8 +754,8 @@ const [productName, setProductName] = useState('');
                 let jsonBodyData = {};
 
                let file = performaInvoiceFile;
-                jsonBodyData.fileId = fileId?.perfoma;
-                jsonBodyData.fileName = performaInvoiceFile?.name;
+                jsonBodyData.fileId = fileId?.perfoma || 0;
+                jsonBodyData.fileName = 'proforma_invoice';
                 jsonBodyData.fileType = performaInvoiceFile?.type;
                 jsonBodyData.referenceId = state?.id;
                 jsonBodyData.referenceType = 'PurchaseOrder';
@@ -802,8 +802,8 @@ const [productName, setProductName] = useState('');
                 let jsonBodyData = {};
 
                let file = approvedInvoiceFile;
-                jsonBodyData.fileId = fileId?.approved;
-                jsonBodyData.fileName = approvedInvoiceFile?.name;
+                jsonBodyData.fileId = fileId?.approved || 0;
+                jsonBodyData.fileName = 'approved_invoice';
                 jsonBodyData.fileType = approvedInvoiceFile?.type;
                 jsonBodyData.referenceId = state?.id;
                 jsonBodyData.referenceType = 'PurchaseOrder';
@@ -849,8 +849,8 @@ const [productName, setProductName] = useState('');
                 let jsonBodyData = {};
 
                let file = deliveryChallanFile;
-                jsonBodyData.fileId = fileId?.delivery;
-                jsonBodyData.fileName = deliveryChallanFile?.name;
+                jsonBodyData.fileId = fileId?.delivery || 0;
+                jsonBodyData.fileName = 'delivery_challan';
                 jsonBodyData.fileType = deliveryChallanFile?.type;
                 jsonBodyData.referenceId = state?.id;
                 jsonBodyData.referenceType = 'PurchaseOrder';
@@ -954,47 +954,53 @@ const [productName, setProductName] = useState('');
     useEffect(() => {
       const getFile = async () => {
         try {
-          const fileResponse = await fetch(apiUrl +`getAllFiles/PurchaseOrder/${state?.id || state?.purchaseOrderRec?.id}`);
+          const fileResponse = await fetch(apiUrl + `getAllFiles/PurchaseOrder/${state?.id || state?.purchaseOrderRec?.id}`);
           if (fileResponse.ok) {
             const fileData = await fileResponse.json();
-            console.log(fileData)
-          
-        
-            const fileDecodeData = {
-              perfoma: fileData[0]?.fileData,
-              approved: fileData.length > 1 ? fileData[1]?.fileData : null,
-              delivery: fileData.length > 2 ? fileData[2]?.fileData : null
-            };
+            console.log(fileData);
     
-            const fileNamesData = {
-              perfoma: fileData[0]?.fileName,
-              approved: fileData.length > 1 ? fileData[1]?.fileName : null,
-              delivery: fileData.length > 2 ? fileData[2]?.fileName : null
-            };
+            const fileDecodeData = {};
+            const fileNamesData = {};
+            const fileIdData = {};
     
-            const fileIdData = {
-              perfoma: fileData[0]?.id,
-              approved: fileData.length > 1 ? fileData[1]?.id : null,
-              delivery: fileData.length > 2 ? fileData[2]?.id : null
-            };
-
+            fileData.forEach(file => {
+              switch (file.fileName) {
+                case 'proforma_invoice':
+                  fileDecodeData.perfoma = file.fileData;
+                  fileNamesData.perfoma = file.fileName;
+                  fileIdData.perfoma = file.id;
+                  break;
+                case 'approved_invoice':
+                  fileDecodeData.approved = file.fileData;
+                  fileNamesData.approved = file.fileName;
+                  fileIdData.approved = file.id;
+                  break;
+                case 'delivery_challan':
+                  fileDecodeData.delivery = file.fileData;
+                  fileNamesData.delivery = file.fileName;
+                  fileIdData.delivery = file.id;
+                  break;
+                default:
+                  break;
+              }
+            });
+    
             setFileDecode(fileDecodeData);
             setFileId(fileIdData);
             setFileNames(fileNamesData);
     
             handleFileDecode(fileDecodeData, fileNamesData);
-         
           } else {
             console.error('Unable to fetch the file');
           }
         } catch (error) {
           console.error(error);
-      
         }
       };
     
       getFile();
-    },  [state?.id, state?.purchaseOrderRec?.id]);
+    }, [state?.id, state?.purchaseOrderRec?.id]);
+    
 
 
 // const blob = new Blob(byteArrays, { type: 'application/pdf' })
@@ -1623,7 +1629,7 @@ height='50px'/>
             md={6}
             style={{marginTop: "20px"}}
             >  
-            <label style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Upload Documents: </label>
+            <label style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Upload Documents In PDF Format: </label>
             <Box sx={{ mt: 2 , mb: 2}}
             display="flex"
             justifyContent="start"
