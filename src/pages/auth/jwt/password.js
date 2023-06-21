@@ -55,8 +55,6 @@ import {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [registeredData, setRegisteredData]  = useState("");
 
-
-  
     const [step, setStep] = useState(1);
     const [touched, setTouched] = useState(false);
   
@@ -442,7 +440,19 @@ import {
                    container
                    spacing={3}
                  >
-                   
+                   <Grid
+                     xs={12}
+                     md={12}
+                   >
+                     <TextField
+                           fullWidth
+                           label="Enter OTP sent to your email"
+                           name="otp"
+                           type= 'number'
+                  
+                         >
+                         </TextField>
+                   </Grid>
                    
                    <Grid
                      xs={12}
