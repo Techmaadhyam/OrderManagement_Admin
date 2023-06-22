@@ -87,6 +87,8 @@ console.log(state)
           return {
             ...obj,
             inventoryId: parsedInventory.id,
+            warehouseId: parsedInventory?.warehouseId,
+            productId: parsedInventory?.product?.id,
           };
         });
   

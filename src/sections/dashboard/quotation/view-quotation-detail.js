@@ -209,7 +209,7 @@ console.log(state)
           try {
             parsedProduct = JSON.parse(obj.product);
             parsedInventory = JSON.parse(obj.inventory);
-          
+          console.log(parsedInventory)
             
           } catch (error) {
             console.error("Error parsing inventory JSON for object:", obj, error);
@@ -218,11 +218,13 @@ console.log(state)
   
           return {
             ...obj,
-            productId: parsedProduct?.id,
             productName: parsedProduct?.productName,
             partnumber: parsedProduct?.partnumber,
             category: parsedProduct?.category?.name,
             inventoryId: parsedInventory?.id,
+            warehouseId: parsedInventory?.warehouseId,
+            productId: parsedProduct?.id || parsedInventory?.product?.id,
+
 
           };
         });
