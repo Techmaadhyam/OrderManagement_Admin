@@ -35,6 +35,7 @@ export const ViewProductDetail = (props) => {
 
 
   const [currentDate, setCurrentDate] = useState('');
+  
 
   const [editOpen, setEditOpen] = useState(false);
   const [editedData, setEditedData] = useState({
@@ -43,6 +44,8 @@ export const ViewProductDetail = (props) => {
   type: state?.type,
   description: state?.category?.description
   });
+  const [editedCategory, setEditedCategory] = useState(editedData.category || state?.category || '');
+  const [editedDescription, setEditedDescription] = useState(editedData.description || state?.description ||"");
 
     //for sending response body via route
     const navigate = useNavigate();
@@ -61,7 +64,9 @@ export const ViewProductDetail = (props) => {
       [field]: value
     }));
   };
+  
 
+  console.log(editedData)
    //  get date
  useEffect(() => {
   const today = new Date();
@@ -75,9 +80,9 @@ export const ViewProductDetail = (props) => {
   const handleSave = () => {
 
     const responseBody ={
-        name: editedData?.category,
+        name: editedCategory,
         id: state?.category.id,
-        description: editedData?.description,
+        description: editedDescription,
         lastModifiedDate: new Date()
       }
       console.log(JSON.stringify(responseBody))
@@ -99,7 +104,8 @@ export const ViewProductDetail = (props) => {
            response.json().then(data => {
            
            });
-           navigate(`/dashboard/products`);
+     
+           window.location.reload()
           } 
         } catch (error) {
           console.error('API call failed:', error);
@@ -110,7 +116,7 @@ export const ViewProductDetail = (props) => {
   };
  
   const align = 'horizontal' 
-  
+
 
   return (
     <div style={{minWidth: "100%", marginTop: "1rem"  }}>
@@ -164,8 +170,9 @@ export const ViewProductDetail = (props) => {
         >
     <TextField
       label="Model Name"
-      value={editedData.category || state?.category}
-      onChange={(e) => handleEditFieldChange('category', e.target.value)}
+      name= 'model'
+      value={editedCategory}
+      onChange={(e) => setEditedCategory(e.target.value)}
       fullWidth
       style={{ marginBottom: 20 , marginTop: 10}}
     />
@@ -174,8 +181,9 @@ export const ViewProductDetail = (props) => {
 
     <TextField
       label="Description"
-      value={editedData.description || state?.description}
-      onChange={(e) => handleEditFieldChange('description', e.target.value)}
+      name='desc'
+      value={editedDescription}
+      onChange={(e) => setEditedDescription(e.target.value)}
       fullWidth
       multiline
       rows={3}
