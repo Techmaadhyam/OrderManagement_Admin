@@ -787,7 +787,7 @@ const notify = (type, message) => {
            response.json().then(data => {
 
           
-            navigate('/dashboard/orders/viewDetail', { state: data });
+            navigate(`/dashboard/orders/viewDetail/${state?.id}`, { state: data });
             console.log(data)
     });
           } 

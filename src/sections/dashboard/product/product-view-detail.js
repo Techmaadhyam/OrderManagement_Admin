@@ -164,7 +164,7 @@ export const ViewProductDetail = (props) => {
         >
     <TextField
       label="Model Name"
-      value={editedData.category}
+      value={editedData.category || state?.category}
       onChange={(e) => handleEditFieldChange('category', e.target.value)}
       fullWidth
       style={{ marginBottom: 20 , marginTop: 10}}
@@ -174,7 +174,7 @@ export const ViewProductDetail = (props) => {
 
     <TextField
       label="Description"
-      value={editedData.description}
+      value={editedData.description || state?.description}
       onChange={(e) => handleEditFieldChange('description', e.target.value)}
       fullWidth
       multiline
@@ -208,7 +208,7 @@ export const ViewProductDetail = (props) => {
   <div style={{ marginRight: '8px' }}>
     <PropertyListItem align={align} 
     label="Model" 
-    value={state?.category?.name} />
+    value={state?.category?.name  || state?.category} />
   </div>
   <IconButton onClick={handleEditOpen}>
     <Icon>
@@ -221,7 +221,7 @@ export const ViewProductDetail = (props) => {
         <PropertyListItem
           align={align}
           label="Description"
-          value={state?.category?.description}
+          value={state?.category?.description || state?.description}
         />
       </PropertyList>
         <Divider/>

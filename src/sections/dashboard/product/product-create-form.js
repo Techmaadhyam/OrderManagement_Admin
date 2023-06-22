@@ -201,7 +201,7 @@ export const CreateProduct = (props) => {
         console.log(response.data);
         if (response.status === 200) {
           //navigate to view product details (using react router)
-          navigate('/dashboard/products/viewDetail', { state: response.data });
+          navigate(`/dashboard/products/viewDetail/${response.data.id}` ,{ state: response.data });
         
         }
       

@@ -647,7 +647,7 @@ console.log(deliveryIST)
            response.json().then(data => {
 
           
-            navigate('/dashboard/orders/viewDetail', { state: data });
+            navigate(`/dashboard/orders/viewDetail/${data?.soRecord?.id}`, { state: data });
             console.log(data)
     });
           } 

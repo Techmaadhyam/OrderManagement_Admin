@@ -889,7 +889,7 @@ const [productName, setProductName] = useState('');
               }
 
               if (performaInvoiceData || approvedInvoiceData || deliveryChallanData) {
-                navigate('/dashboard/purchaseorder/viewDetail', {
+                navigate(`/dashboard/purchaseorder/viewDetail/${state?.id}`, {
                   state: {
                     data: data,
                     performaInvoice: performaInvoiceData,
@@ -898,7 +898,7 @@ const [productName, setProductName] = useState('');
                   }
                 });
               } else {
-                navigate('/dashboard/purchaseorder/viewDetail', {
+                navigate(`/dashboard/purchaseorder/viewDetail/${state?.id}`, {
                   state: {
                     data: data,
                   }

@@ -26,6 +26,7 @@ import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { apiUrl } from 'src/config';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -35,7 +36,7 @@ import { apiUrl } from 'src/config';
 
 
 export const ViewPurchaseOrder = (props) => {
-
+  const navigate = useNavigate();
   const location = useLocation();
   const state = location.state.data || location.state;
 
@@ -45,9 +46,9 @@ export const ViewPurchaseOrder = (props) => {
  
 
   console.log(performaInvoice, approvedInvoice, deliveryChallan )
-  console.log(state)
+  
 
-
+ 
 
   const columns = [
 
@@ -55,6 +56,25 @@ export const ViewPurchaseOrder = (props) => {
       title: 'Part Description',
       dataIndex: 'description',
       key: 'description',
+      render: (name, record) => {
+        const handleNavigation = () => {
+          navigate(`/dashboard/products/viewDetail/${record.productId}`, { state: record } );
+        };
+        
+        return (
+          <Link
+            color="primary"
+            onClick={handleNavigation}
+            sx={{
+              alignItems: 'center',
+              textAlign: 'center',
+            }}
+            underline="hover"
+          >
+            <Typography variant="subtitle2">{name}</Typography>
+          </Link>
+        );
+      },
     },
     {
         title: 'Quantity',
@@ -134,8 +154,29 @@ export const ViewPurchaseOrder = (props) => {
   
           return { ...item, netAmount };
         });
+
+        const updatedData = modifiedData.map(obj => {
+          let parsedProduct;
+          try {
+            parsedProduct = JSON.parse(obj.product);
+            console.log(parsedProduct)
+            
+          } catch (error) {
+            console.error("Error parsing inventory JSON for object:", obj, error);
+           
+          }
   
-        setRowData(modifiedData);
+          return {
+            ...obj,
+            productId: parsedProduct.id,
+            productName: parsedProduct.productName,
+            partnumber: parsedProduct.partnumber,
+            category: parsedProduct.category.name
+
+          };
+        });
+  
+        setRowData(updatedData);
       
       })
       .catch(error => {
@@ -289,6 +330,7 @@ export const ViewPurchaseOrder = (props) => {
   const formattedDate = formatDate(state?.purchaseOrderRec?.deliveryDate);
 
   console.log(performaInvoiceFile, approvedInvoiceFile, deliveryChallanFile)
+  console.log(rowData)
 
   return (
     <div style={{minWidth: "100%", marginTop: "1rem"  }}>
@@ -335,7 +377,7 @@ export const ViewPurchaseOrder = (props) => {
         <PropertyListItem
           align={align}
           label="Quotation"
-          value={String(state?.quotationId || state?.purchaseOrderRec?.quotationId || 0)}
+          value={String(state?.quotationId || state?.purchaseOrderRec?.quotationId || 'Empty')}
         />
         <Divider />
         <PropertyListItem

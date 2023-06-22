@@ -432,7 +432,7 @@ const handleClick = async (event) => {
                   comments : comment,
                   lastModifiedByUser: {id: userId},
                   termsAndCondition: terms,
-                  //totalAmount: finalAmount,
+                  totalAmount: finalAmount,
                   technicianInfo: {id: technician},
                   company: {id: userState},
         

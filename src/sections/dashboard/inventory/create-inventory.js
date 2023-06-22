@@ -324,7 +324,7 @@ useEffect(() => {
          response.json().then(data => {
   
           console.log(data)
-          navigate('/dashboard/inventory/viewDetail', { state: data });
+          navigate(`/dashboard/inventory/viewDetail/${data.id}`, { state: data });
         });
         } 
       } catch (error) {
@@ -347,7 +347,7 @@ useEffect(() => {
          response.json().then(data => {
   
           console.log(data)
-          navigate('/dashboard/inventory/viewDetail', { state: data });
+          navigate(`/dashboard/inventory/viewDetail/${data.id}` ,{ state: data });
         });
         } 
       } catch (error) {

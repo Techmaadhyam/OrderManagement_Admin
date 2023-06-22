@@ -65,7 +65,7 @@ const ViewInventory = () => {
     axios.get(apiUrl +`getInventoryByUserId/${userId}`)
       .then(response => {
         setUserData(response.data);
-        console.log(response.data);
+
       })
       .catch(error => {
         console.error(error);
@@ -200,7 +200,7 @@ const filteredProducts = filteredData.filter(product => {
       key: 'productName',
       render: (name, record) => {
         const handleNavigation = () => {
-          navigate(`/dashboard/inventory/viewDetail`, { state: record });
+          navigate(`/dashboard/inventory/viewDetail/${record.inventoryId}`, { state: record });
         };
         
         return (

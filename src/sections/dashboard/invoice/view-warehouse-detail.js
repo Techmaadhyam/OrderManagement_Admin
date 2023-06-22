@@ -21,70 +21,91 @@ import { Table } from 'antd';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { apiUrl } from 'src/config';
+import { useNavigate } from 'react-router-dom';
 
 
-
-
-const columns = [
-  {
-    title: 'Part Name',
-    dataIndex: 'productName',
-    key: 'productName',
-  },
-  {
-    title: 'Rack',
-    dataIndex: "rackName",
-    key: 'rackName'
-  },
-  {
-      title: 'Quantity',
-      dataIndex: 'quantity',
-      key: 'quantity',
-    },
-  {
-    title: 'Weight',
-    dataIndex: 'weight',
-    key: 'weight',
-  },
-  {
-    title: 'Size',
-    dataIndex: 'size',
-    key: 'size',
-  },
-  
-  {
-    title: 'Cost',
-    key: 'price',
-    dataIndex: 'price',
-  },
-    {
-      title: 'CGST',
-      key: 'cgst',
-      dataIndex: 'cgst',
-    },
-    {
-      title: 'SGST',
-      key: 'sgst',
-      dataIndex: 'sgst',
-    },
-    {
-      title: 'IGST',
-      key: 'igst',
-      dataIndex: 'igst',
-    },
-    {
-      title: 'Description',
-      key: 'description',
-      dataIndex: 'description',
-    },
-];
 
 export const ViewWarehouseDetail = (props) => {
 
   const location = useLocation();
+  const navigate = useNavigate();
   const state = location.state;
   console.log(state)
   const [rowData, setRowData] =useState()
+
+  const columns = [
+    {
+      title: 'Part Name',
+      dataIndex: 'productName',
+      key: 'productName',
+      render: (name, record) => {
+        const handleNavigation = () => {
+          navigate(`/dashboard/inventory/viewDetail/${record.inventoryId}`, { state: record } );
+        };
+        
+        return (
+          <Link
+            color="primary"
+            onClick={handleNavigation}
+            sx={{
+              alignItems: 'center',
+              textAlign: 'center',
+            }}
+            underline="hover"
+          >
+            <Typography variant="subtitle2">{name}</Typography>
+          </Link>
+        );
+      },
+    },
+    
+    {
+      title: 'Rack',
+      dataIndex: "rackName",
+      key: 'rackName'
+    },
+    {
+        title: 'Quantity',
+        dataIndex: 'quantity',
+        key: 'quantity',
+      },
+    {
+      title: 'Weight',
+      dataIndex: 'weight',
+      key: 'weight',
+    },
+    {
+      title: 'Size',
+      dataIndex: 'size',
+      key: 'size',
+    },
+    
+    {
+      title: 'Cost',
+      key: 'price',
+      dataIndex: 'price',
+    },
+      {
+        title: 'CGST',
+        key: 'cgst',
+        dataIndex: 'cgst',
+      },
+      {
+        title: 'SGST',
+        key: 'sgst',
+        dataIndex: 'sgst',
+      },
+      {
+        title: 'IGST',
+        key: 'igst',
+        dataIndex: 'igst',
+      },
+      {
+        title: 'Description',
+        key: 'description',
+        dataIndex: 'description',
+      },
+  ];
 
 
   useEffect(() => {

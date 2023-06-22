@@ -20,6 +20,7 @@ import { useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { apiUrl } from 'src/config';
+import { useNavigate } from 'react-router-dom';
 
 const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
 
@@ -27,8 +28,10 @@ const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
 export const ViewInventoryDetail = (props) => {
 
   const location = useLocation();
+  const navigate = useNavigate();
   const state = location.state;
   const [userData, setUserData]= useState([])
+
 
   console.log(state)
 
@@ -40,6 +43,7 @@ export const ViewInventoryDetail = (props) => {
     axios.get(apiUrl +`getInventoryByUserId/${userId}`)
       .then(response => {
         setUserData(response.data);
+        console.log(response.data)
     
       })
       .catch(error => {
@@ -47,11 +51,46 @@ export const ViewInventoryDetail = (props) => {
       });
   }, []);
 
-  console.log(userData);
-
-  const matchingObject = userData.find(item => item.inventoryId === state?.id);
+  const matchingObject = userData.find(item => item.inventoryId === state?.id || state?.inventoryId);
   const warehouseName = matchingObject?.warehouseName;
   const productName = matchingObject?.productName;
+
+  const handleWarehouseNavigation = () => {
+
+    axios
+    .get(apiUrl + `getAllWareHouse/${userId}`)
+    .then(response => {
+      const matchedData = response.data.filter(obj => obj.id === state?.warehouseId  );
+
+      if (matchedData.length > 0) {
+        navigate(`/dashboard/invoices/viewDetail`, { state: matchedData[0] });
+      } else {
+        console.log('No matching data found.');
+      }
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  };
+  const handleProductNavigation = () => {
+
+    axios
+    .get(apiUrl +`getAllItem/${userId}`)
+    .then(response => {
+      const matchedData = response.data.filter(obj => obj.id === state?.productId || state?.product?.id );
+
+      if (matchedData.length > 0) {
+        navigate(`/dashboard/products/viewDetail/${matchedData[0].id}`, { state: matchedData[0] });
+      } else {
+        console.log('No matching data found.');
+      }
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  };
+
+
 
  
   return (
@@ -84,17 +123,17 @@ export const ViewInventoryDetail = (props) => {
             container
             spacing={3}
           >
-            <Grid
-            item
-              xs={12}
-              md={6}
-            >
-                    <PropertyListItem
-          align={align}
-          label="Warehouse"
-          value={state?.warehouseName || warehouseName}
-        />     <Divider />
-            </Grid>
+              <Grid item xs={12} md={6}>
+            <PropertyListItem align={align} label="Warehouse">
+              <Link color="primary"   onClick={handleWarehouseNavigation}>
+                <Typography variant="subtitle1">
+                  {state?.warehouseName || warehouseName}
+                </Typography>
+              </Link>
+            </PropertyListItem>
+            <Divider />
+          </Grid>
+
             <Grid
             item
               xs={12}
@@ -103,7 +142,7 @@ export const ViewInventoryDetail = (props) => {
              <PropertyListItem
           align={align}
           label="Purchase Order"
-          value={String(state?.purchaseOrderId)}
+          value={String(state?.purchaseOrderId || matchingObject?.purchaseOrderId) }
         />
          <Divider />
             </Grid>
@@ -115,7 +154,7 @@ export const ViewInventoryDetail = (props) => {
             <PropertyListItem
           align={align}
           label="Model"
-          value={state?.categoryName ||state?.category?.name}
+          value={state?.categoryName ||state?.category?.name || matchingObject?.categoryName}
         />
          <Divider />
             </Grid>
@@ -128,23 +167,22 @@ export const ViewInventoryDetail = (props) => {
                      <PropertyListItem
           align={align}
           label="Rack"
-          value={state?.rackName || state?.rack?.name}
+          value={state?.rackName || state?.rack?.name ||matchingObject?.rackName}
         />
         <Divider />
             </Grid>
-           
-        <Grid
-        item
-              xs={12}
-              md={6}
-            >
-           <PropertyListItem
-          align={align}
-          label="Part Name"
-          value={state?.productName || productName}
-        />
+          
+        <Grid item xs={12} md={6}>
+            <PropertyListItem align={align} label="Part Name">
+              <Link color="primary"   onClick={handleProductNavigation}>
+                <Typography variant="subtitle1">
+                {state?.productName || productName}
+                </Typography>
+              </Link>
+            </PropertyListItem>
+            <Divider />
+        </Grid>
          <Divider />
-          </Grid>
           <Grid
           item
               xs={12}
@@ -153,7 +191,7 @@ export const ViewInventoryDetail = (props) => {
         <PropertyListItem
           align={align}
           label="HSN Code"
-          value={state?.hsncode}
+          value={state?.hsncode|| matchingObject?.hsncode}
         />
         <Divider />
           </Grid>

@@ -824,7 +824,7 @@ let finalAmount = totalAmount.toFixed(2)
 
 
               if (performaInvoiceData || approvedInvoiceData || deliveryChallanData) {
-                navigate('/dashboard/purchaseorder/viewDetail', {
+                navigate(`/dashboard/purchaseorder/viewDetail/${data?.purchaseOrderRec?.id}`, {
                   state: {
                     data: data,
                     performaInvoice: performaInvoiceData,
@@ -833,7 +833,7 @@ let finalAmount = totalAmount.toFixed(2)
                   }
                 });
               } else {
-                navigate('/dashboard/purchaseorder/viewDetail', {
+                navigate(`/dashboard/purchaseorder/viewDetail/${data?.purchaseOrderRec?.id}`, {
                   state: {
                     data: data,
                   }

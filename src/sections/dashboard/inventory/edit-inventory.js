@@ -349,7 +349,7 @@ useEffect(() => {
          response.json().then(data => {
   
           console.log(data)
-          navigate('/dashboard/inventory/viewDetail', { state: data });
+          navigate(`/dashboard/inventory/viewDetail/${state?.inventoryId}`, { state: data });
         });
         } 
       } catch (error) {
@@ -372,7 +372,7 @@ useEffect(() => {
          response.json().then(data => {
   
           console.log(data)
-          navigate('/dashboard/inventory/viewDetail', { state: data });
+          navigate(`/dashboard/inventory/viewDetail/${state?.inventoryId}`, { state: data });
         });
         } 
       } catch (error) {

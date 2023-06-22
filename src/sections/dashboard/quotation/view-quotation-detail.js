@@ -23,96 +23,19 @@ import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { apiUrl } from 'src/config';
+import { useNavigate } from 'react-router-dom';
 
 
 
 
 
-const columns = [
-  {
-    title: 'Part Description',
-    dataIndex: 'description',
-    key: 'description',
-  },
-  {
-      title: 'Quantity',
-      dataIndex: 'quantity',
-      key: 'quantity',
-    },
-  {
-    title: 'Weight',
-    dataIndex: 'weight',
-    key: 'weight',
-  },
-  {
-    title: 'Size',
-    dataIndex: 'size',
-    key: 'size',
-  },
-  
-  {
-    title: 'Cost',
-    key: 'price',
-    dataIndex: 'price',
-  },
-    {
-      title: 'CGST',
-      key: 'cgst',
-      dataIndex: 'cgst',
-    },
-    {
-      title: 'SGST',
-      key: 'sgst',
-      dataIndex: 'sgst',
-    },
-    {
-      title: 'IGST',
-      key: 'igst',
-      dataIndex: 'igst',
-    },
-    {
-      title: 'Net Amount',
-      key: 'netAmount',
-      dataIndex: 'netAmount',
-    },
- 
-];
-
-
-const columns2=[
-  {
-    title: 'Part Description',
-    dataIndex: 'description',
-    key: 'description',
-  },
-  {
-    title:'No. Of Workstations',
-    dataIndex:'workstationCount',
-    key: 'workstationCount',
-},
-  {
-    title: 'Cost',
-    dataIndex: 'price',
-    key: 'price',
-  },
-  {
-    dataIndex:'igst',
-    title:'IGST',
-   key: 'igst',
-},
-{
-  title: 'Net Amount',
-  key: 'netAmount2',
-  dataIndex: 'netAmount2',
-},
-
-];
 
 
 
 
 export const ViewQuotationDetail = (props) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const state = location.state;
 console.log(state)
 
@@ -121,6 +44,133 @@ console.log(state)
 
 
   const align = 'horizontal' 
+
+  const columns = [
+    {
+      title: 'Part Description',
+      dataIndex: 'description',
+      key: 'description',
+      render: (name, record) => {
+        let handleNavigation;
+  
+        if (state?.category === 'Purchase Quotation') {
+          handleNavigation = () => {
+            navigate(`/dashboard/products/viewDetail/${record?.productId}`, { state: record });
+          };
+        } else {
+          handleNavigation = () => {
+            navigate(`/dashboard/inventory/viewDetail/${record?.inventoryId}`, { state: record });
+          };
+        }
+  
+        return (
+          <Link
+            color="primary"
+            onClick={handleNavigation}
+            sx={{
+              alignItems: 'center',
+              textAlign: 'center',
+            }}
+            underline="hover"
+          >
+            <Typography variant="subtitle2">{name}</Typography>
+          </Link>
+        );
+      },
+    },
+    {
+        title: 'Quantity',
+        dataIndex: 'quantity',
+        key: 'quantity',
+      },
+    {
+      title: 'Weight',
+      dataIndex: 'weight',
+      key: 'weight',
+    },
+    {
+      title: 'Size',
+      dataIndex: 'size',
+      key: 'size',
+    },
+    
+    {
+      title: 'Cost',
+      key: 'price',
+      dataIndex: 'price',
+    },
+      {
+        title: 'CGST',
+        key: 'cgst',
+        dataIndex: 'cgst',
+      },
+      {
+        title: 'SGST',
+        key: 'sgst',
+        dataIndex: 'sgst',
+      },
+      {
+        title: 'IGST',
+        key: 'igst',
+        dataIndex: 'igst',
+      },
+      {
+        title: 'Net Amount',
+        key: 'netAmount',
+        dataIndex: 'netAmount',
+      },
+   
+  ];
+  
+  
+  const columns2=[
+    {
+      title: 'Part Description',
+      dataIndex: 'description',
+      key: 'description',
+      render: (name, record) => {
+        const handleNavigation = () => {
+          navigate(`/dashboard/products/viewDetail/${record.productId}`, { state: record } );
+        };
+        
+        return (
+          <Link
+            color="primary"
+            onClick={handleNavigation}
+            sx={{
+              alignItems: 'center',
+              textAlign: 'center',
+            }}
+            underline="hover"
+          >
+            <Typography variant="subtitle2">{name}</Typography>
+          </Link>
+        );
+      },
+    },
+    {
+      title:'No. Of Workstations',
+      dataIndex:'workstationCount',
+      key: 'workstationCount',
+  },
+    {
+      title: 'Cost',
+      dataIndex: 'price',
+      key: 'price',
+    },
+    {
+      dataIndex:'igst',
+      title:'IGST',
+     key: 'igst',
+  },
+  {
+    title: 'Net Amount',
+    key: 'netAmount2',
+    dataIndex: 'netAmount2',
+  },
+  
+  ];
+  
 
   useEffect(() => {
 
@@ -152,8 +202,32 @@ console.log(state)
   
           return { ...item, netAmount , netAmount2 };
         });
+
+        const updatedData = modifiedData.map(obj => {
+          let parsedProduct;
+          let parsedInventory;
+          try {
+            parsedProduct = JSON.parse(obj.product);
+            parsedInventory = JSON.parse(obj.inventory);
+          
+            
+          } catch (error) {
+            console.error("Error parsing inventory JSON for object:", obj, error);
+           
+          }
   
-        setRowData(modifiedData);
+          return {
+            ...obj,
+            productId: parsedProduct?.id,
+            productName: parsedProduct?.productName,
+            partnumber: parsedProduct?.partnumber,
+            category: parsedProduct?.category?.name,
+            inventoryId: parsedInventory?.id,
+
+          };
+        });
+  
+        setRowData(updatedData);
       
       })
       .catch(error => {
@@ -171,6 +245,8 @@ console.log(state)
   const formattedDate = formatDate(state?.quotation?.deliveryDate);
   const startdate = formatDate(state?.quotation?.startdate);
   const enddate = formatDate(state?.quotation?.enddate);
+
+  console.log(rowData)
 
   return (
     <div style={{minWidth: "100%", marginTop: "1rem"  }}>

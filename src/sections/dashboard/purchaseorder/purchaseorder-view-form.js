@@ -174,7 +174,7 @@ setSelectedType(event.target.value);
       key: 'id',
       render: (name, record) => {
         const handleNavigation = () => {
-          navigate(`/dashboard/purchaseorder/viewDetail`, { state: record });
+          navigate(`/dashboard/purchaseorder/viewDetail/${record.id}`, { state: record });
         };
         
         return (

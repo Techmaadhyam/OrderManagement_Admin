@@ -123,24 +123,7 @@ const handleEditRecord = (record) => {
 const handleSaveRecord = async (editedRecord) => {
 
   console.log('Saving edited record:', editedRecord);
-  console.log(JSON.stringify({
 
-    product: {
-      id: editedRecord.id,
-      productName: editedRecord.productName,
-      type: editedRecord.type,
-      createdBy: editedRecord.createdBy,
-      lastModifiedDate: currentDate
-      
-    },
-    category: {
-      id: editedRecord.category.id,
-      name: editedRecord.category.name,
-      desccription: editedRecord.category.description,
-      lastModifiedDate: new Date()
-  
-    }
-  }))
 
   if (currentDate) {
     try {
@@ -155,7 +138,9 @@ const handleSaveRecord = async (editedRecord) => {
           product: {
             id: editedRecord.id,
             productName: editedRecord.productName,
+            partnumber: editedRecord.partnumber,
             type: editedRecord.type,
+            description: editedRecord.description,
             createdBy: editedRecord.createdBy,
             lastModifiedDate: new Date(),
             lastModifiedByUser: {id: userId},
@@ -172,6 +157,7 @@ const handleSaveRecord = async (editedRecord) => {
        response.json().then(data => {
         console.log(data);
         window.location.reload()
+
    
        
 });
@@ -277,7 +263,7 @@ const columns = [
     render: (name, record) => {
      
       const handleNavigation = () => {
-        navigate(`/dashboard/products/viewDetail`, { state: record });
+        navigate(`/dashboard/products/viewDetail/${record.id}`, { state: record });
       };
     
       return (

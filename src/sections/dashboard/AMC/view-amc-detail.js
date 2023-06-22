@@ -23,15 +23,52 @@ import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { apiUrl } from 'src/config';
+import { useNavigate } from 'react-router-dom';
 
 
 
 
+
+
+
+
+
+export const ViewAMCDetail = (props) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const state = location.state;
+
+  const [tempuser, setTempuser] =useState([])
+  const [rowData, setRowData] =useState()
+
+
+  const align = 'horizontal' 
+
+ 
 const columns=[
   {
     title: 'Part Description',
     dataIndex: 'description',
     key: 'description',
+    render: (name, record) => {
+      const handleNavigation = () => {
+        navigate(`/dashboard/products/viewDetail/${record.productId}`, { state: record } );
+      };
+      
+      return (
+        <Link
+          color="primary"
+          onClick={handleNavigation}
+          sx={{
+            alignItems: 'center',
+            textAlign: 'center',
+          }}
+          underline="hover"
+        >
+          <Typography variant="subtitle2">{name}</Typography>
+        </Link>
+      );
+    },
   },
   {
     title:'No. Of Workstations',
@@ -52,28 +89,42 @@ const columns=[
 ];
 
 
-
-
-export const ViewAMCDetail = (props) => {
-  const location = useLocation();
-  const state = location.state;
-console.log(state)
-
-  const [tempuser, setTempuser] =useState([])
-  const [rowData, setRowData] =useState()
-
-
-  const align = 'horizontal' 
-
- 
-
-
   useEffect(() => {
     axios.get(apiUrl +`getAllWorkOrderItems/${state?.id || state?.workorder?.id}`)
       .then(response => {
-       setRowData(response.data)
-       console.log(response.data)
-     
+        const modifiedData = response.data.map(item => {
+          const {  unitPrice,  igst,  workstationcount} = item;
+        
+          const netAmount= (
+            ((parseFloat(workstationcount) * unitPrice) +
+            ((parseFloat(workstationcount) * unitPrice) * igst/ 100)).toFixed(2)
+              )
+  
+          return { ...item, netAmount };
+        });
+
+        const updatedData = modifiedData.map(obj => {
+          let product;
+          
+          try {
+            product = obj.product;
+            
+          } catch (error) {
+            console.error("Error parsing inventory JSON for object:", obj, error);
+           
+          }
+  
+          return {
+            ...obj,
+            productId: product?.id,
+            productName: product?.productName,
+            partnumber: product?.partnumber,
+            category: product?.category?.name,
+
+          };
+        });
+  
+        setRowData(updatedData);
       })
       .catch(error => {
         console.error(error);

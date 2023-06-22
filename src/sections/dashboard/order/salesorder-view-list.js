@@ -172,7 +172,7 @@ const handleTypeChange = (event) => {
       key: 'id',
       render: (name, record) => {
         const handleNavigation = () => {
-          navigate('/dashboard/orders/viewDetail', { state: record });
+          navigate(`/dashboard/orders/viewDetail/${record.id}`, { state: record });
         };
         
         return (

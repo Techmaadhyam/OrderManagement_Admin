@@ -23,16 +23,117 @@ import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { apiUrl } from 'src/config';
+import { useNavigate } from 'react-router-dom';
 
 
 
 
 
+
+
+
+
+export const ViewSalesOrder = (props) => {
+  const location = useLocation();
+  const state = location.state;
+console.log(state)
+
+
+
+  const [tempuser, setTempuser] =useState([])
+  const [rowData, setRowData] =useState()
+
+  const navigate = useNavigate();
+
+  const align = 'horizontal'
+
+
+  useEffect(() => {
+    axios.get(apiUrl +`getTempUserById/${state?.tempUserId || state?.soRecord?.tempUserId || state?.userId}`)
+      .then(response => {
+       setTempuser(response.data)
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, [state?.tempUserId, state?.soRecord?.tempUserId, state?.userId]);
+
+  useEffect(() => {
+    axios.get(apiUrl +`getAllSalesOrderDetails/${state?.id || state?.soRecord?.id}`)
+      .then(response => {
+        const modifiedData = response.data.map(item => {
+          const { quantity, price, cgst, igst, sgst } = item;
+          const netAmount = (
+            (quantity * price) +
+            ((quantity * price) * cgst / 100) +
+            ((quantity * price) * igst / 100) +
+            ((quantity * price) * sgst / 100)
+          ).toFixed(2);
+  
+          return { ...item, netAmount };
+        });
+
+        const updatedData = modifiedData.map(obj => {
+          let parsedInventory;
+          try {
+            parsedInventory = JSON.parse(obj.inventory);
+            console.log(parsedInventory)
+            
+          } catch (error) {
+            console.error("Error parsing inventory JSON for object:", obj, error);
+           
+          }
+  
+          return {
+            ...obj,
+            inventoryId: parsedInventory.id,
+          };
+        });
+  
+        setRowData(updatedData);
+      
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, [state?.id, state?.soRecord?.id]);
+
+  console.log(rowData)
+
+  function formatDate(dateString) {
+    const parsedDate = new Date(dateString);
+    const year = parsedDate.getFullYear();
+    const month = String(parsedDate.getMonth() + 1).padStart(2, '0');
+    const day = String(parsedDate.getDate()).padStart(2, '0');
+    return `${year}/${month}/${day}`;
+  }
+  const formattedDate = formatDate(state?.soRecord?.deliveryDate);
+
+  
 const columns = [
   {
     title: 'Part Description',
     dataIndex: 'description',
     key: 'description',
+    render: (name, record) => {
+      const handleNavigation = () => {
+        navigate(`/dashboard/inventory/viewDetail/${record.inventoryId}`, { state: record } );
+      };
+      
+      return (
+        <Link
+          color="primary"
+          onClick={handleNavigation}
+          sx={{
+            alignItems: 'center',
+            textAlign: 'center',
+          }}
+          underline="hover"
+        >
+          <Typography variant="subtitle2">{name}</Typography>
+        </Link>
+      );
+    },
   },
   {
       title: 'Quantity',
@@ -80,64 +181,6 @@ const columns = [
 
 
 
-
-export const ViewSalesOrder = (props) => {
-  const location = useLocation();
-  const state = location.state;
-console.log(state)
-
-
-
-  const [tempuser, setTempuser] =useState([])
-  const [rowData, setRowData] =useState()
-
-
-  const align = 'horizontal' 
-
-  useEffect(() => {
-    axios.get(apiUrl +`getTempUserById/${state?.tempUserId || state?.soRecord?.tempUserId || state?.userId}`)
-      .then(response => {
-       setTempuser(response.data)
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }, [state?.tempUserId, state?.soRecord?.tempUserId, state?.userId]);
-
-  useEffect(() => {
-    axios.get(apiUrl +`getAllSalesOrderDetails/${state?.id || state?.soRecord?.id}`)
-      .then(response => {
-        const modifiedData = response.data.map(item => {
-          const { quantity, price, cgst, igst, sgst } = item;
-          const netAmount = (
-            (quantity * price) +
-            ((quantity * price) * cgst / 100) +
-            ((quantity * price) * igst / 100) +
-            ((quantity * price) * sgst / 100)
-          ).toFixed(2);
-  
-          return { ...item, netAmount };
-        });
-  
-        setRowData(modifiedData);
-      
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }, [state?.id, state?.soRecord?.id]);
-
-  function formatDate(dateString) {
-    const parsedDate = new Date(dateString);
-    const year = parsedDate.getFullYear();
-    const month = String(parsedDate.getMonth() + 1).padStart(2, '0');
-    const day = String(parsedDate.getDate()).padStart(2, '0');
-    return `${year}/${month}/${day}`;
-  }
-  const formattedDate = formatDate(state?.soRecord?.deliveryDate);
-
-
-
   return (
     <div style={{minWidth: "100%", marginTop: "1rem"  }}>
       <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
@@ -182,7 +225,7 @@ console.log(state)
         <PropertyListItem
             align={align}
             label="Quotation"
-            value={String(state?.quotationId || state?.soRecord?.quotationId || 0)}
+            value={String(state?.quotationId || state?.soRecord?.quotationId || 'Empty')}
           />
         <Divider />
         <PropertyListItem
