@@ -331,7 +331,7 @@ console.log(user)
       description
     ) {
       const newRow = {
-        Id: Id,
+        id: Id,
         product: {id: productId},
         productName,
         workOrderId: state?.id,
@@ -434,7 +434,31 @@ console.log(idx, row)
   const handleClick = async (event) => {
     let finalAmount = parseFloat(totalAmount?.toFixed(2))
 
-    
+    console.log({ workorder:{
+      id: state?.id,
+      contactPersonName: contactName,
+      contactPhoneNumber: phone,
+      contactEmail: inchargeEmail,
+      adminPersonName: adminName,
+      adminPhoneNumber: adminPhone,
+      adminEmail: adminEmail,   
+      status: status,
+      type: type,
+      createdByUser: {id: userId},
+      createdDate: state?.originalcreatedDate,
+      lastModifiedDate: new Date(),
+      comments : comment,
+      category: 'workorder',
+      lastModifiedByUser: {id: userId},
+      termsAndCondition: terms,
+      //totalAmount: finalAmount,
+      technicianInfo: {id: technician},
+      noncompany:{id: tempId},
+      //company: {id: userState},
+
+  },
+      workOrderItems: updatedRows,
+      deleteWorkOrderItems: deleteRows})
     
     event.preventDefault();
 

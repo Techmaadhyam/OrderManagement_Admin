@@ -350,7 +350,7 @@ console.log(user)
       description
     ) {
       const newRow = {
-        Id: Id,
+        id: Id,
         product: {id: productId},
         productName,
         workOrderId: null,
