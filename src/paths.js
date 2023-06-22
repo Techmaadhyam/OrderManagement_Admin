@@ -73,7 +73,7 @@ export const paths = {
       index: '/dashboard/purchaseorder',
       create: '/dashboard/purchaseorder/',
       view: '/dashboard/purchaseorder/:customerId',
-      viewDetail: '/dashboard/purchaseorder/viewDetail',
+      viewDetail: '/dashboard/purchaseorder/viewDetail/:id',
       edit: '/dashboard/purchaseorder/edit',
       invoice: '/dashboard/purchaseorder/invoice',
     },
@@ -124,7 +124,7 @@ export const paths = {
       index: '/dashboard/orders',
       invoice  : '/dashboard/orders/:orderId',
       details: '/dashboard/orders/details',
-      viewDetail: '/dashboard/orders/viewDetail',
+      viewDetail: '/dashboard/orders/viewDetail/:id',
       edit: '/dashboard/orders/edit',
     },
     inventory: {
@@ -132,13 +132,13 @@ export const paths = {
       view: '/dashboard/inventory/view',
       edit: '/dashboard/inventory/edit',
       create: '/dashboard/inventory/create',
-      viewDetail: '/dashboard/inventory/viewDetail',
+      viewDetail: '/dashboard/inventory/viewDetail/:id',
     },
     products: {
       index: '/dashboard/products',
       view: '/dashboard/products',
       create: '/dashboard/products/create',
-      viewDetail: '/dashboard/products/viewDetail'
+      viewDetail: '/dashboard/products/viewDetail/:id'
     },
     social: {
       index: '/dashboard/social',

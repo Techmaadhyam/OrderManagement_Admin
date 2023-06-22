@@ -145,7 +145,7 @@ export const dashboardRoutes = [
             element: <PurchaseOrderViewPage />
           },
           {
-            path: 'viewDetail',
+            path: 'viewDetail/:id',
             element: <PurchaseOrderViewDetailPage/>
           },{
             path: 'edit',
@@ -302,7 +302,7 @@ export const dashboardRoutes = [
             element: <OrderViewPage />
           },
           {
-            path:'viewDetail',
+            path:'viewDetail/:id',
             element: <OrderViewDetailPage/>
           },
           {
@@ -329,7 +329,7 @@ export const dashboardRoutes = [
             element: <InventoryEditPage />
           },
           {
-            path: 'viewDetail',
+            path: 'viewDetail/:id',
             element: <InventoryDetailPage />
           }
         ]
@@ -355,7 +355,7 @@ export const dashboardRoutes = [
             element: <ProductCreatePage />
           },
           {
-            path: 'viewDetail',
+            path: 'viewDetail/:id',
             element: <ProductViewPage />
           }
         ]
