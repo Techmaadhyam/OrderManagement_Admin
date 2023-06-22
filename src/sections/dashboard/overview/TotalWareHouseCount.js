@@ -36,7 +36,7 @@ export const TotalWareHouseCount = (props) => {
         <Typography color="text.secondary" variant="body2">
           Total Warehouse Count  
         </Typography>
-        <Tooltip title="This Shows total waehouse items. You can view them by clicking this card." arrow>
+        <Tooltip title="This shows total warehouse items. You can view them by clicking this card." arrow>
           <InfoOutlinedIcon color="primary" fontSize='small' sx={{ml:1}} />
         </Tooltip>
       </Box>

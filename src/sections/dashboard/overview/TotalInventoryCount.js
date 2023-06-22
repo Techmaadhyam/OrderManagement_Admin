@@ -40,7 +40,7 @@ export const TotalInventoryCount = (props) => {
         <Typography color="text.secondary" variant="body2">
           Total Inventory Count  
         </Typography>
-        <Tooltip title="This Shows total inventory items. You can view them by clicking this card." arrow>
+        <Tooltip title="This shows total inventory items. You can view them by clicking this card." arrow>
           <InfoOutlinedIcon color="primary" fontSize='small' sx={{ml:1}} />
         </Tooltip>
       </Box>
