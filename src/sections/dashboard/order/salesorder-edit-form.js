@@ -734,8 +734,8 @@ const notify = (type, message) => {
 
 
   
-  const updatedRows = rowData?.map(({ productName, productDescription, ...rest }) => rest);
-  const deleteRows= deletedRows?.map(({ productName, productDescription, ...rest }) => rest);
+  const updatedRows = rowData?.map(({ productName, productDescription, productId, ...rest }) => rest);
+  const deleteRows= deletedRows?.map(({ productName, productDescription,  productId,...rest }) => rest);
   //post request
   const handleClick = async (event) => {
     let finalAmount = parseFloat(totalAmount.toFixed(2))

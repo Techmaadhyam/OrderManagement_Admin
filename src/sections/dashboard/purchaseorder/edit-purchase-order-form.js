@@ -695,7 +695,7 @@ const [productName, setProductName] = useState('');
 
   
   const updatedRows = rowData?.map(({ productName, inventory, productId,  ...rest }) => rest);
-  const deleteRows= deletedRows?.map(({ productName, ...rest }) => rest);
+  const deleteRows= deletedRows?.map(({ productName, inventory, productId, ...rest }) => rest);
   //post request
   const handleClick = async (event) => {
     let finalAmount = parseFloat(totalAmount.toFixed(2))
