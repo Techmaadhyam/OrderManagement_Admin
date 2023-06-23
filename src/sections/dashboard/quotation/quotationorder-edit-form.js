@@ -664,7 +664,7 @@ console.log(rowData)
 
   
   const updatedRows = rowData?.map(({ productName, inventory, productId,  ...rest }) => rest);
-  const deleteRows= deletedRows?.map(({ productName, ...rest }) => rest);
+  const deleteRows= deletedRows?.map(({ productName, inventory, productId,  ...rest }) => rest);
 
   //post request
   const handleClick = async (event) => {
@@ -796,13 +796,7 @@ console.log(rowData)
               xs={12}
               md={6}
             >
-              <TextField
-                fullWidth
-                label="HSN Code"
-                name="hsncode"
-                required
-             
-              />
+
             </Grid>
             <Grid
               xs={12}

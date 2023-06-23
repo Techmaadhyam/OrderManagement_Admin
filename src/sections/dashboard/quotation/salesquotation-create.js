@@ -76,6 +76,12 @@ const tableHeader=[
       
   },
   {
+    id:'hsn',
+    name:'HSN',
+    width: 100,
+    
+},
+  {
       id:'quantity',
       name:'Quantity',
       width: 200,
@@ -158,6 +164,7 @@ const [productName, setProductName] = useState('');
   const [price, setPrice] = useState();
   const [cgst, setCgst] = useState();
   const [size, setSize] = useState();
+  const [hsn, setHsn] = useState();
   const [description, setDescription] = useState('');
   const [rows, setRows] = useState([]);
   const [showForm, setShowForm] = useState(false);
@@ -505,6 +512,7 @@ const handleDateChange = (date) => {
         size: size,
         sgst: parseFloat(sgst),
         igst: parseFloat(igst),
+        hsn: hsn,
         comments: comment,
         createdDate: new Date(),
         lastModifiedDate: new Date(),
@@ -554,7 +562,7 @@ const handleDateChange = (date) => {
     setShowForm(true);
   };
   
-
+  console.log(rows)
   const clearFormFields = () => {
     setProductName('');
     setWeight('');
@@ -580,9 +588,9 @@ const handleDateChange = (date) => {
   }, []);
 
 
-console.log(currentDate, deliveryIST)
 
-  const updatedRows = rows.map(({ productName, productDescription, productId, ...rest }) => rest);
+
+  const updatedRows = rows.map(({ productName, productDescription, productId, hsn, ...rest }) => rest);
   //post request
   const handleClick = async (event) => {
 
@@ -689,13 +697,7 @@ console.log(currentDate, deliveryIST)
               xs={12}
               md={6}
             >
-              <TextField
-                fullWidth
-                label="HSN Code"
-                name="hsncode"
-                required
              
-              />
             </Grid>
             <Grid
               xs={12}
@@ -974,6 +976,7 @@ height='50px'/>
                             setCgst(selectedOption.cgst);
                             setIgst(selectedOption.igst);
                             setQuantity(1);
+                            setHsn(selectedOption.hsncode)
                             setSize(selectedOption.size);
                             setPrice(selectedOption.price);
                             setInventoryId(selectedOption.inventoryId)
@@ -1161,6 +1164,9 @@ height='50px'/>
                             key={idx}>
                                <TableCell>
                                <div>{row.productDescription}</div>
+                              </TableCell>
+                              <TableCell>
+                                 <div>{row.hsn}</div>
                               </TableCell>
                               <TableCell>
                                  <div>{row.quantity}</div>

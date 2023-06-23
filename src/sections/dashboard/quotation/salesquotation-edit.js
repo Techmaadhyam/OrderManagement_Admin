@@ -87,6 +87,12 @@ const tableHeader=[
       
   },
   {
+    id:'hsn',
+    name:'HSN',
+    width: 100,
+    
+},
+  {
       id:'quantity',
       name:'Quantity',
       width: 200,
@@ -175,6 +181,7 @@ const [productName, setProductName] = useState('');
   const [price, setPrice] = useState();
   const [cgst, setCgst] = useState();
   const [size, setSize] = useState();
+  const [hsn, setHsn] = useState();
   const [description, setDescription] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
@@ -216,17 +223,21 @@ const [productName, setProductName] = useState('');
     .then(response => {
       const updatedData = response.data.map(obj => {
         let parsedInventoryId;
+        let parsedHSN
         try {
           const parsedInventory = JSON.parse(obj.inventory);
           parsedInventoryId = parsedInventory.id;
+          parsedHSN =parsedInventory.hsncode
         } catch (error) {
           console.error("Error parsing inventory JSON for object:", obj, error);
           parsedInventoryId = null;
+          parsedHSN =null
         }
 
         return {
           ...obj,
-          inventory: { id: parsedInventoryId }
+          inventory: { id: parsedInventoryId },
+          hsn: parsedHSN
         };
       });
        setRowData(updatedData)
@@ -248,6 +259,8 @@ const [productName, setProductName] = useState('');
         console.error(error);
       });
   }, []);
+
+  console.log(rowData)
 
   //currentdate
   useEffect(() => {
@@ -609,6 +622,7 @@ const notify = (type, message) => {
         description,
         createdBy: userId,
         size: size,
+        hsn: hsn,
         sgst: parseFloat(sgst),
         igst: parseFloat(igst),
         comments: comment,
@@ -701,12 +715,40 @@ const notify = (type, message) => {
 
 
   
-  const updatedRows = rowData?.map(({ productName, productDescription, ...rest }) => rest);
-  const deleteRows= deletedRows?.map(({ productName, productDescription, ...rest }) => rest);
+  const updatedRows = rowData?.map(({ productName, productDescription, productId, product, hsn, ...rest }) => rest);
+  const deleteRows= deletedRows?.map(({ productName, productDescription, productId, product, hsn, ...rest }) => rest);
 
   //post request
   const handleClick = async (event) => {
     let finalAmount = parseFloat(totalAmount.toFixed(2))
+
+    console.log({
+      quotation:{
+          id: state?.id,
+          createdBy: userId,
+          //companyuser: {id: userState} ,
+          tempUser : {id:tempId},
+          contactPersonName: contactName,
+          contactPhoneNumber: phone,    
+          status: status,
+          category: state?.category ,
+          type: type,
+          deliveryAddress: address,
+          city: currentCity,
+          state: currentState,
+          country: currentCountry,
+          pinCode: zipcode,
+          deliveryDate: deliveryIST,
+          lastModifiedDate: new Date(),
+          lastModifiedByUser: {id: userId},
+          createdDate: state?.originalcreatedDate,
+          comments : comment,
+          termsAndCondition: terms,
+          totalAmount: finalAmount,
+      },
+          quotationDetails: updatedRows,
+          deletedQuotationDetails: deleteRows
+  })
     
     event.preventDefault();
 
@@ -815,13 +857,7 @@ const notify = (type, message) => {
               xs={12}
               md={6}
             >
-              <TextField
-                fullWidth
-                label="HSN Code"
-                name="hsncode"
-                required
              
-              />
             </Grid>
             <Grid
               xs={12}
@@ -1083,6 +1119,7 @@ height='50px'/>
                                 setSgst(selectedOption.sgst);
                                 setCgst(selectedOption.cgst);
                                 setIgst(selectedOption.igst);
+                                setHsn(selectedOption.hsncode)
                                 setQuantity(1);
                                 setSize(selectedOption.size);
                                 setPrice(selectedOption.price);
@@ -1263,6 +1300,9 @@ height='50px'/>
                             key={idx?.id}>
                               <TableCell>
                                 <div>{row.description}</div>
+                              </TableCell>
+                              <TableCell>
+                                 <div>{row.hsn}</div>
                               </TableCell>
                               <TableCell>
                                  <div>{row.quantity}</div>

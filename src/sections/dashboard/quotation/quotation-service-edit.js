@@ -456,7 +456,7 @@ console.log(idx, row)
 
   
   const updatedRows = rowData?.map(({ productName, inventory, productId,  ...rest }) => rest);
-  const deleteRows= deletedRows?.map(({ productName, ...rest }) => rest);
+  const deleteRows= deletedRows?.map(({ productName, inventory, productId, ...rest }) => rest);
 
   //post request
   const handleClick = async (event) => {
