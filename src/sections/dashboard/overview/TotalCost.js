@@ -45,5 +45,5 @@ export const TotalCost = (props) => {
 };
 
 TotalCost.propTypes = {
-  amount: PropTypes.number.isRequired
+  amount: PropTypes.string.isRequired
 };

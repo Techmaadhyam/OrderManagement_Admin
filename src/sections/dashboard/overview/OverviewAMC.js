@@ -30,7 +30,7 @@ import { customLocale } from 'src/utils/date-locale';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import SearchIcon from '@mui/icons-material/Search';
 
-const countPerPage = 5;
+const countPerPage = 4;
 
 export const OverviewAMC = (props) => {
   const { messages } = props;
