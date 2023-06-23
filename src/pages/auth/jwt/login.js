@@ -150,7 +150,7 @@ const Page = () => {
                 &nbsp;
                 <Link
                   component={RouterLink}
-                  href={paths.auth.jwt.register}
+                 // href={paths.auth.jwt.register}
                   underline="hover"
                   variant="subtitle2"
                 >
