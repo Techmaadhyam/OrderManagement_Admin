@@ -51,9 +51,15 @@ export const OverviewAMC = (props) => {
 
   const sortedMessages = messages?.sort((a, b) => new Date(a.enddate) - new Date(b.enddate));
 
-    const filteredMessages = sortedMessages?.filter(message =>
-      message?.noncompany.companyName.toLowerCase().includes(searchText.toLowerCase())
-    );
+  const dataWithKeys = sortedMessages?.map((item) => ({
+    ...item,
+    companyName: item.noncompany?.companyName || item.company?.companyName, 
+    key: item.id 
+  }));
+
+const filteredMessages = dataWithKeys?.filter(message =>
+      message?.companyName?.toLowerCase().includes(searchText.toLowerCase())
+);
 
     
   //company search
@@ -169,7 +175,7 @@ const handlePageChange = (event, page) => {
                   }}
                   variant="subtitle2"
                 >
-                  {message?.noncompany.companyName}
+                  {message?.companyName}
                 </Typography>
               )}
               secondary={(
@@ -192,7 +198,7 @@ const handlePageChange = (event, page) => {
               sx={{ whiteSpace: 'nowrap' }}
               variant="caption"
             >
-            {formatDate(message.enddate)}
+            {formatDate(message?.enddate)}
             </Typography>
           </ListItem>
         );

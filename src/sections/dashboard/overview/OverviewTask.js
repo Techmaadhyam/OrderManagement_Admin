@@ -61,8 +61,15 @@ export const OverviewTask = (props) => {
 
 
   const { messages } = props;
-  const filteredMessages = messages?.filter(message =>
-      message?.tempUser.companyName.toLowerCase().includes(searchText.toLowerCase())
+
+  const dataWithKeys = messages?.map((item) => ({
+    ...item,
+    companyName: item.tempUser?.companyName || item.companyuser?.companyName, 
+    key: item.id 
+  }));
+
+  const filteredMessages = dataWithKeys?.filter(message =>
+      message?.companyName?.toLowerCase().includes(searchText.toLowerCase())
   );
 
   const filteredType = type ? filteredMessages?.filter(message => message?.category === type) : filteredMessages;
@@ -227,7 +234,7 @@ return (
                     }}
                     variant="subtitle2"
                   >
-                    {message?.tempUser.companyName}
+                    {message?.companyName}
                   </Typography>
                 )}
                 secondary={(
