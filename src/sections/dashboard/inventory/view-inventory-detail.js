@@ -94,196 +94,182 @@ export const ViewInventoryDetail = (props) => {
 
  
   return (
-    <div style={{minWidth: "100%", marginTop: "1rem" ,marginBottom: "1rem"  }}>
-      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-          <Link
+    <div style={{ minWidth: "100%", marginTop: "1rem", marginBottom: "1rem" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Link
           color="text.primary"
           component={RouterLink}
           href={paths.dashboard.inventory.view}
           sx={{
-            alignItems: 'center',
-            display: 'inline-flex',
+            alignItems: "center",
+            display: "inline-flex",
           }}
           underline="none"
         >
-          <SvgIcon sx={{ mr: 1, width: 38, height: 38,  transition: 'color 0.5s','&:hover': { color: `${primaryColor}` }}}>
-            <ArrowCircleLeftOutlinedIcon/>
+          <SvgIcon
+            sx={{
+              mr: 1,
+              width: 38,
+              height: 38,
+              transition: "color 0.5s",
+              "&:hover": { color: `${primaryColor}` },
+            }}
+          >
+            <ArrowCircleLeftOutlinedIcon />
           </SvgIcon>
           <Typography variant="subtitle2">
-             Back To <span style={{color: `${primaryColor}` , fontWeight: 600}}>Inventory List</span> 
+            Back To{" "}
+            <span style={{ color: `${primaryColor}`, fontWeight: 600 }}>
+              Inventory List
+            </span>
           </Typography>
         </Link>
-        <IconWithPopup/>
+        <IconWithPopup />
       </div>
- <h2>Inventory</h2>
- <Card>
+      <h2>Inventory</h2>
+      <Card>
         <CardHeader title="Inventory Detail" />
-        <CardContent sx={{ pt: 0 , mt: 5}}>
-          <Grid
-            container
-            spacing={3}
-          >
-              <Grid item xs={12} md={6}>
-            <PropertyListItem align={align} label="Warehouse">
-              <Link color="primary"   onClick={handleWarehouseNavigation}>
-                <Typography variant="subtitle1">
-                  {state?.warehouseName || warehouseName}
-                </Typography>
-              </Link>
-            </PropertyListItem>
-            <Divider />
-          </Grid>
+        <CardContent sx={{ pt: 0, mt: 5 }}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6}>
+              <PropertyListItem align={align} label="Warehouse">
+                <Link
+                  color="primary"
+                  onClick={handleWarehouseNavigation}
+                  style={{ cursor: "pointer" }}
+                >
+                  <Typography variant="subtitle1">
+                    {state?.warehouseName || warehouseName}
+                  </Typography>
+                </Link>
+              </PropertyListItem>
+              <Divider />
+            </Grid>
 
-            <Grid
-            item
-              xs={12}
-              md={6}
-            >
-             <PropertyListItem
-          align={align}
-          label="Purchase Order"
-          value={String(state?.purchaseOrderId || matchingObject?.purchaseOrderId) }
-        />
-         <Divider />
+            <Grid item xs={12} md={6}>
+              <PropertyListItem
+                align={align}
+                label="Purchase Order"
+                value={String(
+                  state?.purchaseOrderId || matchingObject?.purchaseOrderId
+                )}
+              />
+              <Divider />
             </Grid>
-            <Grid
-            item
-              xs={12}
-              md={6}
-            >
-            <PropertyListItem
-          align={align}
-          label="Model"
-          value={state?.categoryName ||state?.category?.name || matchingObject?.categoryName}
-        />
-         <Divider />
+            <Grid item xs={12} md={6}>
+              <PropertyListItem
+                align={align}
+                label="Model"
+                value={
+                  state?.categoryName ||
+                  state?.category?.name ||
+                  matchingObject?.categoryName
+                }
+              />
+              <Divider />
             </Grid>
-            
-            <Grid
-            item
-              xs={12}
-              md={6}
-            >
-                     <PropertyListItem
-          align={align}
-          label="Rack"
-          value={state?.rackName || state?.rack?.name ||matchingObject?.rackName}
-        />
-        <Divider />
+
+            <Grid item xs={12} md={6}>
+              <PropertyListItem
+                align={align}
+                label="Rack"
+                value={
+                  state?.rackName ||
+                  state?.rack?.name ||
+                  matchingObject?.rackName
+                }
+              />
+              <Divider />
             </Grid>
-          
-        <Grid item xs={12} md={6}>
-            <PropertyListItem align={align} label="Part Name">
-              <Link color="primary"   onClick={handleProductNavigation}>
-                <Typography variant="subtitle1">
-                {state?.productName || productName}
-                </Typography>
-              </Link>
-            </PropertyListItem>
+
+            <Grid item xs={12} md={6}>
+              <PropertyListItem align={align} label="Part Name">
+                <Link
+                  color="primary"
+                  onClick={handleProductNavigation}
+                  style={{ cursor: "pointer" }}
+                >
+                  <Typography variant="subtitle1">
+                    {state?.productName || productName}
+                  </Typography>
+                </Link>
+              </PropertyListItem>
+              <Divider />
+            </Grid>
             <Divider />
-        </Grid>
-         <Divider />
-          <Grid
-          item
-              xs={12}
-              md={6}
-            >
-        <PropertyListItem
-          align={align}
-          label="HSN Code"
-          value={state?.hsncode|| matchingObject?.hsncode}
-        />
-        <Divider />
-          </Grid>
-  
-    
-            <Grid
-            item
-              xs={12}
-              md={6}
-            >
+            <Grid item xs={12} md={6}>
               <PropertyListItem
-          align={align}
-          label="Size"
-          value={state?.size}
-        />
-         <Divider />
+                align={align}
+                label="HSN Code"
+                value={state?.hsncode || matchingObject?.hsncode}
+              />
+              <Divider />
             </Grid>
-            <Grid
-            item
-              xs={12}
-              md={6}
-            >
-             <PropertyListItem
-          align={align}
-          label="Weight"
-          value={state?.weight}
-        />
-         <Divider />
-            </Grid>
-            <Grid
-            item
-              xs={12}
-              md={6}
-            >
-                <PropertyListItem
-          align={align}
-          label="Available Stock"
-          value={String(state?.quantity)}
-        />
-         <Divider />
-            </Grid>
-            <Grid
-            item
-              xs={12}
-              md={6}
-            >
-               <PropertyListItem
-          align={align}
-          label="CGST"
-          value={String(state?.cgst)}
-        />
-         <Divider />
-            </Grid>
-            <Grid
-            item
-              xs={12}
-              md={6}
-            >
+
+            <Grid item xs={12} md={6}>
               <PropertyListItem
-          align={align}
-          label="IGST"
-          value={String(state?.igst)}
-        />
-         <Divider />
+                align={align}
+                label="Size"
+                value={state?.size}
+              />
+              <Divider />
             </Grid>
-            <Grid
-            item
-              xs={12}
-              md={6}
-            >
-        <PropertyListItem
-          align={align}
-          label="SGST"
-          value={String(state?.sgst)}
-        />
-         <Divider />
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              md={6}
-            >
+            <Grid item xs={12} md={6}>
               <PropertyListItem
-          align={align}
-          label="Description"
-          value={state?.description}
-        />
+                align={align}
+                label="Weight"
+                value={state?.weight}
+              />
+              <Divider />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <PropertyListItem
+                align={align}
+                label="Available Stock"
+                value={String(state?.quantity)}
+              />
+              <Divider />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <PropertyListItem
+                align={align}
+                label="CGST"
+                value={String(state?.cgst)}
+              />
+              <Divider />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <PropertyListItem
+                align={align}
+                label="IGST"
+                value={String(state?.igst)}
+              />
+              <Divider />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <PropertyListItem
+                align={align}
+                label="SGST"
+                value={String(state?.sgst)}
+              />
+              <Divider />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <PropertyListItem
+                align={align}
+                label="Description"
+                value={state?.description}
+              />
             </Grid>
           </Grid>
-         
         </CardContent>
-        <Divider/>
+        <Divider />
       </Card>
     </div>
   );
