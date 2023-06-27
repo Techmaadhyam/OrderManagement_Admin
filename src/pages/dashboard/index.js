@@ -46,10 +46,6 @@ const Page = () => {
   const [tasks, setTasks] = useState([]);
   const [tasks2, setTasks2] = useState([]);
   const [warehouseData, setWarehouseData] = useState([]);
-  const [list, setList] = useState({});
-
-
-
 
   const settings = useSettings();
 
@@ -122,87 +118,7 @@ const Page = () => {
         console.error(error);
       });
   }, []);
-//get so, po, quotation count
-  useEffect(() => {
-   
-    axios.get(apiUrl +`groupByBasedOnStatus/${userId}`)
-      .then(response => {
-        setList(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-  }, []);
 
-  const soListObject = {
-    delivered: 0,
-    cancelled: 0,
-    waitingForApproval: 0,
-    draft: 0,
-    approved: 0
-  };
-  
-  list?.soList?.forEach(([count, status]) => {
-    if (status === "Delivered") {
-      soListObject.delivered = count;
-    } else if (status === "Cancelled") {
-      soListObject.cancelled = count;
-    } else if (status === "Waiting for Approval") {
-      soListObject.waitingForApproval = count;
-    } else if (status === "Draft") {
-      soListObject.draft = count;
-    } else if (status === "Approved") {
-      soListObject.approved = count;
-    }
-  });
-  
-  // Create objects for poList
-  const poListObject = {
-    delivered: 0,
-    cancelled: 0,
-    waitingForApproval: 0,
-    draft: 0,
-    approved: 0
-  };
-  
-  list?.poList?.forEach(([count, status]) => {
-    if (status === "Delivered") {
-      poListObject.delivered = count;
-    } else if (status === "Cancelled") {
-      poListObject.cancelled = count;
-    } else if (status === "Waiting for Approval") {
-      poListObject.waitingForApproval = count;
-    } else if (status === "Draft") {
-      poListObject.draft = count;
-    } else if (status === "Approved") {
-      poListObject.approved = count;
-    }
-  });
-  
-  
-  
-  // Create objects for quotationList
-  const quotationListObject = {
-    delivered: 0,
-    cancelled: 0,
-    waitingForApproval: 0,
-    draft: 0,
-    approved: 0
-  };
-  
-  list?.quotationList?.forEach(([count, status]) => {
-    if (status === "Delivered") {
-      quotationListObject.delivered = count;
-    } else if (status === "Cancelled") {
-      quotationListObject.cancelled = count;
-    } else if (status === "Waiting for Approval") {
-      quotationListObject.waitingForApproval = count;
-    } else if (status === "Draft") {
-      quotationListObject.draft = count;
-    } else if (status === "Approved") {
-      quotationListObject.approved = count;
-    }
-  });
   
 
 
@@ -291,7 +207,7 @@ const Page = () => {
               md={6}
             >
               <SalesChart
-                messages={soListObject}
+          
               />
             </Grid>
             <Grid
@@ -299,7 +215,7 @@ const Page = () => {
               md={6}
             >
               <PurchaseChart
-                messages={poListObject}
+             
               />
             </Grid>
             <Grid
@@ -307,7 +223,7 @@ const Page = () => {
               md={12}
             >
               <QuotationChart
-                messages={quotationListObject}
+           
               />
             </Grid>
             <Grid
