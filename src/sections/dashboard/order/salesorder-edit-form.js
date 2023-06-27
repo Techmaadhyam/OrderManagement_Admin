@@ -163,6 +163,7 @@ const [terms, setTerms] = useState(state?.termsAndCondition || '');
 const [comment, setComment] = useState(state?.comments||'');
 const [user, setUser] = useState(state?.tempUser.companyName ||'');
 const [payment, setPayment]= useState(state?.paymentMode||'')
+const [deliveryMode, setDeliveryMode]= useState(state?.modeofdelivery||'')
 
 
 const [currentDate, setCurrentDate] = useState('');
@@ -485,6 +486,9 @@ const [productName, setProductName] = useState('');
       case 'type':
         setType(value);
         break;
+      case 'delivery':
+          setDeliveryMode(value);
+          break;
       case 'payment':
         setPayment(value);
         break;
@@ -774,6 +778,7 @@ const notify = (type, message) => {
                   createdDate: state?.originalcreatedDate,
                   comments : comment,
                   termsAndCondition: terms,
+                  modeofdelivery: deliveryMode,
                   totalAmount: finalAmount,
                   lastModifiedByUser: {id: userId},
               },
@@ -988,9 +993,10 @@ height='50px'/>
               <TextField
                 fullWidth
                 label="Mode of Delivery"
-                
                 name="delivery"
                 required
+                value={deliveryMode}
+                onChange={handleInputChange}
       
               />
             </Grid>

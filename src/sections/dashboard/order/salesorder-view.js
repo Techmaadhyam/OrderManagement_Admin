@@ -36,7 +36,7 @@ import { useNavigate } from 'react-router-dom';
 export const ViewSalesOrder = (props) => {
   const location = useLocation();
   const state = location.state;
-console.log(state)
+
 
 
 
@@ -232,7 +232,13 @@ const columns = [
         <Divider />
         <PropertyListItem
           align={align}
-          label="DeliveryDate"
+          label="Mode Of Delivery "
+          value={state?.modeofdelivery|| state?.soRecord?.modeofdelivery}
+        />
+        <Divider />
+        <PropertyListItem
+          align={align}
+          label="Delivery Date"
           value={state?.deliveryDate || formattedDate}
         />
         <Divider />

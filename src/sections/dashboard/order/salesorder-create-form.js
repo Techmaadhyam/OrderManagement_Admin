@@ -153,6 +153,7 @@ const [userState, setUserState] = useState();
 const [terms, setTerms] = useState('');
 const [comment, setComment] = useState('');
 const [payment, setPayment] =useState('')
+const [deliveryMode, setDeliveryMode]= useState('')
 
 const [currentDate, setCurrentDate] = useState('');
 
@@ -381,6 +382,9 @@ const notify = (type, message) => {
       case 'type':
         setType(value);
         break;
+        case 'delivery':
+          setDeliveryMode(value);
+          break;
       case 'payment':
         setPayment(value);
           break;
@@ -604,7 +608,7 @@ console.log(deliveryIST)
   const handleClick = async (event) => {
     let finalAmount = totalAmount.toFixed(2)
     event.preventDefault();
-    debugger;
+
       if (contactName) {
         try {
           const response = await fetch(apiUrl +'createSalesOrder', {
@@ -635,6 +639,7 @@ console.log(deliveryIST)
                   comments : comment,
                   termsAndCondition: terms,
                   totalAmount: finalAmount,
+                  modeofdelivery: deliveryMode,
                   lastModifiedByUser: {id: userId},
               },
                   salesOrderDetails: updatedRows
@@ -850,9 +855,10 @@ height='50px'/>
               <TextField
                 fullWidth
                 label="Mode of Delivery"
-                
                 name="delivery"
                 required
+                value={deliveryMode}
+                onChange={handleInputChange}
       
               />
             </Grid>

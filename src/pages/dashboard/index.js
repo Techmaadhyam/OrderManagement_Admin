@@ -37,12 +37,12 @@ const userId = parseInt(sessionStorage.getItem('user')|| localStorage.getItem('u
 const now = new Date();
 
 const Page = () => {
-  const [inventoryCount, setInventoryCount] = useState(0);
-  const [wareHouseCount, setWarehouseCount] = useState(0);
-  const [total, setTotal] = useState(0);
-  const [so, setSo] = useState(0);
-  const [po, setPo] = useState(0);
-  const [quotation, setQuotation] = useState(0);
+  // const [inventoryCount, setInventoryCount] = useState(0);
+  // const [wareHouseCount, setWarehouseCount] = useState(0);
+  // const [total, setTotal] = useState(0);
+  // const [so, setSo] = useState(0);
+  // const [po, setPo] = useState(0);
+  // const [quotation, setQuotation] = useState(0);
   const [tasks, setTasks] = useState([]);
   const [tasks2, setTasks2] = useState([]);
   const [warehouseData, setWarehouseData] = useState([]);
@@ -54,34 +54,34 @@ const Page = () => {
   const settings = useSettings();
 
   usePageView();
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response1 = await axios.get(apiUrl + `getInventoryCount/${userId}`);
-        setInventoryCount(response1.data);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response1 = await axios.get(apiUrl + `getInventoryCount/${userId}`);
+  //       setInventoryCount(response1.data);
   
-        const response2 = await axios.get(apiUrl + `getWarehouseCount/${userId}`);
-        setWarehouseCount(response2.data);
+  //       const response2 = await axios.get(apiUrl + `getWarehouseCount/${userId}`);
+  //       setWarehouseCount(response2.data);
 
-        const response3 = await axios.get(apiUrl + `getTotalCost/${userId}`);
-        setTotal(response3.data);
+  //       const response3 = await axios.get(apiUrl + `getTotalCost/${userId}`);
+  //       setTotal(response3.data);
 
-        const response4 = await axios.get(apiUrl + `getSalesOrderBasedOnStatus/${userId}/Open`);
-        setSo(response4.data);
+  //       const response4 = await axios.get(apiUrl + `getSalesOrderBasedOnStatus/${userId}/Open`);
+  //       setSo(response4.data);
 
-        const response5 = await axios.get(apiUrl + `getPurchaseOrderBasedOnStatus/${userId}/Open`);
-        setPo(response5.data);
+  //       const response5 = await axios.get(apiUrl + `getPurchaseOrderBasedOnStatus/${userId}/Open`);
+  //       setPo(response5.data);
 
-        const response6 = await axios.get(apiUrl + `getQuotationBasedOnStatus/${userId}/Open`);
-        setQuotation(response6.data);
+  //       const response6 = await axios.get(apiUrl + `getQuotationBasedOnStatus/${userId}/Open`);
+  //       setQuotation(response6.data);
   
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error);
+  //     }
+  //   };
   
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
   
   
   useEffect(() => {
