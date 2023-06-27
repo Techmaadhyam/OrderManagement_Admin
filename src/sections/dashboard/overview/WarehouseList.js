@@ -30,6 +30,8 @@ import { customLocale } from 'src/utils/date-locale';
 import React, { useState, useEffect } from 'react';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import ReceiptCheckIcon from 'src/icons/untitled-ui/duocolor/receipt-check';
+import { useNavigate } from 'react-router-dom';
+
 
 
 const customerType = [
@@ -47,11 +49,12 @@ const customerType = [
 const countPerPage = 4;
 
 export const WarehouseList = (props) => {
+  const navigate = useNavigate();
 
 
   const [isSearching, setIsSearching] = useState(false);
   const [searchText, setSearchText] = useState('');
-  const [type, setType] = useState("");
+
 
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -77,9 +80,7 @@ const handleCompanyCancel = () => {
   setSearchText('');
 };
 
-const handleInputChange = (event) => {
-  setType(event.target.value);
-};
+
 
 
 
@@ -91,6 +92,10 @@ const currentMessages = filteredMessages.slice(startIndex, endIndex);
 
 const handlePageChange = (event, page) => {
   setCurrentPage(page);
+};
+
+const handleNavigate =(messages) => {
+  navigate(`/dashboard/invoices/viewDetail`, { state: messages })
 };
 
 return (
@@ -132,6 +137,8 @@ return (
           return (
             <ListItem
               key={message.id}
+              onClick={() => handleNavigate(message)}
+           
               sx={{
                 '&:hover': {
                   backgroundColor: 'action.hover',
