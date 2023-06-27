@@ -409,37 +409,26 @@ const columns = [
 
 
     return (
-      <Dialog open={true} 
-      onClose={onClose}>
+      <Dialog open={true} onClose={onClose}>
         <DialogTitle>Edit Parts</DialogTitle>
         <DialogContent>
-        <Grid
-            container
-            spacing={0}
-            
-          >
-              <Grid
-              xs={12}
-              md={6}
-            >
-          <TextField
-            label="Part Name"
-            name="productName"
-            value={editedRecord.productName}
-            onChange={handleChange}
-            style={{ marginBottom: 10 }}
-          />
-          </Grid>
-          <Grid
-              xs={12}
-              md={6}
-            >
-          <TextField
-            label="Model"
-            name="category"
-            value={editedRecord.category.name}
-            style={{ marginBottom: 10 }}
-          />
+          <Grid container spacing={2}>
+            <Grid xs={12} md={6}>
+              <TextField
+                label="Part Name"
+                name="productName"
+                fullWidth
+                value={editedRecord.productName}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid xs={12} md={6}>
+              <TextField
+                label="Model"
+                name="category"
+                value={editedRecord.category.name}
+                fullWidth
+              />
             </Grid>
             {/* <Grid
               xs={6}
@@ -463,27 +452,23 @@ const columns = [
                 ))}
           </TextField>
           </Grid> */}
-          <Grid
-              xs={12}
-              md={6}
-            >
-          <TextField
-            label="Description"
-            name="description"
-            value={editedRecord.category.description}
-            style={{ marginBottom: 10 }}
-          />
-          </Grid>
-          
+            <Grid xs={12} md={12}>
+              <TextField
+                label="Description"
+                name="description"
+                value={editedRecord.category.description}
+                fullWidth
+                multiline
+                rows={2}
+              />
+            </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose} 
-          color="primary">
+          <Button onClick={onClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleSave} 
-          color="primary">
+          <Button onClick={handleSave} color="primary">
             Save
           </Button>
         </DialogActions>

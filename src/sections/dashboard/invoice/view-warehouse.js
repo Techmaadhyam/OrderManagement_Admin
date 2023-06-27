@@ -395,110 +395,84 @@ const columns = [
     };
 
     return (
-      <Dialog open={true} 
-      onClose={onClose}>
+      <Dialog open={true} onClose={onClose}>
         <DialogTitle>Edit Warehouse</DialogTitle>
         <DialogContent>
-        <Grid
-            container
-            spacing={0}
-            
-          >
-              <Grid
-              xs={12}
-              md={6}
-            >
-          <TextField
-            label="Warehouse Name"
-            name="name"
-            value={editedRecord.name}
-            onChange={handleChange}
-            style={{ marginBottom: 10 }}
-          />
-          </Grid>
-          <Grid
-              xs={12}
-              md={6}
-            >
-          <TextField
-            label="Zip Code"
-            name="zipcode"
-            value={editedRecord.zipcode}
-            onChange={handleChange}
-            style={{ marginBottom: 10 }}
-          />
+          <Grid container spacing={2}>
+            <Grid xs={12} md={6}>
+              <TextField
+                label="Warehouse Name"
+                name="name"
+                value={editedRecord.name}
+                onChange={handleChange}
+                fullWidth
+              />
             </Grid>
-           
-          <Grid
-              xs={12}
-              md={6}
-            >
-           <TextField
-            label="Country"
-            name="country"
-            value={editedRecord.country}
-            onChange={handleChange}
-            style={{ marginBottom: 10 }}
-          />
-          </Grid>
-          <Grid
-              xs={12}
-              md={6}
-            >
-           <TextField
-            label="State"
-            name="state"
-            value={editedRecord.state}
-            onChange={handleChange}
-            style={{ marginBottom: 10 }}
-          />
+            <Grid xs={12} md={6}>
+              <TextField
+                label="Zip Code"
+                name="zipcode"
+                value={editedRecord.zipcode}
+                onChange={handleChange}
+                fullWidth
+              />
             </Grid>
-          <Grid
-              xs={12}
-              md={6}
-            >
-           <TextField
-            label="City"
-            name="city"
-            value={editedRecord.city}
-            onChange={handleChange}
-            style={{ marginBottom: 10 }}
-          />
-          </Grid>
-          <Grid
-              xs={12}
-              md={6}
-            >
-           <TextField
-            label="Description"
-            name="description"
-            value={editedRecord.description}
-            onChange={handleChange}
-            style={{ marginBottom: 10 }}
-          />
-          </Grid>
-          <Grid
-              xs={12}
-              md={11}
-            >
-            <TextField
-            label="Address"
-            name="address"
-            value={editedRecord.address}
-            onChange={handleChange}
-            fullWidth
-            style={{ marginBottom: 10 }}
-          />
-          </Grid>
+
+            <Grid xs={12} md={6}>
+              <TextField
+                label="Country"
+                name="country"
+                value={editedRecord.country}
+                onChange={handleChange}
+                fullWidth
+              />
+            </Grid>
+            <Grid xs={12} md={6}>
+              <TextField
+                label="State"
+                name="state"
+                value={editedRecord.state}
+                onChange={handleChange}
+                fullWidth
+              />
+            </Grid>
+            <Grid xs={12} md={6}>
+              <TextField
+                label="City"
+                name="city"
+                value={editedRecord.city}
+                onChange={handleChange}
+                fullWidth
+              />
+            </Grid>
+            <Grid xs={12} md={6}>
+              <TextField
+                label="Description"
+                name="description"
+                value={editedRecord.description}
+                onChange={handleChange}
+                fullWidth
+              />
+            </Grid>
+            <Grid xs={12} md={12}>
+              <TextField
+                label="Address"
+                name="address"
+                value={editedRecord.address}
+                onChange={handleChange}
+                fullWidth
+                multiline
+                rows={2}
+             
+              />
+            </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose} 
-          color="primary">
+          <Button onClick={onClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleSave} 
-          color="primary">
+          <Button onClick={handleSave} color="primary">
             Save
           </Button>
         </DialogActions>
