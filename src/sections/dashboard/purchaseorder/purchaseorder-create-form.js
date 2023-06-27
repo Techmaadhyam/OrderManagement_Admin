@@ -22,7 +22,6 @@ import "./purchase-order.css";
 import IconWithPopup from "../user/user-icon";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import axios from "axios";
-import moment from "moment/moment";
 import { primaryColor } from "src/primaryColor";
 import EditIcon from "@mui/icons-material/Edit";
 import { Scrollbar } from "src/components/scrollbar";
@@ -32,6 +31,13 @@ import "./customTable.css";
 import { useNavigate } from "react-router-dom";
 import "moment-timezone";
 import { apiUrl } from "src/config";
+import {
+  fetchAccessToken,
+  fetchCountries,
+  fetchStates,
+  fetchCities,
+  fetchIndianStates,
+} from "src/utils/api-service";
 
 //get userId from session storage
 const userId = parseInt(
@@ -156,9 +162,8 @@ export const PurchaseOrderCreateForm = (props) => {
   const [userState, setUserState] = useState();
   const [terms, setTerms] = useState("");
   const [comment, setComment] = useState("");
-  const [currentDate, setCurrentDate] = useState("");
 
-  //add parts state managment
+  //add/edit parts state managment
   const [productName, setProductName] = useState("");
   const [weight, setWeight] = useState("");
   const [sgst, setSgst] = useState();
@@ -172,7 +177,6 @@ export const PurchaseOrderCreateForm = (props) => {
   const [showForm, setShowForm] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
   const [payment, setPayment] = useState("");
-
   const [productId, setProductId] = useState();
   const [salesUser, setSalesUser] = useState();
   const [allQuotation, setAllQuotation] = useState([]);
@@ -197,38 +201,12 @@ export const PurchaseOrderCreateForm = (props) => {
   const [currentCity, setCurrentCity] = useState("");
   const [zipcode, setZipcode] = useState("");
 
-  //get currentdate
-  useEffect(() => {
-    const today = new Date();
-    const year = today.getFullYear().toString();
-    const month = (today.getMonth() + 1).toString().padStart(2, "0");
-    const day = today.getDate().toString().padStart(2, "0");
-    const formattedDate = `${year}/${month}/${day}`;
-    setCurrentDate(formattedDate);
-  }, []);
-
+  //get access token
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          "https://www.universal-tutorial.com/api/getaccesstoken",
-          {
-            headers: {
-              Accept: "application/json",
-              "api-token":
-                "8HWETQvEFegKi6tGPUkSWDiQKfW8UdZxPqbzHX6JdShA3YShkrgKuHUbnTMkd11QGkE",
-              "user-email": "mithesh.dev.work@gmail.com",
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch access token");
-        }
-
-        const data = await response.json();
-
-        setAccessToken(data.auth_token);
+        const accessToken = await fetchAccessToken();
+        setAccessToken(accessToken);
       } catch (error) {
         console.error(error);
       }
@@ -236,77 +214,27 @@ export const PurchaseOrderCreateForm = (props) => {
 
     fetchData();
   }, []);
-  //fetches country list for dropdown and pushesh it to state which is later mapped
-  const fetchCountries = useCallback(async () => {
-    try {
-      const response = await fetch(
-        "https://www.universal-tutorial.com/api/countries/",
-        {
-          headers: {
-            Authorization: "Bearer " + accessToken,
-            Accept: "application/json",
-          },
-        }
-      );
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+  //fetches country list for dropdown and pushesh it to state which is later mapped
+  const fetchCountriesData = useCallback(async () => {
+    try {
+      if (accessToken) {
+        const countries = await fetchCountries(accessToken);
+        setCountries(countries);
       }
-      const data = await response.json();
-      setCountries(data);
     } catch (error) {
       console.error("Error fetching countries:", error);
     }
   }, [accessToken]);
 
-  //using useeffect to prevent fetch request being called on render
-  useEffect(() => {
-    fetchCountries();
-  }, [fetchCountries]);
-
-  //mapping countries to MUI select input field
-  const userOptionsCountry = useMemo(() => {
-    return countries.map((country) => ({
-      label: country.country_name,
-      value: country.country_name,
-    }));
-  }, [countries]);
-
-  //mapping states to MUI select input field
-  const userOptionsState = useMemo(() => {
-    return states.map((state) => ({
-      label: state.state_name,
-      value: state.state_name,
-    }));
-  }, [states]);
-
-  //mapping cities to MUI select input field
-  const userOptionsCities = useMemo(() => {
-    return cities.map((city) => ({
-      label: city.city_name,
-      value: city.city_name,
-    }));
-  }, [cities]);
-
   //fetches states list for dropdown and pushesh it to setStates which is later mapped
   const handleCountry = async (event) => {
     try {
       setCurrentCountry(event.target.value);
-      const response = await fetch(
-        `https://www.universal-tutorial.com/api/states/${event.target.value}`,
-        {
-          headers: {
-            Authorization: "Bearer " + accessToken,
-            Accept: "application/json",
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+      if (accessToken) {
+        const states = await fetchStates(accessToken, event.target.value);
+        setStates(states);
       }
-      const data = await response.json();
-      setStates(data);
     } catch (error) {
       console.error("Error fetching states:", error);
     }
@@ -316,54 +244,63 @@ export const PurchaseOrderCreateForm = (props) => {
   const handleState = async (event) => {
     try {
       setCurrentState(event.target.value);
-      const response = await fetch(
-        `https://www.universal-tutorial.com/api/cities/${event.target.value}`,
-        {
-          headers: {
-            Authorization: "Bearer " + accessToken,
-            Accept: "application/json",
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+      if (accessToken) {
+        const cities = await fetchCities(accessToken, event.target.value);
+        setCities(cities);
       }
-      const data = await response.json();
-      setCities(data);
     } catch (error) {
-      console.error("Error fetching states:", error);
+      console.error("Error fetching cities:", error);
     }
   };
 
   //sets default country to India and fetches state list for India and is pushed to setStates
-  const handleDefaultState = async () => {
+  const handleDefaultState = useCallback(async () => {
     try {
-      if (currentCountry === "India") {
-        const response = await fetch(
-          "https://www.universal-tutorial.com/api/states/India",
-          {
-            headers: {
-              Authorization: "Bearer " + accessToken,
-              Accept: "application/json",
-            },
-          }
-        );
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const data = await response.json();
-        setStates(data);
+      if (currentCountry === "India" && accessToken) {
+        const states = await fetchIndianStates(accessToken);
+        setStates(states);
       }
     } catch (error) {
-      console.error("Error fetching states:", error);
+      console.error("Error fetching Indian states:", error);
     }
-  };
+  }, [accessToken, currentCountry]);
+
+  //useeffect fetch request being called on componet mount
+  useEffect(() => {
+    if (accessToken) {
+      fetchCountriesData();
+      handleDefaultState();
+    }
+  }, [accessToken, fetchCountriesData, handleDefaultState]);
 
   //sets current city value in MUI select field onchange event
   const handleCities = async (event) => {
     setCurrentCity(event.target.value);
   };
+
+  //mapping countries to MUI select input field
+  const userOptionsCountry = useMemo(() => {
+    return countries?.map((country) => ({
+      label: country.country_name,
+      value: country.country_name,
+    }));
+  }, [countries]);
+
+  //mapping states to MUI select input field
+  const userOptionsState = useMemo(() => {
+    return states?.map((state) => ({
+      label: state.state_name,
+      value: state.state_name,
+    }));
+  }, [states]);
+
+  //mapping cities to MUI select input field
+  const userOptionsCities = useMemo(() => {
+    return cities?.map((city) => ({
+      label: city.city_name,
+      value: city.city_name,
+    }));
+  }, [cities]);
 
   //handle form fields state update
   const handleInputChange = (event) => {
@@ -405,6 +342,7 @@ export const PurchaseOrderCreateForm = (props) => {
   const handleDateChange = (date) => {
     setDeliveryDate(date);
   };
+
   //get temporary user data
   useEffect(() => {
     axios
@@ -440,6 +378,7 @@ export const PurchaseOrderCreateForm = (props) => {
         console.error(error);
       });
   }, []);
+
   //only show quotations that have status: delivered
   const approvedQuotation = allQuotation.map((item) => ({
     value: item.id,
@@ -449,9 +388,6 @@ export const PurchaseOrderCreateForm = (props) => {
   //format date
   const deliveryDateAntd = deliveryDate;
   const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
-  //const formattedDeliveryDate = deliveryDateJS ? moment(deliveryDateJS).format('YYYY/MM/DD') : '';
-  //const date = moment.tz(formattedDeliveryDate, 'YYYY/MM/DD', 'Asia/Kolkata');
-
   const deliveryIST = deliveryDateJS;
 
   //handle delete row
@@ -547,6 +483,7 @@ export const PurchaseOrderCreateForm = (props) => {
       setTotalAmount(calculatedTotalAmount);
     }
   };
+
   //handle editing of row
   const handleEditRow = (idx, row) => {
     setProductName(row.productName);
@@ -581,7 +518,6 @@ export const PurchaseOrderCreateForm = (props) => {
       .get(apiUrl + `getAllItem/${userId}`)
       .then((response) => {
         setUserData2(response.data);
-        console.log(response.data);
         if (response.data.length > 0) {
           const loginUser = response.data[0].createdByUser.userName;
           const loginPhone = response.data[0].createdByUser.mobile;
@@ -691,9 +627,7 @@ export const PurchaseOrderCreateForm = (props) => {
                 });
 
                 if (uploadResponse.ok) {
-                  console.log("Performa Invoice uploaded successfully");
                   const responseData = await uploadResponse.json();
-                  console.log(responseData);
 
                   performaInvoiceData = {
                     data: responseData,
@@ -730,7 +664,6 @@ export const PurchaseOrderCreateForm = (props) => {
                 });
 
                 if (uploadResponse.ok) {
-                  console.log("approved Invoice File uploaded successfully");
                   const responseData = await uploadResponse.json();
 
                   approvedInvoiceData = {
@@ -768,7 +701,6 @@ export const PurchaseOrderCreateForm = (props) => {
                 });
 
                 if (uploadResponse.ok) {
-                  console.log("delivery Challan File uploaded successfully");
                   const responseData = await uploadResponse.json();
 
                   deliveryChallanData = {
@@ -854,8 +786,6 @@ export const PurchaseOrderCreateForm = (props) => {
         break;
     }
   };
-
-  console.log(userData);
 
   return (
     <div style={{ minWidth: "100%" }}>
