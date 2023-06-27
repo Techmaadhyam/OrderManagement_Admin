@@ -29,11 +29,13 @@ import {
 import { customLocale } from 'src/utils/date-locale';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import SearchIcon from '@mui/icons-material/Search';
+import { useNavigate } from 'react-router-dom';
 
 const countPerPage = 4;
 
 export const OverviewAMC = (props) => {
   const { messages } = props;
+  const navigate = useNavigate();
 
   const [isSearching, setIsSearching] = useState(false);
   const [searchText, setSearchText] = useState('');
@@ -66,6 +68,10 @@ const handleCompanyInputChange = event => {
 const handleCompanyCancel = () => {
   setIsSearching(false);
   setSearchText('');
+};
+
+const handleNavigate =(messages) => {
+  navigate('/dashboard/services/amcDetail', { state: messages })
 };
 
 const getEndDateIconStyle = (enddate) => {
@@ -131,6 +137,7 @@ const handlePageChange = (event, page) => {
         return (
           <ListItem
             key={message.id}
+            onClick={() => handleNavigate(message)}
             sx={{
               '&:hover': {
                 backgroundColor: 'action.hover',

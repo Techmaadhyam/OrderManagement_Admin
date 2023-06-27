@@ -29,6 +29,7 @@ import {
 import { customLocale } from 'src/utils/date-locale';
 import React, { useState, useEffect } from 'react';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import { useNavigate } from 'react-router-dom';
 
 
 const customerType = [
@@ -46,6 +47,8 @@ const customerType = [
 const countPerPage = 4;
 
 export const OverviewTask = (props) => {
+
+  const navigate = useNavigate();
 
 
   const [isSearching, setIsSearching] = useState(false);
@@ -126,6 +129,14 @@ const handlePageChange = (event, page) => {
   setCurrentPage(page);
 };
 
+const handleNavigate =(messages) => {
+  if(messages?.category === "poList"){
+  navigate(`/dashboard/purchaseorder/viewDetail/${messages.id}`, { state: messages })
+  } else {
+    navigate(`/dashboard/orders/viewDetail/${messages.id}`, { state: messages })
+  }
+};
+
 return (
     <Card>
       <CardHeader
@@ -186,6 +197,7 @@ return (
           return (
             <ListItem
               key={message.id}
+              onClick={() => handleNavigate(message)}
               sx={{
                 '&:hover': {
                   backgroundColor: 'action.hover',
