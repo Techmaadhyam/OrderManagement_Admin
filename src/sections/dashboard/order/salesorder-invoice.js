@@ -136,7 +136,7 @@ const SalesOrderInvoice = (props) => {
 
   const dataWithKeys = formattedArray?.map((item) => ({
     ...item,
-    companyName: item.tempUser?.companyName, 
+    companyName: item.tempUser?.companyName || item.companyuser?.companyName, 
     key: item.id 
   }));
 

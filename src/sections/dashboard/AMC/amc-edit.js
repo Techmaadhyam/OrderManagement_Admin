@@ -148,7 +148,7 @@ const [tempId, setTempId] = useState(state?.noncompany?.id);
 const [userState, setUserState] = useState(state?.company?.id);
 const [terms, setTerms] = useState(state?.termsAndCondition || '');
 const [comment, setComment] = useState(state?.comments||'');
-const [user, setUser] = useState('')
+const [user, setUser] = useState(state?.noncompany?.companyName ||state?.company?.companyName||'')
 const [technician, setTechnician] = useState(state?.technicianInfo.id || '');
 const [technicianData, setTechnicianData] = useState([]);
 
@@ -272,7 +272,7 @@ const [productName, setProductName] = useState('');
   
         const selecteduserId = combinedData.find((option) => (option.id === tempId || userState));
         const selecteduser = selecteduserId ? selecteduserId.companyName : '';
-        setUser(selecteduser);
+
  
        
       })

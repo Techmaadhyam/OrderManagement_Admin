@@ -54,7 +54,7 @@ import {
     const updatedData = userData?.map((item) => {
       return {
         ...item,
-        companyName: item.noncompany.companyName
+        companyName: item?.noncompany?.companyName || item?.company?.companyName
       };
     });
   
@@ -143,7 +143,7 @@ import {
   
     
   const filteredList = dataWithKeys.filter(product => {
-    const companyMatch = product.companyName?.toLowerCase().includes(searchText.toLowerCase());
+    const companyMatch = product?.companyName?.toLowerCase().includes(searchText.toLowerCase());
    
     return companyMatch
   });

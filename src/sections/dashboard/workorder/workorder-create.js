@@ -416,7 +416,7 @@ const handleClick = async (event) => {
             },
             body: JSON.stringify({
               workorder:{
-                  contactPersonName: contactName,
+                contactPersonName: contactName,
                   contactPhoneNumber: phone,
                   contactEmail: inchargeEmail,
                   adminPersonName: adminName,
@@ -425,15 +425,15 @@ const handleClick = async (event) => {
                   status: status,
                   type: type,
                   category: 'workorder',
-         
                   createdByUser: {id: userId},
                   createdDate: new Date(),
                   lastModifiedDate: new Date(),
                   comments : comment,
                   lastModifiedByUser: {id: userId},
                   termsAndCondition: terms,
-                  totalAmount: finalAmount,
+                  //totalAmount: finalAmount,
                   technicianInfo: {id: technician},
+                  //noncompany:{id: tempId},
                   company: {id: userState},
         
               },
