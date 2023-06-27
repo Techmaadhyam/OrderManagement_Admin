@@ -178,13 +178,13 @@ export const useSections = () => {
                 path: paths.dashboard.orders.index
               },
               {
-                title: t(tokens.nav.view),
+                title: t(tokens.nav.invoices),
                 path: paths.dashboard.orders.details
               },
-              {
-                title: t(tokens.nav.invoice),
-                path: paths.dashboard.orders.invoice
-              },
+              // {
+              //   title: t(tokens.nav.invoice),
+              //   path: paths.dashboard.orders.invoice
+              // },
             
             ]
           },

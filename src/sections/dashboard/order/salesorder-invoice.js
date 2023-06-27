@@ -540,16 +540,16 @@ const handleChallanPdf = async (record) => {
 
   const columns = [
     {
-      title: 'Sales Order Number',
-      dataIndex: 'id',
-      key: 'id',
+      title: "Sales Order Number",
+      dataIndex: "id",
+      key: "id",
       render: (name) => {
         return (
           <Box
             color="primary"
             sx={{
-              alignItems: 'center',
-              textAlign: 'center',
+              alignItems: "center",
+              textAlign: "center",
             }}
             underline="hover"
           >
@@ -560,7 +560,7 @@ const handleChallanPdf = async (record) => {
     },
     {
       title: (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ display: "flex", alignItems: "center" }}>
           {!isSearching ? (
             <>
               <Typography variant="subtitle2">Company Name</Typography>
@@ -584,87 +584,106 @@ const handleChallanPdf = async (record) => {
           )}
         </div>
       ),
-      key: 'companyName',
-      dataIndex: 'companyName',
+      key: "companyName",
+      dataIndex: "companyName",
     },
     {
-      title: 'Order Modified Date',
-      key: 'lastModifiedDate',
-      dataIndex: 'lastModifiedDate',
+      title: "Order Modified Date",
+      key: "lastModifiedDate",
+      dataIndex: "lastModifiedDate",
     },
-     
+
     {
-      title: 'Order Date',
-      key: 'createdDate',
-      dataIndex: 'createdDate',
-    },
-    {
-      title: 'Delivery Date',
-      key: 'deliveryDate',
-      dataIndex: 'deliveryDate',
+      title: "Order Date",
+      key: "createdDate",
+      dataIndex: "createdDate",
     },
     {
-      title: 'Status',
-      key: 'status',
-      dataIndex: 'status',
+      title: "Delivery Date",
+      key: "deliveryDate",
+      dataIndex: "deliveryDate",
     },
-  
+    {
+      title: "Status",
+      key: "status",
+      dataIndex: "status",
+    },
+
     {
       title: (
         <TextField
-
-        label="Type"
-        name="type"
-        sx={{ minWidth: 150 }}
-        value={selectedType}
-        onChange={handleTypeChange}
-  
-  
-        select
+          label="Type"
+          name="type"
+          sx={{ minWidth: 150 }}
+          value={selectedType}
+          onChange={handleTypeChange}
+          select
         >
-       <MenuItem value="">All</MenuItem>
+          <MenuItem value="">All</MenuItem>
           {customerType.map((option) => (
-            <MenuItem key={option.value} 
-            value={option.value}>
+            <MenuItem key={option.value} value={option.value}>
               {option.label}
             </MenuItem>
           ))}
         </TextField>
       ),
-      key: 'type',
-      dataIndex: 'type',
+      key: "type",
+      dataIndex: "type",
     },
-  
+
     {
-        title: 'Download Invoice',
-      dataIndex: 'downloadInvoice',
-      key: 'downloadInvoice',
-      render: (_, record) => (
-        <IconButton onClick={() => handleInvoicePdf(record,"TAX INVOICE","Invoice Date","Invoice")}>
-          <Icon>
-            <DownloadIcon />
-          </Icon>
-        </IconButton>
-      ),
+      title: "Download Invoice",
+      dataIndex: "downloadInvoice",
+      key: "downloadInvoice",
+      render: (_, record) => {
+        if (record.status === "Approved") {
+          return (
+            <IconButton
+              onClick={() =>
+                handleInvoicePdf(
+                  record,
+                  "TAX INVOICE",
+                  "Invoice Date",
+                  "Invoice"
+                )
+              }
+            >
+              <Icon>
+                <DownloadIcon />
+              </Icon>
+            </IconButton>
+          );
+        }
+        return null; // Return null if the condition is not met
+      },
     },
     {
-        title: 'Download Delivery Challan',
-      dataIndex: 'deliveryChallan',
-      key: 'deliveryChallan',
-      render: (_, record) => (
-        <IconButton onClick={() => handleChallanPdf(record)}>
-          <Icon>
-            <DownloadIcon />
-          </Icon>
-        </IconButton>
-      ),
+      title: "Download Delivery Challan",
+      dataIndex: "deliveryChallan",
+      key: "deliveryChallan",
+      render: (_, record) => {
+        if (record.status === "Approved") {
+          return (
+            <IconButton onClick={() => handleChallanPdf(record)}>
+              <Icon>
+                <DownloadIcon />
+              </Icon>
+            </IconButton>
+          );
+        }
+        return null; // Return null if the condition is not met
+      },
     },
     {
-        title: 'Proforma Invoice',
-      dataIndex: 'downloadPI',
-      key: 'downloadPI',
+      title: "Proforma Invoice",
+      dataIndex: "downloadPI",
+      key: "downloadPI",
       render: (_, record) => (
-        <IconButton onClick={() => handleInvoicePdf(record,"PROFORMA INVOICE","Date","Quotation")}>
+        <IconButton
+          onClick={() =>
+            handleInvoicePdf(record, "PROFORMA INVOICE", "Date", "Quotation")
+          }
+        >
           <Icon>
             <DownloadIcon />
           </Icon>
