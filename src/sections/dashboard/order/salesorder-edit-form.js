@@ -159,9 +159,10 @@ const [contactName,setContactName] = useState(state?.contactPerson||'')
 const [phone, setPhone] = useState(state?.contactPhone||'');
 const [address, setAddress] = useState(state?.deliveryAddress || "");
 const [tempId, setTempId] = useState(state?.tempUser?.id);
+const [userState, setUserState] = useState(state?.companyuser?.id);
 const [terms, setTerms] = useState(state?.termsAndCondition || '');
 const [comment, setComment] = useState(state?.comments||'');
-const [user, setUser] = useState(state?.tempUser.companyName ||'');
+const [user, setUser] = useState(state?.tempUser?.companyName ||state?.companyuser?.companyName||'')
 const [payment, setPayment]= useState(state?.paymentMode||'')
 const [deliveryMode, setDeliveryMode]= useState(state?.modeofdelivery||'')
 
@@ -186,7 +187,7 @@ const [productName, setProductName] = useState('');
   const [Id, setId] = useState()
 
   const [totalAmount, setTotalAmount] = useState(0);
-  const [userState, setUserState] = useState(state?.userId);
+ 
 
   const [rowData, setRowData] =useState()
   const [dDate, setDDate] =useState(state?.deliveryDate)
@@ -760,8 +761,8 @@ const notify = (type, message) => {
               salesOrder:{
                   id: state?.id,
                   quotationId: quotation,
-                  //companyuser: {id: userState} ,
-                  tempUser : {id:tempId},
+                  ...(tempId && { tempUser: { id: tempId } }),
+                  ...(userState && { companyuser: { id: userState } }),
                   contactPerson: contactName,
                   contactPhone: phone,    
                   status: status,

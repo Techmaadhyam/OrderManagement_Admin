@@ -163,11 +163,12 @@ const [status, setStatus] = useState(state?.status || "");
 const [contactName,setContactName] = useState(state?.contactPersonName ||'')
 const [phone, setPhone] = useState(state?.contactPhoneNumber ||'');
 const [address, setAddress] = useState(state?.deliveryAddress || "");
-const [tempId, setTempId] = useState(state?.tempUser.id);
-const [userState, setUserState] = useState(state?.userId);
+const [tempId, setTempId] = useState(state?.tempUser?.id);
+const [userState, setUserState] = useState(state?.companyuser?.id);
+const [user, setUser] = useState(state?.tempUser?.companyName ||state?.companyuser?.companyName||'')
 const [terms, setTerms] = useState(state?.termsAndCondition || '');
 const [comment, setComment] = useState(state?.comments||'');
-const [user, setUser] = useState(state?.tempUser.companyName ||'')
+
 
 
 const [currentDate, setCurrentDate] = useState('');
@@ -722,33 +723,7 @@ const notify = (type, message) => {
   const handleClick = async (event) => {
     let finalAmount = parseFloat(totalAmount.toFixed(2))
 
-    console.log({
-      quotation:{
-          id: state?.id,
-          createdBy: userId,
-          //companyuser: {id: userState} ,
-          tempUser : {id:tempId},
-          contactPersonName: contactName,
-          contactPhoneNumber: phone,    
-          status: status,
-          category: state?.category ,
-          type: type,
-          deliveryAddress: address,
-          city: currentCity,
-          state: currentState,
-          country: currentCountry,
-          pinCode: zipcode,
-          deliveryDate: deliveryIST,
-          lastModifiedDate: new Date(),
-          lastModifiedByUser: {id: userId},
-          createdDate: state?.originalcreatedDate,
-          comments : comment,
-          termsAndCondition: terms,
-          totalAmount: finalAmount,
-      },
-          quotationDetails: updatedRows,
-          deletedQuotationDetails: deleteRows
-  })
+
     
     event.preventDefault();
 
@@ -764,8 +739,8 @@ const notify = (type, message) => {
               quotation:{
                   id: state?.id,
                   createdBy: userId,
-                  //companyuser: {id: userState} ,
-                  tempUser : {id:tempId},
+                  ...(tempId && { tempUser: { id: tempId } }),
+                  ...(userState && { companyuser: { id: userState } }),
                   contactPersonName: contactName,
                   contactPhoneNumber: phone,    
                   status: status,

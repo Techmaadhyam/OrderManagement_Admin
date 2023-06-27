@@ -154,10 +154,11 @@ const [status, setStatus] = useState(state?.status || "");
 const [contactName,setContactName] = useState(state?.contactPerson ||'')
 const [phone, setPhone] = useState(state?.contactPhone||'');
 const [address, setAddress] = useState(state?.deliveryAddress || "");
-const [tempId, setTempId] = useState(state?.tempUser.id);
+const [tempId, setTempId] = useState(state?.tempUser?.id);
+const [userState, setUserState] = useState(state?.companyuser?.id);
+const [user, setUser] = useState(state?.tempUser?.companyName ||state?.companyuser?.companyName||'')
 const [terms, setTerms] = useState(state?.termsAndCondition || '');
 const [comment, setComment] = useState(state?.comments||'');
-const [user, setUser] = useState(state?.tempUser.companyName ||'')
 const [payment, setPayment]=useState(state?.paymentMode||"")
 
 const [currentDate, setCurrentDate] = useState('');
@@ -180,7 +181,7 @@ const [productName, setProductName] = useState('');
   const [productId, setProductId] = useState()
 
   const [totalAmount, setTotalAmount] = useState(0);
-  const [userState, setUserState] = useState(state?.userId);
+
 
   const [rowData, setRowData] =useState()
   const [dDate, setDDate] =useState(state?.deliveryDate)
@@ -692,6 +693,7 @@ const [productName, setProductName] = useState('');
       });
   }, []);
 
+  console.log(user, tempId, userState)
 
   
   const updatedRows = rowData?.map(({ productName, inventory, productId,  ...rest }) => rest);
@@ -713,8 +715,8 @@ const [productName, setProductName] = useState('');
               purchaseOrder:{
                   id: state?.id,
                   quotationId: quotation,
-                  //companyuser: {id: userState} ,
-                  tempUser : {id:tempId},
+                  ...(tempId && { tempUser: { id: tempId } }),
+                  ...(userState && { companyuser: { id: userState } }),
                   contactPerson: contactName,
                   contactPhone: phone,    
                   status: status,

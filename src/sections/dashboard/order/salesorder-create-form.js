@@ -620,8 +620,8 @@ console.log(deliveryIST)
             body: JSON.stringify({
               salesOrder:{
                   quotationId: quotation,
-                  //companyuser: {id: userState} ,
-                  tempUser : {id:tempId},
+                  ...(tempId && { tempUser: { id: tempId } }),
+                  ...(userState && { companyuser: { id: userState } }),
                   contactPerson: contactName,
                   contactPhone: phone,    
                   status: status,

@@ -388,8 +388,8 @@ const deliveryIST2 = deliveryDateJS2
             },
             body: JSON.stringify({
               quotation:{
-                  //companyuser: {id: userState} ,
-                  tempUser : {id:tempId},
+                  ...(tempId && { tempUser: { id: tempId } }),
+                  ...(userState && { companyuser: { id: userState } }),
                   contactPersonName: contactName,
                   contactPhoneNumber: phone,
                   contactEmail: inchargeEmail,

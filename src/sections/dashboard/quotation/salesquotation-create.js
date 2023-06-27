@@ -609,8 +609,8 @@ const handleDateChange = (date) => {
             },
             body: JSON.stringify({
               quotation:{
-                  //companyuser: {id: userState} ,
-                  tempUser : {id:tempId},
+                  ...(tempId && { tempUser: { id: tempId } }),
+                  ...(userState && { companyuser: { id: userState } }),
                   contactPersonName: contactName,
                   contactPhoneNumber: phone,   
                   status: status,

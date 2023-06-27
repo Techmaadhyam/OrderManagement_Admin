@@ -142,11 +142,11 @@ const [adminPhone, setAdminPhone] = useState(state?.adminPhoneNumber ||'');
 const [inchargeEmail, setInchargeEmail] = useState(state?.contactEmail ||'');
 const [phone, setPhone] = useState(state?.contactPhoneNumber ||'');
 const [address, setAddress] = useState(state?.deliveryAddress || "");
-const [tempId, setTempId] = useState(state?.tempUser.id);
-const [userState, setUserState] = useState(state?.userId);
+const [tempId, setTempId] = useState(state?.tempUser?.id);
+const [userState, setUserState] = useState(state?.companyuser?.id);
+const [user, setUser] = useState(state?.tempUser?.companyName ||state?.companyuser?.companyName||'')
 const [terms, setTerms] = useState(state?.termsAndCondition || '');
 const [comment, setComment] = useState(state?.comments||'');
-const [user, setUser] = useState(state?.tempUser.companyName ||'')
 const [category, setCategory] = useState('Service Quotation');
 
 
@@ -476,8 +476,8 @@ console.log(idx, row)
               quotation:{
                   id: state?.id,
                   createdBy: userId,
-                  //companyuser: {id: userState} ,
-                  tempUser : {id:tempId},
+                  ...(tempId && { tempUser: { id: tempId } }),
+                  ...(userState && { companyuser: { id: userState } }),
                   contactPersonName: contactName,
                   contactPhoneNumber: phone,    
                   contactEmail: inchargeEmail,

@@ -612,7 +612,7 @@ const handleClick = async (event) => {
 let finalAmount = totalAmount.toFixed(2)
     event.preventDefault();
     
-      if (1+1===2) {
+      if (contactName) {
         try {
           const response = await fetch(apiUrl +'createPurchaseOrder', {
             method: 'POST',
@@ -624,8 +624,8 @@ let finalAmount = totalAmount.toFixed(2)
               purchaseOrder:{
                   quotationId: quotation,
                   salesOrderId:null,
-                  //companyuser: {id: userState} ,
-                  tempUser : {id:tempId},
+                  ...(tempId && { tempUser: { id: tempId } }),
+                  ...(userState && { companyuser: { id: userState } }),
                   contactPerson: contactName,
                   contactPhone: phone,
                   status: status,
@@ -846,7 +846,6 @@ let finalAmount = totalAmount.toFixed(2)
           console.error('API call failed:', error);
         }
       } 
-    
     };
 
 //set uploaded files to state
@@ -885,7 +884,7 @@ let finalAmount = totalAmount.toFixed(2)
       }
     };
 
-    console.log('Performa Invoice File:', performaInvoiceFile?.name);
+    console.log(userData);
 
 
 
