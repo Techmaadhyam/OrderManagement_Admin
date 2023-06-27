@@ -24,7 +24,7 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import './customer.css'
 import { apiUrl } from 'src/config';
 
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, MenuItem } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, MenuItem , CardContent} from '@mui/material';
 
   //get userid 
   const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
@@ -321,133 +321,98 @@ const handleCompanyCancel = () => {
     };
 
     return (
-      <Dialog open={true} 
-      onClose={onClose}>
+      <Dialog open={true} onClose={onClose}>
         <DialogTitle>Edit Technician</DialogTitle>
         <DialogContent>
-        <Grid
-            container
-            spacing={0}
-            
-          >
-              <Grid
-              xs={12}
-              md={6}
-            >
-          <TextField
-            label="Name"
-            name="userName"
-            value={editedRecord.userName}
-            onChange={handleChange}
-            style={{ marginBottom: 10 }}
-          />
-          </Grid>
-          <Grid
-              xs={12}
-              md={6}
-            >
-          <TextField
-            label="Email"
-            name="emailId"
-            value={editedRecord.emailId}
-            onChange={handleChange}
-            style={{ marginBottom: 10 }}
-          />
+          <Grid container spacing={2}>
+            <Grid xs={12} md={6}>
+              <TextField
+                label="Name"
+                name="userName"
+                fullWidth
+                value={editedRecord.userName}
+                onChange={handleChange}
+              />
             </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-          <TextField
-            label="Type"
-            name="type"
-            value={editedRecord.type}
-            style={{ marginBottom: 10 }}
-          >
-
-          </TextField>
-          </Grid>
-          <Grid
-              xs={12}
-              md={6}
-            >
-          <TextField
-            label="Company"
-            name="companyName"
-            value={editedRecord.companyName}
-            style={{ marginBottom: 10 }}
-          />
-          </Grid>
-          <Grid
-              xs={12}
-              md={6}
-            >
-          <TextField
-            label="GST Number"
-            name="gstn"
-            value={editedRecord.gstNumber}
-            onChange={handleChange}
-            style={{ marginBottom: 10 }}
-          />
-          </Grid>
-          <Grid
-              xs={12}
-              md={6}
-            >
-           <TextField
-            label="Country"
-            name="country"
-            value={editedRecord.country}
-            onChange={handleChange}
-            style={{ marginBottom: 10 }}
-          />
-          </Grid>
-          <Grid
-              xs={12}
-              md={6}
-            >
-           <TextField
-            label="State"
-            name="state"
-            value={editedRecord.state}
-            onChange={handleChange}
-            style={{ marginBottom: 10 }}
-          />
+            <Grid xs={12} md={6}>
+              <TextField
+                label="Email"
+                name="emailId"
+                fullWidth
+                value={editedRecord.emailId}
+                onChange={handleChange}
+              />
             </Grid>
-          <Grid
-              xs={12}
-              md={6}
-            >
-           <TextField
-            label="City"
-            name="city"
-            value={editedRecord.city}
-            onChange={handleChange}
-            style={{ marginBottom: 10 }}
-          />
-          </Grid>
-          <Grid
-              xs={12}
-              md={6}
-            >
-            <TextField
-            label="Address"
-            name="address"
-            value={editedRecord.address}
-            onChange={handleChange}
-            fullWidth
-            style={{ marginBottom: 10 }}
-          />
-                </Grid>
+            <Grid xs={12} md={6}>
+              <TextField
+                label="Type"
+                name="type"
+                fullWidth
+                value={editedRecord.type}
+              ></TextField>
+            </Grid>
+            <Grid xs={12} md={6}>
+              <TextField
+                label="Company"
+                name="companyName"
+                fullWidth
+                value={editedRecord.companyName}
+              />
+            </Grid>
+            <Grid xs={12} md={6}>
+              <TextField
+                label="GST Number"
+                name="gstn"
+                fullWidth
+                value={editedRecord.gstNumber}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid xs={12} md={6}>
+              <TextField
+                label="Country"
+                name="country"
+                fullWidth
+                value={editedRecord.country}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid xs={12} md={6}>
+              <TextField
+                label="State"
+                name="state"
+                fullWidth
+                value={editedRecord.state}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid xs={12} md={6}>
+              <TextField
+                label="City"
+                name="city"
+                fullWidth
+                value={editedRecord.city}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid xs={12} md={12}>
+              <TextField
+                label="Address"
+                name="address"
+                multiline
+                rows={2}
+                value={editedRecord.address}
+                onChange={handleChange}
+                fullWidth
+              />
+            </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose} 
-          color="primary">
+          <Button onClick={onClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleSave} 
-          color="primary">
+          <Button onClick={handleSave} color="primary">
             Save
           </Button>
         </DialogActions>
