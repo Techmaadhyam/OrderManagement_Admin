@@ -296,6 +296,7 @@ const SalesOrderViewList = () => {
             style: "infoTable",
             table: {
               widths: ["*", "*", "*", "*"],
+              heights: ["auto", 80],
               body: [
                 [
                   { text: `Bill To: ${record.tempUser?record.tempUser.companyName : record.companyuser.companyName}`, style: 'tableLabel', border: [true, true, true, false], marginBottom: 5 },
