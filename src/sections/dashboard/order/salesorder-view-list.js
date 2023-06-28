@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { Table } from "antd";
 import "./sales-order.css";
-import { Box, border } from "@mui/system";
+import { Box, border, margin } from "@mui/system";
 import React from "react";
 import { Scrollbar } from "src/components/scrollbar";
 import DownloadIcon from "@mui/icons-material/Download";
@@ -78,30 +78,23 @@ const SalesOrderViewList = () => {
   const convertAmountToWords = (amount) => {
     const rupees = Math.floor(amount);
     const paisa = Math.round((amount - rupees) * 100);
-
     const rupeesInWords = numberToWords.toWords(rupees); // Convert rupees to words
     const paisaInWords = numberToWords.toWords(paisa); // Convert paisa to words
-
     let result = "";
-
     if (rupees > 0) {
       result += `${rupeesInWords} rupees`;
     }
-
     if (paisa > 0) {
       if (rupees > 0) {
         result += " and ";
       }
       result += `${paisaInWords} paisa`;
     }
-
+    // Capitalize first letter of each word in the result string
+    result = result.replace(/\b\w/g, (match) => match.toUpperCase());
+  
     return result;
   };
-
-  // Example usage:
-  // const number = 1234.56;
-  // const words = convertNumberToWords(number);
-  // console.log(words); // Output: "one thousand two hundred thirty-four rupees and fifty-six paisas"
 
   function formatDate(dateString) {
     const parsedDate = new Date(dateString);
@@ -225,8 +218,8 @@ const SalesOrderViewList = () => {
                     { text: TotalBD, style: 'tableCell' },
                     { text: product.discountAmount, style: 'tableCell' },
                     { text: TotalAD, style: 'tableCell' },
-                    { text: product.cgst, style: 'tableCell' },
                     { text: product.sgst, style: 'tableCell' },
+                    { text: product.cgst, style: 'tableCell' },
                     { text: product.igst, style: 'tableCell' },
                     { text: TotalAD + TotalGSTAmount, style: 'tableCell' },
                   ];
@@ -273,9 +266,9 @@ const SalesOrderViewList = () => {
                         alignment: "center",
                       },
 
-                      { text: heading, style: "header", alignment: "right" },
+                      { text: heading, style: "header", alignment: "right", margin: [0, 0, 20, 0] },
                     ],
-                    border: [true, true, true, false],
+                    border: [true, true, true, false],margin: [0, 10, 0, 0]
                   },
                 ],
               ],
@@ -290,29 +283,34 @@ const SalesOrderViewList = () => {
                 [
                   { text: "", border: [true, false, false, false] },
                   {
-                    text: `${noData} Number:`,
+                    text: `${noData} Number`,
                     style: "font10",
                     border: [true, true, true, false],
+                    alignment: "center",
                   },
                   {
-                    text: `${dateData}:`,
+                    text: `${dateData}`,
                     style: "font10",
                     border: [true, true, true, false],
+                    alignment: "center",
                   },
                   {
-                    text: "Customer ID:",
+                    text: "Customer ID",
                     style: "font10",
                     border: [true, true, true, false],
+                    alignment: "center",
                   },
                   {
-                    text: "Customer Contact:",
+                    text: "Customer Contact",
                     style: "font10",
                     border: [true, true, true, false],
+                    alignment: "center",
                   },
                   {
-                    text: "Customer PO No.:",
+                    text: "Customer PO No.",
                     style: "font10",
                     border: [true, true, true, false],
+                    alignment: "center",
                   },
                 ],
                 [
@@ -325,11 +323,13 @@ const SalesOrderViewList = () => {
                     text: record.id,
                     border: [true, false, true, false],
                     style: "font10",
+                    alignment: "center",
                   },
                   {
                     text: formatDate(record.createdDate),
                     border: [true, false, true, false],
                     style: "font10",
+                    alignment: "center",
                   },
                   {
                     text: record.tempUser
@@ -337,16 +337,19 @@ const SalesOrderViewList = () => {
                       : record.companyuser.id,
                     border: [true, false, true, false],
                     style: "font10",
+                    alignment: "center",
                   },
                   {
                     text: record.contactPhone,
                     border: [true, false, true, false],
                     style: "font10",
+                    alignment: "center",
                   },
                   {
                     text: record.pinCode,
                     border: [true, false, true, false],
                     style: "font10",
+                    alignment: "center",
                   },
                 ],
               ],
@@ -378,6 +381,7 @@ const SalesOrderViewList = () => {
                   {
                     text: "Customer GST Registration information",
                     style: "font10",
+                    bold: true,
                   },
                   {
                     text: `Mode of Dispatch: ${record.modeofdelivery}`,
@@ -439,9 +443,9 @@ const SalesOrderViewList = () => {
                     border: [true, false, true, false],
                   },
                   {
-                    text: record.tempUser
+                    text: `GST Registration Number: ${record.tempUser
                       ? record.tempUser.gstNumber
-                      : record.companyuser.gstNumber,
+                      : record.companyuser.gstNumber}`,
                     border: [true, false, true, false],
                     style: "font10",
                   },
@@ -477,8 +481,8 @@ const SalesOrderViewList = () => {
                 ...(rowData.length > 0
                   ? Array(rowData.length - 1)
                       .fill(0)
-                      .concat([130 - (rowData.length - 1) * 20])
-                  : [130]),
+                      .concat([120 - (rowData.length - 1) * 20])
+                  : [120]),
               ],
               body: [
                 [
@@ -490,8 +494,8 @@ const SalesOrderViewList = () => {
                   { text: "Total before Discount", style: "tableLabel" },
                   { text: "Discount", style: "tableLabel" },
                   { text: "Total", style: "tableLabel" },
-                  { text: "CGST", style: "tableLabel" },
                   { text: "SGST", style: "tableLabel" },
+                  { text: "CGST", style: "tableLabel" },
                   { text: "IGST", style: "tableLabel" },
                   { text: "Line Total", style: "tableLabel" },
                 ],
@@ -526,36 +530,41 @@ const SalesOrderViewList = () => {
           {
             table: {
               heights: [50],
-              widths: ["*", "*"],
+              widths: ["*", "auto","*"],
               body: [
                 [
                   {
                     text: "REMARKS",
                     alignment: "left",
+                    bold: true,
                     style: "font10",
                     border: [true, false, false, true],
                     margin: [0, 10, 0, 0],
                   },
-
+                  {
+                    text: '',
+                    border: [false, false, false, true],
+                  },
                   {
                     stack: [
                       {
-                        text: `Total: ${record.totalAmount}`,
-                        alignment: "right",
+                        text: `TOTAL: \u20B9 ${record.totalAmount}`,
+                        alignment: "left",
                         bold: true,
                         style: "font10",
                       },
                       {
-                        text: `Total in words: ${convertAmountToWords(
+                        text: `Amount in Words: \u20B9 ${convertAmountToWords(
                           record.totalAmount
                         )}`,
-                        alignment: "right",
+                        alignment: "left",
                         bold: true,
                         style: "font10",
                       },
                     ],
                     border: [false, false, true, true],
                     margin: [0, 20, 20, 0],
+                    alignment: "right",
                   },
                 ],
               ],
@@ -709,8 +718,8 @@ const SalesOrderViewList = () => {
         
                       { text: "ORIGINAL", style: "header", alignment: "center" },
         
-                      { text: "DELIVERY CHALLAN", style: "header", alignment: "right" },
-                    ],border: [true, true, true, false],
+                      { text: "DELIVERY CHALLAN", style: "header", alignment: "right",margin: [0, 0, 10, 0]},
+                    ],border: [true, true, true, false],margin: [0, 10, 0, 0],
                   },
                 ]
               ]
@@ -722,18 +731,26 @@ const SalesOrderViewList = () => {
               widths: ["*", "auto", "auto", "auto", "auto"],
               body: [
                 [
-                  { text: '', border: [true, false, false, false] },
-                  { text: 'Delivery Challan No:', style: 'font10', border: [true, true, true, false] },
-                  { text: 'Date:', style: 'font10', border: [true, true, true, false] },
-                  { text: 'Customer ID:', style: 'font10', border: [true, true, true, false] },
-                  { text: 'Customer Contact:', style: 'font10', border: [true, true, true, false] },
+                  { 
+                    text: '',
+                    border: [true, false, false, false],
+                  },
+                  { 
+                  text: 'Delivery Challan No.',
+                  style: 'font10',
+                  border: [true, true, true, false],
+                  alignment: "center",
+                },
+                  { text: 'Date', style: 'font10', border: [true, true, true, false],alignment: "center", },
+                  { text: 'Customer ID', style: 'font10', border: [true, true, true, false],alignment: "center", },
+                  { text: 'Customer Contact', style: 'font10', border: [true, true, true, false],alignment: "center", },
                 ],
                 [
                   { text: '', border: [true, false, false, false] },
-                  { text: record.id, style: 'font10', border: [true, false, true, false] },
-                  { text: formatDate(record.createdDate), style: 'font10', border: [true, false, true, false] },
-                  { text: record.tempUser ? record.tempUser.id : record.companyuser.id, style: 'font10', border: [true, false, true, false] },
-                  { text: record.contactPhone, style: 'font10', border: [true, false, true, false] },
+                  { text: record.id, style: 'font10', border: [true, false, true, false],alignment: "center", },
+                  { text: formatDate(record.createdDate), style: 'font10', border: [true, false, true, false],alignment: "center", },
+                  { text: record.tempUser ? record.tempUser.id : record.companyuser.id, style: 'font10', border: [true, false, true, false],alignment: "center", },
+                  { text: record.contactPhone, style: 'font10', border: [true, false, true, false],alignment: "center", },
                 ],
               ],
             },
@@ -747,7 +764,7 @@ const SalesOrderViewList = () => {
                 [
                   { text: `Bill To: ${record.tempUser ? record.tempUser.companyName : record.companyuser.companyName}`, style: 'tableLabel', border: [true, true, true, false], marginBottom: 5 },
                   { text: `Ship To: ${record.contactPerson}`, style: 'tableLabel', border: [true, true, true, false], marginBottom: 5 },
-                  { text: 'Customer GST Registration information', style: 'font10' },
+                  { text: 'Customer GST Registration information', style: 'font10', bold:true },
                 ],
                 [
                   record.tempUser?{stack: [
@@ -774,7 +791,13 @@ const SalesOrderViewList = () => {
                   ],
                   border: [true, false, true, false],
                 },
-                  { text: record.tempUser ? record.tempUser.gstNumber : record.companyuser.gstNumber, style: 'font10',border: [true, false, true, false] },
+                {
+                  text: `GST Registration Number: ${record.tempUser
+                    ? record.tempUser.gstNumber
+                    : record.companyuser.gstNumber}`,
+                  border: [true, false, true, false],
+                  style: "font10",
+                },
                 ],
               ],
             },
@@ -782,7 +805,14 @@ const SalesOrderViewList = () => {
           {
             style: "table",
             table: {
-              heights: ["auto", ...Array(rowData.length).fill(20)],
+              heights: [
+                "auto",
+                ...(rowData.length > 0
+                  ? Array(rowData.length - 1)
+                      .fill(0)
+                      .concat([120 - (rowData.length - 1) * 20])
+                  : [120]),
+              ],
               widths: ["auto", "*", 40, "auto"],
               body: [
                 [
