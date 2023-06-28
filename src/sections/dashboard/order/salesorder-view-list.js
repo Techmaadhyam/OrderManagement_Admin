@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { Table } from "antd";
 import "./sales-order.css";
-import { Box, border, margin } from "@mui/system";
+import { Box, border } from "@mui/system";
 import React from "react";
 import { Scrollbar } from "src/components/scrollbar";
 import DownloadIcon from "@mui/icons-material/Download";
