@@ -27,13 +27,11 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } 
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 pdfMake.fonts = {
-  Inter: {
-    normal: 'Inter-Regular.ttf',
-    bold: 'Inter-Bold.ttf',
-    light: 'Inter-Light.ttf',
-    medium: 'Inter-Medium.ttf',
-  }
-}
+  Helvetica: {
+    normal: "Helvetica.ttf",
+    bold: "Helvetica-Bold.ttf",
+  },
+};
 
   //get userid 
   const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
@@ -97,23 +95,6 @@ const handleEditRecord = (record) => {
 
 const handleSaveRecord = async (editedRecord) => {
 
-  console.log('Saving edited record:', editedRecord);
-  console.log(JSON.stringify({
-
-    id: editedRecord.id,
-    name: editedRecord.name,
-    description: editedRecord.description,
-    contactName: editedRecord.contactName,
-    address: editedRecord.address,
-    zipcode: editedRecord.zipcode,
-    city: editedRecord.city,
-    state: editedRecord.state,
-    country: editedRecord.country,
-    createdBy: userId,
-    lastModifiedDate: new Date(),
-
-  }))
-
   if (currentDate) {
     try {
       const response = await fetch(apiUrl +'addWareHouse', {
@@ -134,14 +115,13 @@ const handleSaveRecord = async (editedRecord) => {
           state: editedRecord.state,
           country: editedRecord.country,
           createdBy: userId,
-          lastModifiedDate: new Date(currentDate),
+          lastModifiedDate: new Date(),
 
         })
       });
       
       if (response.ok) {
        response.json().then(data => {
-        console.log(data);
         window.location.reload()
        
 });
@@ -172,7 +152,7 @@ const handleWarehouseDownload = async (record) => {
   //heading 
   const heading = {
     text: 'Warehouse Details',
-    font: 'Inter',
+    font: 'Helvetica',
     style: 'header',
     margin: [0, 0, 0, 10],
   };
@@ -181,22 +161,22 @@ const handleWarehouseDownload = async (record) => {
   const recordDetails = [
     {
       text: 'Warehouse Name: ' + record.name,
-      font: 'Inter',
+      font: 'Helvetica',
       margin: [0, 0, 0, 5],
     },
     {
       text: 'Address: ' + record.address+', '+record.city+', '+record.state+', '+record.country,
-      font: 'Inter',
+      font: 'Helvetica',
       margin: [0, 0, 0, 5],
     },
     {
       text: 'Zip Code: ' + record.zipcode,
-      font: 'Inter',
+      font: 'Helvetica',
       margin: [0, 0, 0, 5],
     },
     {
       text: 'Description: ' + record.description,
-      font: 'Inter',
+      font: 'Helvetica',
       margin: [0, 0, 0, 5],
     },
   ];
@@ -204,7 +184,7 @@ const handleWarehouseDownload = async (record) => {
   //title
   const inventoryTitle = {
     text: 'Warehouse Inventory',
-    font: 'Inter',
+    font: 'Helvetica',
     style: 'subheader',
     margin: [0, 20, 0, 10],
   };
@@ -214,7 +194,7 @@ const handleWarehouseDownload = async (record) => {
   const inventoryTable = {
     table: {
       headerRows: 1,
-      font: 'Inter',
+      font: 'Helvetica',
       widths: [60, 40, '*', '*', 30, 'auto','auto', 'auto','auto', 100],
       body: [
         [
@@ -245,7 +225,7 @@ const handleWarehouseDownload = async (record) => {
     },
     layout: {
       defaultBorder: true,
-      font: 'Inter',
+      font: 'Helvetica',
       fillColor: function (i) {
         return i % 2 === 0 ? '#F0F0F0' : null;
       },
@@ -263,18 +243,18 @@ const handleWarehouseDownload = async (record) => {
       
     },
     defaultStyle: {
-      font: 'Inter',
+      font: 'Helvetica',
       fontSize: 10, 
     },
     styles: {
       header: {
-        font: 'Inter',
+        font: 'Helvetica',
         fontSize: 14,
         bold: true,
         alignment: 'center',
       },
       subheader: {
-        font: 'Inter',
+        font: 'Helvetica',
         fontSize: 14,
         bold: true,
         alignment: 'left',
