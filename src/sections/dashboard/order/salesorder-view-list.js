@@ -238,6 +238,11 @@ const SalesOrderViewList = () => {
         },
         content: [
           {
+            table:{
+              widths: "*",
+              body:[
+                [
+                  {
             columns: [
               {
                 image: imgUrl,
@@ -265,7 +270,11 @@ const SalesOrderViewList = () => {
               { text: "ORIGINAL", style: "header", alignment: "center" },
 
               { text: heading, style: "header", alignment: "right" },
-            ],
+            ],border: [true, true, true, false],
+          },
+                ],
+              ]
+            }
           },
           {
             style: "newTable",
@@ -274,7 +283,7 @@ const SalesOrderViewList = () => {
               widths: ["*", "auto", "auto", "auto", "auto", "auto"],
               body: [
                 [
-                  { text: '', border: [false, false, false, false] },
+                  { text: '', border: [true, false, false, false] },
                   { text: `${noData} Number:`, style: 'font10', border: [true, true, true, false] },
                   { text: `${dateData}:`, style: 'font10', border: [true, true, true, false] },
                   { text: 'Customer ID:', style: 'font10', border: [true, true, true, false] },
@@ -282,7 +291,7 @@ const SalesOrderViewList = () => {
                   { text: 'Customer PO No.:', style: 'font10', border: [true, true, true, false] },
                 ],
                 [
-                  { text: '', border: [false, false, false, false], style: 'font10' },
+                  { text: '', border: [true, false, false, false], style: 'font10' },
                   { text: record.id, border: [true, false, true, false], style: 'font10' },
                   { text: formatDate(record.createdDate), border: [true, false, true, false], style: 'font10' },
                   { text: record.tempUser ? record.tempUser.id : record.companyuser.id, border: [true, false, true, false], style: 'font10' },
@@ -513,34 +522,43 @@ const SalesOrderViewList = () => {
         },
         content: [
           {
-            columns: [
-              {
-                image: imgUrl,
-                width: 100,
-                alignment: "left",
-              },
-              {
-                stack: [
+            table: {
+              widths: "*",
+              body: [
+                [
                   {
-                    text: `${record.createdByUser.companyName}`,
-                    style: "header",
+                    columns: [
+                      {
+                        image: imgUrl,
+                        width: 100,
+                        alignment: "left",
+                      },
+                      {
+                        stack: [
+                          {
+                            text: `${record.createdByUser.companyName}`,
+                            style: "header",
+                          },
+                          {
+                            text: `${record.createdByUser.address}, ${record.createdByUser.city}, ${record.createdByUser.pincode}, ${record.createdByUser.state}, ${record.createdByUser.country}`,
+                            style: "subheader",
+                          },
+                          {
+                            text: `GSTIN: ${record.createdByUser.gstNumber}`,
+                            style: "subheader",
+                          },
+                        ],
+                        margin: [20, 0, 0, 0],
+                      },
+        
+                      { text: "ORIGINAL", style: "header", alignment: "center" },
+        
+                      { text: "DELIVERY CHALLAN", style: "header", alignment: "right" },
+                    ],border: [true, true, true, false],
                   },
-                  {
-                    text: `${record.createdByUser.address}, ${record.createdByUser.city}, ${record.createdByUser.pincode}, ${record.createdByUser.state}, ${record.createdByUser.country}`,
-                    style: "subheader",
-                  },
-                  {
-                    text: `GSTIN: ${record.createdByUser.gstNumber}`,
-                    style: "subheader",
-                  },
-                ],
-                margin: [20, 0, 0, 0],
-              },
-
-              { text: "ORIGINAL", style: "header", alignment: "center" },
-
-              { text: "DELIVERY CHALLAN", style: "header", alignment: "right" },
-            ],
+                ]
+              ]
+            }
           },
           {
             style: "newTable",
@@ -548,14 +566,14 @@ const SalesOrderViewList = () => {
               widths: ["*", "auto", "auto", "auto", "auto"],
               body: [
                 [
-                  { text: '', border: [false, false, false, false] },
+                  { text: '', border: [true, false, false, false] },
                   { text: 'Delivery Challan No:', style: 'font10', border: [true, true, true, false] },
                   { text: 'Date:', style: 'font10', border: [true, true, true, false] },
                   { text: 'Customer ID:', style: 'font10', border: [true, true, true, false] },
                   { text: 'Customer Contact:', style: 'font10', border: [true, true, true, false] },
                 ],
                 [
-                  { text: '', border: [false, false, false, false] },
+                  { text: '', border: [true, false, false, false] },
                   { text: record.id, style: 'font10', border: [true, false, true, false] },
                   { text: formatDate(record.createdDate), style: 'font10', border: [true, false, true, false] },
                   { text: record.tempUser ? record.tempUser.id : record.companyuser.id, style: 'font10', border: [true, false, true, false] },
