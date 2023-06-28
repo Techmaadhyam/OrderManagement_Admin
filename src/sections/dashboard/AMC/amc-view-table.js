@@ -30,13 +30,11 @@ import imgUrl from '../pdfAssets/imageDataUrl';
 import pdfFonts from '../pdfAssets/vfs_fonts';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 pdfMake.fonts = {
-  Inter: {
-    normal: 'Inter-Regular.ttf',
-    bold: 'Inter-Bold.ttf',
-    light: 'Inter-Light.ttf',
-    medium: 'Inter-Medium.ttf',
-  }
-}
+  Helvetica: {
+    normal: "Helvetica.ttf",
+    bold: "Helvetica-Bold.ttf",
+  },
+};
 const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
 
 
@@ -206,177 +204,382 @@ const handleWorkInvoice = async (record) => {
             return total;
           }) 
           const docDefinition = {
-              pageOrientation: 'landscape',
-              defaultStyle: {
-                font: 'Inter'},
-              content: [
-                {
-                  columns: [
-                    {
-                      image: imgUrl,
-                      width: 100,
-                      alignment: 'left',
-                    },
-                    {stack: [
-                      {text: `${record.createdByUser.companyName}`, style: 'header'},
-                      { text: `${record.createdByUser.address}, ${record.createdByUser.city}, ${record.createdByUser.pincode}, ${record.createdByUser.state}, ${record.createdByUser.country}`, style: 'subheader' },
-                { text: `GSTIN: ${record.createdByUser.gstNumber}`, style: 'subheader'},
-                { text: `PAN: ${record.createdByUser.pancard}`, style: 'subheader'},
-                  ],
-                  margin: [20, 0, 0, 0],
-                },
-                { text: "ANNUAL MAINTENANCE CONTRACT", style: 'header', alignment: 'right' },
-                  ],margin: [0, 0, 0, 20],},
-                {
-                  columns:[
-                      {stack: [
-                        {text: 'Customer Name', style: 'workDetails'},
-                        {text: 'Customer Address', style: 'workDetails'},
-                      ],alignment: 'left'},
-                      {stack: [
-                        {text: `${record.noncompany.companyName}`, style: 'workDetails'},
-                        {stack: [
-                          {text: `${record.noncompany.address}, ${record.noncompany.city}`, style: 'workDetails'},
-                          {text: `${record.noncompany.state}, ${record.noncompany.pincode}`, style: 'workDetails'},
-                          {text: `${record.noncompany.country}`, style: 'workDetails'},
-                        ]},
-                      ]},
-                    {
-                        stack: [
-                          {text: 'Engineer Name', style: 'workDetails'},
-                          {text: 'Contact No.', style: 'workDetails'},
-                          {text: 'Email', style: 'workDetails'},
-                        ],alignment: 'right', margin: [40, 0, 0, 0],},
-                        {stack: [
-                          {text: `${record.technicianInfo.userName}`, style: 'workDetails'},
-                          {text: `${record.technicianInfo.mobile}`, style: 'workDetails'},
-                          {text: `${record.technicianInfo.emailId} `, style: 'workDetails'},
-                        ], alignment: 'right'},
-                  ],margin: [0, 0, 0, 20],},
-                {
-                  columns:[
-                    {
-                      table:{
-                        body: [
-                          [{text: 'Admin Incharge', style: 'workDetails',border: [false, false, false, false],},{text: `Mr. ${record.adminPersonName}`, style: 'workDetails',border: [false, false, false, false],}],
-                          [{text: 'Equipment Incharge', style: 'workDetails',border: [false, false, false, false],},{text: `Mr. ${record.contactPersonName}`, style: 'workDetails',border: [false, false, false, false],}]
-                        ],
-                        
-                      }
-                    },
-                    {
-                      table:{
-                        body: [
-                          [{text: 'Email', style: 'workDetails',border: [false, false, false, false],},{text: `${record.adminEmail}`, style: 'workDetails',border: [false, false, false, false],}],
-                          [{text: 'Email', style: 'workDetails',border: [false, false, false, false],},{text: `${record.contactEmail}`, style: 'workDetails',border: [false, false, false, false],}]
-                        ],
-                        
-                      }
-                    },
-                    {
-                      table:{
-                        body: [
-                          [{text: 'Contact No', style: 'workDetails',border: [false, false, false, false],},{text: `${record.adminPhoneNumber}`, style: 'workDetails',border: [false, false, false, false],}],
-                          [{text: 'Contact No', style: 'workDetails',border: [false, false, false, false],},{text: `${record.contactPhoneNumber}`, style: 'workDetails',border: [false, false, false, false],}]
-                        ],
-                        
-                      }
-                    },
-                  ], margin: [0, 0, 0, 20],
-                },
-                {
-                  columns:[
-                    {
-                      table:{
-                        body: [
-                          [{text: 'STATUS', style: 'workDetails',border: [false, false, false, false],},{text: `${record.status}`, style: 'workDetails',border: [false, false, false, false],}],
-                          [{text: 'Date of stating', style: 'workDetails',border: [false, false, false, false],},{text: `  ${record.startdate}`, style: 'workDetails',border: [false, false, false, false],}]
-                        ],
-                        
-                      }
-                    },
-                    {
-                      table:{
-                        body: [
-                          [{text: 'OLD', style: 'workDetails',border: [false, false, false, false],}]
-                        ],
-                      
-                      }
-                    },
-                    {
-                      table:{
-                        body: [
-                          [{text: 'Existing Date of Expiry', style: 'workDetails',border: [false, false, false, false],},{text: ``, style: 'workDetails',border: [false, false, false, false],}],
-                          [{text: 'Date of Expiry', style: 'workDetails',border: [false, false, false, false],},{text: `${record.enddate}`, style: 'workDetails',border: [false, false, false, false],}]
-                        ],
-                        
-                      }
-                    },
-                  ], margin: [0, 0, 0, 20],
-                },
-                {
-                  table:{
-                    widths: [ 30, "*", "*", "*", "*", 50, 100 ],
-                    body: [
-                      ['S.No.', 'MODEL', 'Unit Price', 'NO OF WORKSTATIONS','SUB T0TAL','IGST', 'TOTAL'],
-                      ...rowData,
-                    ],
-                  }
-                },
-                {
-                  stack: [
-                    { text: `Total INR: ${totalAmount}`, style: 'workDetails', bold: true },
-                    { text: `Total in words: ${convertAmountToWords(totalAmount)}`, style: 'workDetails', bold: true },
-                  ],
-                  margin: [350, 20, 0, 0], alignment: 'right'
-                },
-                {
-                  columns:[
-                    {
-                      text: 'Signed By On Behalf Of\nCustomer With Seal And Date', alignment: 'center'
-                    },
-                    {
-                      text: `Signed By On Behalf Of\n${record.createdByUser.companyName}`, alignment: 'center'
-                    }
-                  ], alignment: 'justify', margin: [0, 50, 0, 0]
-                }
-
-              ],
-              styles: {
-                  header: {
-                    fontSize: 16,
-                    font: 'Inter',
-                    bold: true,
-                    margin: [0, 0, 0, 5],
+            pageOrientation: "landscape",
+            defaultStyle: {
+              font: "Helvetica",
+            },
+            content: [
+              {
+                columns: [
+                  {
+                    image: imgUrl,
+                    width: 100,
+                    alignment: "left",
                   },
-                  subheader: {
-                    font: 'Inter',
-                      fontSize: 12,
-                      marginBottom: 5,
+                  {
+                    stack: [
+                      {
+                        text: `${record.createdByUser.companyName}`,
+                        style: "header",
                       },
-                  workDetails:{
-                    font: 'Inter',
-                    fontSize: 14,
-                    alignment: 'left',
-                    border: [false, false, false, false],
+                      {
+                        text: `${record.createdByUser.address}, ${record.createdByUser.city}, ${record.createdByUser.pincode}, ${record.createdByUser.state}, ${record.createdByUser.country}`,
+                        style: "subheader",
+                      },
+                      {
+                        text: `GSTIN: ${record.createdByUser.gstNumber}`,
+                        style: "subheader",
+                      },
+                      {
+                        text: `PAN: ${record.createdByUser.pancard}`,
+                        style: "subheader",
+                      },
+                    ],
+                    margin: [20, 0, 0, 0],
                   },
-                  tableLabel: {
-                    font: 'Inter',
-                    bold: true,
-                    border: [false, false, false, true],
+                  {
+                    text: "ANNUAL MAINTENANCE CONTRACT",
+                    style: "header",
+                    alignment: "right",
                   },
-                  tableCell: {
-                    font: 'Inter',
-                    fillColor: '#ffffff',
+                ],
+                margin: [0, 0, 0, 20],
+              },
+              {
+                columns: [
+                  {
+                    stack: [
+                      { text: "Customer Name", style: "workDetails" },
+                      { text: "Customer Address", style: "workDetails" },
+                    ],
+                    alignment: "left",
                   },
-                  tableHeader: {
-                    font: 'Inter',
-                    fillColor: '#eeeeee',
-                    bold: true,
+                  {
+                    stack: [
+                      {
+                        text: `${
+                          record.noncompany?.companyName ||
+                          record.company?.companyName
+                        }`,
+                        style: "workDetails",
+                      },
+                      {
+                        stack: [
+                          {
+                            text: `${
+                              record.noncompany?.address ||
+                              record.company?.address
+                            }, ${
+                              record.noncompany?.city || record.company?.city
+                            }`,
+                            style: "workDetails",
+                          },
+                          {
+                            text: `${
+                              record.noncompany?.state || record.company?.state
+                            }, ${
+                              record.noncompany?.pincode ||
+                              record.company?.pincode
+                            }`,
+                            style: "workDetails",
+                          },
+                          {
+                            text: `${
+                              record.noncompany?.country ||
+                              record.company?.country
+                            }`,
+                            style: "workDetails",
+                          },
+                        ],
+                      },
+                    ],
                   },
+                  {
+                    stack: [
+                      { text: "Engineer Name", style: "workDetails" },
+                      { text: "Contact No.", style: "workDetails" },
+                      { text: "Email", style: "workDetails" },
+                    ],
+                    alignment: "right",
+                    margin: [40, 0, 0, 0],
+                  },
+                  {
+                    stack: [
+                      {
+                        text: `${record.technicianInfo.userName}`,
+                        style: "workDetails",
+                      },
+                      {
+                        text: `${record.technicianInfo.mobile}`,
+                        style: "workDetails",
+                      },
+                      {
+                        text: `${record.technicianInfo.emailId} `,
+                        style: "workDetails",
+                      },
+                    ],
+                    alignment: "right",
+                  },
+                ],
+                margin: [0, 0, 0, 20],
+              },
+              {
+                columns: [
+                  {
+                    table: {
+                      body: [
+                        [
+                          {
+                            text: "Admin Incharge",
+                            style: "workDetails",
+                            border: [false, false, false, false],
+                          },
+                          {
+                            text: `Mr. ${record.adminPersonName}`,
+                            style: "workDetails",
+                            border: [false, false, false, false],
+                          },
+                        ],
+                        [
+                          {
+                            text: "Equipment Incharge",
+                            style: "workDetails",
+                            border: [false, false, false, false],
+                          },
+                          {
+                            text: `Mr. ${record.contactPersonName}`,
+                            style: "workDetails",
+                            border: [false, false, false, false],
+                          },
+                        ],
+                      ],
+                    },
+                  },
+                  {
+                    table: {
+                      body: [
+                        [
+                          {
+                            text: "Email",
+                            style: "workDetails",
+                            border: [false, false, false, false],
+                          },
+                          {
+                            text: `${record.adminEmail}`,
+                            style: "workDetails",
+                            border: [false, false, false, false],
+                          },
+                        ],
+                        [
+                          {
+                            text: "Email",
+                            style: "workDetails",
+                            border: [false, false, false, false],
+                          },
+                          {
+                            text: `${record.contactEmail}`,
+                            style: "workDetails",
+                            border: [false, false, false, false],
+                          },
+                        ],
+                      ],
+                    },
+                  },
+                  {
+                    table: {
+                      body: [
+                        [
+                          {
+                            text: "Contact No",
+                            style: "workDetails",
+                            border: [false, false, false, false],
+                          },
+                          {
+                            text: `${record.adminPhoneNumber}`,
+                            style: "workDetails",
+                            border: [false, false, false, false],
+                          },
+                        ],
+                        [
+                          {
+                            text: "Contact No",
+                            style: "workDetails",
+                            border: [false, false, false, false],
+                          },
+                          {
+                            text: `${record.contactPhoneNumber}`,
+                            style: "workDetails",
+                            border: [false, false, false, false],
+                          },
+                        ],
+                      ],
+                    },
+                  },
+                ],
+                margin: [0, 0, 0, 20],
+              },
+              {
+                columns: [
+                  {
+                    table: {
+                      body: [
+                        [
+                          {
+                            text: "STATUS",
+                            style: "workDetails",
+                            border: [false, false, false, false],
+                          },
+                          {
+                            text: `${record.status}`,
+                            style: "workDetails",
+                            border: [false, false, false, false],
+                          },
+                        ],
+                        [
+                          {
+                            text: "Date of stating",
+                            style: "workDetails",
+                            border: [false, false, false, false],
+                          },
+                          {
+                            text: `  ${record.startdate}`,
+                            style: "workDetails",
+                            border: [false, false, false, false],
+                          },
+                        ],
+                      ],
+                    },
+                  },
+                  {
+                    table: {
+                      body: [
+                        [
+                          {
+                            text: "OLD",
+                            style: "workDetails",
+                            border: [false, false, false, false],
+                          },
+                        ],
+                      ],
+                    },
+                  },
+                  {
+                    table: {
+                      body: [
+                        [
+                          {
+                            text: "Existing Date of Expiry",
+                            style: "workDetails",
+                            border: [false, false, false, false],
+                          },
+                          {
+                            text: ``,
+                            style: "workDetails",
+                            border: [false, false, false, false],
+                          },
+                        ],
+                        [
+                          {
+                            text: "Date of Expiry",
+                            style: "workDetails",
+                            border: [false, false, false, false],
+                          },
+                          {
+                            text: `${record.enddate}`,
+                            style: "workDetails",
+                            border: [false, false, false, false],
+                          },
+                        ],
+                      ],
+                    },
+                  },
+                ],
+                margin: [0, 0, 0, 20],
+              },
+              {
+                table: {
+                  widths: [30, "*", "*", "*", "*", 50, 100],
+                  body: [
+                    [
+                      "S.No.",
+                      "MODEL",
+                      "Unit Price",
+                      "NO OF WORKSTATIONS",
+                      "SUB T0TAL",
+                      "IGST",
+                      "TOTAL",
+                    ],
+                    ...rowData,
+                  ],
                 },
-               
-              };
+              },
+              {
+                stack: [
+                  {
+                    text: `Total INR: ${totalAmount}`,
+                    style: "workDetails",
+                    bold: true,
+                  },
+                  {
+                    text: `Total in words: ${convertAmountToWords(
+                      totalAmount
+                    )}`,
+                    style: "workDetails",
+                    bold: true,
+                  },
+                ],
+                margin: [350, 20, 0, 0],
+                alignment: "right",
+              },
+              {
+                columns: [
+                  {
+                    text: "Signed By On Behalf Of\nCustomer With Seal And Date",
+                    alignment: "center",
+                  },
+                  {
+                    text: `Signed By On Behalf Of\n${record.createdByUser.companyName}`,
+                    alignment: "center",
+                  },
+                ],
+                alignment: "justify",
+                margin: [0, 50, 0, 0],
+              },
+            ],
+            styles: {
+              header: {
+                fontSize: 16,
+                font: "Helvetica",
+                bold: true,
+                margin: [0, 0, 0, 5],
+              },
+              subheader: {
+                font: "Helvetica",
+                fontSize: 12,
+                marginBottom: 5,
+              },
+              workDetails: {
+                font: "Helvetica",
+                fontSize: 14,
+                alignment: "left",
+                border: [false, false, false, false],
+              },
+              tableLabel: {
+                font: "Helvetica",
+                bold: true,
+                border: [false, false, false, true],
+              },
+              tableCell: {
+                font: "Helvetica",
+                fillColor: "#ffffff",
+              },
+              tableHeader: {
+                font: "Helvetica",
+                fillColor: "#eeeeee",
+                bold: true,
+              },
+            },
+          };
         
             pdfMake.createPdf(docDefinition).download('work-order.pdf');
   }
