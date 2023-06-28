@@ -91,78 +91,66 @@ const handleLogout = () => {
   return (
     <>
       <Seo title="Dashboard: Social Profile" />
+      <CardHeader
+        title="Your Profile Details"
+        titleTypographyProps={{ variant: "h5" }}
+        action={
+          <Button color="primary" variant="contained" onClick={handleLogout}>
+            Log Out
+          </Button>
+        }
+      />
 
-        <Card style={{marginBottom: "12px" }}>
-        <div style={{display: 'flex' , justifyContent: 'space-between' , alignItems: "center"}}>
-        <CardHeader title="Your Profile Details" />
-        <Box sx={{ mt: 2 }}
-            marginRight="12px">
-            <Button
-              color="primary"
-              variant="contained"
-              onClick={handleLogout}
-          
-            >
-              Log Out
-            </Button>
-          </Box>
-        </div>
+      <Card sx={{ m: 3, mt: 2 }}>
         <PropertyList>
-        <PropertyListItem
-          align={align}
-          label="First Name"
-        >
-          <Typography variant="subtitle2">
-            {state?.firstName}
-          </Typography>
-        </PropertyListItem>
+          <PropertyListItem align={align} label="First Name">
+            <Typography variant="subtitle2">{state?.firstName}</Typography>
+          </PropertyListItem>
+          <Divider />
+          <PropertyListItem
+            align={align}
+            label="Last Name"
+            value={state?.lastName}
+          />
+          <Divider />
+          <PropertyListItem
+            align={align}
+            label="Email"
+            value={state?.userName}
+          />
+          <Divider />
+          <PropertyListItem align={align} label="Phone" value={state?.mobile} />
+          <Divider />
+          <PropertyListItem
+            align={align}
+            label="Company"
+            value={state?.companyName}
+          />
+          <Divider />
+          <PropertyListItem align={align} label="Type" value={state?.type} />
+          <Divider />
+          <PropertyListItem
+            align={align}
+            label="Address"
+            value={
+              state?.address +
+              ", " +
+              state?.city +
+              ", " +
+              state?.state +
+              ", " +
+              state?.country
+            }
+          />
+          <Divider />
+          <PropertyListItem
+            align={align}
+            label="ZipCode"
+            value={state?.pincode}
+          ></PropertyListItem>
+        </PropertyList>
         <Divider />
-        <PropertyListItem
-          align={align}
-          label="Last Name"
-          value={state?.lastName}
-        />
-        <Divider />
-        <PropertyListItem
-          align={align}
-          label="Email"
-          value={state?.userName}
-        />
-        <Divider />
-        <PropertyListItem
-          align={align}
-          label="Phone"
-          value={state?.mobile}
-        />
-        <Divider />
-        <PropertyListItem
-          align={align}
-          label="Company"
-          value={state?.companyName}
-        />
-        <Divider />
-        <PropertyListItem
-          align={align}
-          label="Type"
-          value={state?.type}
-        />
-        <Divider />
-        <PropertyListItem
-          align={align}
-          label="Address"
-          value={state?.address+', '+state?.city+', '+state?.state+', '+state?.country}
-        />
-        <Divider />
-        <PropertyListItem
-          align={align}
-          label="ZipCode"
-          value={state?.pincode}
-        >
-        </PropertyListItem>
-      </PropertyList>
-        <Divider/>
       </Card>
-
     </>
   );
 };
