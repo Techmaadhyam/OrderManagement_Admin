@@ -238,43 +238,48 @@ const SalesOrderViewList = () => {
         },
         content: [
           {
-            table:{
+            table: {
               widths: "*",
-              body:[
+              body: [
                 [
                   {
-            columns: [
-              {
-                image: imgUrl,
-                width: 100,
-                alignment: "left",
-              },
-              {
-                stack: [
-                  {
-                    text: `${record.createdByUser.companyName}`,
-                    style: "header",
-                  },
-                  {
-                    text: `${record.createdByUser.address}, ${record.createdByUser.city}, ${record.createdByUser.pincode}, ${record.createdByUser.state}, ${record.createdByUser.country}`,
-                    style: "subheader",
-                  },
-                  {
-                    text: `GSTIN: ${record.createdByUser.gstNumber}`,
-                    style: "subheader",
+                    columns: [
+                      {
+                        image: imgUrl,
+                        width: 100,
+                        alignment: "left",
+                      },
+                      {
+                        stack: [
+                          {
+                            text: `${record.createdByUser.companyName}`,
+                            style: "header",
+                          },
+                          {
+                            text: `${record.createdByUser.address}, ${record.createdByUser.city}, ${record.createdByUser.pincode}, ${record.createdByUser.state}, ${record.createdByUser.country}`,
+                            style: "subheader",
+                          },
+                          {
+                            text: `GSTIN: ${record.createdByUser.gstNumber}`,
+                            style: "subheader",
+                          },
+                        ],
+                        margin: [20, 0, 0, 0],
+                      },
+
+                      {
+                        text: "ORIGINAL",
+                        style: "header",
+                        alignment: "center",
+                      },
+
+                      { text: heading, style: "header", alignment: "right" },
+                    ],
+                    border: [true, true, true, false],
                   },
                 ],
-                margin: [20, 0, 0, 0],
-              },
-
-              { text: "ORIGINAL", style: "header", alignment: "center" },
-
-              { text: heading, style: "header", alignment: "right" },
-            ],border: [true, true, true, false],
-          },
-                ],
-              ]
-            }
+              ],
+            },
           },
           {
             style: "newTable",
@@ -283,20 +288,66 @@ const SalesOrderViewList = () => {
               widths: ["*", "auto", "auto", "auto", "auto", "auto"],
               body: [
                 [
-                  { text: '', border: [true, false, false, false] },
-                  { text: `${noData} Number:`, style: 'font10', border: [true, true, true, false] },
-                  { text: `${dateData}:`, style: 'font10', border: [true, true, true, false] },
-                  { text: 'Customer ID:', style: 'font10', border: [true, true, true, false] },
-                  { text: 'Customer Contact:', style: 'font10', border: [true, true, true, false] },
-                  { text: 'Customer PO No.:', style: 'font10', border: [true, true, true, false] },
+                  { text: "", border: [true, false, false, false] },
+                  {
+                    text: `${noData} Number:`,
+                    style: "font10",
+                    border: [true, true, true, false],
+                  },
+                  {
+                    text: `${dateData}:`,
+                    style: "font10",
+                    border: [true, true, true, false],
+                  },
+                  {
+                    text: "Customer ID:",
+                    style: "font10",
+                    border: [true, true, true, false],
+                  },
+                  {
+                    text: "Customer Contact:",
+                    style: "font10",
+                    border: [true, true, true, false],
+                  },
+                  {
+                    text: "Customer PO No.:",
+                    style: "font10",
+                    border: [true, true, true, false],
+                  },
                 ],
                 [
-                  { text: '', border: [true, false, false, false], style: 'font10' },
-                  { text: record.id, border: [true, false, true, false], style: 'font10' },
-                  { text: formatDate(record.createdDate), border: [true, false, true, false], style: 'font10' },
-                  { text: record.tempUser ? record.tempUser.id : record.companyuser.id, border: [true, false, true, false], style: 'font10' },
-                  { text: record.contactPhone, border: [true, false, true, false], style: 'font10' },
-                  { text: record.pinCode, border: [true, false, true, false], style: 'font10' },
+                  {
+                    text: "",
+                    border: [true, false, false, false],
+                    style: "font10",
+                  },
+                  {
+                    text: record.id,
+                    border: [true, false, true, false],
+                    style: "font10",
+                  },
+                  {
+                    text: formatDate(record.createdDate),
+                    border: [true, false, true, false],
+                    style: "font10",
+                  },
+                  {
+                    text: record.tempUser
+                      ? record.tempUser.id
+                      : record.companyuser.id,
+                    border: [true, false, true, false],
+                    style: "font10",
+                  },
+                  {
+                    text: record.contactPhone,
+                    border: [true, false, true, false],
+                    style: "font10",
+                  },
+                  {
+                    text: record.pinCode,
+                    border: [true, false, true, false],
+                    style: "font10",
+                  },
                 ],
               ],
             },
@@ -308,37 +359,97 @@ const SalesOrderViewList = () => {
               heights: ["auto", 80],
               body: [
                 [
-                  { text: `Bill To: ${record.tempUser?record.tempUser.companyName : record.companyuser.companyName}`, style: 'tableLabel', border: [true, true, true, false], marginBottom: 5 },
-                  { text: `Ship To: ${record.contactPerson}`, style: 'tableLabel', border: [true, true, true, false], marginBottom: 5 },
-                  { text: 'Customer GST Registration information', style: 'font10' },
-                  { text: `Mode of Dispatch: ${record.modeofdelivery}`, style: 'font10', border: [true, true, true, true] },
+                  {
+                    text: `Bill To: ${
+                      record.tempUser
+                        ? record.tempUser.companyName
+                        : record.companyuser.companyName
+                    }`,
+                    style: "tableLabel",
+                    border: [true, true, true, false],
+                    marginBottom: 5,
+                  },
+                  {
+                    text: `Ship To: ${record.contactPerson}`,
+                    style: "tableLabel",
+                    border: [true, true, true, false],
+                    marginBottom: 5,
+                  },
+                  {
+                    text: "Customer GST Registration information",
+                    style: "font10",
+                  },
+                  {
+                    text: `Mode of Dispatch: ${record.modeofdelivery}`,
+                    style: "font10",
+                    border: [true, true, true, true],
+                  },
                 ],
                 [
-                 record.tempUser?{stack: [
-                    {text: record.tempUser.address, style: 'font10', marginBottom: 5},
-                    {text: `${record.tempUser.city} - ${record.tempUser.pincode}`, style: 'font10',marginBottom: 5},
-                    {text: record.tempUser.state, style: 'font10'},
-                    {text: record.tempUser.country, style: 'font10'},
-                  ],
-                  border: [true, false, true, false],
-                }:{stack: [
-                  {text: record.companyuser.address, style: 'font10', marginBottom: 5},
-                  {text: `${record.companyuser.city} - ${record.companyuser.pincode}`, style: 'font10',marginBottom: 5},
-                  {text: record.companyuser.state, style: 'font10'},
-                  {text: record.companyuser.country, style: 'font10'},
-                ],
-                border: [true, false, true, false],
-              },
-                  {stack: [
-                    {text: record.deliveryAddress, style: 'font10', marginBottom: 5},
-                    {text: `${record.city} - ${record.pinCode}`, style: 'font10',marginBottom: 5},
-                    {text: record.state, style: 'font10'},
-                    {text: record.country, style: 'font10'},
-                  ],
-                  border: [true, false, true, false],
-                },
-                  { text: record.tempUser ? record.tempUser.gstNumber : record.companyuser.gstNumber, border: [true, false, true, false], style: 'font10' },
-                  { text: `Mode of Payment: ${record.paymentMode}`,border: [true, false, true, false], style: 'font10' },
+                  record.tempUser
+                    ? {
+                        stack: [
+                          {
+                            text: record.tempUser.address,
+                            style: "font10",
+                            marginBottom: 5,
+                          },
+                          {
+                            text: `${record.tempUser.city} - ${record.tempUser.pincode}`,
+                            style: "font10",
+                            marginBottom: 5,
+                          },
+                          { text: record.tempUser.state, style: "font10" },
+                          { text: record.tempUser.country, style: "font10" },
+                        ],
+                        border: [true, false, true, false],
+                      }
+                    : {
+                        stack: [
+                          {
+                            text: record.companyuser.address,
+                            style: "font10",
+                            marginBottom: 5,
+                          },
+                          {
+                            text: `${record.companyuser.city} - ${record.companyuser.pincode}`,
+                            style: "font10",
+                            marginBottom: 5,
+                          },
+                          { text: record.companyuser.state, style: "font10" },
+                          { text: record.companyuser.country, style: "font10" },
+                        ],
+                        border: [true, false, true, false],
+                      },
+                  {
+                    stack: [
+                      {
+                        text: record.deliveryAddress,
+                        style: "font10",
+                        marginBottom: 5,
+                      },
+                      {
+                        text: `${record.city} - ${record.pinCode}`,
+                        style: "font10",
+                        marginBottom: 5,
+                      },
+                      { text: record.state, style: "font10" },
+                      { text: record.country, style: "font10" },
+                    ],
+                    border: [true, false, true, false],
+                  },
+                  {
+                    text: record.tempUser
+                      ? record.tempUser.gstNumber
+                      : record.companyuser.gstNumber,
+                    border: [true, false, true, false],
+                    style: "font10",
+                  },
+                  {
+                    text: `Mode of Payment: ${record.paymentMode}`,
+                    border: [true, false, true, false],
+                    style: "font10",
+                  },
                 ],
               ],
             },
@@ -361,7 +472,14 @@ const SalesOrderViewList = () => {
                 "auto",
               ],
               headerRows: 1,
-              heights: ["auto",...Array(rowData.length).fill(20)],
+              heights: [
+                "auto",
+                ...(rowData.length > 0
+                  ? Array(rowData.length - 1)
+                      .fill(0)
+                      .concat([130 - (rowData.length - 1) * 20])
+                  : [130]),
+              ],
               body: [
                 [
                   { text: "S.No.", style: "tableLabel" },
@@ -382,16 +500,20 @@ const SalesOrderViewList = () => {
             },
             layout: {
               hLineWidth: function (i, node) {
-                return (i === 0 || i === node.table.body.length) ? 1 : 1;
+                return i === 0 || i === node.table.body.length ? 1 : 1;
               },
               vLineWidth: function (i, node) {
-                return (i === 0 || i === node.table.widths.length) ? 1 : 1;
+                return i === 0 || i === node.table.widths.length ? 1 : 1;
               },
               hLineColor: function (i, node) {
-                return (i === 0 || i === node.table.body.length) ? 'black' : 'gray';
+                return i === 0 || i === node.table.body.length
+                  ? "black"
+                  : "gray";
               },
               vLineColor: function (i, node) {
-                return (i === 0 || i === node.table.widths.length) ? 'black' : 'gray';
+                return i === 0 || i === node.table.widths.length
+                  ? "black"
+                  : "gray";
               },
               paddingTop: function () {
                 return 5;
@@ -399,7 +521,7 @@ const SalesOrderViewList = () => {
               paddingBottom: function () {
                 return 5;
               },
-            } 
+            },
           },
           {
             table: {
@@ -417,8 +539,20 @@ const SalesOrderViewList = () => {
 
                   {
                     stack: [
-                      { text: `Total: ${record.totalAmount}`, alignment: 'right', bold: true, style: 'font10' },
-                      { text: `Total in words: ${convertAmountToWords(record.totalAmount)}`, alignment: 'right', bold: true, style: 'font10' },
+                      {
+                        text: `Total: ${record.totalAmount}`,
+                        alignment: "right",
+                        bold: true,
+                        style: "font10",
+                      },
+                      {
+                        text: `Total in words: ${convertAmountToWords(
+                          record.totalAmount
+                        )}`,
+                        alignment: "right",
+                        bold: true,
+                        style: "font10",
+                      },
                     ],
                     border: [false, false, true, true],
                     margin: [0, 20, 20, 0],
@@ -434,8 +568,12 @@ const SalesOrderViewList = () => {
                 [
                   {
                     stack: [
-                      { text: 'Terms & Conditions', bold: true, style: 'font10' },
-                      { text: `${record.termsAndCondition}`, style: 'font10' }
+                      {
+                        text: "Terms & Conditions",
+                        bold: true,
+                        style: "font10",
+                      },
+                      { text: `${record.termsAndCondition}`, style: "font10" },
                     ],
                     border: [true, false, false, true],
                     margin: [0, 20, 0, 0],
@@ -444,8 +582,16 @@ const SalesOrderViewList = () => {
 
                   {
                     stack: [
-                      { text: `Received In Good Condition`, bold: true, fontSize: 12 },
-                      { text: `Customer Signature`, margin: [0, 40, 0, 0], style: 'font10' },
+                      {
+                        text: `Received In Good Condition`,
+                        bold: true,
+                        fontSize: 12,
+                      },
+                      {
+                        text: `Customer Signature`,
+                        margin: [0, 40, 0, 0],
+                        style: "font10",
+                      },
                     ],
                     border: [false, false, false, true],
                     margin: [0, 20, 0, 0],
@@ -453,8 +599,18 @@ const SalesOrderViewList = () => {
                   },
                   {
                     stack: [
-                      { text: `For ${record.createdByUser.companyName}`,bold:true,alignment:'center',fontSize:12},
-                      { text: `Authorize Signature`, margin:[0,40,0,0],alignment:'center', style: 'font10'},
+                      {
+                        text: `For ${record.createdByUser.companyName}`,
+                        bold: true,
+                        alignment: "center",
+                        fontSize: 12,
+                      },
+                      {
+                        text: `Authorize Signature`,
+                        margin: [0, 40, 0, 0],
+                        alignment: "center",
+                        style: "font10",
+                      },
                     ],
                     border: [false, false, true, true],
                     margin: [0, 20, 0, 0],
@@ -472,22 +628,22 @@ const SalesOrderViewList = () => {
             margin: [0, 0, 0, 5],
           },
           subheader: {
-              fontSize: 12,
-              marginBottom: 5,
-              },
+            fontSize: 12,
+            marginBottom: 5,
+          },
           tableLabel: {
             bold: true,
             fontSize: 10,
             // border: [false, false, false, true],
           },
-          font10:{
-              fontSize: 10,
+          font10: {
+            fontSize: 10,
           },
           tableCell: {
             fontSize: 8,
           },
           tableHeader: {
-            fillColor: '#eeeeee',
+            fillColor: "#eeeeee",
             bold: true,
           },
         },
