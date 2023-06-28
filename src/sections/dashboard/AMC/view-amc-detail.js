@@ -45,23 +45,25 @@ export const ViewAMCDetail = (props) => {
   const align = 'horizontal' 
 
  
-const columns=[
+const columns = [
   {
-    title: 'Part Description',
-    dataIndex: 'description',
-    key: 'description',
+    title: "Part Description",
+    dataIndex: "description",
+    key: "description",
     render: (name, record) => {
       const handleNavigation = () => {
-        navigate(`/dashboard/products/viewDetail/${record.productId}`, { state: record } );
+        navigate(`/dashboard/products/viewDetail/${record.productId}`, {
+          state: record,
+        });
       };
-      
+
       return (
         <Link
           color="primary"
           onClick={handleNavigation}
           sx={{
-            alignItems: 'center',
-            textAlign: 'center',
+            alignItems: "center",
+            textAlign: "center",
           }}
           underline="hover"
         >
@@ -71,21 +73,25 @@ const columns=[
     },
   },
   {
-    title:'No. Of Workstations',
-    dataIndex:'workstationcount',
-    key: 'workstationcount',
-},
-  {
-    title: 'Cost',
-    dataIndex: 'unitPrice',
-    key: 'unitPrice',
+    title: "No. Of Workstations",
+    dataIndex: "workstationcount",
+    key: "workstationcount",
   },
   {
-    dataIndex:'igst',
-    title:'IGST',
-   key: 'igst',
-},
-
+    title: "Cost",
+    dataIndex: "unitPrice",
+    key: "unitPrice",
+  },
+  {
+    dataIndex: "igst",
+    title: "IGST",
+    key: "igst",
+  },
+  {
+    title: "Net Amount",
+    key: "netAmount",
+    dataIndex: "netAmount",
+  },
 ];
 
 
