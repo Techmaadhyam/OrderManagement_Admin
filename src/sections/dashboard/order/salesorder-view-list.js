@@ -301,7 +301,7 @@ const SalesOrderViewList = () => {
                   { text: `Bill To: ${record.tempUser.companyName}`, style: 'tableLabel', border: [true, true, true, false], marginBottom: 5 },
                   { text: `Ship To: ${record.contactPerson}`, style: 'tableLabel', border: [true, true, true, false], marginBottom: 5 },
                   { text: 'Customer GST Registration information', style: 'font10' },
-                  { text: 'Mode of Dispatch: Courier', style: 'font10', border: [true, true, true, true] },
+                  { text: `Mode of Dispatch: ${record.modeofdelivery}`, style: 'font10', border: [true, true, true, true] },
                 ],
                 [
                   {stack: [
@@ -343,6 +343,8 @@ const SalesOrderViewList = () => {
                 "auto",
                 "auto",
               ],
+              headerRows: 1,
+              heights: ["auto",20],
               body: [
                 [
                   { text: "S.No.", style: "tableLabel" },
@@ -373,6 +375,12 @@ const SalesOrderViewList = () => {
               },
               vLineColor: function (i, node) {
                 return (i === 0 || i === node.table.widths.length) ? 'black' : 'gray';
+              },
+              paddingTop: function () {
+                return 5;
+              },
+              paddingBottom: function () {
+                return 5;
               },
             } 
           },
@@ -468,7 +476,8 @@ const SalesOrderViewList = () => {
         },
       };
 
-      pdfMake.createPdf(docDefinition).download("invoice.pdf");
+      // pdfMake.createPdf(docDefinition).download("invoice.pdf");
+      pdfMake.createPdf(docDefinition).open();
     } catch (error) {
       console.log(error);
     }
@@ -582,7 +591,7 @@ const SalesOrderViewList = () => {
           {
             style: "table",
             table: {
-              heights: ["auto", "auto"],
+              heights: ["auto", 20],
               widths: ["auto", "*", 40, "auto"],
               body: [
                 [
@@ -609,6 +618,12 @@ const SalesOrderViewList = () => {
               },
               vLineColor: function (i, node) {
                 return (i === 0 || i === node.table.widths.length) ? 'black' : 'gray';
+              },
+              paddingTop: function () {
+                return 5;
+              },
+              paddingBottom: function () {
+                return 5;
               },
             } 
           },
@@ -683,7 +698,8 @@ const SalesOrderViewList = () => {
         },
       };
 
-      pdfMake.createPdf(docDefinition).download("deliveryChallan.pdf");
+      // pdfMake.createPdf(docDefinition).download("deliveryChallan.pdf");
+      pdfMake.createPdf(docDefinition).open();
     } catch (error) {
       console.log(error);
     }
