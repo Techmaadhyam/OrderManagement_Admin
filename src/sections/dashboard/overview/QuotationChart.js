@@ -32,6 +32,7 @@ import { Bar } from "react-chartjs-2";
 import { useState, useEffect } from "react";
 import { apiUrl } from "src/config";
 import axios from "axios";
+import { useTheme } from "@mui/system";
 
 const userId = parseInt(
   sessionStorage.getItem("user") || localStorage.getItem("user")
@@ -46,17 +47,28 @@ ChartJS.register(
   Legend
 );
 
+
+
 const currentMonth = new Date().toLocaleString("default", { month: "long" });
 const currentYear = new Date().getFullYear().toString();
 
 export const QuotationChart = (props) => {
 
-
+  const theme = useTheme();
+  
   const [list, setList] = useState({});
   const [selectedMonth, setSelectedMonth] = useState(
     currentMonth.toLowerCase()
   );
   const [selectedYear, setSelectedYear] = useState(currentYear);
+
+ 
+  const chartFontStyle = {
+    font: {
+      family: theme.typography.fontFamily,
+      size: theme.typography.fontSize,
+    },
+  };
 
     const handleChange = (event) => {
       setSelectedMonth(event.target.value);
@@ -153,16 +165,25 @@ export const QuotationChart = (props) => {
         ticks: {
           precision: 0,
           stepSize: 1,
+          font: {
+            family: theme.typography.fontFamily,
+            size: theme.typography.fontSize - 2,
+          },
         },
       },
       x: {
         grid: {
           display: false,
         },
+        ticks: {
+          font: {
+            family: theme.typography.fontFamily,
+            size: theme.typography.fontSize - 2,
+          },
+        },
       },
     },
   };
-
 
 
   return (
@@ -229,7 +250,7 @@ export const QuotationChart = (props) => {
             <Grid
               item
               sx={{
-                borderLeft: "7px solid #8fff85",
+                borderLeft: "7px solid #92ff88",
                 paddingLeft: 2,
                 marginTop: 1,
                 ml: 2,
@@ -242,7 +263,7 @@ export const QuotationChart = (props) => {
             <Grid
               item
               sx={{
-                borderLeft: "7px solid #ede60e",
+                borderLeft: "7px solid #fff959",
                 paddingLeft: 2,
                 marginTop: 1,
                 ml: 2,
@@ -255,7 +276,7 @@ export const QuotationChart = (props) => {
             <Grid
               item
               sx={{
-                borderLeft: "7px solid #9c9c9c",
+                borderLeft: "7px solid #acacac",
                 paddingLeft: 2,
                 marginTop: 1,
                 ml: 2,
@@ -268,7 +289,7 @@ export const QuotationChart = (props) => {
             <Grid
               item
               sx={{
-                borderLeft: "7px solid #f22f24",
+                borderLeft: "7px solid #ff625a",
                 paddingLeft: 2,
                 marginTop: 1,
                 ml: 2,

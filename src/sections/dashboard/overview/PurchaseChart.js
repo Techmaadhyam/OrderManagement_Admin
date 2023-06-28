@@ -159,7 +159,7 @@ export const PurchaseChart = (props) => {
             <Grid
               item
               sx={{
-                borderLeft: "7px solid #ffca85",
+                borderLeft: "7px solid #ffcb88",
                 paddingLeft: 2,
                 marginTop: 1,
                 ml: 2,
@@ -172,7 +172,7 @@ export const PurchaseChart = (props) => {
             <Grid
               item
               sx={{
-                borderLeft: "7px solid #8fff85",
+                borderLeft: "7px solid #92ff88",
                 paddingLeft: 2,
                 marginTop: 1,
                 ml: 2,
@@ -185,7 +185,7 @@ export const PurchaseChart = (props) => {
             <Grid
               item
               sx={{
-                borderLeft: "7px solid #ede60e",
+                borderLeft: "7px solid #fff959",
                 paddingLeft: 2,
                 marginTop: 1,
                 ml: 2,
@@ -198,7 +198,7 @@ export const PurchaseChart = (props) => {
             <Grid
               item
               sx={{
-                borderLeft: "7px solid #9c9c9c",
+                borderLeft: "7px solid #acacac",
                 paddingLeft: 2,
                 marginTop: 1,
                 ml: 2,
@@ -211,7 +211,7 @@ export const PurchaseChart = (props) => {
             <Grid
               item
               sx={{
-                borderLeft: "7px solid #f22f24",
+                borderLeft: "7px solid #ff625a",
                 paddingLeft: 2,
                 marginTop: 1,
                 ml: 2,
