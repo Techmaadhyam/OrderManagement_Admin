@@ -493,19 +493,31 @@ export const ViewPurchaseOrder = (props) => {
         <Divider />
         {performaInvoice ||
         (performaInvoiceFile && performaInvoiceFile?.url) ? (
-          <Button sx={{ ml: 2 }} variant="contained" onClick={handlePerfoma}>
+          <Button
+            sx={{ ml: 2, mt: 2, mb: 2 }}
+            variant="contained"
+            onClick={handlePerfoma}
+          >
             View Performa Invoice
           </Button>
         ) : null}
         {approvedInvoice ||
         (approvedInvoiceFile && approvedInvoiceFile?.url) ? (
-          <Button sx={{ ml: 2 }} variant="contained" onClick={handleApproved}>
+          <Button
+            sx={{ ml: 2, mt: 2, mb: 2 }}
+            variant="contained"
+            onClick={handleApproved}
+          >
             View Approved Invoice
           </Button>
         ) : null}
         {deliveryChallan ||
         (deliveryChallanFile && deliveryChallanFile?.url) ? (
-          <Button sx={{ ml: 2 }} variant="contained" onClick={handleDelivery}>
+          <Button
+            sx={{ ml: 2, mt: 2, mb: 2 }}
+            variant="contained"
+            onClick={handleDelivery}
+          >
             View Delivery Challan
           </Button>
         ) : null}
