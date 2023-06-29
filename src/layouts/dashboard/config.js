@@ -33,7 +33,6 @@ export const useSections = () => {
       //     },
       //     {
       {
-        
         items: [
           {
             title: t(tokens.nav.overview),
@@ -42,7 +41,7 @@ export const useSections = () => {
               <SvgIcon fontSize="small">
                 <HomeSmileIcon />
               </SvgIcon>
-            )
+            ),
           },
           {
             title: t(tokens.nav.products),
@@ -54,35 +53,14 @@ export const useSections = () => {
             ),
             items: [
               {
-                title: t(tokens.nav.create),
-                path: paths.dashboard.products.create
+                title: t(tokens.nav.view),
+                path: paths.dashboard.products.view,
               },
               {
-                title: t(tokens.nav.view),
-                path: paths.dashboard.products.view
-              }
-            
-            ]
-          },
-          {
-            title: t(tokens.nav.inventory),
-            path: paths.dashboard.inventory.index,
-            icon: (
-              <SvgIcon fontSize="small">
-                <ShoppingBag03Icon />
-              </SvgIcon>
-            ),
-            items: [
-              {
                 title: t(tokens.nav.create),
-                path: paths.dashboard.inventory.create
+                path: paths.dashboard.products.create,
               },
-              {
-                title: t(tokens.nav.view),
-                path: paths.dashboard.inventory.view
-              }
-            
-            ]
+            ],
           },
           {
             title: t(tokens.nav.warehouse),
@@ -94,36 +72,56 @@ export const useSections = () => {
             ),
             items: [
               {
-                title: t(tokens.nav.create),
-                path: paths.dashboard.invoices.index
+                title: t(tokens.nav.view),
+                path: paths.dashboard.invoices.details,
               },
               {
-                title: t(tokens.nav.view),
-                path: paths.dashboard.invoices.details
-              }
-            ]
+                title: t(tokens.nav.create),
+                path: paths.dashboard.invoices.index,
+              },
+            ],
           },
+          {
+            title: t(tokens.nav.inventory),
+            path: paths.dashboard.inventory.index,
+            icon: (
+              <SvgIcon fontSize="small">
+                <ShoppingBag03Icon />
+              </SvgIcon>
+            ),
+            items: [
+              {
+                title: t(tokens.nav.view),
+                path: paths.dashboard.inventory.view,
+              },
+              {
+                title: t(tokens.nav.create),
+                path: paths.dashboard.inventory.create,
+              },
+            ],
+          },
+
           {
             title: t(tokens.nav.user),
             path: paths.dashboard.logistics.index,
             icon: (
               <SvgIcon fontSize="small">
-                <Users03Icon /> 
+                <Users03Icon />
                 {/* <Truck01Icon /> */}
               </SvgIcon>
             ),
             items: [
               {
-                title: t(tokens.nav.create),
-                path: paths.dashboard.logistics.index
+                title: t(tokens.nav.view),
+                path: paths.dashboard.logistics.fleet,
               },
               {
-                title: t(tokens.nav.view),
-                path: paths.dashboard.logistics.fleet
-              }
-            ]
+                title: t(tokens.nav.create),
+                path: paths.dashboard.logistics.index,
+              },
+            ],
           },
-          
+
           {
             title: t(tokens.nav.quotation),
             path: paths.dashboard.quotation.index,
@@ -135,34 +133,32 @@ export const useSections = () => {
             items: [
               {
                 title: t(tokens.nav.view),
-                path: paths.dashboard.quotation.view
+                path: paths.dashboard.quotation.view,
               },
               {
                 title: t(tokens.nav.create),
-             
+
                 items: [
                   {
                     title: t(tokens.nav.buyer),
                     path: paths.dashboard.quotation.buy,
-                    
                   },
                   {
                     title: t(tokens.nav.seller),
                     path: paths.dashboard.quotation.sell,
-                    
                   },
                   {
                     title: t(tokens.nav.service),
                     path: paths.dashboard.quotation.service,
                   },
-                ]
+                ],
               },
-           
+
               // {
               //   title: t(tokens.nav.downloadQuotation),
               //   path: paths.dashboard.quotation.invoice
               // }
-            ]
+            ],
           },
           {
             title: t(tokens.nav.orderList),
@@ -175,18 +171,17 @@ export const useSections = () => {
             items: [
               {
                 title: t(tokens.nav.create),
-                path: paths.dashboard.orders.index
+                path: paths.dashboard.orders.index,
               },
               {
                 title: t(tokens.nav.invoices),
-                path: paths.dashboard.orders.details
+                path: paths.dashboard.orders.details,
               },
               // {
               //   title: t(tokens.nav.invoice),
               //   path: paths.dashboard.orders.invoice
               // },
-            
-            ]
+            ],
           },
           {
             title: t(tokens.nav.purchaseorder),
@@ -199,89 +194,80 @@ export const useSections = () => {
             ),
             items: [
               {
-                title: t(tokens.nav.create),
-                path: paths.dashboard.purchaseorder.create
+                title: t(tokens.nav.view),
+                path: paths.dashboard.purchaseorder.view,
               },
               {
-                title: t(tokens.nav.view),
-                path: paths.dashboard.purchaseorder.view
+                title: t(tokens.nav.create),
+                path: paths.dashboard.purchaseorder.create,
               },
+
               // {
               //   title: t(tokens.nav.invoice),
-              //   path: paths.dashboard.purchaseorder.invoice              
+              //   path: paths.dashboard.purchaseorder.invoice
               // },
-          
-            ]
+            ],
           },
           {
             title: t(tokens.nav.services),
             path: paths.dashboard.services.index,
             icon: (
               <SvgIcon fontSize="small">
-                <BuildCircleTwoToneIcon /> 
+                <BuildCircleTwoToneIcon />
                 {/* <Truck01Icon /> */}
               </SvgIcon>
             ),
             items: [
               {
                 title: t(tokens.nav.workorder),
-             
-             
+
                 items: [
                   {
-                    title: t(tokens.nav.create),
-                    path: paths.dashboard.services.createWorkorder
+                    title: t(tokens.nav.view),
+                    path: paths.dashboard.services.workorderview,
                   },
                   {
-                    title: t(tokens.nav.view),
-                    path: paths.dashboard.services.workorderview
+                    title: t(tokens.nav.create),
+                    path: paths.dashboard.services.createWorkorder,
                   },
+
                   // {
                   //   title: t(tokens.nav.amc),
                   //   path: paths.dashboard.services.workorderdownload
                   // },
-
-              
-                ]
+                ],
               },
               {
                 title: t(tokens.nav.addAmc),
-             
-             
+
                 items: [
                   {
-                    title: t(tokens.nav.create),
-                    path: paths.dashboard.services.createAMC
+                    title: t(tokens.nav.view),
+                    path: paths.dashboard.services.AMCview,
                   },
                   {
-                    title: t(tokens.nav.view),
-                    path: paths.dashboard.services.AMCview
+                    title: t(tokens.nav.create),
+                    path: paths.dashboard.services.createAMC,
                   },
-              
-                ]
+                ],
               },
               {
                 title: t(tokens.nav.technician),
-             
-             
+
                 items: [
                   {
-                    title: t(tokens.nav.create),
-                    path: paths.dashboard.services.createTechnician
+                    title: t(tokens.nav.view),
+                    path: paths.dashboard.services.technicianview,
                   },
                   {
-                    title: t(tokens.nav.view),
-                    path: paths.dashboard.services.technicianview
-                  }
-                ]
+                    title: t(tokens.nav.create),
+                    path: paths.dashboard.services.createTechnician,
+                  },
+                ],
               },
-          
-            ]
+            ],
           },
-         
-          
-          
-        ]
+        ],
       },
       // {
       //   subheader: t(tokens.nav.pages),
@@ -370,15 +356,15 @@ export const useSections = () => {
       //         </SvgIcon>
       //       )
       //     },
-          {
-            title: t(tokens.nav.checkout),
-            path: paths.checkout,
-            icon: (
-              <SvgIcon fontSize="small">
-                <LogOut01Icon />
-              </SvgIcon>
-            )
-          },
+      {
+        title: t(tokens.nav.checkout),
+        path: paths.checkout,
+        icon: (
+          <SvgIcon fontSize="small">
+            <LogOut01Icon />
+          </SvgIcon>
+        ),
+      },
       //     {
       //       title: t(tokens.nav.contact),
       //       path: paths.contact,
