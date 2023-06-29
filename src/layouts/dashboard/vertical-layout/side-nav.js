@@ -178,7 +178,7 @@ export const SideNav = (props) => {
             direction="row"
             justifyContent="center"
             spacing={2}
-            sx={{ paddingTop: 6, paddingBottom: 6 }}
+            sx={{ paddingTop: 4, paddingBottom: 4 }}
           >
           
             <TenantSwitch />

@@ -5,6 +5,7 @@ import { useTheme } from '@mui/material/styles';
 import { Scrollbar } from 'src/components/scrollbar';
 import { usePathname } from 'src/hooks/use-pathname';
 import { MobileNavSection } from './mobile-nav-section';
+import { TenantSwitch } from '../tenant-switch';
 
 const MOBILE_NAV_WIDTH = 280;
 
@@ -131,22 +132,11 @@ export const MobileNav = (props) => {
           <Stack
             alignItems="center"
             direction="row"
-            spacing={2}
-            sx={{ p: 3 }}
+            spacing={0}
+            sx={{ p: 2 }}
           >
-            <Box
-            sx={{
-              display: 'inline-flex',
-              height: 32,
-              width: 32
-            }}
-          >
-            <img
-              alt=""
-              src="/assets/favicon.png"
-            />
-          </Box>
-            {/* <TenantSwitch sx={{ flexGrow: 1 }} /> */}
+       
+           <TenantSwitch /> 
           </Stack>
           <Stack
             component="nav"
