@@ -202,6 +202,7 @@ export const QuotationChart = (props) => {
     <Card>
       <CardHeader
         title="Quotation Status"
+        subheader="Based on the selected period"
         action={
           <>
             <LocalizationProvider dateAdapter={AdapterDayjs}>

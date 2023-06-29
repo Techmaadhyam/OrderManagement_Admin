@@ -131,6 +131,7 @@ export const PurchaseChart = (props) => {
     <Card>
       <CardHeader
         title="Purchase Order Status"
+        subheader="Based on the selected period"
         action={
           <>
             <LocalizationProvider dateAdapter={AdapterDayjs}>

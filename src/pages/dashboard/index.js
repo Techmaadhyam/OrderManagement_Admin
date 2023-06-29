@@ -13,6 +13,7 @@ import { Seo } from 'src/components/seo';
 import { usePageView } from 'src/hooks/use-page-view';
 import { useSettings } from 'src/hooks/use-settings';
 import { TotalInventoryCount } from 'src/sections/dashboard/overview/TotalInventoryCount';
+import { OverviewSubscriptionUsage } from 'src/sections/dashboard/overview/overview-subscription-usage';
 import { OverviewTask } from 'src/sections/dashboard/overview/OverviewTask';
 import { OverviewAMC } from 'src/sections/dashboard/overview/OverviewAMC';
 import { TotalWareHouseCount } from 'src/sections/dashboard/overview/TotalWareHouseCount';
@@ -213,6 +214,17 @@ const Page = () => {
               <TotalPO amount={po} />
             </Grid>
            */}
+            {/* <Grid xs={12} md={12}>
+              <OverviewSubscriptionUsage
+                chartSeries={[
+                  {
+                    name: "This Month",
+                    data: [40, 37, 41, 42, 45],
+                  },
+               
+                ]}
+              />
+            </Grid> */}
             <Grid xs={12} md={6}>
               <SalesChart />
             </Grid>
@@ -228,11 +240,9 @@ const Page = () => {
             <Grid xs={12} md={6}>
               <InventoryList messages={inventoryData} />
             </Grid>
-
             <Grid xs={12} md={6}>
               <OverviewAMC messages={tasks2} />
             </Grid>
-
             <Grid xs={12} md={6}>
               <OverviewTask messages={tasks} />
             </Grid>
