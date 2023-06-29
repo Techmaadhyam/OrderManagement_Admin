@@ -168,6 +168,9 @@ export const QuotationChart = (props) => {
     barPercentage: 0.4,
     scales: {
       y: {
+          grid: {
+          display: false,
+        },
         max: maxDataValue + padding,
         beginAtZero: true,
         ticks: {
@@ -322,8 +325,8 @@ export const QuotationChart = (props) => {
           </Grid>
         </Grid>
         <Grid item xs={12} sm={9}>
-          <div style={{ width: "100%" }}>
-            <Bar data={data} options={chartOptions} height={100} />
+          <div style={{ width: "95%" }}>
+            <Bar data={data} options={chartOptions} height={80} />
           </div>
         </Grid>
       </Grid>
