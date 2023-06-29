@@ -36,6 +36,7 @@ import 'moment-timezone';
 import { apiUrl } from 'src/config';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Logo from '../logo/logo';
 
 
 const userId = parseInt(sessionStorage.getItem('user')|| localStorage.getItem('user'))
@@ -782,311 +783,267 @@ const notify = (type, message) => {
 
 
   return (
-    <div style={{minWidth: "100%" }}>
-       <ToastContainer
-                     position="top-right"
-                     autoClose={4000}
-                     hideProgressBar={false}
-                     newestOnTop={false}
-                     closeOnClick
-                     rtl={false}
-                     pauseOnFocusLoss
-                     draggable
-                     pauseOnHover
-                     theme="light"/>
-    <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-      <h2>Edit Sales Quotation Order</h2>
-      <IconWithPopup/>
-    </div>
-    <form>
-      <Card>
-        <CardHeader title="Product Order Detail" />
-        <CardContent sx={{ pt: 0 }}>
-          <Grid
-            container
-            spacing={3}
-          >
-            <Grid
-              xs={12}
-              md={6}
-            >
-          <TextField
-                    fullWidth
-                    label="Type"
-                    name="type"
-                    select
-                    value={type}
-                    onChange={handleInputChange}
-                  >
-                    {customerType.map((option) => (
-                      <MenuItem
-                        key={option.value}
-                        value={option.value}
-                      >
-                        {option.label}
-                      </MenuItem>
-                    ))} 
-                  </TextField>
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-             
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >    <TextField
-            fullWidth
-            label="Company Name"
-            name="user"
-            select
-            value={user}
-            onChange={(e) => {
-              const selectedOption = userData?.find((option) => option.companyName === e.target.value);
-              if (selectedOption) {
-                if (selectedOption.hasOwnProperty('createdByUser')) {
-                  setTempId(selectedOption.id || '');
-                  setUserState(null)
-                } else {
-                  setUserState(selectedOption.id || '');
-                  setTempId(null)
-                }
-              }
-              setUser(e.target.value);
-            }}
-            style={{ marginBottom: 10 }}
-          >
-               {userData
-          .filter((option) => option.type === type) 
-          .map((option) => (
-            option.companyName && (
-              <MenuItem 
-              key={option.id}
-               value={option.companyName}>
-                {option.companyName}
-              </MenuItem>
-            )
-          ))}
-          </TextField>   
-            </Grid>
-            <Grid/>
-            <Grid
-              xs={12}
-              md={6}
-            >
-                <DatePicker placeholder="Delivery Date"
-                onChange={handleDateChange}
-                defaultValue={deliveryDate} 
-                format= "YYYY/MM/DD"
-                className="css-dev-only-do-not-override-htwhyh"
-                style={{ height: '58px', width: '250px' , color: 'red'}}
-                
-             
-
-height='50px'/>
-
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-
-                    fullWidth
-                    label="Status"
-                    name="status"
-                    value={status}
-                    onChange={handleInputChange}
-                    select
-                  >
-                    {userOptions.map((option) => (
-                      <MenuItem
-                        key={option.value}
-                        value={option.value}
-                      >
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-                fullWidth
-                label="Contact Name"
-                name="contactName"
-                value={contactName}
-                onChange={handleInputChange}
-              />
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-                fullWidth
-                label="Mobile No."
-                name="mobileno"
-                type='number'
-                value={phone}
-                onChange={handleInputChange}
-              />
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-                fullWidth
-                label="Shipping Address"
-                multiline
-                minRows={3}
-                name="address"
-                value={address}
-                onChange={handleInputChange}   
-              />
-            </Grid>
-            <Grid/>
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-                    fullWidth
-                    label="Country"
-                    name="country"
-                    required
-                    select
-                    defaultValue=""
-                    value={currentCountry}
-                    onChange={handleCountry}
-                  >
-                     {userOptionsCountry?.map((option) => (
-                      <MenuItem
-                        key={option.value}
-                        value={option.value}
-                      >
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
+    <div style={{ minWidth: "100%" }}>
+      <ToastContainer
+        position="top-right"
+        autoClose={4000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginTop: "1rem",
+          marginBottom: "1rem",
+        }}
+      >
+        <div style={{ flex: 1 }}>
+          <h2 style={{ margin: 0 }}>Edit Sales Quotation Order</h2>
+        </div>
+        <div style={{ flex: 1, textAlign: "center" }}>
+          <Logo />
+        </div>
+        <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
+          <IconWithPopup />
+        </div>
+      </div>
+      <form>
+        <Card>
+          <CardHeader title="Product Order Detail" />
+          <CardContent sx={{ pt: 0 }}>
+            <Grid container spacing={3}>
+              <Grid xs={12} md={6}>
                 <TextField
-
-                    fullWidth
-                    label="State"
-                    name="state"
-                    required
-                    select
-                    defaultValue=''
-                    value={currentState}
-                    onChange={handleState}
-                    onFocus={handleDefaultState}
-                   
-                > 
-                {userOptionsState?.map((option) => (
-                      <MenuItem
-                        key={option.value}
-                        value={option.value}
-                      >
-                        {option.label}
-                      </MenuItem>
-                    ))}             
+                  fullWidth
+                  label="Type"
+                  name="type"
+                  select
+                  value={type}
+                  onChange={handleInputChange}
+                >
+                  {customerType.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
                 </TextField>
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-               <TextField
-                    fullWidth
-                    label="City"
-                    name="city"
-                    required
-                    select
-                    defaultValue=''
-                value={currentCity}
-                onChange={handleCities}
-             
-              >
+              </Grid>
+              <Grid xs={12} md={6}></Grid>
+              <Grid xs={12} md={6}>
+                {" "}
+                <TextField
+                  fullWidth
+                  label="Company Name"
+                  name="user"
+                  select
+                  value={user}
+                  onChange={(e) => {
+                    const selectedOption = userData?.find(
+                      (option) => option.companyName === e.target.value
+                    );
+                    if (selectedOption) {
+                      if (selectedOption.hasOwnProperty("createdByUser")) {
+                        setTempId(selectedOption.id || "");
+                        setUserState(null);
+                      } else {
+                        setUserState(selectedOption.id || "");
+                        setTempId(null);
+                      }
+                    }
+                    setUser(e.target.value);
+                  }}
+                  style={{ marginBottom: 10 }}
+                >
+                  {userData
+                    .filter((option) => option.type === type)
+                    .map(
+                      (option) =>
+                        option.companyName && (
+                          <MenuItem key={option.id} value={option.companyName}>
+                            {option.companyName}
+                          </MenuItem>
+                        )
+                    )}
+                </TextField>
+              </Grid>
+              <Grid />
+              <Grid xs={12} md={6}>
+                <DatePicker
+                  placeholder="Delivery Date"
+                  onChange={handleDateChange}
+                  defaultValue={deliveryDate}
+                  format="YYYY/MM/DD"
+                  className="css-dev-only-do-not-override-htwhyh"
+                  style={{ height: "58px", width: "250px", color: "red" }}
+                  height="50px"
+                />
+              </Grid>
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Status"
+                  name="status"
+                  value={status}
+                  onChange={handleInputChange}
+                  select
+                >
+                  {userOptions.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Contact Name"
+                  name="contactName"
+                  value={contactName}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Mobile No."
+                  name="mobileno"
+                  type="number"
+                  value={phone}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Shipping Address"
+                  multiline
+                  minRows={3}
+                  name="address"
+                  value={address}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+              <Grid />
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Country"
+                  name="country"
+                  required
+                  select
+                  defaultValue=""
+                  value={currentCountry}
+                  onChange={handleCountry}
+                >
+                  {userOptionsCountry?.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="State"
+                  name="state"
+                  required
+                  select
+                  defaultValue=""
+                  value={currentState}
+                  onChange={handleState}
+                  onFocus={handleDefaultState}
+                >
+                  {userOptionsState?.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="City"
+                  name="city"
+                  required
+                  select
+                  defaultValue=""
+                  value={currentCity}
+                  onChange={handleCities}
+                >
                   {userOptionsCities?.map((option) => (
-                      <MenuItem
-                        key={option.value}
-                        value={option.value}
-                      >
-                        {option.label}
-                      </MenuItem>
-                    ))} 
-                      </TextField>
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="ZipCode"
+                  name="zipcode"
+                  required
+                  value={zipcode}
+                  onChange={handleInputChange}
+                />
+              </Grid>
             </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-                fullWidth
-                label="ZipCode"
-                name="zipcode"
-                required
-                value={zipcode}
-                onChange={handleInputChange}
-
-              />
+          </CardContent>
+          <Divider />
+        </Card>
+      </form>
+      <>
+        <Box sx={{ position: "relative", overflowX: "auto" }}>
+          <div className="purchase-popup">
+            <Grid xs={12} md={6}>
+              <Box
+                sx={{ mt: 2, mb: 2 }}
+                display="flex"
+                justifyContent="flex-end"
+                marginRight="12px"
+              >
+                <Button
+                  color="primary"
+                  variant="contained"
+                  align="right"
+                  onClick={toggleForm}
+                >
+                  Add Parts
+                </Button>
+              </Box>
             </Grid>
-          </Grid>
-        </CardContent>
-        <Divider/>
-      </Card>
-    </form>
-    <>
-      <Box sx={{ position: 'relative', overflowX: 'auto' }}>
-        <div className='purchase-popup'>
-        <Grid
-            xs={12}
-            md={6}
-            >
-            <Box sx={{ mt: 2 , mb: 2}}
-            display="flex"
-            justifyContent="flex-end"
-            marginRight="12px">
-            <Button
-              color="primary"
-              variant="contained"
-              align="right"
-              onClick={toggleForm}
-            >
-              Add Parts
-            </Button>
-          </Box>
-        </Grid>
 
-          {showForm && (
-            <div className='modal' 
-            onClick={handleModalClick}>
-              <div className='modal-content'>
-                <h5 className='product-detail-heading'>Add Part Details</h5>
-                <form className='form'>
-                  {/* Form fields */}
-                  <div className='form-row'>
-                    <div className='popup-left'>
-                      <Grid xs={12} 
-                            md={6}>
-                       <TextField
+            {showForm && (
+              <div className="modal" onClick={handleModalClick}>
+                <div className="modal-content">
+                  <h5 className="product-detail-heading">Add Part Details</h5>
+                  <form className="form">
+                    {/* Form fields */}
+                    <div className="form-row">
+                      <div className="popup-left">
+                        <Grid xs={12} md={6}>
+                          <TextField
                             fullWidth
-                            label='Part Name'
-                            name='name'
+                            label="Part Name"
+                            name="name"
                             select
                             value={productName}
                             onChange={(e) => {
-                              const selectedOption = inventoryData.find(option => option.inventoryId === e.target.value);
+                              const selectedOption = inventoryData.find(
+                                (option) =>
+                                  option.inventoryId === e.target.value
+                              );
                               if (selectedOption) {
                                 setProductId(selectedOption.productId);
                                 setProductName(e.target.value);
@@ -1094,300 +1051,297 @@ height='50px'/>
                                 setSgst(selectedOption.sgst);
                                 setCgst(selectedOption.cgst);
                                 setIgst(selectedOption.igst);
-                                setHsn(selectedOption.hsncode)
+                                setHsn(selectedOption.hsncode);
                                 setQuantity(1);
                                 setSize(selectedOption.size);
                                 setPrice(selectedOption.price);
-                                setInventoryId(selectedOption.inventoryId)
-                                setDescription(selectedOption.productDescription);
-                                setProductDescription(selectedOption.productDescription)
+                                setInventoryId(selectedOption.inventoryId);
+                                setDescription(
+                                  selectedOption.productDescription
+                                );
+                                setProductDescription(
+                                  selectedOption.productDescription
+                                );
                               }
                             }}
                             style={{ marginBottom: 10 }}
                           >
                             {inventoryData.map((option) => (
-                              <MenuItem key={option.inventoryId} 
-                              value={option.inventoryId}>
+                              <MenuItem
+                                key={option.inventoryId}
+                                value={option.inventoryId}
+                              >
                                 {option.productName}
                               </MenuItem>
                             ))}
                           </TextField>
-                          </Grid>
-                          <Grid
-                          xs={12}
-                          md={6}
-                          >
-                              <TextField
-                              fullWidth
-                              label="Weight"
-                              name="weight"
-                              value={weight}
-                              onChange={(e) => setWeight(e.target.value)}
-                              style={{ marginBottom: 10 }}
-                            />
-                          </Grid>
-                            <Grid
-                            xs={12}
-                            md={6}
-                            >
-                              <TextField
-                              fullWidth
-                              label="SGST"
-                              name="sgst"
-                              type='number'
-                              value={sgst}
-                              onChange={(e) => setSgst(e.target.value)}
-                              style={{ marginBottom: 10 }}
-                          
-                              />
-                            </Grid>
-                            <Grid
-                            xs={12}
-                            md={6}
-                            >
-                              <TextField
-                              fullWidth
-                              label="IGST"
-                              name="igst"
-                              type='number'
-                              value={igst}
-                              onChange={(e) => setIgst(e.target.value)}
-                              style={{ marginBottom: 10 }}
-                          
-                              />
-                            </Grid>
-                          </div>
-                          <div className='popup-right'>
-                          <Grid
-                            xs={12}
-                            md={6}
-                            >
-                              <TextField
-                              fullWidth
-                              label="Quantity"
-                              name="quantity"
-                              type='number'
-                              value={quantity}
-                              onChange={(e) => {
-                                const inputValue = e.target.value;
-                                if (inputValue >= 0) {
-                                  setQuantity(inputValue);
-                                }
-                              }}
-                              style={{ marginBottom: 15 }}
-                              />
-                            </Grid>
-                            <Grid
-                            xs={12}
-                            md={6}
-                            >
-                              <TextField
-                              fullWidth
-                              label="Cost"
-                              name="cost"
-                              type='number'
-                              value={price}
-                              onChange={(e) => setPrice(e.target.value)}
-                              style={{ marginBottom: 10 }}
-                          
-                              />
-                            </Grid>
-                            <Grid
-                            xs={12}
-                            md={6}
-                            >
-                              <TextField
-                              fullWidth
-                              label="Size"
-                              name="size"
-                              value={size}
-                              onChange={(e) => setSize(e.target.value)}
-                              style={{ marginBottom: 10 }}
-                          
-                              />
-                            </Grid>
-                            <Grid
-                            xs={12}
-                            md={6}
-                            >
-                              <TextField
-                              fullWidth
-                              label="CGST"
-                              name="cgst"
-                              type='number'
-                              value={cgst}
-                              onChange={(e) => setCgst(e.target.value)}
-                              style={{ marginBottom: 16 }}
-                              />
-                            </Grid>
-                            </div>     
-                          </div>
-                          <Grid
-                          xs={12}
-                          md={6}
-                          >
-                          <TextField
-                          fullWidth
-                          label="Description"
-                          name="description"
-                          multiline
-                          rows={4}
-                          value={description}
-                          onChange={(e) => setDescription(e.target.value)}
-                          style={{ marginBottom: 10 }}
-                        />
                         </Grid>
-                            <div className='submit-purchase'>
-                            <button style={{ background: `${primaryColor}`, marginRight: '20px' }} 
-                              className='submit' 
-                              
-                              onClick={toggleForm}>
-                               Cancel
-                              </button>
-                              <button style={{ background: `${primaryColor}` }} 
-                              className='submit' 
-                              type='submit' 
-                              onClick={handleSubmit}>
-                                Save
-                              </button>
-                            </div>
-                          </form>
-                        </div>
+                        <Grid xs={12} md={6}>
+                          <TextField
+                            fullWidth
+                            label="Weight"
+                            name="weight"
+                            value={weight}
+                            onChange={(e) => setWeight(e.target.value)}
+                            style={{ marginBottom: 10 }}
+                          />
+                        </Grid>
+                        <Grid xs={12} md={6}>
+                          <TextField
+                            fullWidth
+                            label="SGST"
+                            name="sgst"
+                            type="number"
+                            value={sgst}
+                            onChange={(e) => setSgst(e.target.value)}
+                            style={{ marginBottom: 10 }}
+                          />
+                        </Grid>
+                        <Grid xs={12} md={6}>
+                          <TextField
+                            fullWidth
+                            label="IGST"
+                            name="igst"
+                            type="number"
+                            value={igst}
+                            onChange={(e) => setIgst(e.target.value)}
+                            style={{ marginBottom: 10 }}
+                          />
+                        </Grid>
                       </div>
-                    )}
-                  </div>
+                      <div className="popup-right">
+                        <Grid xs={12} md={6}>
+                          <TextField
+                            fullWidth
+                            label="Quantity"
+                            name="quantity"
+                            type="number"
+                            value={quantity}
+                            onChange={(e) => {
+                              const inputValue = e.target.value;
+                              if (inputValue >= 0) {
+                                setQuantity(inputValue);
+                              }
+                            }}
+                            style={{ marginBottom: 15 }}
+                          />
+                        </Grid>
+                        <Grid xs={12} md={6}>
+                          <TextField
+                            fullWidth
+                            label="Cost"
+                            name="cost"
+                            type="number"
+                            value={price}
+                            onChange={(e) => setPrice(e.target.value)}
+                            style={{ marginBottom: 10 }}
+                          />
+                        </Grid>
+                        <Grid xs={12} md={6}>
+                          <TextField
+                            fullWidth
+                            label="Size"
+                            name="size"
+                            value={size}
+                            onChange={(e) => setSize(e.target.value)}
+                            style={{ marginBottom: 10 }}
+                          />
+                        </Grid>
+                        <Grid xs={12} md={6}>
+                          <TextField
+                            fullWidth
+                            label="CGST"
+                            name="cgst"
+                            type="number"
+                            value={cgst}
+                            onChange={(e) => setCgst(e.target.value)}
+                            style={{ marginBottom: 16 }}
+                          />
+                        </Grid>
+                      </div>
+                    </div>
+                    <Grid xs={12} md={6}>
+                      <TextField
+                        fullWidth
+                        label="Description"
+                        name="description"
+                        multiline
+                        rows={4}
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        style={{ marginBottom: 10 }}
+                      />
+                    </Grid>
+                    <div className="submit-purchase">
+                      <button
+                        style={{
+                          background: `${primaryColor}`,
+                          marginRight: "20px",
+                        }}
+                        className="submit"
+                        onClick={toggleForm}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        style={{ background: `${primaryColor}` }}
+                        className="submit"
+                        type="submit"
+                        onClick={handleSubmit}
+                      >
+                        Save
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
+          </div>
 
-                    <Scrollbar>
-                      <Table sx={{ minWidth: 800, overflowX: 'auto' }}>
-                        <TableHead>
-                          <TableRow>
-                            {tableHeader.map((item, idx) => (
-                              <TableCell sx={{ width: item.width }} 
-                              key={idx}>
-                                {item.name}
-                              </TableCell>
-                            ))}
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {rowData?.map((row, idx) => (
-                            <TableRow hover 
-                            key={idx?.id}>
-                              <TableCell>
-                                <div>{row.description}</div>
-                              </TableCell>
-                              <TableCell>
-                                 <div>{row.hsn}</div>
-                              </TableCell>
-                              <TableCell>
-                                 <div>{row.quantity}</div>
-                              </TableCell>
-                              <TableCell>
-                                <div>{row.weight}</div>
-                              </TableCell>
-                              <TableCell>
-                                <div>{row.size}</div>
-                              </TableCell>
-                              <TableCell>
-                                <div>{row.price}</div>
-                              </TableCell>
-                              <TableCell>
-                                <div>{row.cgst}</div>
-                              </TableCell>
-                              <TableCell>
-                                <div>{row.sgst}</div>
-                              </TableCell>
-                              <TableCell>
-                                <div>{row.igst}</div>
-                              </TableCell>
-                           
-                              <TableCell>
-                              <div>
-                                {(
-                                  ((row.quantity * row.price) +
-                                  ((row.quantity * row.price) * row.cgst/ 100) +
-                                  ((row.quantity * row.price) * row.igst / 100) +
-                                  ((row.quantity * row.price) * row.sgst / 100)).toFixed(2)
-                                )}
-                              </div>
-                              </TableCell>
-                              <TableCell>
-                                <IconButton onClick={() => handleEditRow(idx, row)}>
-                                  <Icon>
-                                    <EditIcon />
-                                  </Icon>
-                                </IconButton>
-                              </TableCell>
-                              <TableCell align='right'>
-                                <IconButton onClick={handleRemoveRow(idx, row)}>
-                                  <Icon>
-                                    <Delete />
-                                  </Icon>
-                                </IconButton>
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </Scrollbar>
-                  </Box>
-                  <br></br>
-                <Grid
-                xs={12}
-                md={6}
-              >
-              <label style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Total Amount : {totalAmount.toFixed(2)}</label>
-          
-              </Grid>
-              <Grid
-                xs={12}
-                md={6}
-                style={{marginTop: "20px"}}
-              >
-              <label style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Terms &Conditions :</label>
-              <TextField
-              fullWidth
-              multiline
-              rows={4}
+          <Scrollbar>
+            <Table sx={{ minWidth: 800, overflowX: "auto" }}>
+              <TableHead>
+                <TableRow>
+                  {tableHeader.map((item, idx) => (
+                    <TableCell sx={{ width: item.width }} key={idx}>
+                      {item.name}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rowData?.map((row, idx) => (
+                  <TableRow hover key={idx?.id}>
+                    <TableCell>
+                      <div>{row.description}</div>
+                    </TableCell>
+                    <TableCell>
+                      <div>{row.hsn}</div>
+                    </TableCell>
+                    <TableCell>
+                      <div>{row.quantity}</div>
+                    </TableCell>
+                    <TableCell>
+                      <div>{row.weight}</div>
+                    </TableCell>
+                    <TableCell>
+                      <div>{row.size}</div>
+                    </TableCell>
+                    <TableCell>
+                      <div>{row.price}</div>
+                    </TableCell>
+                    <TableCell>
+                      <div>{row.cgst}</div>
+                    </TableCell>
+                    <TableCell>
+                      <div>{row.sgst}</div>
+                    </TableCell>
+                    <TableCell>
+                      <div>{row.igst}</div>
+                    </TableCell>
 
-              value={terms}
-              onChange={(e) => setTerms(e.target.value)}
-            />
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-              style={{marginTop: "20px"}}
-            >
-              <label style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginRight: '6px', color:'black', fontWeight:"bold"}}>Comments :</label>
-              <TextField
-              fullWidth
-              multiline
-              rows={2}
-        
-              value={comment}
-              onChange={(e) => setComment(e.target.value)} 
-            />
-          </Grid>
-          </>
-          <Grid
-            xs={12}
-            md={6}
-            >
-            <Box sx={{ mt: 2 , mb: 2 }}
-            display="flex"
-            justifyContent="flex-end"
-            marginRight="12px">
-            <Button
-              color="primary"
-              variant="contained"
-              align="right"
-              onClick={handleClick}
-            >
-              Create Quotation
-            </Button>
-          </Box>
+                    <TableCell>
+                      <div>
+                        {(
+                          row.quantity * row.price +
+                          (row.quantity * row.price * row.cgst) / 100 +
+                          (row.quantity * row.price * row.igst) / 100 +
+                          (row.quantity * row.price * row.sgst) / 100
+                        ).toFixed(2)}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <IconButton onClick={() => handleEditRow(idx, row)}>
+                        <Icon>
+                          <EditIcon />
+                        </Icon>
+                      </IconButton>
+                    </TableCell>
+                    <TableCell align="right">
+                      <IconButton onClick={handleRemoveRow(idx, row)}>
+                        <Icon>
+                          <Delete />
+                        </Icon>
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Scrollbar>
+        </Box>
+        <br></br>
+        <Grid xs={12} md={6}>
+          <label
+            style={{
+              fontFamily: "Arial, Helvetica, sans-serif",
+              fontSize: "14px",
+              marginRight: "6px",
+              color: "black",
+              fontWeight: "bold",
+            }}
+          >
+            Total Amount : {totalAmount.toFixed(2)}
+          </label>
         </Grid>
+        <Grid xs={12} md={6} style={{ marginTop: "20px" }}>
+          <label
+            style={{
+              fontFamily: "Arial, Helvetica, sans-serif",
+              fontSize: "14px",
+              marginRight: "6px",
+              color: "black",
+              fontWeight: "bold",
+            }}
+          >
+            Terms &Conditions :
+          </label>
+          <TextField
+            fullWidth
+            multiline
+            rows={4}
+            value={terms}
+            onChange={(e) => setTerms(e.target.value)}
+          />
+        </Grid>
+        <Grid xs={12} md={6} style={{ marginTop: "20px" }}>
+          <label
+            style={{
+              fontFamily: "Arial, Helvetica, sans-serif",
+              fontSize: "14px",
+              marginRight: "6px",
+              color: "black",
+              fontWeight: "bold",
+            }}
+          >
+            Comments :
+          </label>
+          <TextField
+            fullWidth
+            multiline
+            rows={2}
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+          />
+        </Grid>
+      </>
+      <Grid xs={12} md={6}>
+        <Box
+          sx={{ mt: 2, mb: 2 }}
+          display="flex"
+          justifyContent="flex-end"
+          marginRight="12px"
+        >
+          <Button
+            color="primary"
+            variant="contained"
+            align="right"
+            onClick={handleClick}
+          >
+            Create Quotation
+          </Button>
+        </Box>
+      </Grid>
     </div>
   );
 };

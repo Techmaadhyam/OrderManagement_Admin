@@ -35,6 +35,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "moment-timezone";
 import { apiUrl } from "src/config";
+import Logo from "../logo/logo";
 import {
   fetchAccessToken,
   fetchCountries,
@@ -619,10 +620,19 @@ export const QuotationOrderCreateForm = (props) => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          marginTop: "1rem",
+          marginBottom: "1rem",
         }}
       >
-        <h2>Create Quotation Order</h2>
-        <IconWithPopup />
+        <div style={{ flex: 1 }}>
+          <h2 style={{ margin: 0 }}>Create Quotation Order</h2>
+        </div>
+        <div style={{ flex: 1, textAlign: "center" }}>
+          <Logo />
+        </div>
+        <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
+          <IconWithPopup />
+        </div>
       </div>
       <form>
         <Card>

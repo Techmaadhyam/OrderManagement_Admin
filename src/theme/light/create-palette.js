@@ -16,7 +16,7 @@ export const createPalette = (config) => {
       selected: alpha(neutral[900], 0.12)
     },
     background: {
-      default: 'high' === 'high' ? '#Eeeee9': common.white,
+      default: contrast === 'high' ? '#Eeeee9': common.white,
       paper: common.white
     },
     divider: '#F2F4F7',

@@ -23,6 +23,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import './customer.css'
 import { apiUrl } from 'src/config';
+import Logo from '../logo/logo';
 
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, MenuItem } from '@mui/material';
 
@@ -463,48 +464,58 @@ const handleCompanyCancel = () => {
   };
 
   return (
-    <div style={{ minWidth: '100%' }}>
+    <div style={{ minWidth: "100%" }}>
       <div
         style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginTop: "1rem",
+          marginBottom: "1rem",
         }}
       >
-        <h2>View Customer / Vendor</h2>
-        <IconWithPopup/>
+        <div style={{ flex: 1 }}>
+          <h2 style={{ margin: 0 }}>View Customer / Vendor</h2>
+        </div>
+        <div style={{ flex: 1, textAlign: "center" }}>
+          <Logo />
+        </div>
+        <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
+          <IconWithPopup />
+        </div>
       </div>
-      <Box sx={{ position: 'relative', overflowX: 'auto' }}>
+
+      <Box sx={{ position: "relative", overflowX: "auto" }}>
         <Scrollbar>
           <Table
-            sx={{ minWidth: 800, overflowX: 'auto' }}
+            sx={{ minWidth: 800, overflowX: "auto" }}
             columns={columns}
             dataSource={filteredData}
-            rowClassName={() => 'table-data-row'}
-
-            ></Table>
-            </Scrollbar>
-            <ToastContainer
-                     position="top-right"
-                     autoClose={2000}
-                     hideProgressBar={false}
-                     newestOnTop={false}
-                     closeOnClick
-                     rtl={false}
-                     pauseOnFocusLoss
-                     draggable
-                     pauseOnHover
-                     theme="light"/>
-          </Box>
-          {isPopupVisible && editRecord && (
+            rowClassName={() => "table-data-row"}
+          ></Table>
+        </Scrollbar>
+        <ToastContainer
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+      </Box>
+      {isPopupVisible && editRecord && (
         <PopupComponent
           record={editRecord}
           onClose={() => setPopupVisible(false)}
           onSave={handleSaveRecord}
         />
       )}
-        </div>
-      );
+    </div>
+  );
     };
     
     export default ViewTemporaryUser;

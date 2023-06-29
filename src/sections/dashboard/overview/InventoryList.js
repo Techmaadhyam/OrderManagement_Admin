@@ -31,24 +31,13 @@ import React, { useState, useEffect } from 'react';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import ReceiptCheckIcon from 'src/icons/untitled-ui/duocolor/receipt-check';
 import { useNavigate } from 'react-router-dom';
+import ShoppingBag03Icon from "src/icons/untitled-ui/duocolor/shopping-bag-03";
 
 
-
-const customerType = [
-  {
-    label: 'Purchase',
-    value: 'poList'
-  },
-  {
-    label: 'Sales',
-    value: 'soList'
-  },
-
-];
 
 const countPerPage = 4;
 
-export const WarehouseList = (props) => {
+export const InventoryList = (props) => {
   const navigate = useNavigate();
 
 
@@ -62,8 +51,9 @@ export const WarehouseList = (props) => {
 
 
   const { messages } = props;
+  console.log(messages);
   const filteredMessages = messages?.filter(message =>
-      message?.name?.toLowerCase().includes(searchText.toLowerCase())
+      message?.productName?.toLowerCase().includes(searchText?.toLowerCase())
   );
 
 //company search
@@ -81,9 +71,6 @@ const handleCompanyCancel = () => {
 };
 
 
-
-
-
 const totalPages = Math.ceil(filteredMessages.length / countPerPage);
 
 const startIndex = (currentPage - 1) * countPerPage;
@@ -95,7 +82,9 @@ const handlePageChange = (event, page) => {
 };
 
 const handleNavigate =(messages) => {
-  navigate(`/dashboard/invoices/viewDetail`, { state: messages })
+  navigate(`/dashboard/inventory/viewDetail/${messages.inventoryId}`, {
+    state: messages,
+  });
 };
 
 return (
@@ -105,7 +94,7 @@ return (
     <>
         {!isSearching && (
           <>
-            Your Warehouse
+            Your Inventory
             <IconButton onClick={handleCompanyClick}>
               <SearchIcon />
             </IconButton>
@@ -116,7 +105,7 @@ return (
             <InputBase
               value={searchText}
               onChange={handleCompanyInputChange}
-              placeholder="Search for warehouse..."
+              placeholder="Search Inventory..."
             />
             <IconButton onClick={handleCompanyCancel}>
               <Icon>
@@ -136,51 +125,58 @@ return (
 
           return (
             <ListItem
-              key={message.id}
+              key={message.inventoryId}
               onClick={() => handleNavigate(message)}
-           
               sx={{
-                '&:hover': {
-                  backgroundColor: 'action.hover',
-                  cursor: 'pointer'
-                }
+                "&:hover": {
+                  backgroundColor: "action.hover",
+                  cursor: "pointer",
+                },
               }}
             >
-           <ListItemAvatar>
-              <Avatar style={{ backgroundColor : '#ffeab0',color: '#ED8B00'}} >
-                <ReceiptCheckIcon  />
-              </Avatar>
-          </ListItemAvatar>
+              <ListItemAvatar>
+                <Avatar
+                  style={{ backgroundColor: "#ffeab0", color: "#ED8B00" }}
+                >
+                  <ShoppingBag03Icon/>
+                </Avatar>
+              </ListItemAvatar>
               <ListItemText
                 disableTypography
-                primary={(
+                primary={
                   <Typography
                     sx={{
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap'
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
                     }}
                     variant="subtitle2"
                   >
-                    {message?.name}
+                    {message?.productName}
                   </Typography>
-                )}
-                secondary={(
+                }
+                secondary={
                   <Typography
                     color="text.secondary"
                     sx={{
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap'
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
                     }}
                     variant="body2"
                   >
-                        {message?.address+', '+message?.city+', '+message?.state}
+                    {message?.warehouseName}
                   </Typography>
-                )}
+                }
                 sx={{ pr: 2 }}
               />
-             
+              <Typography
+                color="text.secondary"
+                sx={{ whiteSpace: "nowrap" }}
+                variant="caption"
+              >
+                Available quantity: {message?.quantity}
+              </Typography>
             </ListItem>
           );
         })}
@@ -196,6 +192,6 @@ return (
   );
 };
 
-WarehouseList.propTypes = {
+InventoryList.propTypes = {
   messages: PropTypes.array.isRequired
 };

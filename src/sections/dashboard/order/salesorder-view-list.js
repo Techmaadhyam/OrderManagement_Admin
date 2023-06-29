@@ -28,6 +28,7 @@ import imgUrl from "../pdfAssets/imageDataUrl.js";
 import techMaadhyam from "../pdfAssets/imageDataUrl2";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "../pdfAssets/vfs_fonts";
+import Logo from "../logo/logo";
 
 const userId = sessionStorage.getItem("user") || localStorage.getItem("user");
 
@@ -1115,11 +1116,21 @@ const SalesOrderViewList = () => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          marginTop: "1rem",
+          marginBottom: "1rem",
         }}
       >
-        <h2>Sales Order Invoice</h2>
-        <IconWithPopup />
+        <div style={{ flex: 1 }}>
+          <h2 style={{ margin: 0 }}>Sales Order Invoice</h2>
+        </div>
+        <div style={{ flex: 1, textAlign: "center" }}>
+          <Logo />
+        </div>
+        <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
+          <IconWithPopup />
+        </div>
       </div>
+
       <Box sx={{ position: "relative", overflowX: "auto" }}>
         <Scrollbar>
           <Table

@@ -24,7 +24,7 @@ import {
   import SearchIcon from '@mui/icons-material/Search';
   import HighlightOffIcon from '@mui/icons-material/HighlightOff';
   import { apiUrl } from 'src/config';
-  
+  import Logo from '../logo/logo';
   
   const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
   
@@ -253,16 +253,25 @@ import {
   
     return (
       <div style={{ minWidth: '100%' }}>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          <h2>View Work Order</h2>
-          <IconWithPopup/>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginTop: "1rem",
+          marginBottom: "1rem",
+        }}
+      >
+        <div style={{ flex: 1 }}>
+          <h2 style={{ margin: 0 }}>View Work Order</h2>
         </div>
+        <div style={{ flex: 1, textAlign: "center" }}>
+          <Logo />
+        </div>
+        <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
+          <IconWithPopup />
+        </div>
+      </div>
         
       
         <Box sx={{  position: 'relative' , overflowX: "auto", marginTop:'30px'}}>

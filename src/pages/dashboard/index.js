@@ -24,10 +24,12 @@ import { SalesChart } from 'src/sections/dashboard/overview/salesChart';
 import { PurchaseChart } from 'src/sections/dashboard/overview/PurchaseChart';
 import { QuotationChart } from 'src/sections/dashboard/overview/QuotationChart';
 import { WarehouseList } from 'src/sections/dashboard/overview/WarehouseList';
+import { InventoryList } from 'src/sections/dashboard/overview/InventoryList';
 import IconWithPopup from '../../sections/dashboard/user/user-icon';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { apiUrl } from 'src/config';
+import Logo from 'src/sections/dashboard/logo/logo';
 
 
 
@@ -46,6 +48,7 @@ const Page = () => {
   const [tasks, setTasks] = useState([]);
   const [tasks2, setTasks2] = useState([]);
   const [warehouseData, setWarehouseData] = useState([]);
+  const [inventoryData, setInventoryData] = useState([]);
 
   const settings = useSettings();
 
@@ -119,6 +122,17 @@ const Page = () => {
       });
   }, []);
 
+    useEffect(() => {
+      axios
+        .get(apiUrl + `getInventoryByUserId/${userId}`)
+        .then((response) => {
+           setInventoryData(response.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }, []);
+
   
 
 
@@ -132,35 +146,33 @@ const Page = () => {
           py: 8,
         }}
       >
-        <Container maxWidth={settings.stretch ? false : 'xl'}>
+        <Container maxWidth={settings.stretch ? false : "xl"}>
           <Grid
             container
             disableEqualOverflow
             spacing={{
               xs: 3,
-              lg: 4
+              lg: 4,
             }}
-            sx={{mb:4}}
+            sx={{ mb: 4 }}
           >
-            <Grid xs={12}
-            sx={{mt:2}}>
-              <Stack
-                direction="row"
-                justifyContent="space-between"
-                spacing={4}
-                
-              >
-                <div>
-                  <Typography variant="h4">
-                    Overview
-                  </Typography>
+            <Grid xs={12} sx={{ mt: 2 }}>
+              <Stack direction="row" justifyContent="space-between" spacing={4}>
+                <div style={{ flex: 1 }}>
+                  <Typography variant="h4">Overview</Typography>
                 </div>
-                <div>
-                  <Stack
-                    direction="row"
-                    spacing={4}
-                  >
-                       <IconWithPopup/>
+                <div style={{ flex: 1, textAlign: "center" }}>
+                  <Logo />
+                </div>
+                <div
+                  style={{
+                    flex: 1,
+                    display: "flex",
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  <Stack direction="row" spacing={4}>
+                    <IconWithPopup />
                   </Stack>
                 </div>
               </Stack>
@@ -202,65 +214,29 @@ const Page = () => {
               <TotalPO amount={po} />
             </Grid>
            */}
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <SalesChart
-          
-              />
+            <Grid xs={12} md={6}>
+              <SalesChart />
             </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <PurchaseChart
-             
-              />
+            <Grid xs={12} md={6}>
+              <PurchaseChart />
             </Grid>
-            <Grid
-              xs={12}
-              md={12}
-            >
-              <QuotationChart
-           
-              />
+            <Grid xs={12} md={12}>
+              <QuotationChart />
             </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <WarehouseList
-                messages={warehouseData}
-              />
+            <Grid xs={12} md={6}>
+              <WarehouseList messages={warehouseData} />
             </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-         
+            <Grid xs={12} md={6}>
+              <InventoryList messages={inventoryData} />
             </Grid>
-           
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <OverviewAMC
-                messages={tasks2}
-              />
+
+            <Grid xs={12} md={6}>
+              <OverviewAMC messages={tasks2} />
             </Grid>
-          
-         
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <OverviewTask
-                messages={tasks}
-              />
+
+            <Grid xs={12} md={6}>
+              <OverviewTask messages={tasks} />
             </Grid>
-          
-           
           </Grid>
         </Container>
       </Box>

@@ -32,6 +32,7 @@ import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import dayjs from "dayjs";
 import { apiUrl } from "src/config";
+import Logo from "../logo/logo";
 
 const userId = parseInt(
   sessionStorage.getItem("user") || localStorage.getItem("user")
@@ -1068,10 +1069,19 @@ export const PurchaseOrderEditForm = (props) => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          marginTop: "1rem",
+          marginBottom: "1rem",
         }}
       >
-        <h2>Edit Purchase Order</h2>
-        <IconWithPopup />
+        <div style={{ flex: 1 }}>
+          <h2 style={{ margin: 0 }}>Edit Purchase Order</h2>
+        </div>
+        <div style={{ flex: 1, textAlign: "center" }}>
+          <Logo />
+        </div>
+        <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
+          <IconWithPopup />
+        </div>
       </div>
       <form>
         <Card>

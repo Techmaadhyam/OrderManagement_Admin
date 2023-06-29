@@ -23,6 +23,7 @@ import "react-toastify/dist/ReactToastify.css";
 import SearchIcon from "@mui/icons-material/Search";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { apiUrl } from "src/config";
+import Logo from "../logo/logo";
 
 const customerType = [
   {
@@ -287,10 +288,19 @@ const PurchaseOrderViewForm = () => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          marginTop: "1rem",
+          marginBottom: "1rem",
         }}
       >
-        <h2>View Purchase Order</h2>
-        <IconWithPopup />
+        <div style={{ flex: 1 }}>
+          <h2 style={{ margin: 0 }}>View Purchase Order</h2>
+        </div>
+        <div style={{ flex: 1, textAlign: "center" }}>
+          <Logo />
+        </div>
+        <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
+          <IconWithPopup />
+        </div>
       </div>
       <Box sx={{ position: "relative", overflowX: "auto" }}>
         <Scrollbar>

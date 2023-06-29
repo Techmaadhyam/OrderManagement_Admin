@@ -17,6 +17,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { apiUrl } from 'src/config';
+import Logo from '../logo/logo';
 
 const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
 
@@ -357,129 +358,132 @@ useEffect(() => {
 
   }
 
-
-console.log(updatedUserOptions)
-
   return (
-    <div style={{minWidth: "100%", marginBottom: '1rem' }}>
-   <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-      <h2>Create Inventory</h2>
-      <IconWithPopup/>
-    </div>
-    <form>
-      <Card>
-        <CardHeader title="Inventory Detail" />
-        <CardContent sx={{ pt: 0 }}>
-          <Grid
-            container
-            spacing={3}
-          >
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-                    fullWidth
-                    label="Warehouse"
-                    name="warehouse"
-                    required
-                    select
-                    value={warehouseId? warehouseId: ''}
-                    onChange={(e) => {
-                      const selectedOption = warehouse?.find((option) => option.id === e.target.value);
-                      setWarehouseId(selectedOption?.id || '');
-                  
-                    }}
-                    style={{ marginBottom: 10 }}
-                  >
-                    {warehouse?.map((option) => (
+    <div style={{ minWidth: "100%", marginBottom: "1rem" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginTop: "1rem",
+          marginBottom: "1rem",
+        }}
+      >
+        <div style={{ flex: 1 }}>
+          <h2 style={{ margin: 0 }}>Create Inventory</h2>
+        </div>
+        <div style={{ flex: 1, textAlign: "center" }}>
+          <Logo />
+        </div>
+        <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
+          <IconWithPopup />
+        </div>
+      </div>
+
+      <form>
+        <Card>
+          <CardHeader title="Inventory Detail" />
+          <CardContent sx={{ pt: 0 }}>
+            <Grid container spacing={3}>
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Warehouse"
+                  name="warehouse"
+                  required
+                  select
+                  value={warehouseId ? warehouseId : ""}
+                  onChange={(e) => {
+                    const selectedOption = warehouse?.find(
+                      (option) => option.id === e.target.value
+                    );
+                    setWarehouseId(selectedOption?.id || "");
+                  }}
+                  style={{ marginBottom: 10 }}
+                >
+                  {warehouse?.map(
+                    (option) =>
                       option.id && (
-                        <MenuItem key={option.id} 
-                        value={option.id}>
+                        <MenuItem key={option.id} value={option.id}>
                           {option.name}
                         </MenuItem>
                       )
-                    ))}
-                  </TextField>
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-                    fullWidth
-                    label="Purchase Order"
-                    name="purchaseorder"
-                    select
-                    value={purchaseId? purchaseId: ''}
-                    onChange={(e) => {
-                      const selectedOption = purchaseOrder?.find((option) => option.id === e.target.value);
-                      setPurchaseId(selectedOption?.id || '');
-                  
-                    }}
-                    style={{ marginBottom: 10 }}
-                  >
-                    {purchaseOrder?.map((option) => (
+                  )}
+                </TextField>
+              </Grid>
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Purchase Order"
+                  name="purchaseorder"
+                  select
+                  value={purchaseId ? purchaseId : ""}
+                  onChange={(e) => {
+                    const selectedOption = purchaseOrder?.find(
+                      (option) => option.id === e.target.value
+                    );
+                    setPurchaseId(selectedOption?.id || "");
+                  }}
+                  style={{ marginBottom: 10 }}
+                >
+                  {purchaseOrder?.map(
+                    (option) =>
                       option.id && (
-                        <MenuItem key={option.id} 
-                        value={option.id}>
+                        <MenuItem key={option.id} value={option.id}>
                           {option.id}
                         </MenuItem>
                       )
-                    ))}
-                  </TextField>
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-            <TextField
-                    fullWidth
-                    label="Model"
-                    name="category"
-                    required
-                    select
-                    value={categoryName? categoryName: ''}
-                    onChange={(e) => {
-                      const selectedOption = category?.find((option) => option.name === e.target.value);
-                      setCategoryId(selectedOption?.id || '');
-                      setCategoryName(e.target.value);
-                    }}
-                    style={{ marginBottom: 10 }}
-                  >
-                    {category?.map((option) => (
+                  )}
+                </TextField>
+              </Grid>
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Model"
+                  name="category"
+                  required
+                  select
+                  value={categoryName ? categoryName : ""}
+                  onChange={(e) => {
+                    const selectedOption = category?.find(
+                      (option) => option.name === e.target.value
+                    );
+                    setCategoryId(selectedOption?.id || "");
+                    setCategoryName(e.target.value);
+                  }}
+                  style={{ marginBottom: 10 }}
+                >
+                  {category?.map(
+                    (option) =>
                       option.name && (
-                        <MenuItem key={option.id} 
-                        value={option.name}>
+                        <MenuItem key={option.id} value={option.name}>
                           {option.name}
                         </MenuItem>
                       )
-                    ))}
-                  </TextField>
-            </Grid>
-            
-            <Grid
-              xs={12}
-              md={6}
-            >
-                 <TextField
+                  )}
+                </TextField>
+              </Grid>
+
+              <Grid xs={12} md={6}>
+                <TextField
                   fullWidth
                   label="Part Name"
                   name="product"
                   select
                   required
-                  value={selectedId ? selectedId : ''}
+                  value={selectedId ? selectedId : ""}
                   onChange={(e) => {
                     const selectedProductId = e.target.value;
-                    const selectedOption = product.find((option) => option.id === selectedProductId);
-                    
+                    const selectedOption = product.find(
+                      (option) => option.id === selectedProductId
+                    );
+
                     if (selectedOption) {
                       setSelectedId(selectedOption.id);
                       setSelectedName(selectedOption.productName);
-
                     } else {
                       setSelectedId(null);
-                      setSelectedName('');
+                      setSelectedName("");
                     }
                   }}
                   style={{ marginBottom: 10 }}
@@ -487,223 +491,170 @@ console.log(updatedUserOptions)
                   {product
                     .filter((option) => option.category.id === categoryId)
                     .map((option) => (
-                      <MenuItem key={option.id} 
-                      value={option.id}>
+                      <MenuItem key={option.id} value={option.id}>
                         {option.productName}
                       </MenuItem>
                     ))}
                 </TextField>
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-                 <TextField
-                    fullWidth
-                    label="Rack"
-                    name="rack"
-                    required
-                    select
-                    value={rack}
-                    onChange={(event) => {handleCategoryChange(event)}}
-  
-        
-                  >
-                     {updatedUserOptions.map((option) => (
-                      <MenuItem
-                        key={option.value}
-                        value={option.value}
-                      >
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-            </Grid>
-            {showAdditionalFields && (
-        <>
-      <Grid/>
-        <Grid
-              xs={12}
-              md={6}
-            >
-          <TextField
-
-            fullWidth
-            label="New Rack Name"
-            name="rack name"
-            required
-            value={rackName}
-            onChange={handleRack} 
- 
-          >
-          </TextField>
-          </Grid>
-          <Grid
-              xs={12}
-              md={6}
-            >
-          <TextField
-
-            fullWidth
-            label="Rack Description"
-            name="description"
-            required
-            value={rackDesc}
-            onChange={handleRackDesc} 
-            multiline
-          />
-          </Grid>
-        </>
-      )}
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-           
-                    fullWidth
-                    label="HSN Code"
-                    name="hsncode"
-                    required
-                    value={hsnCode}
-                    onChange={handleInputChange}
-                >
-                </TextField>
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-                fullWidth
-                label="Size"
-                name="size"
-                value={size}
-                onChange={handleInputChange}
-              />
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-                fullWidth
-                label="Weight"
-                name="weight"
-                required
-                value={weight}
-                onChange={handleInputChange}
-              />
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-                fullWidth
-                label="Quantity"
-                name="quantity"
-                type='number'
-                required
-                value={quantity}
-                onChange={handleInputChange}
-              />
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-                fullWidth
-                label="Cost"
-                name="cost"
-                type='number'
-                required
-                value={cost}
-                onChange={handleInputChange}
-              />
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-                fullWidth
-                label="CGST"
-                name="cgst"
-                type='number'
-                required
-                value={cgst}
-                onChange={handleInputChange}
-              />
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-                fullWidth
-                label="SGST"
-                name="sgst"
-                type='number'
-                required
-                value={sgst}
-                onChange={handleInputChange}
-              />
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-                fullWidth
-                label="IGST"
-                name="igst"
-                type='number'
-                required
-                value={igst}
-                onChange={handleInputChange}
-              />
-            </Grid>
-          </Grid>
-          <Grid
-              xs={12}
-              md={6}
-              style={{marginTop: "20px"}}
-            > 
+              </Grid>
+              <Grid xs={12} md={6}>
                 <TextField
+                  fullWidth
+                  label="Rack"
+                  name="rack"
+                  required
+                  select
+                  value={rack}
+                  onChange={(event) => {
+                    handleCategoryChange(event);
+                  }}
+                >
+                  {updatedUserOptions.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+              {showAdditionalFields && (
+                <>
+                  <Grid />
+                  <Grid xs={12} md={6}>
+                    <TextField
+                      fullWidth
+                      label="New Rack Name"
+                      name="rack name"
+                      required
+                      value={rackName}
+                      onChange={handleRack}
+                    ></TextField>
+                  </Grid>
+                  <Grid xs={12} md={6}>
+                    <TextField
+                      fullWidth
+                      label="Rack Description"
+                      name="description"
+                      required
+                      value={rackDesc}
+                      onChange={handleRackDesc}
+                      multiline
+                    />
+                  </Grid>
+                </>
+              )}
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="HSN Code"
+                  name="hsncode"
+                  required
+                  value={hsnCode}
+                  onChange={handleInputChange}
+                ></TextField>
+              </Grid>
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Size"
+                  name="size"
+                  value={size}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Weight"
+                  name="weight"
+                  required
+                  value={weight}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Quantity"
+                  name="quantity"
+                  type="number"
+                  required
+                  value={quantity}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Cost"
+                  name="cost"
+                  type="number"
+                  required
+                  value={cost}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="CGST"
+                  name="cgst"
+                  type="number"
+                  required
+                  value={cgst}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="SGST"
+                  name="sgst"
+                  type="number"
+                  required
+                  value={sgst}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="IGST"
+                  name="igst"
+                  type="number"
+                  required
+                  value={igst}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+            </Grid>
+            <Grid xs={12} md={6} style={{ marginTop: "20px" }}>
+              <TextField
                 fullWidth
-                label= "Description"
-                name='description'   
+                label="Description"
+                name="description"
                 required
                 multiline
                 rows={4}
                 value={description}
                 onChange={handleInputChange}
-                />
+              />
             </Grid>
-        </CardContent>
-        <Divider/>
-      </Card>
-    </form>
-        <Grid
-        xs={12}
-        md={6}
-            >
-            <Box sx={{ mt: 2 }}
-                display="flex"
-                justifyContent="flex-end"
-                >
-                    <Button
-                    color="primary"
-                    variant="contained"
-                    align="right"
-                    onClick={handleSave}
-                    >
-                    Save
-                    </Button>
-            </Box>
-          </Grid>
+          </CardContent>
+          <Divider />
+        </Card>
+      </form>
+      <Grid xs={12} md={6}>
+        <Box sx={{ mt: 2 }} display="flex" justifyContent="flex-end">
+          <Button
+            color="primary"
+            variant="contained"
+            align="right"
+            onClick={handleSave}
+          >
+            Save
+          </Button>
+        </Box>
+      </Grid>
     </div>
   );
 };

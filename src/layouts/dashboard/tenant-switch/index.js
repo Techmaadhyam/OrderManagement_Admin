@@ -21,12 +21,12 @@ export const TenantSwitch = (props) => {
         <Box
           component="img"
           sx={{
-            height: 30,
+            height: 50,
             width: "auto",
             ml:0,
             mt:0,
             mb: 1,
-            mr:25,
+            mr:21,
           }}
           alt="note logo"
           src="/assets/logos/notelogo.png"

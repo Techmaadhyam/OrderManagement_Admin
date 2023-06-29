@@ -24,6 +24,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import './inventory.css'
 import { apiUrl } from 'src/config';
+import Logo from '../logo/logo';
 
   //get userid 
   const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
@@ -319,16 +320,26 @@ const filteredProducts = filteredData.filter(product => {
 
   return (
     <div style={{ minWidth: '100%' }}>
-      <div
+     <div
         style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginTop: '1rem',
+          marginBottom: '1rem'
         }}
       >
-        <h2>View Inventory</h2>
-        <IconWithPopup/>
+        <div style={{ flex: 1 }}>
+          <h2 style={{ margin: 0 }}>View Inventory</h2>
+        </div>
+        <div style={{ flex: 1, textAlign: "center" }}>
+          <Logo />
+        </div>
+        <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
+          <IconWithPopup />
+        </div>
       </div>
+      
       {/* <TextField
       label="Type"
       name="type"

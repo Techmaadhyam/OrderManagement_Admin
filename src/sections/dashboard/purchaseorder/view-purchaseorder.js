@@ -27,6 +27,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { apiUrl } from "src/config";
 import { useNavigate } from "react-router-dom";
+import Logo from "../logo/logo";
 
 export const ViewPurchaseOrder = (props) => {
   const navigate = useNavigate();
@@ -346,35 +347,42 @@ export const ViewPurchaseOrder = (props) => {
           alignItems: "center",
         }}
       >
-        <Link
-          color="text.primary"
-          component={RouterLink}
-          href={paths.dashboard.purchaseorder.view}
-          sx={{
-            alignItems: "center",
-            display: "inline-flex",
-          }}
-          underline="none"
-        >
-          <SvgIcon
+        <div style={{ flex: 1 }}>
+          <Link
+            color="text.primary"
+            component={RouterLink}
+            href={paths.dashboard.purchaseorder.view}
             sx={{
-              mr: 1,
-              width: 38,
-              height: 38,
-              transition: "color 0.5s",
-              "&:hover": { color: `${primaryColor}` },
+              alignItems: "center",
+              display: "inline-flex",
             }}
+            underline="none"
           >
-            <ArrowCircleLeftOutlinedIcon />
-          </SvgIcon>
-          <Typography variant="subtitle2">
-            Back To{" "}
-            <span style={{ color: `${primaryColor}`, fontWeight: 600 }}>
-              Purchase Order List
-            </span>
-          </Typography>
-        </Link>
-        <IconWithPopup />
+            <SvgIcon
+              sx={{
+                mr: 1,
+                width: 38,
+                height: 38,
+                transition: "color 0.5s",
+                "&:hover": { color: `${primaryColor}` },
+              }}
+            >
+              <ArrowCircleLeftOutlinedIcon />
+            </SvgIcon>
+            <Typography variant="subtitle2">
+              Back To{" "}
+              <span style={{ color: `${primaryColor}`, fontWeight: 600 }}>
+                Purchase Order List
+              </span>
+            </Typography>
+          </Link>
+        </div>
+        <div style={{ flex: 1, textAlign: "center" }}>
+          <Logo />
+        </div>
+        <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
+          <IconWithPopup />
+        </div>
       </div>
       <h2>Purchase Order</h2>
       <Card style={{ marginBottom: "12px" }}>
@@ -457,7 +465,8 @@ export const ViewPurchaseOrder = (props) => {
               fontWeight: "bold",
             }}
           >
-            Total Amount : ₹{state?.totalAmount || state?.purchaseOrderRec?.totalAmount}
+            Total Amount : ₹
+            {state?.totalAmount || state?.purchaseOrderRec?.totalAmount}
           </Typography>
         </Grid>
         <Grid style={{ marginTop: "20px" }}>

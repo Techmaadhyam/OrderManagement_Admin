@@ -14,6 +14,7 @@ import IconWithPopup from '../user/user-icon';
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { apiUrl } from 'src/config';
+import Logo from '../logo/logo';
 
 
   //get userid 
@@ -332,39 +333,48 @@ event.preventDefault();
  
 
   return (
-    <div style={{minWidth: "100%" , marginBottom: '1rem' }}>
-    <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-      <h2>Add Customer / Vendor</h2>
-      <IconWithPopup/>
+    <div style={{ minWidth: "100%", marginBottom: "1rem" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginTop: "1rem",
+          marginBottom: "1rem",
+        }}
+      >
+        <div style={{ flex: 1 }}>
+          <h2 style={{ margin: 0 }}>Add Customer / Vendor</h2>
+        </div>
+        <div style={{ flex: 1, textAlign: "center" }}>
+          <Logo />
+        </div>
+        <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
+          <IconWithPopup />
+        </div>
+      </div>
 
-    </div>
-    <TextField
-             
-                label="Type"
-                name="type"
-                select
-                sx={{ minWidth: 250 , mb: 2}}
-                value={type}
-                onChange={handleInputChange}
-
-              >
-              {customerType.map((option) => (
-                      <MenuItem
-                        key={option.value}
-                        value={option.value}
-                      >
-                        {option.label}
-                      </MenuItem>
-                    ))}
-              </TextField>
-    <form>
-      <Card>
-      <CardHeader title={type === "Customer" ? "New Customer" : "New Vendor"} />
-        <CardContent sx={{ pt: 0 }}>
-          <Grid
-            container
-            spacing={3}
-          >
+      <TextField
+        label="Type"
+        name="type"
+        select
+        sx={{ minWidth: 250, mb: 2 }}
+        value={type}
+        onChange={handleInputChange}
+      >
+        {customerType.map((option) => (
+          <MenuItem key={option.value} value={option.value}>
+            {option.label}
+          </MenuItem>
+        ))}
+      </TextField>
+      <form>
+        <Card>
+          <CardHeader
+            title={type === "Customer" ? "New Customer" : "New Vendor"}
+          />
+          <CardContent sx={{ pt: 0 }}>
+            <Grid container spacing={3}>
               {/* <Grid
               xs={12}
               md={6}
@@ -395,225 +405,158 @@ event.preventDefault();
          
               />
             </Grid> */}
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-                fullWidth
-                label="Company Contact Person"
-                name="username"
-                required
-                value={userName}
-                onChange={handleInputChange}
-
-
-              />
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-                fullWidth
-                label="Company Email"
-                name="email"
-                required
-                value={email}
-                helperText={hasError && "Please enter a valid email."}
-                onBlur={handleBlur}
-                error={hasError}
-                onChange={handleInputChange}
-
-             
-              />
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-                fullWidth
-                label="Company Phone"
-                name="phone"
-                type='number'
-                required
-                value={phone}
-                onChange={handleInputChange}
-
-              />
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-                fullWidth
-                label="PAN number"
-                name="pan"
-                required
-                value={pan}
-                onChange={handleInputChange}
-
-              >
-              
-              </TextField>
-            </Grid>
-
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-                fullWidth
-                label="Company Name"
-                name="company"
-                required
-                value={company}
-                onChange={handleInputChange}
-
-
-              />
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-                fullWidth
-                label="GST Number"
-                name="gstn"
-                required
-                value={gstn}
-                onChange={handleInputChange}
-
-
-              />
-            </Grid>
-
-
-  
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-                fullWidth
-                label="Billing Address"
-                multiline
-                required
-                minRows={3}
-                name="address"
-                value={address}
-                onChange={handleInputChange}   
-
-
-              />
-            </Grid>
-            <Grid/>
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-                    fullWidth
-                    label="Country"
-                    name="country"
-                    required
-                    select
-                    defaultValue=""
-                    value={currentCountry}
-                    onChange={handleCountry}
-                  >
-                     {userOptions?.map((option) => (
-                      <MenuItem
-                        key={option.value}
-                        value={option.value}
-                      >
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
+              <Grid xs={12} md={6}>
                 <TextField
+                  fullWidth
+                  label="Company Contact Person"
+                  name="username"
+                  required
+                  value={userName}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Company Email"
+                  name="email"
+                  required
+                  value={email}
+                  helperText={hasError && "Please enter a valid email."}
+                  onBlur={handleBlur}
+                  error={hasError}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Company Phone"
+                  name="phone"
+                  type="number"
+                  required
+                  value={phone}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="PAN number"
+                  name="pan"
+                  required
+                  value={pan}
+                  onChange={handleInputChange}
+                ></TextField>
+              </Grid>
 
-                    fullWidth
-                    label="State"
-                    name="state"
-                    required
-                    select
-                    defaultValue=''
-                    value={currentState}
-                    onChange={handleState}
-                    onFocus={handleDefaultState}
-                   
-                > 
-                {userOptionsState?.map((option) => (
-                      <MenuItem
-                        key={option.value}
-                        value={option.value}
-                      >
-                        {option.label}
-                      </MenuItem>
-                    ))}             
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Company Name"
+                  name="company"
+                  required
+                  value={company}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="GST Number"
+                  name="gstn"
+                  required
+                  value={gstn}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Billing Address"
+                  multiline
+                  required
+                  minRows={3}
+                  name="address"
+                  value={address}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+              <Grid />
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Country"
+                  name="country"
+                  required
+                  select
+                  defaultValue=""
+                  value={currentCountry}
+                  onChange={handleCountry}
+                >
+                  {userOptions?.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
                 </TextField>
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-               <TextField
-                    fullWidth
-                    label="City"
-                    name="city"
-                    required
-                    select
-                    defaultValue=''
-                value={currentCity}
-                onChange={handleCities}
-             
-              >
+              </Grid>
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="State"
+                  name="state"
+                  required
+                  select
+                  defaultValue=""
+                  value={currentState}
+                  onChange={handleState}
+                  onFocus={handleDefaultState}
+                >
+                  {userOptionsState?.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="City"
+                  name="city"
+                  required
+                  select
+                  defaultValue=""
+                  value={currentCity}
+                  onChange={handleCities}
+                >
                   {userOptionsCities?.map((option) => (
-                      <MenuItem
-                        key={option.value}
-                        value={option.value}
-                      >
-                        {option.label}
-                      </MenuItem>
-                    ))} 
-                      </TextField>
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="ZipCode"
+                  name="zipcode"
+                  required
+                  value={zipcode}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+              <Grid />
             </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-                fullWidth
-                label="ZipCode"
-                name="zipcode"
-                required
-                value={zipcode}
-                onChange={handleInputChange}
-
-              />
-            </Grid>
-            <Grid/>
-          </Grid>
-        </CardContent>
-        <Divider/>
-      </Card>
-    </form>
-    <Grid
-              xs={12}
-              md={6}
-            >
-            <Box sx={{ mt: 2 }}
-            display="flex"
-            justifyContent="flex-end">
+          </CardContent>
+          <Divider />
+        </Card>
+      </form>
+      <Grid xs={12} md={6}>
+        <Box sx={{ mt: 2 }} display="flex" justifyContent="flex-end">
           <Button
             color="primary"
             variant="contained"
@@ -623,7 +566,7 @@ event.preventDefault();
             Save
           </Button>
         </Box>
-          </Grid>
+      </Grid>
     </div>
   );
 };
