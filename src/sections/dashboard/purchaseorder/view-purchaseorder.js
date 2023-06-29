@@ -457,8 +457,7 @@ export const ViewPurchaseOrder = (props) => {
               fontWeight: "bold",
             }}
           >
-            Total Amount :{" "}
-            {state?.totalAmount || state?.purchaseOrderRec?.totalAmount}
+            Total Amount : ₹{state?.totalAmount || state?.purchaseOrderRec?.totalAmount}
           </Typography>
         </Grid>
         <Grid style={{ marginTop: "20px" }}>

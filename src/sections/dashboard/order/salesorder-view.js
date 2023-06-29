@@ -184,114 +184,157 @@ const columns = [
 
 
   return (
-    <div style={{minWidth: "100%", marginTop: "1rem"  }}>
-      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-          <Link
+    <div style={{ minWidth: "100%", marginTop: "1rem" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Link
           color="text.primary"
           component={RouterLink}
           href={paths.dashboard.orders.details}
           sx={{
-            alignItems: 'center',
-            display: 'inline-flex',
+            alignItems: "center",
+            display: "inline-flex",
           }}
           underline="none"
         >
-          <SvgIcon sx={{ mr: 1, width: 38, height: 38,  transition: 'color 0.5s','&:hover': { color: `${primaryColor}` }}}>
-            <ArrowCircleLeftOutlinedIcon/>
+          <SvgIcon
+            sx={{
+              mr: 1,
+              width: 38,
+              height: 38,
+              transition: "color 0.5s",
+              "&:hover": { color: `${primaryColor}` },
+            }}
+          >
+            <ArrowCircleLeftOutlinedIcon />
           </SvgIcon>
           <Typography variant="subtitle2">
-             Back To <span style={{color: `${primaryColor}` , fontWeight: 600}}>Sales Order List</span> 
+            Back To{" "}
+            <span style={{ color: `${primaryColor}`, fontWeight: 600 }}>
+              Sales Order List
+            </span>
           </Typography>
         </Link>
-        <IconWithPopup/>
+        <IconWithPopup />
       </div>
- <h2>Sales Order</h2>
-      <Card style={{marginBottom: "12px" }}>
+      <h2>Sales Order</h2>
+      <Card style={{ marginBottom: "12px" }}>
         <PropertyList>
-        <PropertyListItem
-          align={align}
-          label="Username"
-        >
-          <Typography variant="subtitle2">
-          {(state?.createdByUser?.firstName || state?.soRecord?.createdByUser?.firstName) + ' ' +
-   (state?.createdByUser?.lastName || state?.soRecord?.createdByUser?.lastName)}
-          </Typography>
-        </PropertyListItem>
-        <Divider />
-        <PropertyListItem
-          align={align}
-          label="Sales Order Number"
-          value={String(state?.id || state?.soRecord?.id)}
-        />
-        <Divider />
-        <PropertyListItem
+          <PropertyListItem align={align} label="Username">
+            <Typography variant="subtitle2">
+              {(state?.createdByUser?.firstName ||
+                state?.soRecord?.createdByUser?.firstName) +
+                " " +
+                (state?.createdByUser?.lastName ||
+                  state?.soRecord?.createdByUser?.lastName)}
+            </Typography>
+          </PropertyListItem>
+          <Divider />
+          <PropertyListItem
+            align={align}
+            label="Sales Order Number"
+            value={String(state?.id || state?.soRecord?.id)}
+          />
+          <Divider />
+          <PropertyListItem
             align={align}
             label="Quotation"
-            value={String(state?.quotationId || state?.soRecord?.quotationId || 'Empty')}
+            value={String(
+              state?.quotationId || state?.soRecord?.quotationId || "Empty"
+            )}
           />
+          <Divider />
+          <PropertyListItem
+            align={align}
+            label="Mode Of Delivery "
+            value={state?.modeofdelivery || state?.soRecord?.modeofdelivery}
+          />
+          <Divider />
+          <PropertyListItem
+            align={align}
+            label="Delivery Date"
+            value={state?.deliveryDate || formattedDate}
+          />
+          <Divider />
+          <PropertyListItem
+            align={align}
+            label="Contact Name"
+            value={state?.contactPerson || state?.soRecord?.contactPerson}
+          />
+          <Divider />
+          <PropertyListItem
+            align={align}
+            label="Contact No"
+            value={state?.contactPhone || state?.soRecord?.contactPhone}
+          />
+          <Divider />
+          <PropertyListItem
+            align={align}
+            label="Status"
+            value={state?.status || state?.soRecord?.status}
+          ></PropertyListItem>
+        </PropertyList>
         <Divider />
-        <PropertyListItem
-          align={align}
-          label="Mode Of Delivery "
-          value={state?.modeofdelivery|| state?.soRecord?.modeofdelivery}
-        />
-        <Divider />
-        <PropertyListItem
-          align={align}
-          label="Delivery Date"
-          value={state?.deliveryDate || formattedDate}
-        />
-        <Divider />
-        <PropertyListItem
-          align={align}
-          label="Contact Name"
-          value={state?.contactPerson || state?.soRecord?.contactPerson}
-        />
-        <Divider />
-        <PropertyListItem
-          align={align}
-          label="Contact No"
-          value={state?.contactPhone || state?.soRecord?.contactPhone}
-        />
-        <Divider />
-        <PropertyListItem
-          align={align}
-          label="Status"
-          value={state?.status || state?.soRecord?.status}
-        >
-        </PropertyListItem>
-      </PropertyList>
-        <Divider/>
       </Card>
-      <Card style={{marginBottom: "40px" }}>
-      <Box sx={{  position: 'relative' , overflowX: "auto", marginBottom: '30px'}}>    
-      <Scrollbar>
-        <Table sx={{ minWidth: 800,overflowX: "auto" }} 
-        pagination={false} 
-        columns={columns} 
-        dataSource={rowData?.map(row => ({ ...row, key: row.id }))} ></Table>
-      </Scrollbar>
-    </Box>
-     <Grid
-       
-            >
-  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginLeft: '10px', color:'black', fontWeight:"bold"}}>Total Amount : {state?.totalAmount || state?.soRecord?.totalAmount}</Typography>
-            </Grid>
-            <Grid
-           
-              style={{marginTop: "20px"}}
-            >
-  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginLeft: '10px', color:'black', fontWeight:"bold"}}>Terms &Conditions : {state?.termsAndCondition || state?.soRecord?.termsAndCondition}</Typography>
-
-            </Grid>
-            <Grid
-           
-              style={{marginTop: "20px", marginBottom: "30px"}}
-            >
-  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginLeft: '10px', color:'black', fontWeight:"bold"}}>Comments: {state?.comments  || state?.soRecord?.comments} </Typography>
-
-            </Grid>
-        <Divider/>
+      <Card style={{ marginBottom: "40px" }}>
+        <Box
+          sx={{ position: "relative", overflowX: "auto", marginBottom: "30px" }}
+        >
+          <Scrollbar>
+            <Table
+              sx={{ minWidth: 800, overflowX: "auto" }}
+              pagination={false}
+              columns={columns}
+              dataSource={rowData?.map((row) => ({ ...row, key: row.id }))}
+            ></Table>
+          </Scrollbar>
+        </Box>
+        <Grid>
+          <Typography
+            style={{
+              fontFamily: "Arial, Helvetica, sans-serif",
+              fontSize: "14px",
+              marginLeft: "10px",
+              color: "black",
+              fontWeight: "bold",
+            }}
+          >
+            Total Amount : ₹{state?.totalAmount || state?.soRecord?.totalAmount}
+          </Typography>
+        </Grid>
+        <Grid style={{ marginTop: "20px" }}>
+          <Typography
+            style={{
+              fontFamily: "Arial, Helvetica, sans-serif",
+              fontSize: "14px",
+              marginLeft: "10px",
+              color: "black",
+              fontWeight: "bold",
+            }}
+          >
+            Terms &Conditions :{" "}
+            {state?.termsAndCondition || state?.soRecord?.termsAndCondition}
+          </Typography>
+        </Grid>
+        <Grid style={{ marginTop: "20px", marginBottom: "30px" }}>
+          <Typography
+            style={{
+              fontFamily: "Arial, Helvetica, sans-serif",
+              fontSize: "14px",
+              marginLeft: "10px",
+              color: "black",
+              fontWeight: "bold",
+            }}
+          >
+            Comments: {state?.comments || state?.soRecord?.comments}{" "}
+          </Typography>
+        </Grid>
+        <Divider />
       </Card>
     </div>
   );
