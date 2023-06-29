@@ -131,9 +131,10 @@ export const MobileNav = (props) => {
         <Stack sx={{ height: '100%' }}>
           <Stack
             alignItems="center"
+            justifyContent='center'
             direction="row"
-            spacing={0}
-            sx={{ p: 2 }}
+            spacing={3}
+            sx={{ p: 4 }}
           >
        
            <TenantSwitch /> 

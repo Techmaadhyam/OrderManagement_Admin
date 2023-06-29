@@ -18,19 +18,7 @@ export const TenantSwitch = (props) => {
           alignItems: "center",
         }}
       >
-        <Box
-          component="img"
-          sx={{
-            height: 50,
-            width: "auto",
-            ml:0,
-            mt:0,
-            mb: 1,
-            mr:21,
-          }}
-          alt="note logo"
-          src="/assets/logos/notelogo.png"
-        />
+       
         <Box
           component="img"
           sx={{
