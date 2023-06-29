@@ -9,7 +9,7 @@ const Logo = () => {
       <Box
         component="img"
         sx={{
-          height: 40,
+          height: 50,
           width: "auto",
           ml: 0,
           mt: 0,

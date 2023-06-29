@@ -22,6 +22,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { apiUrl } from 'src/config';
 import { useNavigate } from 'react-router-dom';
+import Logo from '../logo/logo';
 
 
 
@@ -126,70 +127,104 @@ export const ViewWarehouseDetail = (props) => {
   const align = 'horizontal' 
   
   return (
-    <div style={{minWidth: "100%", marginTop: "1rem"  }}>
-      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+    <div style={{ minWidth: "100%", marginTop: "1rem" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <div style={{ flex: 1 }}>
           <Link
-          color="text.primary"
-          component={RouterLink}
-          href={paths.dashboard.invoices.details}
-          sx={{
-            alignItems: 'center',
-            display: 'inline-flex',
-          }}
-          underline="none"
-        >
-          <SvgIcon sx={{ mr: 1, width: 38, height: 38,  transition: 'color 0.5s','&:hover': { color: `${primaryColor}` }}}>
-            <ArrowCircleLeftOutlinedIcon/>
-          </SvgIcon>
-          <Typography variant="subtitle2">
-             Back To <span style={{color: `${primaryColor}` , fontWeight: 600}}>Warehouse List</span> 
-          </Typography>
-        </Link>
-        <IconWithPopup/>
+            color="text.primary"
+            component={RouterLink}
+            href={paths.dashboard.invoices.details}
+            sx={{
+              alignItems: "center",
+              display: "inline-flex",
+            }}
+            underline="none"
+          >
+            <SvgIcon
+              sx={{
+                mr: 1,
+                width: 38,
+                height: 38,
+                transition: "color 0.5s",
+                "&:hover": { color: `${primaryColor}` },
+              }}
+            >
+              <ArrowCircleLeftOutlinedIcon />
+            </SvgIcon>
+            <Typography variant="subtitle2">
+              Back To{" "}
+              <span style={{ color: `${primaryColor}`, fontWeight: 600 }}>
+                Warehouse List
+              </span>
+            </Typography>
+          </Link>
+        </div>
+        <div style={{ flex: 1, textAlign: "center" }}>
+          <Logo />
+        </div>
+        <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
+          <IconWithPopup />
+        </div>
       </div>
- <h2>Warehouse</h2>
-      <Card style={{marginBottom: "12px" }}>
+      <h2>Warehouse</h2>
+      <Card style={{ marginBottom: "12px" }}>
         <CardHeader title="Warehouse Detail" />
         <PropertyList>
-        <PropertyListItem
-          align={align}
-          label="Name"
-        >
-          <Typography variant="subtitle2">
-            {state?.name}
-          </Typography>
-        </PropertyListItem>
+          <PropertyListItem align={align} label="Name">
+            <Typography variant="subtitle2">{state?.name}</Typography>
+          </PropertyListItem>
+          <Divider />
+          <PropertyListItem
+            align={align}
+            label="Address"
+            value={
+              state?.address +
+              ", " +
+              state?.city +
+              ", " +
+              state?.state +
+              ", " +
+              state?.country
+            }
+          />
+          <Divider />
+          <PropertyListItem
+            align={align}
+            label="Zip Code"
+            value={state?.zipcode}
+          />
+          <Divider />
+          <PropertyListItem
+            align={align}
+            label="Description"
+            value={state?.description}
+          />
+        </PropertyList>
         <Divider />
-        <PropertyListItem
-          align={align}
-          label="Address"
-          value={state?.address +', '+ state?.city+', '+state?.state+', '+ state?.country}
-        />
-        <Divider />
-        <PropertyListItem
-          align={align}
-          label="Zip Code"
-          value={state?.zipcode}
-        />
-        <Divider />
-        <PropertyListItem
-          align={align}
-          label="Description"
-          value={state?.description}
-        />
-      </PropertyList>
-        <Divider/>
       </Card>
-      <Card style={{marginBottom: "40px" }}>
-      <Box sx={{  position: 'relative' , overflowX: "auto", marginBottom: '30px'}}>    
-      <Scrollbar>
-        <Table sx={{ minWidth: 800,overflowX: "auto" }} 
-        pagination={false} 
-        columns={columns} 
-        dataSource={rowData?.map(row => ({ ...row, key: row.inventoryId }))} ></Table>
-      </Scrollbar>
-    </Box>
-        <Divider/>
+      <Card style={{ marginBottom: "40px" }}>
+        <Box
+          sx={{ position: "relative", overflowX: "auto", marginBottom: "30px" }}
+        >
+          <Scrollbar>
+            <Table
+              sx={{ minWidth: 800, overflowX: "auto" }}
+              pagination={false}
+              columns={columns}
+              dataSource={rowData?.map((row) => ({
+                ...row,
+                key: row.inventoryId,
+              }))}
+            ></Table>
+          </Scrollbar>
+        </Box>
+        <Divider />
       </Card>
     </div>
   );

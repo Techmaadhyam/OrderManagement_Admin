@@ -24,7 +24,7 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { apiUrl } from 'src/config';
 import { useNavigate } from 'react-router-dom';
-
+import Logo from '../logo/logo';
 
 
 
@@ -259,35 +259,42 @@ console.log(state)
           alignItems: "center",
         }}
       >
-        <Link
-          color="text.primary"
-          component={RouterLink}
-          href={paths.dashboard.quotation.view}
-          sx={{
-            alignItems: "center",
-            display: "inline-flex",
-          }}
-          underline="none"
-        >
-          <SvgIcon
+        <div style={{ flex: 1 }}>
+          <Link
+            color="text.primary"
+            component={RouterLink}
+            href={paths.dashboard.quotation.view}
             sx={{
-              mr: 1,
-              width: 38,
-              height: 38,
-              transition: "color 0.5s",
-              "&:hover": { color: `${primaryColor}` },
+              alignItems: "center",
+              display: "inline-flex",
             }}
+            underline="none"
           >
-            <ArrowCircleLeftOutlinedIcon />
-          </SvgIcon>
-          <Typography variant="subtitle2">
-            Back To{" "}
-            <span style={{ color: `${primaryColor}`, fontWeight: 600 }}>
-              Quotation Order
-            </span>
-          </Typography>
-        </Link>
-        <IconWithPopup />
+            <SvgIcon
+              sx={{
+                mr: 1,
+                width: 38,
+                height: 38,
+                transition: "color 0.5s",
+                "&:hover": { color: `${primaryColor}` },
+              }}
+            >
+              <ArrowCircleLeftOutlinedIcon />
+            </SvgIcon>
+            <Typography variant="subtitle2">
+              Back To{" "}
+              <span style={{ color: `${primaryColor}`, fontWeight: 600 }}>
+                Quotation Order
+              </span>
+            </Typography>
+          </Link>
+        </div>
+        <div style={{ flex: 1, textAlign: "center" }}>
+          <Logo />
+        </div>
+        <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
+          <IconWithPopup />
+        </div>
       </div>
       <h2>Quotation Detail</h2>
       <Card style={{ marginBottom: "12px" }}>

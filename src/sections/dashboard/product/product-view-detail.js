@@ -27,6 +27,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { apiUrl } from 'src/config';
+import Logo from '../logo/logo';
 
 
 export const ViewProductDetail = (props) => {
@@ -119,120 +120,128 @@ export const ViewProductDetail = (props) => {
 
 
   return (
-    <div style={{minWidth: "100%", marginTop: "1rem"  }}>
-      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+    <div style={{ minWidth: "100%", marginTop: "1rem" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <div style={{ flex: 1 }}>
           <Link
-          color="text.primary"
-          component={RouterLink}
-          href={paths.dashboard.products.view}
-          sx={{
-            alignItems: 'center',
-            display: 'inline-flex',
-          }}
-          underline="none"
-        >
-          <SvgIcon sx={{ mr: 1, width: 38, height: 38,  transition: 'color 0.5s','&:hover': { color: `${primaryColor}` }}}>
-            <ArrowCircleLeftOutlinedIcon/>
-          </SvgIcon>
-          <Typography variant="subtitle2">
-            Back To <span style={{color: `${primaryColor}` , fontWeight: 600}}>Parts</span> 
-          </Typography>
-        </Link>
-        <IconWithPopup/>
+            color="text.primary"
+            component={RouterLink}
+            href={paths.dashboard.products.view}
+            sx={{
+              alignItems: "center",
+              display: "inline-flex",
+            }}
+            underline="none"
+          >
+            <SvgIcon
+              sx={{
+                mr: 1,
+                width: 38,
+                height: 38,
+                transition: "color 0.5s",
+                "&:hover": { color: `${primaryColor}` },
+              }}
+            >
+              <ArrowCircleLeftOutlinedIcon />
+            </SvgIcon>
+            <Typography variant="subtitle2">
+              Back To{" "}
+              <span style={{ color: `${primaryColor}`, fontWeight: 600 }}>
+                Parts
+              </span>
+            </Typography>
+          </Link>
+        </div>
+        <div style={{ flex: 1, textAlign: "center" }}>
+          <Logo />
+        </div>
+        <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
+          <IconWithPopup />
+        </div>
       </div>
- <h2>Parts</h2>
-      <Card style={{marginBottom: "12px" }}>
+      <h2>Parts</h2>
+      <Card style={{ marginBottom: "12px" }}>
         <CardHeader title="Part Detail" />
         <PropertyList>
-        <PropertyListItem
-          align={align}
-          label="Part Name"
-        >
-          <Typography variant="subtitle2">
-           
-            <div style={{gap: '30px', display: 'flex'}}>
-            {state?.productName || state?.name}
-        
+          <PropertyListItem align={align} label="Part Name">
+            <Typography variant="subtitle2">
+              <div style={{ gap: "30px", display: "flex" }}>
+                {state?.productName || state?.name}
 
-          <Dialog open={editOpen} 
-          onClose={handleEditClose}>
-  <DialogTitle>Update Product</DialogTitle>
-  <DialogContent>
-  <Grid
-            container
-            spacing={0}
-          >
-  
-    <Grid
-    item
-        xs={12}
-        md={12}
-        >
-    <TextField
-      label="Model Name"
-      name= 'model'
-      value={editedCategory}
-      onChange={(e) => setEditedCategory(e.target.value)}
-      fullWidth
-      style={{ marginBottom: 20 , marginTop: 10}}
-    />
-    </Grid>
+                <Dialog open={editOpen} onClose={handleEditClose}>
+                  <DialogTitle>Update Product</DialogTitle>
+                  <DialogContent>
+                    <Grid container spacing={0}>
+                      <Grid item xs={12} md={12}>
+                        <TextField
+                          label="Model Name"
+                          name="model"
+                          value={editedCategory}
+                          onChange={(e) => setEditedCategory(e.target.value)}
+                          fullWidth
+                          style={{ marginBottom: 20, marginTop: 10 }}
+                        />
+                      </Grid>
 
-
-    <TextField
-      label="Description"
-      name='desc'
-      value={editedDescription}
-      onChange={(e) => setEditedDescription(e.target.value)}
-      fullWidth
-      multiline
-      rows={3}
-    />
-    </Grid>
-  </DialogContent>
-  <DialogActions>
-    <Button onClick={handleEditClose} 
-    color="primary">
-      Cancel
-    </Button>
-    <Button onClick={handleSave} 
-    color="primary">
-      Save
-    </Button>
-  </DialogActions>
-</Dialog>
+                      <TextField
+                        label="Description"
+                        name="desc"
+                        value={editedDescription}
+                        onChange={(e) => setEditedDescription(e.target.value)}
+                        fullWidth
+                        multiline
+                        rows={3}
+                      />
+                    </Grid>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleEditClose} color="primary">
+                      Cancel
+                    </Button>
+                    <Button onClick={handleSave} color="primary">
+                      Save
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </div>
+            </Typography>
+          </PropertyListItem>
+          <Divider />
+          <PropertyListItem
+            align={align}
+            label="Part Number"
+            value={state?.partnumber}
+          />
+          <Divider />
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <div style={{ marginRight: "8px" }}>
+              <PropertyListItem
+                align={align}
+                label="Model"
+                value={state?.category?.name || state?.category}
+              />
             </div>
-          </Typography>
-          
-        </PropertyListItem>
+            <IconButton onClick={handleEditOpen}>
+              <Icon>
+                <EditIcon />
+              </Icon>
+            </IconButton>
+          </div>
+          <Divider />
+
+          <PropertyListItem
+            align={align}
+            label="Description"
+            value={state?.category?.description || state?.description}
+          />
+        </PropertyList>
         <Divider />
-        <PropertyListItem
-          align={align}
-          label="Part Number"
-          value={state?.partnumber}
-        />
-        <Divider />
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-  <div style={{ marginRight: '8px' }}>
-    <PropertyListItem align={align} 
-    label="Model" 
-    value={state?.category?.name  || state?.category} />
-  </div>
-  <IconButton onClick={handleEditOpen}>
-    <Icon>
-      <EditIcon />
-    </Icon>
-  </IconButton>
-</div>
-<Divider />
-        
-        <PropertyListItem
-          align={align}
-          label="Description"
-          value={state?.category?.description || state?.description}
-        />
-      </PropertyList>
-        <Divider/>
       </Card>
     </div>
   );

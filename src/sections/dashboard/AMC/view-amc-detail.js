@@ -24,12 +24,7 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { apiUrl } from 'src/config';
 import { useNavigate } from 'react-router-dom';
-
-
-
-
-
-
+import Logo from '../logo/logo';
 
 
 
@@ -150,142 +145,188 @@ const columns = [
 
 
   return (
-    <div style={{minWidth: "100%", marginTop: "1rem"  }}>
-      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+    <div style={{ minWidth: "100%", marginTop: "1rem" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <div style={{ flex: 1 }}>
           <Link
-          color="text.primary"
-          component={RouterLink}
-          href={paths.dashboard.services.AMCview}
-          sx={{
-            alignItems: 'center',
-            display: 'inline-flex',
-          }}
-          underline="none"
-        >
-          <SvgIcon sx={{ mr: 1, width: 38, height: 38,  transition: 'color 0.5s','&:hover': { color: `${primaryColor}` }}}>
-            <ArrowCircleLeftOutlinedIcon/>
-          </SvgIcon>
-          <Typography variant="subtitle2">
-             Back To <span style={{color: `${primaryColor}` , fontWeight: 600}}>AMC</span> 
-          </Typography>
-        </Link>
-        <IconWithPopup/>
+            color="text.primary"
+            component={RouterLink}
+            href={paths.dashboard.services.AMCview}
+            sx={{
+              alignItems: "center",
+              display: "inline-flex",
+            }}
+            underline="none"
+          >
+            <SvgIcon
+              sx={{
+                mr: 1,
+                width: 38,
+                height: 38,
+                transition: "color 0.5s",
+                "&:hover": { color: `${primaryColor}` },
+              }}
+            >
+              <ArrowCircleLeftOutlinedIcon />
+            </SvgIcon>
+            <Typography variant="subtitle2">
+              Back To{" "}
+              <span style={{ color: `${primaryColor}`, fontWeight: 600 }}>
+                AMC
+              </span>
+            </Typography>
+          </Link>
+        </div>
+        <div style={{ flex: 1, textAlign: "center" }}>
+          <Logo />
+        </div>
+        <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
+          <IconWithPopup />
+        </div>
       </div>
- <h2>AMC Detail</h2>
-      <Card style={{marginBottom: "12px" }}>
+      <h2>AMC Detail</h2>
+      <Card style={{ marginBottom: "12px" }}>
         <PropertyList>
-     
-        <PropertyListItem
-          align={align}
-          label="Work Order Number">
-          <Typography variant="subtitle2">
-          {String(state?.id || state?.workorder?.id)}
-          </Typography>
+          <PropertyListItem align={align} label="Work Order Number">
+            <Typography variant="subtitle2">
+              {String(state?.id || state?.workorder?.id)}
+            </Typography>
           </PropertyListItem>
-        <Divider />
-        {
-          state.technicianInfo.userName &&(
+          <Divider />
+          {state.technicianInfo.userName && (
+            <PropertyListItem
+              align={align}
+              label="Technician"
+              value={state?.technicianInfo.userName}
+            />
+          )}
           <PropertyListItem
-          align={align}
-          label="Technician"
-          value={state?.technicianInfo.userName}
-        />
-        )}
-        <PropertyListItem
-          align={align}
-          label="Assignment Start Date"
-          value={startdate}
-        />
+            align={align}
+            label="Assignment Start Date"
+            value={startdate}
+          />
+          <Divider />
+          <PropertyListItem
+            align={align}
+            label="Assignment End Date"
+            value={enddate}
+          />
+          <Divider />
+          <PropertyListItem
+            align={align}
+            label="Incharge Name"
+            value={
+              state?.contactPersonName || state?.workorder?.contactPersonName
+            }
+          />
+          <Divider />
+          <PropertyListItem
+            align={align}
+            label="Incharge Phone"
+            value={
+              state?.contactPhoneNumber || state?.workorder?.contactPhoneNumber
+            }
+          />
+          <Divider />
+          <PropertyListItem
+            align={align}
+            label="Admin Name"
+            value={state?.adminPersonName || state?.workorder?.adminPersonName}
+          />
+          <Divider />
+          <PropertyListItem
+            align={align}
+            label="Admin Phone"
+            value={
+              state?.adminPhoneNumber || state?.workorder?.adminPhoneNumber
+            }
+          />
+          <Divider />
+          <PropertyListItem
+            align={align}
+            label="Admin Email"
+            value={state?.adminEmail || state?.workorder?.adminEmail}
+          />
+          <Divider />
+
+          <PropertyListItem
+            align={align}
+            label="Status"
+            value={state?.status || state?.workorder?.status}
+          ></PropertyListItem>
+        </PropertyList>
         <Divider />
-        <PropertyListItem
-          align={align}
-          label="Assignment End Date"
-          value={enddate}
-        />
-        <Divider />
-        <PropertyListItem
-          align={align}
-          label="Incharge Name"
-          value={state?.contactPersonName|| state?.workorder?.contactPersonName}
-        />
-        <Divider />
-        <PropertyListItem
-          align={align}
-          label="Incharge Phone"
-          value={state?.contactPhoneNumber || state?.workorder?.contactPhoneNumber}
-        />
-        <Divider />
-            <PropertyListItem
-              align={align}
-              label="Admin Name"
-              value={state?.adminPersonName || state?.workorder?.adminPersonName }
-            />
-            <Divider />
-            <PropertyListItem
-              align={align}
-              label="Admin Phone"
-              value={state?.adminPhoneNumber || state?.workorder?.adminPhoneNumber }
-            />
-            <Divider />
-            <PropertyListItem
-              align={align}
-              label="Admin Email"
-              value={state?.adminEmail || state?.workorder?.adminEmail }
-            />
-            <Divider />
-        
-        <PropertyListItem
-          align={align}
-          label="Status"
-          value={state?.status || state?.workorder?.status}
-        >
-        </PropertyListItem>
-      </PropertyList>
-        <Divider/>
       </Card>
-      <Card style={{marginBottom: "40px" }}>
-      <Box sx={{  position: 'relative' , overflowX: "auto", marginBottom: '30px'}}>    
-      <Scrollbar>
-      {!rowData?.some(row => row.workstationCount) && (
-      <Table
-        sx={{ minWidth: 800, overflowX: "auto" }}
-        pagination={false}
-        columns={columns}
-        dataSource={rowData?.map(row => ({ ...row, key: row.id }))}
-      >
-      </Table>
-    )}
-   {rowData?.some(row => row.workstationCount) && (
-      <Table
-        sx={{ minWidth: 800, overflowX: "auto" }}
-        pagination={false}
-        columns={columns}
-        dataSource={rowData?.map(row => ({ ...row, key: row.id }))}
-      >
-      </Table>
-      )}
-      </Scrollbar>
-    </Box>
-     <Grid
-           
-            >
-  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginLeft: '10px', color:'black', fontWeight:"bold"}}>Total Amount : {state?.totalAmount || state?.quotation?.totalAmount }</Typography>
-            </Grid>
-            <Grid
-       
-              style={{marginTop: "20px"}}
-            >
-  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginLeft: '10px', color:'black', fontWeight:"bold"}}>Terms &Conditions : {state?.termsAndCondition || state?.quotation?.termsAndCondition}</Typography>
-
-            </Grid>
-            <Grid
- 
-              style={{marginTop: "20px", marginBottom: "30px"}}
-            >
-  <Typography style={{ fontFamily:"Arial, Helvetica, sans-serif", fontSize:"14px", marginLeft: '10px', color:'black', fontWeight:"bold"}}>Comments: {state?.comments || state?.quotation?.comments} </Typography>
-
-            </Grid>
-        <Divider/>
+      <Card style={{ marginBottom: "40px" }}>
+        <Box
+          sx={{ position: "relative", overflowX: "auto", marginBottom: "30px" }}
+        >
+          <Scrollbar>
+            {!rowData?.some((row) => row.workstationCount) && (
+              <Table
+                sx={{ minWidth: 800, overflowX: "auto" }}
+                pagination={false}
+                columns={columns}
+                dataSource={rowData?.map((row) => ({ ...row, key: row.id }))}
+              ></Table>
+            )}
+            {rowData?.some((row) => row.workstationCount) && (
+              <Table
+                sx={{ minWidth: 800, overflowX: "auto" }}
+                pagination={false}
+                columns={columns}
+                dataSource={rowData?.map((row) => ({ ...row, key: row.id }))}
+              ></Table>
+            )}
+          </Scrollbar>
+        </Box>
+        <Grid>
+          <Typography
+            style={{
+              fontFamily: "Arial, Helvetica, sans-serif",
+              fontSize: "14px",
+              marginLeft: "10px",
+              color: "black",
+              fontWeight: "bold",
+            }}
+          >
+            Total Amount : {state?.totalAmount || state?.quotation?.totalAmount}
+          </Typography>
+        </Grid>
+        <Grid style={{ marginTop: "20px" }}>
+          <Typography
+            style={{
+              fontFamily: "Arial, Helvetica, sans-serif",
+              fontSize: "14px",
+              marginLeft: "10px",
+              color: "black",
+              fontWeight: "bold",
+            }}
+          >
+            Terms &Conditions :{" "}
+            {state?.termsAndCondition || state?.quotation?.termsAndCondition}
+          </Typography>
+        </Grid>
+        <Grid style={{ marginTop: "20px", marginBottom: "30px" }}>
+          <Typography
+            style={{
+              fontFamily: "Arial, Helvetica, sans-serif",
+              fontSize: "14px",
+              marginLeft: "10px",
+              color: "black",
+              fontWeight: "bold",
+            }}
+          >
+            Comments: {state?.comments || state?.quotation?.comments}{" "}
+          </Typography>
+        </Grid>
+        <Divider />
       </Card>
     </div>
   );

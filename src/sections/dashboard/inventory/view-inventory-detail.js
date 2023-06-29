@@ -21,6 +21,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { apiUrl } from 'src/config';
 import { useNavigate } from 'react-router-dom';
+import Logo from '../logo/logo';
 
 const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
 
@@ -102,35 +103,42 @@ export const ViewInventoryDetail = (props) => {
           alignItems: "center",
         }}
       >
-        <Link
-          color="text.primary"
-          component={RouterLink}
-          href={paths.dashboard.inventory.view}
-          sx={{
-            alignItems: "center",
-            display: "inline-flex",
-          }}
-          underline="none"
-        >
-          <SvgIcon
+        <div style={{ flex: 1 }}>
+          <Link
+            color="text.primary"
+            component={RouterLink}
+            href={paths.dashboard.inventory.view}
             sx={{
-              mr: 1,
-              width: 38,
-              height: 38,
-              transition: "color 0.5s",
-              "&:hover": { color: `${primaryColor}` },
+              alignItems: "center",
+              display: "inline-flex",
             }}
+            underline="none"
           >
-            <ArrowCircleLeftOutlinedIcon />
-          </SvgIcon>
-          <Typography variant="subtitle2">
-            Back To{" "}
-            <span style={{ color: `${primaryColor}`, fontWeight: 600 }}>
-              Inventory List
-            </span>
-          </Typography>
-        </Link>
-        <IconWithPopup />
+            <SvgIcon
+              sx={{
+                mr: 1,
+                width: 38,
+                height: 38,
+                transition: "color 0.5s",
+                "&:hover": { color: `${primaryColor}` },
+              }}
+            >
+              <ArrowCircleLeftOutlinedIcon />
+            </SvgIcon>
+            <Typography variant="subtitle2">
+              Back To{" "}
+              <span style={{ color: `${primaryColor}`, fontWeight: 600 }}>
+                Inventory List
+              </span>
+            </Typography>
+          </Link>
+        </div>
+        <div style={{ flex: 1, textAlign: "center" }}>
+          <Logo />
+        </div>
+        <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
+          <IconWithPopup />
+        </div>
       </div>
       <h2>Inventory</h2>
       <Card>
