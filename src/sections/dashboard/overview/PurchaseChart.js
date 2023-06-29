@@ -8,6 +8,12 @@ import { Doughnut } from 'react-chartjs-2';
 import { useState, useEffect } from "react";
 import { apiUrl } from "src/config";
 import axios from "axios";
+import dayjs from "dayjs";
+
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 const userId = parseInt(
   sessionStorage.getItem("user") || localStorage.getItem("user")
@@ -21,31 +27,43 @@ const currentYear = new Date().getFullYear().toString();
 export const PurchaseChart = (props) => {
 
     const [list, setList] = useState({});
-    const [selectedMonth, setSelectedMonth] = useState(
-      currentMonth.toLowerCase()
-  );
-    const [selectedYear, setSelectedYear] = useState(currentYear);
+    const [selectedDate, setSelectedDate] = useState(
+      dayjs(`${currentMonth} ${currentYear}`)
+    );
 
-    const handleChange = (event) => {
-      setSelectedMonth(event.target.value);
-  };
-    const handleYear = (event) => {
-      setSelectedYear(event.target.value);
+    const handleDateChange = (date) => {
+      setSelectedDate(date);
+      const monthYear = date?.format("MMMM/YYYY").toLowerCase();
+      const [month, year] = monthYear.split("/");
+
+      axios
+        .get(
+          apiUrl +
+            `groupByBasedOnStatus/${userId}/${
+              month || currentMonth?.toLowerCase()
+            }/${year || currentYear}`
+        )
+        .then((response) => {
+          setList(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
     };
-  
-      useEffect(() => {
-        axios
-          .get(
-            apiUrl +
-              `groupByBasedOnStatus/${userId}/${selectedMonth}/${selectedYear}`
-          )
-          .then((response) => {
-            setList(response.data);
-          })
-          .catch((error) => {
-            console.error("Error fetching data:", error);
-          });
-      }, [selectedMonth, selectedYear]);
+
+    useEffect(() => {
+      axios
+        .get(
+          apiUrl +
+            `groupByBasedOnStatus/${userId}/${currentMonth?.toLowerCase()}/${currentYear}`
+        )
+        .then((response) => {
+          setList(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+    }, [currentYear, currentMonth]);
   
     const poListObject = {
       delivered: 0,
@@ -115,7 +133,19 @@ export const PurchaseChart = (props) => {
         title="Purchase Order Status"
         action={
           <>
-            <TextField
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DemoContainer components={["DatePicker"]}>
+                <DatePicker
+                  variant="filled"
+                  label={"Month and Year"}
+                  views={["month", "year"]}
+                  value={selectedDate}
+                  onChange={handleDateChange}
+                  sx={{ width: "150px" }}
+                />
+              </DemoContainer>
+            </LocalizationProvider>
+            {/* <TextField
               id="filled-basic"
               label="Year"
               variant="filled"
@@ -148,7 +178,7 @@ export const PurchaseChart = (props) => {
                 <MenuItem value="november">November</MenuItem>
                 <MenuItem value="december">December</MenuItem>
               </Select>
-            </FormControl>
+            </FormControl> */}
           </>
         }
       />

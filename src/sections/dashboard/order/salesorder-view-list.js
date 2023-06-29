@@ -25,6 +25,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { apiUrl } from "src/config";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import imgUrl from "../pdfAssets/imageDataUrl.js";
+import techMaadhyam from "../pdfAssets/imageDataUrl2";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "../pdfAssets/vfs_fonts";
 
@@ -585,7 +586,7 @@ const SalesOrderViewList = () => {
                       { text: `${record.termsAndCondition}`, style: "font10" },
                     ],
                     border: [true, false, false, true],
-                    margin: [0, 20, 0, 0],
+                    margin: [0, 0, 0, 0],
                     alignment: "left",
                   },
 
@@ -603,7 +604,7 @@ const SalesOrderViewList = () => {
                       },
                     ],
                     border: [false, false, false, true],
-                    margin: [0, 20, 0, 0],
+                    margin: [0, 0, 0, 0],
                     alignment: "center",
                   },
                   {
@@ -622,7 +623,7 @@ const SalesOrderViewList = () => {
                       },
                     ],
                     border: [false, false, true, true],
-                    margin: [0, 20, 0, 0],
+                    margin: [0, 0, 0, 0],
                     alignment: "right",
                   },
                 ],

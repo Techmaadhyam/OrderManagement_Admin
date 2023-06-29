@@ -25,6 +25,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import SearchIcon from '@mui/icons-material/Search';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import imgUrl from '../pdfAssets/imageDataUrl';
+import techMaadhyam from '../pdfAssets/imageDataUrl2';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from '../pdfAssets/vfs_fonts';
 import { apiUrl } from 'src/config';
@@ -710,7 +711,7 @@ const rowData = response.data.map((product, index) => {
                     { text: `Ship To: ${record.contactPersonName}`, style: 'tableLabel', border: [true, true, true, false], marginBottom: 5 },
                     { text: 'Customer GST Registration information', style: 'font10', bold: true },
                     {
-                      text: `Mode of Dispatch: ${record.modeofdelivery}`,
+                      text: `Mode of Dispatch: N/A`,
                       style: "font10",
                       border: [true, true, true, true],
                     },
@@ -896,11 +897,11 @@ const rowData = response.data.map((product, index) => {
                   [
                         {
                           stack:[
-                              { text: 'Terms & Conditions',bold: true, style: 'font10'},
-                              { text: `${record.termsAndCondition}`, style:'font10'}
+                              { text: 'Terms & Conditions:',bold: true,margin:[0,0,0,3], style: 'font10'},
+                              { text: `${record.termsAndCondition}`, style:'font10', fontSize:9}
                       
                       ],
-                      border: [true, false, false, true],margin:[0,20,0,0], alignment:'left'
+                      border: [true, false, false, true],margin:[0,0,0,0], alignment:'left'
                   },
                       
                       {
@@ -908,14 +909,14 @@ const rowData = response.data.map((product, index) => {
                               { text: `Received In Good Condition`,bold:true, fontSize: 12},
                               { text: `Customer Signature`, margin:[0,40,0,0], style: 'font10'},
                           ],
-                          border: [false, false, false, true],margin:[0,20,0,0], alignment:'center'
+                          border: [false, false, false, true],margin:[0,0,0,0], alignment:'center'
                       },
                       {
                           stack:[
                               { text: `${record.createdByUser.companyName}`,bold:true,alignment:'center', fontSize: 12},
                               { text: `Authorize Signature`, margin:[0,40,0,0],alignment:'center', style: 'font10'},
                           ],
-                          border: [false, false, true, true],margin:[0,20,0,0], alignment:'right'
+                          border: [false, false, true, true],margin:[0,0,0,0], alignment:'right'
                       },
                   ],
                   

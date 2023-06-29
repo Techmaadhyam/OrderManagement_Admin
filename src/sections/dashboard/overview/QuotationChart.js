@@ -15,7 +15,7 @@ import {
   InputLabel,
   FormControl,
   Select,
-  TextField
+  TextField,
 } from "@mui/material";
 import { RouterLink } from "src/components/router-link";
 import { paths } from "src/paths";
@@ -33,6 +33,12 @@ import { useState, useEffect } from "react";
 import { apiUrl } from "src/config";
 import axios from "axios";
 import { useTheme } from "@mui/system";
+import dayjs from "dayjs";
+import moment from "moment";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 const userId = parseInt(
   sessionStorage.getItem("user") || localStorage.getItem("user")
@@ -47,71 +53,73 @@ ChartJS.register(
   Legend
 );
 
-
-
 const currentMonth = new Date().toLocaleString("default", { month: "long" });
 const currentYear = new Date().getFullYear().toString();
 
 export const QuotationChart = (props) => {
-
   const theme = useTheme();
-  
+
   const [list, setList] = useState({});
-  const [selectedMonth, setSelectedMonth] = useState(
-    currentMonth.toLowerCase()
+  const [selectedDate, setSelectedDate] = useState(
+    dayjs(`${currentMonth} ${currentYear}`)
   );
-  const [selectedYear, setSelectedYear] = useState(currentYear);
 
- 
-  const chartFontStyle = {
-    font: {
-      family: theme.typography.fontFamily,
-      size: theme.typography.fontSize,
-    },
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    const monthYear = date?.format("MMMM/YYYY").toLowerCase();
+    const [month, year] = monthYear.split("/");
+
+    axios
+      .get(
+        apiUrl +
+          `groupByBasedOnStatus/${userId}/${
+            month || currentMonth?.toLowerCase()
+          }/${year || currentYear}`
+      )
+      .then((response) => {
+        setList(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
   };
 
-    const handleChange = (event) => {
-      setSelectedMonth(event.target.value);
+  useEffect(() => {
+    axios
+      .get(
+        apiUrl +
+          `groupByBasedOnStatus/${userId}/${currentMonth?.toLowerCase()}/${currentYear}`
+      )
+      .then((response) => {
+        setList(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, [currentYear, currentMonth]);
+  
+
+  const quotationListObject = {
+    delivered: 0,
+    cancelled: 0,
+    waitingForApproval: 0,
+    draft: 0,
+    approved: 0,
   };
-  const handleYear = (event) => {
-    setSelectedYear(event.target.value);
-  };
 
-     useEffect(() => {
-       axios
-         .get(
-           apiUrl +
-             `groupByBasedOnStatus/${userId}/${selectedMonth}/${selectedYear}`
-         )
-         .then((response) => {
-           setList(response.data);
-         })
-         .catch((error) => {
-           console.error("Error fetching data:", error);
-         });
-     }, [selectedMonth, selectedYear]);
-
-    const quotationListObject = {
-      delivered: 0,
-      cancelled: 0,
-      waitingForApproval: 0,
-      draft: 0,
-      approved: 0,
-    };
-
-    list?.quotationList?.forEach(([count, status]) => {
-      if (status === "Delivered") {
-        quotationListObject.delivered = count;
-      } else if (status === "Cancelled") {
-        quotationListObject.cancelled = count;
-      } else if (status === "Waiting for Approval") {
-        quotationListObject.waitingForApproval = count;
-      } else if (status === "Draft") {
-        quotationListObject.draft = count;
-      } else if (status === "Approved") {
-        quotationListObject.approved = count;
-      }
-    });
+  list?.quotationList?.forEach(([count, status]) => {
+    if (status === "Delivered") {
+      quotationListObject.delivered = count;
+    } else if (status === "Cancelled") {
+      quotationListObject.cancelled = count;
+    } else if (status === "Waiting for Approval") {
+      quotationListObject.waitingForApproval = count;
+    } else if (status === "Draft") {
+      quotationListObject.draft = count;
+    } else if (status === "Approved") {
+      quotationListObject.approved = count;
+    }
+  });
 
   const data = {
     labels: [
@@ -185,6 +193,7 @@ export const QuotationChart = (props) => {
     },
   };
 
+  console.log(new Date());
 
   return (
     <Card>
@@ -192,7 +201,18 @@ export const QuotationChart = (props) => {
         title="Quotation Status"
         action={
           <>
-            <TextField
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DemoContainer components={["DatePicker"]}>
+                <DatePicker
+                  variant="filled"
+                  label={"Month and Year"}
+                  views={["month", "year"]}
+                  value={selectedDate}
+                  onChange={handleDateChange}
+                />
+              </DemoContainer>
+            </LocalizationProvider>
+            {/* <TextField
               id="filled-basic"
               label="Year"
               variant="filled"
@@ -225,7 +245,7 @@ export const QuotationChart = (props) => {
                 <MenuItem value="november">November</MenuItem>
                 <MenuItem value="december">December</MenuItem>
               </Select>
-            </FormControl>
+            </FormControl> */}
           </>
         }
       />
@@ -310,4 +330,3 @@ export const QuotationChart = (props) => {
     </Card>
   );
 };
-
