@@ -33,13 +33,11 @@ import { apiUrl } from 'src/config';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 pdfMake.fonts = {
-  Inter: {
-    normal: 'Inter-Regular.ttf',
-    bold: 'Inter-Bold.ttf',
-    light: 'Inter-Light.ttf',
-    medium: 'Inter-Medium.ttf',
+  Helvetica: {
+    normal: 'Helvetica.ttf',
+    bold: 'Helvetica-Bold.ttf',
   }
-}
+};
 
 
 const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
@@ -191,26 +189,24 @@ const filteredList = filteredData.filter(product => {
 
 
 
-const numberToWords = require('number-to-words');
-    const convertAmountToWords = (amount) => {
+const numberToWords = require("number-to-words");
+  const convertAmountToWords = (amount) => {
     const rupees = Math.floor(amount);
     const paisa = Math.round((amount - rupees) * 100);
-  
     const rupeesInWords = numberToWords.toWords(rupees); // Convert rupees to words
     const paisaInWords = numberToWords.toWords(paisa); // Convert paisa to words
-  
-    let result = '';
-  
+    let result = "";
     if (rupees > 0) {
       result += `${rupeesInWords} rupees`;
     }
-  
     if (paisa > 0) {
       if (rupees > 0) {
-        result += ' and ';
+        result += " and ";
       }
       result += `${paisaInWords} paisa`;
     }
+    // Capitalize first letter of each word in the result string
+    result = result.replace(/\b\w/g, (match) => match.toUpperCase());
   
     return result;
   };
@@ -308,8 +304,8 @@ const handleQuotation = async (record) => {
       ['Name:', `${record.contactPersonName}`], 
       ['Address:', `${record.deliveryAddress}, ${record.city}, ${record.state}, ${record.pinCode}, ${record.country}`],
       ['Contact:', `${record.contactPhoneNumber}`], 
-      ['Email:', `${record.tempUser.emailId}`], 
-      ['GSTIN:', `${record.tempUser.gstNumber}`], 
+      ['Email:', `${record.tempUser ? record.tempUser.emailId : record.companyuser.emailId}`], 
+      ['GSTIN:', `${record.tempUser ? record.tempUser.gstNumber : record.companyuser.gstNumber}`], 
     ];
     tableTwoData.forEach((rowData, rowIndex) => {
       rowData.forEach((cellData, colIndex) => {
@@ -607,54 +603,77 @@ const rowData = response.data.map((product, index) => {
   ).toFixed(2);
 
   if (product.cgst===0 && product.sgst===0) {
-    return [
-      index + 1,
-      product.description,
-     product.workstationCount, 
-      product.igst,
-      product.price,
+    return[
+      {text: index +1 , style: 'tableCell'},
+      {text: product.description, style: 'tableCell'},
+      {text: product.workstationCount, style: 'tableCell'},
+      {text: product.igst, style: 'tableCell'},
+      {text: product.price, style: 'tableCell'},
     ];
   }
   return [
-    index + 1,
-    product.description,
-    product.id,
-    product.quantity,
-    product.weight,
-    product.size,
-    product.price,
-    product.cgst,
-    product.sgst,
-    product.igst,
-    totalAmount,
+    {text: index +1 , style: 'tableCell'},
+    {text: product.description, style: 'tableCell'},
+    {text: product.id, style: 'tableCell'},
+    {text: product.quantity, style: 'tableCell'},
+    {text: product.weight, style: 'tableCell'},
+    {text: product.size, style: 'tableCell'},
+    {text: product.price, style: 'tableCell'},
+    {text: product.cgst, style: 'tableCell'},
+    {text: product.sgst, style: 'tableCell'},
+    {text: product.igst, style: 'tableCell'},
+    {text: totalAmount, style: 'tableCell'},
   ];
-  
-  
 });
       const docDefinition = {
           pageOrientation: 'landscape',
           defaultStyle: {
-            font: 'Inter'},
+            font: 'Helvetica'},
           content: [
             {
-              columns: [
-                {
-                  image: imgUrl,
-                  width: 150,
-                  alignment: 'left',
-                },
-                {stack: [
-                  {text: `${record.createdByUser.companyName}`, style: 'header'},
-                  { text: `${record.createdByUser.address}, ${record.createdByUser.city}, ${record.createdByUser.pincode}, ${record.createdByUser.state}, ${record.createdByUser.country}`, style: 'subheader' },
-            { text: `GSTIN: ${record.createdByUser.gstNumber}`, style: 'subheader'},
-              ],
-              margin: [20, 0, 0, 0],
+              table: {
+                widths: "*",
+                body: [
+                  [
+                    {
+                      columns: [
+                        {
+                          image: imgUrl,
+                          width: 100,
+                          alignment: "left",
+                        },
+                        {
+                          stack: [
+                            {
+                              text: `${record.createdByUser.companyName}`,
+                              style: "header",
+                            },
+                            {
+                              text: `${record.createdByUser.address}, ${record.createdByUser.city}, ${record.createdByUser.pincode}, ${record.createdByUser.state}, ${record.createdByUser.country}`,
+                              style: "subheader",
+                            },
+                            {
+                              text: `GSTIN: ${record.createdByUser.gstNumber}`,
+                              style: "subheader",
+                            },
+                          ],
+                          margin: [20, 0, 0, 0],
+                        },
+  
+                        {
+                          text: "ORIGINAL",
+                          style: "header",
+                          alignment: "center",
+                        },
+  
+                        { text: "QUOTATION", style: "header", alignment: "right", margin: [0, 0, 20, 0] },
+                      ],
+                      border: [true, true, true, false],margin: [0, 10, 0, 0],
+                    },
+                  ],
+                ],
+              },
             },
-            
-            { text: 'ORIGINAL', style: 'header', alignment: 'center' },
-              
-            { text: 'QUOTATION', style: 'header', alignment: 'right' },
-              ]},
             {
               style: 'newTable',
               
@@ -662,20 +681,20 @@ const rowData = response.data.map((product, index) => {
                 widths: ['*','auto', 'auto', 'auto', 'auto', 'auto'],
                 body: [
                   [
-                    { text: '', border: [false, false, false, false] },
-                    { text: `Quotation Number:`, style: 'tableLabel', border: [true, true, true, false]},
-                    { text: `Quotation Date:`, style: 'tableLabel', border: [true, true, true, false]},
-                    { text: 'Customer ID:', style: 'tableLabel', border: [true, true, true, false] },
-                    { text: 'Customer Contact:', style: 'tableLabel', border: [true, true, true, false] },
-                    { text: 'Customer PO No.:', style: 'tableLabel', border: [true, true, true, false] },
+                    { text: '', border: [true, false, false, false] },
+                    { text: `Quotation Number`, style: 'font10', border: [true, true, true, false],alignment: "center"},
+                    { text: `Quotation Date`, style: 'font10', border: [true, true, true, false],alignment: "center",},
+                    { text: 'Customer ID', style: 'font10', border: [true, true, true, false],alignment: "center", },
+                    { text: 'Customer Contact', style: 'font10', border: [true, true, true, false],alignment: "center", },
+                    { text: 'Customer PO No.', style: 'font10', border: [true, true, true, false],alignment: "center", },
                   ],
                   [
-                    { text: '', border: [false, false, false, false] },
-                    { text: record.id, style: 'tableCell',border: [true, false, true, false] },
-                    { text: formatDate(record.createdDate), style: 'tableCell', border: [true, false, true, false] },
-                    { text: record.tempUser.id, style: 'tableCell',border: [true, false, true, false] },
-                    { text: record.contactPhoneNumber, style: 'tableCell',border: [true, false, true, false] },
-                    { text: record.pinCode, style: 'tableCell',border: [true, false, true, false] },
+                    { text: '', border: [true, false, false, false] },
+                    { text: record.id, style: 'font10',border: [true, false, true, false],alignment: "center", },
+                    { text: formatDate(record.createdDate), style: 'font10', border: [true, false, true, false],alignment: "center", },
+                    { text: record.tempUser ? record.tempUser.id : record.companyuser.id, style: 'font10',border: [true, false, true, false],alignment: "center", },
+                    { text: record.contactPhoneNumber, style: 'font10',border: [true, false, true, false],alignment: "center", },
+                    { text: record.pinCode, style: 'font10',border: [true, false, true, false],alignment: "center", },
                   ],
                 ],
               },
@@ -683,19 +702,84 @@ const rowData = response.data.map((product, index) => {
             {
               style: 'infoTable',
               table: {
-                widths: ['*', '*', '*'],
+                widths: ['*', '*', '*','*'],
+                heights: ["auto", 80],
                 body: [
                   [
-                    { text: `Bill To: ${record.tempUser.companyName}`, style: 'tableLabel', border: [true, true, true, false]},
-                    { text: `Ship To: ${record.contactPersonName}`, style: 'tableLabel', border: [true, true, true, false] },
-                    { text: 'Customer GST Registration information', style: 'tableLabel' },
-                    // { text: 'Mode of Dispatch: Courier', style: 'tableLabel', border: [true, true, true, true]},
+                    { text: `Bill To: ${record.tempUser ? record.tempUser.companyName : record.companyuser.companyName}`, style: 'tableLabel', border: [true, true, true, false], marginBottom: 5 },
+                    { text: `Ship To: ${record.contactPersonName}`, style: 'tableLabel', border: [true, true, true, false], marginBottom: 5 },
+                    { text: 'Customer GST Registration information', style: 'font10', bold: true },
+                    {
+                      text: `Mode of Dispatch: ${record.modeofdelivery}`,
+                      style: "font10",
+                      border: [true, true, true, true],
+                    },
                   ],
                   [
-                    { text: `${record.tempUser.address}, ${record.tempUser.city}, ${record.tempUser.state},${record.tempUser.pincode}, ${record.tempUser.country}`, style: 'tableCell',border: [true, false, true, false] },
-                    { text: `${record.deliveryAddress}, ${record.city}, ${record.state}, ${record.pinCode}, ${record.country}`, style: 'tableCell', border: [true, false, true, false] },
-                    { text: record.tempUser.gstNumber, style: 'tableCell',border: [true, false, true, false] },
-                    // { text: `Mode of Payment: ${record.paymentMode}`, style: 'tableLabel',border: [true, false, true, false] },
+                    record.tempUser
+                    ? {
+                        stack: [
+                          {
+                            text: record.tempUser.address,
+                            style: "font10",
+                            marginBottom: 5,
+                          },
+                          {
+                            text: `${record.tempUser.city} - ${record.tempUser.pincode}`,
+                            style: "font10",
+                            marginBottom: 5,
+                          },
+                          { text: record.tempUser.state, style: "font10" },
+                          { text: record.tempUser.country, style: "font10" },
+                        ],
+                        border: [true, false, true, false],
+                      }
+                    : {
+                        stack: [
+                          {
+                            text: record.companyuser.address,
+                            style: "font10",
+                            marginBottom: 5,
+                          },
+                          {
+                            text: `${record.companyuser.city} - ${record.companyuser.pincode}`,
+                            style: "font10",
+                            marginBottom: 5,
+                          },
+                          { text: record.companyuser.state, style: "font10" },
+                          { text: record.companyuser.country, style: "font10" },
+                        ],
+                        border: [true, false, true, false],
+                      },
+                  {
+                    stack: [
+                      {
+                        text: record.deliveryAddress,
+                        style: "font10",
+                        marginBottom: 5,
+                      },
+                      {
+                        text: `${record.city} - ${record.pinCode}`,
+                        style: "font10",
+                        marginBottom: 5,
+                      },
+                      { text: record.state, style: "font10" },
+                      { text: record.country, style: "font10" },
+                    ],
+                    border: [true, false, true, false],
+                  },
+                  {
+                    text: `GST Registration Number: ${record.tempUser
+                      ? record.tempUser.gstNumber
+                      : record.companyuser.gstNumber}`,
+                    border: [true, false, true, false],
+                    style: "font10",
+                  },
+                  {
+                    text: ``,
+                    border: [true, false, true, false],
+                    style: "font10",
+                  },
                   ],
                 ],
               },
@@ -703,7 +787,15 @@ const rowData = response.data.map((product, index) => {
             {
               style: 'table',
               table: {
-                  heights:['auto', 'auto'],
+                  headerRows: 1,
+              heights: [
+                "auto",
+                ...(rowData.length > 0
+                  ? Array(rowData.length - 1)
+                      .fill(0)
+                      .concat([120 - (rowData.length - 1) * 20])
+                  : [120]),
+              ],
                   widths: record.category==='Service Quotation'?['auto', '*', 'auto', 'auto', 'auto']:['auto', '*', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
                 body: [
                   record.category === 'Service Quotation' ? [
@@ -729,24 +821,71 @@ const rowData = response.data.map((product, index) => {
                   ...rowData,
                 ],
               },
+              layout: {
+                hLineWidth: function (i, node) {
+                  return i === 0 || i === node.table.body.length ? 1 : 1;
+                },
+                vLineWidth: function (i, node) {
+                  return i === 0 || i === node.table.widths.length ? 1 : 1;
+                },
+                hLineColor: function (i, node) {
+                  return i === 0 || i === node.table.body.length
+                    ? "black"
+                    : "gray";
+                },
+                vLineColor: function (i, node) {
+                  return i === 0 || i === node.table.widths.length
+                    ? "black"
+                    : "gray";
+                },
+                paddingTop: function () {
+                  return 5;
+                },
+                paddingBottom: function () {
+                  return 5;
+                },
+              },
             },
             {
               table: {
-                heights:[50],
-                widths: ['*','*'],
+                heights: [50],
+                widths: ["*", "auto","*"],
                 body: [
                   [
-                        { text: 'REMARKS', alignment: 'left', style: 'tableLabel',  border: [true, false, false, true], margin:[0,10,0,0] },
-                      
-                      {
-                          stack:[
-                              { text: `Total: ${record.totalAmount}`, alignment: 'right', style: 'tableLabel'},
-                              { text: `Total in words: ${convertAmountToWords(record.totalAmount)}`, alignment: 'right', style: 'tableLabel'},
-                          ],
-                          border: [false, false, true, true] , margin:[0,20,20,0]
-                      }
+                    {
+                      text: "REMARKS",
+                      alignment: "left",
+                      bold: true,
+                      style: "font10",
+                      border: [true, false, false, true],
+                      margin: [0, 10, 0, 0],
+                    },
+                    {
+                      text: '',
+                      border: [false, false, false, true],
+                    },
+                    {
+                      stack: [
+                        {
+                          text: `TOTAL: \u20B9 ${record.totalAmount}`,
+                          alignment: "left",
+                          bold: true,
+                          style: "font10",
+                        },
+                        {
+                          text: `Amount in Words: \u20B9 ${convertAmountToWords(
+                            record.totalAmount
+                          )}`,
+                          alignment: "left",
+                          bold: true,
+                          style: "font10",
+                        },
+                      ],
+                      border: [false, false, true, true],
+                      margin: [0, 20, 20, 0],
+                      alignment: "right",
+                    },
                   ],
-                  
                 ],
               },
             },
@@ -757,8 +896,8 @@ const rowData = response.data.map((product, index) => {
                   [
                         {
                           stack:[
-                              { text: 'Terms & Conditions',bold: true, style: 'tableLabel'},
-                              { text: `${record.termsAndCondition}`, style:'tableLabel'}
+                              { text: 'Terms & Conditions',bold: true, style: 'font10'},
+                              { text: `${record.termsAndCondition}`, style:'font10'}
                       
                       ],
                       border: [true, false, false, true],margin:[0,20,0,0], alignment:'left'
@@ -766,15 +905,15 @@ const rowData = response.data.map((product, index) => {
                       
                       {
                           stack:[
-                              { text: `Received In Good Condition`,bold:true, style: 'tableLabel'},
-                              { text: `Customer Signature`, margin:[0,40,0,0], style: 'tableLabel'},
+                              { text: `Received In Good Condition`,bold:true, fontSize: 12},
+                              { text: `Customer Signature`, margin:[0,40,0,0], style: 'font10'},
                           ],
                           border: [false, false, false, true],margin:[0,20,0,0], alignment:'center'
                       },
                       {
                           stack:[
-                              { text: `${record.createdByUser.companyName}`,bold:true,alignment:'center', style: 'tableLabel'},
-                              { text: `Authorize Signature`, margin:[0,40,0,0],alignment:'center', style: 'tableLabel'},
+                              { text: `${record.createdByUser.companyName}`,bold:true,alignment:'center', fontSize: 12},
+                              { text: `Authorize Signature`, margin:[0,40,0,0],alignment:'center', style: 'font10'},
                           ],
                           border: [false, false, true, true],margin:[0,20,0,0], alignment:'right'
                       },
@@ -786,32 +925,35 @@ const rowData = response.data.map((product, index) => {
             
           ],
           styles: {
-              header: {
-                fontSize: 15,
-                bold: true,
-                margin: [0, 0, 0, 5],
-              },
-              subheader: {
-                  fontSize: 14,
-                  bold: true,
-                  marginBottom: 5,
-                  },
-              tableLabel: {
-                bold: true,
-                // border: [false, false, false, true],
-              },
-              tableCell: {
-                fillColor: '#ffffff',
-              },
-              tableHeader: {
-                fillColor: '#eeeeee',
-                bold: true,
-              },
+            header: {
+              fontSize: 15,
+              bold: true,
+              margin: [0, 0, 0, 5],
             },
-           
+            subheader: {
+              fontSize: 12,
+              marginBottom: 5,
+            },
+            tableLabel: {
+              bold: true,
+              fontSize: 10,
+              // border: [false, false, false, true],
+            },
+            font10: {
+              fontSize: 10,
+            },
+            tableCell: {
+              fontSize: 8,
+            },
+            tableHeader: {
+              fillColor: "#eeeeee",
+              bold: true,
+            },
+          },
           };
     
-        pdfMake.createPdf(docDefinition).download('quotation.pdf');
+        // pdfMake.createPdf(docDefinition).download('quotation.pdf');
+        pdfMake.createPdf(docDefinition).open();
 }
 catch(error){
   console.log(error)
