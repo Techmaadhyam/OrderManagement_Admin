@@ -359,7 +359,7 @@ const SalesOrderViewList = () => {
           {
             style: "infoTable",
             table: {
-              widths: ["*", "*", "*", "*"],
+              widths: [178, 178.5, 200, "*"],
               heights: ["auto", 80],
               body: [
                 [
@@ -540,7 +540,6 @@ const SalesOrderViewList = () => {
                     bold: true,
                     style: "font10",
                     border: [true, false, false, true],
-                    margin: [0, 10, 0, 0],
                   },
                   {
                     text: '',
@@ -564,7 +563,7 @@ const SalesOrderViewList = () => {
                       },
                     ],
                     border: [false, false, true, true],
-                    margin: [0, 20, 20, 0],
+                    margin: [0, 0, 10, 0],
                     alignment: "right",
                   },
                 ],
@@ -759,7 +758,7 @@ const SalesOrderViewList = () => {
           {
             style: "infoTable",
             table: {
-              widths: ["*", "*", "*"],
+              widths: [215, 214, "*"],
               heights: ["auto", 80],
               body: [
                 [
@@ -855,7 +854,7 @@ const SalesOrderViewList = () => {
               widths: ["*"],
               body: [
                 [
-                  { text: 'NOTE:  Standby Returnable Basis, Kindly share the WO', alignment: 'left', style: 'font10',bold: true,  border: [true, false, true, true], margin:[0,10,0,0] },
+                  { text: 'NOTE:  Standby Returnable Basis, Kindly share the WO', alignment: 'left', style: 'font10',bold: true,  border: [true, false, true, true] },
                 ],
               ],
             },
