@@ -871,21 +871,21 @@ const SalesOrderViewList = () => {
                         { text: 'Terms & Conditions',bold: true, style: 'font10'},
                         { text: `${record.termsAndCondition}`, style: 'font10'}
                 ],
-                border: [true, false, false, true],margin:[0,20,0,0],alignment:'left'
+                border: [true, false, false, true],alignment:'left'
             },
             {
               stack:[
                   { text: `Received In Good Condition`,bold:true, fontSize:12,alignment:'center'},
                   { text: `Customer Signature`, margin:[0,40,0,0], style: 'font10'},
               ],
-              border: [false, false, false, true] ,margin:[0,20,0,0],alignment:'center'
+              border: [false, false, false, true] ,alignment:'center'
           },
           {
               stack:[
                   { text: `For ${record.createdByUser.companyName}`,bold:true, fontSize:12,alignment:'center'},
                   { text: `Authorize Signature`, margin:[0,40,0,0], style: 'font10',alignment:'center'},
               ],
-              border: [false, false, true, true], margin:[0,20,0,0], alignment:'right'
+              border: [false, false, true, true], alignment:'right'
           },
                 ],
               ],

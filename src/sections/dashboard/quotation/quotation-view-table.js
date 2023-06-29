@@ -704,7 +704,7 @@ const rowData = response.data.map((product, index) => {
             {
               style: 'infoTable',
               table: {
-                widths: ['*', '*', '*','*'],
+                widths: [166.5, 167, '*','*'],
                 heights: ["auto", 80],
                 body: [
                   [
@@ -860,7 +860,6 @@ const rowData = response.data.map((product, index) => {
                       bold: true,
                       style: "font10",
                       border: [true, false, false, true],
-                      margin: [0, 10, 0, 0],
                     },
                     {
                       text: '',
@@ -884,7 +883,7 @@ const rowData = response.data.map((product, index) => {
                         },
                       ],
                       border: [false, false, true, true],
-                      margin: [0, 20, 20, 0],
+                      margin: [0, 0, 10, 0],
                       alignment: "right",
                     },
                   ],
