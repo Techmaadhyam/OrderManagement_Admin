@@ -6,7 +6,9 @@ import { apiUrl } from 'src/config';
 
 const STORAGE_KEY = 'users';
 
-var users = {};
+var users={}
+
+
 
 
 // NOTE: We use sessionStorage since memory storage is lost after page reload.
@@ -43,9 +45,11 @@ class AuthApi {
     await axios
       .get(apiUrl + `getUserByUsername/${email}`)
       .then((response) => {
- 
-          if(response && response.data && response.data.length > 0 && password === response.data[0].password){
             users = response.data[0];
+
+          if(response && response.data && response.data.length > 0 && password === response.data[0].password){
+       
+         
             window.sessionStorage.setItem('user', response.data[0].id);
             window.sessionStorage.setItem('mail', response.data[0].userName);
             localStorage.setItem('user', response.data[0].id);
@@ -53,7 +57,8 @@ class AuthApi {
             //const accessToken = sign({ userId: user.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 
             //resolve({accessToken});
-          }
+          } 
+          
       })
       .catch((error) => {
           console.error('[Auth Api]: ', error);
@@ -70,15 +75,10 @@ class AuthApi {
 
         // Find the user
         //const user = mergedUsers.find((user) => user.emailId === email);
-
-        if (!users || (users.password !== password)) {
-          reject(
-            new Error("Please register your account and wait for activation")
-          );
-        }
+       
            if (users.password !== password) {
              reject(new Error("Please check your email and password"));
-    
+
            }
 
         // Create the access token
@@ -87,7 +87,11 @@ class AuthApi {
         resolve({ accessToken });
       } catch (err) {
         console.error('[Auth Api]: ', err);
-        reject(new Error('Internal server error'));
+        reject(
+          new Error(
+            "Please register your account. If already registered then contact us at contactus@techmaadhyam.com for activation"
+          )
+        );
       }
     });
   }
