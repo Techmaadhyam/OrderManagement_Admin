@@ -123,13 +123,13 @@ export const SalesChart = (props) => {
           soListObject?.draft,
         ],
         backgroundColor: [
-          "#f88c87",
-          "#f9f585",
-          "#bfbfbf",
-          "#b9ffb3",
-          "#ffdeb3",
+          "#f3ab33",
+          "#ea707f",
+          "#c168a8",
+          "#5b63a2",
+          "#1b4e6b",
         ],
-        borderColor: ["#f22f24", "#ede60e", "#9c9c9c", "#8fff85", "#ffca85"],
+        borderColor: ["#f3ab33", "#ea707f", "#c168a8", "#5b63a2", "#1b4e6b"],
         borderWidth: 1,
       },
     ],
@@ -208,33 +208,20 @@ export const SalesChart = (props) => {
             <Grid
               item
               sx={{
-                borderLeft: "7px solid #ffcb88",
+                borderLeft: "7px solid #f3ab33",
                 paddingLeft: 2,
                 marginTop: 1,
                 ml: 2,
               }}
             >
               <Typography variant="subtitle2">
-                Draft: {soListObject?.draft}
+                Cancelled: {soListObject?.cancelled}
               </Typography>
             </Grid>
             <Grid
               item
               sx={{
-                borderLeft: "7px solid #92ff88",
-                paddingLeft: 2,
-                marginTop: 1,
-                ml: 2,
-              }}
-            >
-              <Typography variant="subtitle2">
-                Delivered: {soListObject?.delivered}
-              </Typography>
-            </Grid>
-            <Grid
-              item
-              sx={{
-                borderLeft: "7px solid #fff959",
+                borderLeft: "7px solid #ea707f",
                 paddingLeft: 2,
                 marginTop: 1,
                 ml: 2,
@@ -247,7 +234,7 @@ export const SalesChart = (props) => {
             <Grid
               item
               sx={{
-                borderLeft: "7px solid #acacac",
+                borderLeft: "7px solid #c168a8",
                 paddingLeft: 2,
                 marginTop: 1,
                 ml: 2,
@@ -260,14 +247,27 @@ export const SalesChart = (props) => {
             <Grid
               item
               sx={{
-                borderLeft: "7px solid #ff625a",
+                borderLeft: "7px solid #5b63a2",
                 paddingLeft: 2,
                 marginTop: 1,
                 ml: 2,
               }}
             >
               <Typography variant="subtitle2">
-                Cancelled: {soListObject?.cancelled}
+                Delivered: {soListObject?.delivered}
+              </Typography>
+            </Grid>
+            <Grid
+              item
+              sx={{
+                borderLeft: "7px solid #1b4e6b",
+                paddingLeft: 2,
+                marginTop: 1,
+                ml: 2,
+              }}
+            >
+              <Typography variant="subtitle2">
+                Draft: {soListObject?.draft}
               </Typography>
             </Grid>
           </Grid>

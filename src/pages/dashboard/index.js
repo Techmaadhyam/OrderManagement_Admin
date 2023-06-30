@@ -143,7 +143,7 @@ const Page = () => {
       <Box
         component="main"
         sx={{
-          backgroundColor: "#F8F9FA",
+          backgroundColor: "#F3F4F6",
         }}
       >
         <Container maxWidth={settings.stretch ? false : "xl"}>
