@@ -463,8 +463,12 @@ console.log(rowData);
 
   
   console.log(deliveryIST, deliveryIST2)
-  const updatedRows = rowData?.map(({ productName, ...rest }) => rest);
-  const deleteRows= deletedRows?.map(({ productName, ...rest }) => rest);
+  const updatedRows = rowData?.map(
+    ({ productName, netAmount, ...rest }) => rest
+  );
+  const deleteRows = deletedRows?.map(
+    ({ productName, netAmount, ...rest }) => rest
+  );
 
   //post request
   const handleClick = async (event) => {
