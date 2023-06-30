@@ -197,8 +197,23 @@ const [productName, setProductName] = useState('');
   useEffect(() => {
     axios.get(apiUrl + `getAllWorkOrderItems/${state?.id || state?.workorder?.id}`)
       .then(response => {
-       setRowData(response.data)
-       setTotalAmount(state?.totalAmount)
+         const modifiedData = response.data.map((item) => {
+           const { unitPrice, igst, workstationcount } = item;
+
+           const netAmount = (
+             parseFloat(workstationcount) * unitPrice +
+             (parseFloat(workstationcount) * unitPrice * igst) / 100
+           ).toFixed(2);
+
+           return { ...item, netAmount };
+         });
+        setRowData(modifiedData)
+        
+          const totalNetAmount = modifiedData?.reduce(
+            (total, item) => total + parseFloat(item.netAmount),
+            0
+          );
+       setTotalAmount(totalNetAmount)
       
       })
       .catch(error => {
@@ -392,13 +407,14 @@ console.log(user)
       setTotalAmount(calculatedTotalAmount);
     }
   };
+  
 
   
+console.log(rowData);
 
 
   const handleEditRow = (idx, row) => {
 
-console.log(idx, row)
 
     const selectedOption = userData2.find((option) => option.productName === row.product.productName);
     const selectedProductId = selectedOption ? selectedOption.id : '';

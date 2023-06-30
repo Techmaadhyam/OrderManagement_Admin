@@ -141,6 +141,11 @@ const columns = [
   }
   const startdate = formatDate(state?.startdate);
   const enddate = formatDate(state?.enddate);
+
+  const totalNetAmount = rowData?.reduce(
+    (total, item) => total + parseFloat(item.netAmount),
+    0
+  );
   
 
 
@@ -296,7 +301,7 @@ const columns = [
               fontWeight: "bold",
             }}
           >
-            Total Amount : {state?.totalAmount || state?.quotation?.totalAmount}
+            Total Amount : ₹{state?.totalAmount || totalNetAmount?.toFixed(2)}
           </Typography>
         </Grid>
         <Grid style={{ marginTop: "20px" }}>
