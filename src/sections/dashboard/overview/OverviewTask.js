@@ -95,24 +95,24 @@ export const OverviewTask = (props) => {
 
     switch (status) {
       case "Approved":
-        backgroundColor = "#dbf0aa";
-        color = "#919e05";
+        backgroundColor = "#ea707f";
+        color = "#FFFFFF";
         break;
       case "Draft":
-        backgroundColor = "#ffeab0";
-        color = "#ED8B00";
+        backgroundColor = "#1b4e6b";
+        color = "#ffffff";
         break;
       case "Delivered":
-        backgroundColor = "#c9ffb0";
-        color = "#06b004";
+        backgroundColor = "#5b63a2";
+        color = "#ffffff";
         break;
       case "Waiting for Approval":
-        backgroundColor = "#e1e3e1";
-        color = "#99a399";
+        backgroundColor = "#c168a8";
+        color = "#ffffff";
         break;
       case "Cancelled":
-        backgroundColor = "#ffd4d4";
-        color = "#ff1919";
+        backgroundColor = "#f3ab33";
+        color = "#ffffff";
         break;
       default:
         backgroundColor = "";
@@ -263,7 +263,7 @@ export const OverviewTask = (props) => {
               <Typography
                 color="text.secondary"
                 sx={{ whiteSpace: "nowrap" }}
-                variant="caption"
+                variant="subtitle2"
               >
                 {message?.status}
               </Typography>

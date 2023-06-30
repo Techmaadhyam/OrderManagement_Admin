@@ -88,108 +88,112 @@ const handleNavigate =(messages) => {
 };
 
 return (
-    <Card>
-      <CardHeader
-  title={
-    <>
-        {!isSearching && (
-          <>
-            Your Inventory
-            <IconButton onClick={handleCompanyClick}>
-              <SearchIcon />
-            </IconButton>
-          </>
-        )}
-        {isSearching && (
-          <>
-            <InputBase
-              value={searchText}
-              onChange={handleCompanyInputChange}
-              placeholder="Search Inventory..."
-            />
-            <IconButton onClick={handleCompanyCancel}>
-              <Icon>
-                <HighlightOffIcon />
-              </Icon>
-            </IconButton>
-          </>
-        )}
-      </>
-    }
-
-    
-  />
-  <Divider/>
-      <List disablePadding>
-      {currentMessages?.map((message) => {
-
-          return (
-            <ListItem
-              key={message.inventoryId}
-              onClick={() => handleNavigate(message)}
-              sx={{
-                "&:hover": {
-                  backgroundColor: "action.hover",
-                  cursor: "pointer",
-                },
-              }}
-            >
-              <ListItemAvatar>
-                <Avatar
-                  style={{ backgroundColor: "#ffeab0", color: "#ED8B00" }}
-                >
-                  <ShoppingBag03Icon/>
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText
-                disableTypography
-                primary={
-                  <Typography
-                    sx={{
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                    }}
-                    variant="subtitle2"
-                  >
-                    {message?.productName}
-                  </Typography>
-                }
-                secondary={
-                  <Typography
-                    color="text.secondary"
-                    sx={{
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                    }}
-                    variant="body2"
-                  >
-                    {message?.warehouseName}
-                  </Typography>
-                }
-                sx={{ pr: 2 }}
+  <Card>
+    <CardHeader
+      title={
+        <>
+          {!isSearching && (
+            <>
+              Your Inventory
+              <IconButton onClick={handleCompanyClick}>
+                <SearchIcon />
+              </IconButton>
+            </>
+          )}
+          {isSearching && (
+            <>
+              <InputBase
+                value={searchText}
+                onChange={handleCompanyInputChange}
+                placeholder="Search Inventory..."
               />
-              <Typography
-                color="text.secondary"
-                sx={{ whiteSpace: "nowrap" }}
-                variant="caption"
-              >
-                Available quantity: {message?.quantity}
-              </Typography>
-            </ListItem>
-          );
-        })}
-      </List>
-      <Pagination
-        count={totalPages}
-        page={currentPage}
-        onChange={handlePageChange}
-        size="small"
-        sx={{ mt: 2, mb: 2, justifyContent: 'center' }}
-      /> 
-    </Card>
-  );
+              <IconButton onClick={handleCompanyCancel}>
+                <Icon>
+                  <HighlightOffIcon />
+                </Icon>
+              </IconButton>
+            </>
+          )}
+        </>
+      }
+      action={
+        <Typography
+          color="text.secondary"
+          sx={{ whiteSpace: "nowrap", paddingTop: "15px" }}
+          variant="subtitle1"
+        >
+          Availability
+        </Typography>
+      }
+    />
+    <Divider />
+    <List disablePadding>
+      {currentMessages?.map((message) => {
+        return (
+          <ListItem
+            key={message.inventoryId}
+            onClick={() => handleNavigate(message)}
+            sx={{
+              "&:hover": {
+                backgroundColor: "action.hover",
+                cursor: "pointer",
+              },
+            }}
+          >
+            <ListItemAvatar>
+              <Avatar style={{ backgroundColor: "#f3ab33", color: "#ffffff" }}>
+                <ShoppingBag03Icon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText
+              disableTypography
+              primary={
+                <Typography
+                  sx={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                  variant="subtitle2"
+                >
+                  {message?.productName}
+                </Typography>
+              }
+              secondary={
+                <Typography
+                  color="text.secondary"
+                  sx={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                  variant="body2"
+                >
+                  {message?.warehouseName}
+                </Typography>
+              }
+              sx={{ pr: 2 }}
+            />
+            <Typography
+              color="text.secondary"
+              sx={{ whiteSpace: "nowrap" }}
+              variant="subtitle2"
+            >
+              Quantity: {message?.quantity}
+            </Typography>
+          </ListItem>
+        );
+      })}
+    </List>
+    <Pagination
+      count={totalPages}
+      page={currentPage}
+      onChange={handlePageChange}
+      size="small"
+      sx={{ mt: 2, mb: 2, justifyContent: "center" }}
+    />
+  </Card>
+);
 };
 
 InventoryList.propTypes = {

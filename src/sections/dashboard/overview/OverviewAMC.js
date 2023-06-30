@@ -85,11 +85,11 @@ const getEndDateIconStyle = (enddate) => {
   const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
 
   if (daysDifference <= 5) {
-    return {  backgroundColor: '#ffd4d4', color: '#ff1919' };
+    return { backgroundColor: "#ea707f", color: "#ffffff" };
   } else if (daysDifference <= 10) {
-    return {  backgroundColor: '#ffeab0', color: '#ED8B00' };
+    return { backgroundColor: "#f3ab33", color: "#ffffff" };
   } else {
-    return {  backgroundColor: '#c9ffb0', color: '#06b004' };
+    return { backgroundColor: "#1b4e6b", color: "#ffffff" };
   }
 };
 
@@ -145,60 +145,58 @@ const handlePageChange = (event, page) => {
             key={message.id}
             onClick={() => handleNavigate(message)}
             sx={{
-              '&:hover': {
-                backgroundColor: 'action.hover',
-                cursor: 'pointer'
-              }
+              "&:hover": {
+                backgroundColor: "action.hover",
+                cursor: "pointer",
+              },
             }}
           >
             <ListItemAvatar>
-            {message?.category === 'poList' ? (
-
-              <Avatar style={getEndDateIconStyle(message?.enddate)}>
-                <ShoppingCart01Icon />
-              </Avatar>
-
-          ) : (
-            <Avatar style={getEndDateIconStyle(message?.enddate)}>
-              <PendingActionsTwoToneIcon/>
-            </Avatar>
-          )}
-        </ListItemAvatar>
+              {message?.category === "poList" ? (
+                <Avatar style={getEndDateIconStyle(message?.enddate)}>
+                  <ShoppingCart01Icon />
+                </Avatar>
+              ) : (
+                <Avatar style={getEndDateIconStyle(message?.enddate)}>
+                  <PendingActionsTwoToneIcon />
+                </Avatar>
+              )}
+            </ListItemAvatar>
             <ListItemText
               disableTypography
-              primary={(
+              primary={
                 <Typography
                   sx={{
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap'
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
                   }}
                   variant="subtitle2"
                 >
                   {message?.companyName}
                 </Typography>
-              )}
-              secondary={(
+              }
+              secondary={
                 <Typography
                   color="text.secondary"
                   sx={{
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap'
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
                   }}
                   variant="body2"
                 >
                   {message?.contactPersonName}
                 </Typography>
-              )}
+              }
               sx={{ pr: 2 }}
             />
             <Typography
               color="text.secondary"
-              sx={{ whiteSpace: 'nowrap' }}
-              variant="caption"
+              sx={{ whiteSpace: "nowrap" }}
+              variant="subtitle2"
             >
-            {formatDate(message?.enddate)}
+              {formatDate(message?.enddate)}
             </Typography>
           </ListItem>
         );

@@ -147,7 +147,7 @@ return (
               }}
             >
            <ListItemAvatar>
-              <Avatar style={{ backgroundColor : '#ffeab0',color: '#ED8B00'}} >
+              <Avatar style={{ backgroundColor : '#f3ab33',color: '#ffffff'}} >
                 <ReceiptCheckIcon  />
               </Avatar>
           </ListItemAvatar>
