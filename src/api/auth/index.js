@@ -43,7 +43,7 @@ class AuthApi {
     await axios
       .get(apiUrl + `getUserByUsername/${email}`)
       .then((response) => {
-        console.log(response.data);
+ 
           if(response && response.data && response.data.length > 0 && password === response.data[0].password){
             users = response.data[0];
             window.sessionStorage.setItem('user', response.data[0].id);
@@ -72,9 +72,14 @@ class AuthApi {
         //const user = mergedUsers.find((user) => user.emailId === email);
 
         if (!users || (users.password !== password)) {
-          reject(new Error('Please check your email and password'));
-          return;
+          reject(
+            new Error("Please register your account and wait for activation")
+          );
         }
+           if (users.password !== password) {
+             reject(new Error("Please check your email and password"));
+    
+           }
 
         // Create the access token
         const accessToken = sign({ userId: users.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });

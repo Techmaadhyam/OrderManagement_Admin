@@ -22,6 +22,7 @@ const User = () => {
       .then(response => {
     
         setUserData(response.data[0]);
+     
       })
       .catch(error => {
         console.error(error);

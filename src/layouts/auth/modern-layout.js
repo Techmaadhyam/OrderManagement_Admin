@@ -112,10 +112,8 @@ export const Layout = (props) => {
           <Box sx={{ mb: 4 }}>
             <Stack
               alignItems="center"
-              component={RouterLink}
               direction="column"
               display="flex"
-              href={paths.authDemo.login.modern}
               spacing={1}
               sx={{ textDecoration: 'none' }}
             >

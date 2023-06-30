@@ -104,16 +104,19 @@ const Page = () => {
   }, [notification]);
 
   const notifyLogin = () => {
-    toast.success("You have successfully registered your account. Please Log In.", {
-      position: "top-right",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+    toast.success(
+      "Thank you for registering your account. Please contact us at contactus@techmaadhyam.com for enabling your account.",
+      {
+        position: "top-right",
+        autoClose: false,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      }
+    );
   };
 
   usePageView();
@@ -150,7 +153,7 @@ const Page = () => {
                 &nbsp;
                 <Link
                   component={RouterLink}
-                 // href={paths.auth.jwt.register}
+                 href={paths.auth.jwt.register}
                   underline="hover"
                   variant="subtitle2"
                 >
