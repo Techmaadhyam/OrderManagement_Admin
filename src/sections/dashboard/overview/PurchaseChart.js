@@ -124,6 +124,9 @@ export const PurchaseChart = (props) => {
         display: false,
       },
     },
+    hover: {
+      mode: null, // Disable color change on hover
+    },
   };
   
 

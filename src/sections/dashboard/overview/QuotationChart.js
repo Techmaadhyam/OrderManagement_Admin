@@ -164,11 +164,14 @@ export const QuotationChart = (props) => {
         display: false,
       },
     },
+    hover: {
+      mode: null, // Disable color change on hover
+    },
     indexAxis: "x",
     barPercentage: 0.4,
     scales: {
       y: {
-          grid: {
+        grid: {
           display: false,
         },
         max: maxDataValue + padding,
