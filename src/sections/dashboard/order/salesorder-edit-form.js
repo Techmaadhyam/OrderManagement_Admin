@@ -162,7 +162,7 @@ const [tempId, setTempId] = useState(state?.tempUser?.id);
 const [userState, setUserState] = useState(state?.companyuser?.id);
 const [terms, setTerms] = useState(state?.termsAndCondition || '');
 const [comment, setComment] = useState(state?.comments||'');
-const [user, setUser] = useState(state?.tempUser?.companyName ||state?.companyuser?.companyName||'')
+const [user, setUser] = useState(state?.tempUser?.id ||state?.companyuser?.id||'')
 const [payment, setPayment]= useState(state?.paymentMode||'')
 const [deliveryMode, setDeliveryMode]= useState(state?.modeofdelivery||'')
 
@@ -878,7 +878,7 @@ const notify = (type, message) => {
                   value={user}
                   onChange={(e) => {
                     const selectedOption = userData?.find(
-                      (option) => option.companyName === e.target.value
+                      (option) => option.id === e.target.value
                     );
                     if (selectedOption) {
                       if (selectedOption.hasOwnProperty("createdByUser")) {
@@ -898,7 +898,7 @@ const notify = (type, message) => {
                     .map(
                       (option) =>
                         option.companyName && (
-                          <MenuItem key={option.id} value={option.companyName}>
+                          <MenuItem key={option.id} value={option.id}>
                             {option.companyName}
                           </MenuItem>
                         )
