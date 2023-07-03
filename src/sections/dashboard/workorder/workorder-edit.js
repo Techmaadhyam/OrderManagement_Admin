@@ -146,7 +146,7 @@ const [tempId, setTempId] = useState(state?.noncompany?.id);
 const [userState, setUserState] = useState(state?.company?.id);
 const [terms, setTerms] = useState(state?.termsAndCondition || '');
 const [comment, setComment] = useState(state?.comments||'');
-const [user, setUser] = useState(state?.noncompany?.companyName ||state?.company?.companyName||'')
+const [user, setUser] = useState(state?.noncompany?.id ||state?.company?.id||'')
 const [technician, setTechnician] = useState(state?.technicianInfo.id || '');
 const [technicianData, setTechnicianData] = useState([]);
 
@@ -639,7 +639,7 @@ console.log(idx, row)
                   value={user}
                   onChange={(e) => {
                     const selectedOption = userData?.find(
-                      (option) => option.companyName === e.target.value
+                      (option) => option.id === e.target.value
                     );
                     if (selectedOption) {
                       if (selectedOption.hasOwnProperty("createdByUser")) {
@@ -659,7 +659,7 @@ console.log(idx, row)
                     .map(
                       (option) =>
                         option.companyName && (
-                          <MenuItem key={option.id} value={option.companyName}>
+                          <MenuItem key={option.id} value={option.id}>
                             {option.companyName}
                           </MenuItem>
                         )
