@@ -18,17 +18,269 @@ import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutl
 import IconWithPopup from '../user/user-icon';
 import { useLocation } from 'react-router-dom';
 import Logo from '../logo/logo';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+import { apiUrl } from 'src/config';
+import { Table } from "antd";
+import { Box } from "@mui/system";
+import { Scrollbar } from "src/components/scrollbar";
+import { useNavigate } from "react-router-dom";
 
 
+const userId = sessionStorage.getItem("user") || localStorage.getItem("user");
 
+const quotationColumn = [
+  {
+    title: "Quotation Order Number",
+    dataIndex: "id",
+    key: "id",
+    
+  },
+  {
+    title: "Company Name",
+    key: "companyName",
+    dataIndex: "companyName",
+  },
+  {
+    title: "Order Modified Date",
+    key: "lastModifiedDate",
+    dataIndex: "lastModifiedDate",
+  },
+  {
+    title: "Order Date",
+    key: "createdDate",
+    dataIndex: "createdDate",
+  },
+  {
+    title: "Delivery Date",
+    key: "deliveryDate",
+    dataIndex: "deliveryDate",
+  },
+  {
+    title: "Status",
+    key: "status",
+    dataIndex: "status",
+  },
+  {
+    title: "Type",
+    key: "type",
+    dataIndex: "type",
+  },
+ 
+];
+const salesColumn = [
+  {
+    title: "Sales Order Number",
+    dataIndex: "id",
+    key: "id",
+  },
+  {
+    title: "Company Name",
+    key: "companyName",
+    dataIndex: "companyName",
+  },
+  {
+    title: "Order Modified Date",
+    key: "lastModifiedDate",
+    dataIndex: "lastModifiedDate",
+  },
+  {
+    title: "Order Date",
+    key: "createdDate",
+    dataIndex: "createdDate",
+  },
+  {
+    title: "Delivery Date",
+    key: "deliveryDate",
+    dataIndex: "deliveryDate",
+  },
+  {
+    title: "Status",
+    key: "status",
+    dataIndex: "status",
+  },
+  {
+    title: "Type",
+    key: "type",
+    dataIndex: "type",
+  },
+];
+const purchaseColumn = [
+  {
+    title: "Purchase Order Number",
+    dataIndex: "id",
+    key: "id",
+  },
+  {
+    title: "Company Name",
+    key: "companyName",
+    dataIndex: "companyName",
+  },
+  {
+    title: "Order Modified Date",
+    key: "lastModifiedDate",
+    dataIndex: "lastModifiedDate",
+  },
+  {
+    title: "Order Date",
+    key: "createdDate",
+    dataIndex: "createdDate",
+  },
+  {
+    title: "Delivery Date",
+    key: "deliveryDate",
+    dataIndex: "deliveryDate",
+  },
+  {
+    title: "Status",
+    key: "status",
+    dataIndex: "status",
+  },
+  {
+    title: "Type",
+    key: "type",
+    dataIndex: "type",
+  },
+];
+
+const workColumn = [
+  {
+    title: "Work Order Number",
+    dataIndex: "id",
+    key: "id",
+  },
+  {
+    title: "Company Name",
+    key: "companyName",
+    dataIndex: "companyName",
+  },
+  {
+    title: "Order Modified Date",
+    key: "lastModifiedDate",
+    dataIndex: "lastModifiedDate",
+  },
+  {
+    title: "Order Date",
+    key: "createdDate",
+    dataIndex: "createdDate",
+  },
+
+  {
+    title: "Status",
+    key: "status",
+    dataIndex: "status",
+  },
+  {
+    title: "Type",
+    key: "type",
+    dataIndex: "type",
+  },
+];
 
 export const ViewTemporaryUserDetail = (props) => {
 
   const location = useLocation();
+    const navigate = useNavigate();
   const state = location.state;
+
+  const [po, setPo] = useState([])
+  const [so, setSo] = useState([]);
+  const [wo, setWo] = useState([]);
+  const [quotation, setQuotation] = useState([]);
 
 
   const align = 'horizontal' 
+
+    function formatDate(dateString) {
+      const parsedDate = new Date(dateString);
+      const year = parsedDate.getFullYear();
+      const month = String(parsedDate.getMonth() + 1).padStart(2, "0");
+      const day = String(parsedDate.getDate()).padStart(2, "0");
+      return `${year}/${month}/${day}`;
+    }
+
+  useEffect(() => {
+    const fetchData = () => {
+      axios
+        .get(
+          apiUrl +
+            `getRecordBasedOnCustomerId/${userId}/${state.id}/june/2023`
+        )
+        .then((response) => {
+    
+
+          let poList = [
+            ...response.data.poList.slice(-4).map((obj) => ({
+              ...obj,
+              lastModifiedDate: formatDate(obj.lastModifiedDate),
+              createdDate: formatDate(obj.createdDate),
+              deliveryDate: formatDate(obj.deliveryDate),
+              companyName:
+                obj.tempUser?.companyName || obj.companyuser?.companyName,
+              category: "poList",
+            })),
+          ];
+            let soList = [
+              ...response.data.soList.slice(-4).map((obj) => ({
+                ...obj,
+                lastModifiedDate: formatDate(obj.lastModifiedDate),
+                createdDate: formatDate(obj.createdDate),
+                deliveryDate: formatDate(obj.deliveryDate),
+                companyName:
+                  obj.tempUser?.companyName || obj.companyuser?.companyName,
+                category: "soList",
+              })),
+            ];
+
+          let woList = [
+            ...response.data.workOrderList.slice(-4).map((obj) => ({
+              ...obj,
+              lastModifiedDate: formatDate(obj.lastModifiedDate),
+              createdDate: formatDate(obj.createdDate),
+              companyName:
+                obj.noncompany?.companyName || obj.company?.companyName,
+              category: "woList",
+            })),
+          ];
+          let quotationList = [
+            ...response.data.quotationList.slice(-4).map((obj) => ({
+              ...obj,
+              lastModifiedDate: formatDate(obj.lastModifiedDate),
+              createdDate: formatDate(obj.createdDate),
+              deliveryDate: formatDate(obj.deliveryDate),
+              companyName:
+                obj.tempUser?.companyName || obj.companyuser?.companyName,
+              category: "qoList",
+            })),
+          ];
+
+          setPo(poList);
+          setSo(soList);
+          setWo(woList)
+          setQuotation(quotationList)
+      
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    };
+
+    fetchData();
+  }, [userId, state?.id]);
+
+
+   const handleNavigation1 = () => {
+     navigate(`/dashboard/logistics/viewAllQo`, { state: state.id });
+  };
+    const handleNavigation2 = () => {
+      navigate(`/dashboard/logistics/viewAllSo`, { state: state.id });
+    };
+  const handleNavigation3 = () => {
+    navigate(`/dashboard/logistics/viewAllPo`, { state: state.id});
+  };
+    const handleNavigation4 = () => {
+      navigate(`/dashboard/logistics/viewAllWo`, { state: state.id });
+    };
   
 
   return (
@@ -120,6 +372,130 @@ export const ViewTemporaryUserDetail = (props) => {
           />
         </PropertyList>
         <Divider />
+      </Card>
+      <Card style={{ marginBottom: "12px" }}>
+        <CardHeader
+          title="Quotation list"
+          action={
+            <Link
+              color="primary"
+              onClick={handleNavigation1}
+              sx={{
+                alignItems: "center",
+                textAlign: "center",
+              }}
+              underline="hover"
+            >
+              <Typography variant="subtitle1">View all</Typography>
+            </Link>
+          }
+        />
+        <Divider />
+        <Box
+          sx={{ position: "relative", overflowX: "auto", marginTop: "30px" }}
+        >
+          <Scrollbar>
+            <Table
+              sx={{ minWidth: 800, overflowX: "auto" }}
+              columns={quotationColumn}
+              dataSource={quotation}
+              rowClassName={() => "table-data-row"}
+            ></Table>
+          </Scrollbar>
+        </Box>
+      </Card>
+      <Card style={{ marginBottom: "12px" }}>
+        <CardHeader
+          title="Sales Order list"
+          action={
+            <Link
+              color="primary"
+              onClick={handleNavigation2}
+              sx={{
+                alignItems: "center",
+                textAlign: "center",
+              }}
+              underline="hover"
+            >
+              <Typography variant="subtitle1">View all</Typography>
+            </Link>
+          }
+        />
+        <Divider />
+        <Box
+          sx={{ position: "relative", overflowX: "auto", marginTop: "30px" }}
+        >
+          <Scrollbar>
+            <Table
+              sx={{ minWidth: 800, overflowX: "auto" }}
+              columns={salesColumn}
+              dataSource={so}
+              rowClassName={() => "table-data-row"}
+            ></Table>
+          </Scrollbar>
+        </Box>
+      </Card>
+      <Card style={{ marginBottom: "12px" }}>
+        <CardHeader
+          title="Purchase Order list"
+          action={
+            <Link
+              color="primary"
+              onClick={handleNavigation3}
+              sx={{
+                alignItems: "center",
+                textAlign: "center",
+              }}
+              underline="hover"
+            >
+              <Typography variant="subtitle1">View all</Typography>
+            </Link>
+          }
+        />
+        <Divider />
+        <Box
+          sx={{ position: "relative", overflowX: "auto", marginTop: "30px" }}
+        >
+          <Scrollbar>
+            <Table
+              sx={{ minWidth: 800, overflowX: "auto" }}
+              columns={purchaseColumn}
+              dataSource={po}
+              rowClassName={() => "table-data-row"}
+            ></Table>
+          </Scrollbar>
+        </Box>
+      </Card>
+      <Card style={{ marginBottom: "12px" }}>
+        <CardHeader
+          title="Work Order list"
+          action={
+            <Link
+              color="primary"
+              onClick={handleNavigation4}
+              sx={{
+                alignItems: "center",
+                textAlign: "center",
+              }}
+              underline="hover"
+            >
+              <Typography variant="subtitle1">View all</Typography>
+            </Link>
+          }
+        />
+        <Divider />
+        <Box
+          sx={{ position: "relative", overflowX: "auto", marginTop: "30px" }}
+        >
+          <Scrollbar>
+            <Table
+              sx={{ minWidth: 800, overflowX: "auto" }}
+              columns={workColumn}
+              dataSource={wo}
+              rowClassName={() => "table-data-row"}
+            ></Table>
+          </Scrollbar>
+        </Box>
       </Card>
     </div>
   );
