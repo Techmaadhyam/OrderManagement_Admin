@@ -469,7 +469,7 @@ const SalesOrderViewList = () => {
                 "auto",
                 "auto",
                 "auto",
-                "auto",
+                60,
                 "auto",
                 "auto",
                 "auto",
