@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import {
   Box,
   IconButton,
@@ -15,172 +15,167 @@ import {
   Divider,
   TextField,
   MenuItem,
-  Unstable_Grid2 as Grid
-} from '@mui/material';
-import { DatePicker } from 'antd';
-import './purchase-order.css'
-import IconWithPopup from '../user/user-icon';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import moment from 'moment/moment';
-import { primaryColor } from 'src/primaryColor';
-import EditIcon from '@mui/icons-material/Edit';
-import { Scrollbar } from 'src/components/scrollbar';
-import React from 'react';
-import { Delete } from '@mui/icons-material';
-import './customTable.css'
-import { useNavigate } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
-import dayjs from 'dayjs';
-import './customTable.css'
-import 'moment-timezone';
-import { apiUrl } from 'src/config';
-import Logo from '../logo/logo';
+  Unstable_Grid2 as Grid,
+} from "@mui/material";
+import { DatePicker } from "antd";
+import "./purchase-order.css";
+import IconWithPopup from "../user/user-icon";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import moment from "moment/moment";
+import { primaryColor } from "src/primaryColor";
+import EditIcon from "@mui/icons-material/Edit";
+import { Scrollbar } from "src/components/scrollbar";
+import React from "react";
+import { Delete } from "@mui/icons-material";
+import "./customTable.css";
+import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import dayjs from "dayjs";
+import "./customTable.css";
+import "moment-timezone";
+import { apiUrl } from "src/config";
+import Logo from "../logo/logo";
 
-const userId = parseInt(sessionStorage.getItem('user')|| localStorage.getItem('user'))
-const dateFormat = 'M/D/YYYY, h:mm:ss A';
-
+const userId = parseInt(
+  sessionStorage.getItem("user") || localStorage.getItem("user")
+);
+const dateFormat = "M/D/YYYY, h:mm:ss A";
 
 const customerType = [
   {
-    label: 'Customer',
-    value: 'Customer'
+    label: "Customer",
+    value: "Customer",
   },
   {
-    label: 'Vendor',
-    value: 'Vendor'
-  }
+    label: "Vendor",
+    value: "Vendor",
+  },
 ];
-
-
 
 const userOptions = [
   {
-    label: 'Draft',
-    value: 'Draft'
+    label: "Draft",
+    value: "Draft",
   },
   {
-    label: 'Waiting for Approval',
-    value: 'Waiting for Approval'
+    label: "Waiting for Approval",
+    value: "Waiting for Approval",
   },
   {
-    label: 'Cancelled',
-    value: 'Cancelled'
+    label: "Cancelled",
+    value: "Cancelled",
   },
   {
-    label: 'Approved',
-    value: 'Approved'
+    label: "Approved",
+    value: "Approved",
   },
   {
-    label: 'Delivered',
-    value: 'Delivered'
+    label: "Delivered",
+    value: "Delivered",
   },
- 
 ];
 
-const tableHeader=[
+const tableHeader = [
   {
-      id:'product_name',
-      name:'Part Description',
-      width: 200,
-      
+    id: "product_name",
+    name: "Part Description",
+    width: 200,
   },
   {
-    id:'cost',
-    name:'Unit Price',
+    id: "cost",
+    name: "Unit Price",
     width: 150,
-},
-  {
-      id:'workstation',
-      name:'No. Of workstations',
-      width: 200,
   },
   {
-    id:'igst',
-    name:'IGST',
+    id: "workstation",
+    name: "No. Of workstations",
+    width: 200,
+  },
+  {
+    id: "igst",
+    name: "IGST",
     width: 150,
-},
+  },
 
   {
-    id:'amount',
-    name:'Net Amount',
+    id: "amount",
+    name: "Net Amount",
     width: 150,
-},
-  {
-      id:'add',
-      name:'',
-      width: 50,
   },
   {
-      id:'delete',
-      name:'',
-      width: 50,
-  }
+    id: "add",
+    name: "",
+    width: 50,
+  },
+  {
+    id: "delete",
+    name: "",
+    width: 50,
+  },
 ];
-
 
 export const WorkOrderEditForm = (props) => {
-
   const location = useLocation();
   const state = location.state;
-console.log(state)
+  console.log(state);
 
-
-
-  const [userData, setUserData]= useState([])
+  const [userData, setUserData] = useState([]);
   const navigate = useNavigate();
-//form state handeling
+  //form state handeling
 
-const [type, setType] = useState(state?.type||"");
+  const [type, setType] = useState(state?.type || "");
 
+  const [status, setStatus] = useState(state?.status || "");
+  const [contactName, setContactName] = useState(
+    state?.contactPersonName || ""
+  );
+  const [adminName, setAdminName] = useState(state?.adminPersonName || "");
+  const [adminEmail, setAdminEmail] = useState(state?.adminEmail || "");
+  const [adminPhone, setAdminPhone] = useState(state?.adminPhoneNumber || "");
+  const [inchargeEmail, setInchargeEmail] = useState(state?.contactEmail || "");
+  const [phone, setPhone] = useState(state?.contactPhoneNumber || "");
+  const [address, setAddress] = useState(state?.deliveryAddress || "");
+  const [tempId, setTempId] = useState(state?.noncompany?.id);
+  const [userState, setUserState] = useState(state?.company?.id);
+  const [terms, setTerms] = useState(state?.termsAndCondition || "");
+  const [comment, setComment] = useState(state?.comments || "");
+  const [user, setUser] = useState(
+    state?.noncompany?.id || state?.company?.id || ""
+  );
+  const [technician, setTechnician] = useState(state?.technicianInfo.id || "");
+  const [technicianData, setTechnicianData] = useState([]);
 
-const [status, setStatus] = useState(state?.status || "");
-const [contactName,setContactName] = useState(state?.contactPersonName ||'')
-const [adminName,setAdminName] = useState(state?.adminPersonName ||'')
-const [adminEmail, setAdminEmail] = useState(state?.adminEmail ||'');
-const [adminPhone, setAdminPhone] = useState(state?.adminPhoneNumber ||'');
-const [inchargeEmail, setInchargeEmail] = useState(state?.contactEmail ||'');
-const [phone, setPhone] = useState(state?.contactPhoneNumber ||'');
-const [address, setAddress] = useState(state?.deliveryAddress || "");
-const [tempId, setTempId] = useState(state?.noncompany?.id);
-const [userState, setUserState] = useState(state?.company?.id);
-const [terms, setTerms] = useState(state?.termsAndCondition || '');
-const [comment, setComment] = useState(state?.comments||'');
-const [user, setUser] = useState(state?.noncompany?.id ||state?.company?.id||'')
-const [technician, setTechnician] = useState(state?.technicianInfo.id || '');
-const [technicianData, setTechnicianData] = useState([]);
+  const [currentDate, setCurrentDate] = useState("");
 
-
-const [currentDate, setCurrentDate] = useState('');
-
-//add product state
-const [productName, setProductName] = useState('');
-  const [weight, setWeight] = useState('');
+  //add product state
+  const [productName, setProductName] = useState("");
+  const [weight, setWeight] = useState("");
   const [sgst, setSgst] = useState();
   const [igst, setIgst] = useState();
   const [quantity, setQuantity] = useState();
   const [price, setPrice] = useState();
   const [cgst, setCgst] = useState();
   const [size, setSize] = useState();
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
   const [workstation, setWorkstation] = useState();
+  const [netAmount, setNetAmount] = useState();
+  const [discount, setDiscount] = useState();
 
-  const [userData2, setUserData2] = useState([])
-  const [productId, setProductId] = useState()
+  const [userData2, setUserData2] = useState([]);
+  const [productId, setProductId] = useState();
 
   const [totalAmount, setTotalAmount] = useState(0);
 
-  const [rowData, setRowData] =useState()
+  const [rowData, setRowData] = useState();
 
-
-  const [Id, setId] = useState()
+  const [Id, setId] = useState();
 
   const [touched, setTouched] = useState(false);
 
-
-      //deleted row
+  //deleted row
   const [deletedRows, setDeletedRows] = useState([]);
 
   const handleBlur = () => {
@@ -191,17 +186,23 @@ const [productName, setProductName] = useState('');
   const hasError2 = touched && !emailRegex.test(inchargeEmail);
 
   useEffect(() => {
-    axios.get(apiUrl +`getAllWorkOrderItems/${state?.id || state?.workorder?.id}`)
-      .then(response => {
+    axios
+      .get(apiUrl + `getAllWorkOrderItems/${state?.id || state?.workorder?.id}`)
+      .then((response) => {
         const modifiedData = response.data.map((item) => {
           const { unitPrice, igst, workstationcount } = item;
 
-          const netAmount = (
+          const netAmount =
             parseFloat(workstationcount) * unitPrice +
-            (parseFloat(workstationcount) * unitPrice * igst) / 100
-          ).toFixed(2);
+            (parseFloat(workstationcount) * unitPrice * igst) / 100;
 
-          return { ...item, netAmount };
+          const discountedAmount =
+            netAmount - (netAmount * item.discountpercent) / 100;
+
+          return {
+            ...item,
+            netAmount: parseFloat(discountedAmount.toFixed(2)),
+          };
         });
         setRowData(modifiedData);
 
@@ -210,160 +211,153 @@ const [productName, setProductName] = useState('');
           0
         );
         setTotalAmount(totalNetAmount);
-      
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
-  }, [state?.id, state?.quotation?.id , state?.totalAmount]);
+  }, [state?.id, state?.quotation?.id, state?.totalAmount]);
 
   //currentdate
   useEffect(() => {
     const today = new Date();
     const year = today.getFullYear().toString();
-    const month = (today.getMonth() + 1).toString().padStart(2, '0');
-    const day = today.getDate().toString().padStart(2, '0');
+    const month = (today.getMonth() + 1).toString().padStart(2, "0");
+    const day = today.getDate().toString().padStart(2, "0");
     const formattedDate = `${year}/${month}/${day}`;
     setCurrentDate(formattedDate);
   }, []);
 
   const handleInputChange = (event) => {
-  const { name, value } = event.target;
+    const { name, value } = event.target;
 
-  switch (name) {
-  
-      case 'user':
+    switch (name) {
+      case "user":
         setUser(value);
-          break;
-      case 'contactName':
+        break;
+      case "contactName":
         setContactName(value);
         break;
-      case 'adminname':
+      case "adminname":
         setAdminName(value);
         break;
-      case 'adminemail':
+      case "adminemail":
         setAdminEmail(value);
         break;
-      case 'adminphone':
+      case "adminphone":
         setAdminPhone(value);
         break;
-      case 'inchargeemail':
+      case "inchargeemail":
         setInchargeEmail(value);
         break;
-      case 'mobileno':
+      case "mobileno":
         setPhone(value);
         break;
-      case 'type':
+      case "type":
         setType(value);
         break;
-        case 'technician':
-          setTechnician(value);
-          break;
-      case 'status':
+      case "technician":
+        setTechnician(value);
+        break;
+      case "status":
         setStatus(value);
         break;
-    case 'address':
-      setAddress(value);
+      case "address":
+        setAddress(value);
         break;
-    default:
-      break;
-  }
-};
-   //get temp user
-   useEffect(() => {
-    const request1 = axios.get(apiUrl +`getAllTempUsers/${userId}`);
-    const request2 = axios.get(apiUrl +`getAllUsersBasedOnType/${userId}`);
-  
+      default:
+        break;
+    }
+  };
+  //get temp user
+  useEffect(() => {
+    const request1 = axios.get(apiUrl + `getAllTempUsers/${userId}`);
+    const request2 = axios.get(apiUrl + `getAllUsersBasedOnType/${userId}`);
+
     Promise.all([request1, request2])
       .then(([response1, response2]) => {
         const tempUsersData = response1.data;
         const usersData = response2.data;
         const combinedData = [...tempUsersData, ...usersData];
         setUserData(combinedData);
-        setTechnicianData(tempUsersData)
-  
-        const selecteduserId = combinedData.find((option) => (option.id === tempId || userState));
-        const selecteduser = selecteduserId ? selecteduserId.companyName : '';
- 
- 
-       
+        setTechnicianData(tempUsersData);
+
+        const selecteduserId = combinedData.find(
+          (option) => option.id === tempId || userState
+        );
+        const selecteduser = selecteduserId ? selecteduserId.companyName : "";
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
   }, [state?.tempUserId, state?.userId]);
- 
 
-  const filteredData = technicianData?.filter(item => item.type === 'Technician')
-
- 
+  const filteredData = technicianData?.filter(
+    (item) => item.type === "Technician"
+  );
 
   //////////////
   //add product//
   /////////////
 
-console.log(user)
+  console.log(user);
 
   const handleRemoveRow = (idx, row) => () => {
-
-    const deletedRow = { ...row }; 
+    const deletedRow = { ...row };
     setDeletedRows((prevDeletedRows) => [...prevDeletedRows, deletedRow]);
-  
-      const updatedRows = rowData?.filter((_, index) => index !== idx);
-      setRowData(updatedRows);
-    
-      const calculatedTotalAmount = updatedRows.reduce(
-        (total, row) =>
-        total +
-        row.workstationcount * row.unitPrice +
-        (row.workstationcount * row.unitPrice * row.igst) / 100,
+
+    const updatedRows = rowData?.filter((_, index) => index !== idx);
+    setRowData(updatedRows);
+
+    const calculatedTotalAmount = updatedRows.reduce(
+      (total, row) => total + row.netAmount,
       0
-      );
-    
-      setTotalAmount(calculatedTotalAmount);
-    };
+    );
+
+    setTotalAmount(calculatedTotalAmount);
+  };
 
   const toggleForm = () => {
     setShowForm((prevState) => !prevState);
     setEditIndex(null);
     clearFormFields();
   };
+  useEffect(() => {
+    const calculatedNetAmount =
+      workstation * price + (workstation * price * igst) / 100;
+    const discountedAmount =
+      calculatedNetAmount - (calculatedNetAmount * discount) / 100;
+    setNetAmount(discountedAmount.toFixed(2));
+  }, [workstation, price, igst, discount]);
 
   const handleModalClick = (event) => {
-    if (event.target.classList.contains('modal')) {
+    if (event.target.classList.contains("modal")) {
       toggleForm();
     }
   };
 
   const handleSubmit = (e) => {
-
     e.preventDefault();
-  
-    if (
-     
-      productName &&
-      workstation &&
-      igst &&
-      description
-    ) {
+
+    if (productName && workstation && igst && description) {
       const newRow = {
         id: Id,
-        product: {id: productId},
+        product: { id: productId },
         productName,
         workOrderId: state?.id,
         unitPrice: parseFloat(price),
         description,
+        discountpercent: parseFloat(discount),
+        netAmount: parseFloat(netAmount),
         //createdBy: userId,
         workstationcount: parseFloat(workstation),
         igst: parseFloat(igst),
         comment: comment,
         //createdDate: currentDate,
         //lastModifiedDate: currentDate,
-   
       };
-  
+
       let updatedRows;
-  
+
       if (editIndex !== null) {
         updatedRows = [...rowData];
         updatedRows[editIndex] = newRow;
@@ -372,218 +366,225 @@ console.log(user)
         updatedRows = [...rowData, newRow];
         setRowData(updatedRows);
       }
-  
+
       clearFormFields();
       setShowForm(false);
       setEditIndex(null);
-  
+
       const calculatedTotalAmount = updatedRows.reduce(
-        (total, row) =>
-          total +
-          row.workstationcount * row.unitPrice +
-          (row.workstationcount * row.unitPrice * row.igst) / 100,
+        (total, row) => total + row.netAmount,
         0
       );
-  
+
       setTotalAmount(calculatedTotalAmount);
     }
   };
 
-  
-
-
   const handleEditRow = (idx, row) => {
+    console.log(idx, row);
 
-console.log(idx, row)
+    const selectedOption = userData2.find(
+      (option) => option.productName === row.product.productName
+    );
+    const selectedProductId = selectedOption ? selectedOption.id : "";
 
-    const selectedOption = userData2.find((option) => option.productName === row.product.productName);
-    const selectedProductId = selectedOption ? selectedOption.id : '';
-
-  setId(row.id)
-  setProductId(selectedProductId);
-  setProductName(row.product.productName || row.productName);
-  setWeight(row.weight);
-  setQuantity(row.quantity);
-  setWorkstation(row.workstationcount)
-  setPrice(row.unitPrice);
-  setCgst(row.cgst);
-  setIgst(row.igst)
-  setSgst(row.sgst)
-  setSize(row.size)
-  setDescription(row.description);
-  setEditIndex(idx);
-  setShowForm(true);
-};
-  
+    setId(row.id);
+    setProductId(selectedProductId);
+    setProductName(row.product.productName || row.productName);
+    setWeight(row.weight);
+    setQuantity(row.quantity);
+    setWorkstation(row.workstationcount);
+    setPrice(row.unitPrice);
+    setCgst(row.cgst);
+    setIgst(row.igst);
+    setSgst(row.sgst);
+    setSize(row.size);
+    setDescription(row.description);
+    setDiscount(row.discountpercent);
+    setNetAmount(row.netAmount);
+    setEditIndex(idx);
+    setShowForm(true);
+  };
 
   const clearFormFields = () => {
-    setProductName('');
-    setWeight('');
-    setQuantity('');
-    setPrice('');
-    setCgst('');
-    setSize('')
-    setIgst('')
-    setSgst('')
-    setDescription('');
-    setWorkstation('')
+    setProductName("");
+    setWeight("");
+    setQuantity("");
+    setPrice("");
+    setCgst("");
+    setSize("");
+    setIgst("");
+    setSgst("");
+    setDescription("");
+    setWorkstation("");
+    setDiscount("");
+    setNetAmount("");
   };
 
   //
   useEffect(() => {
-    axios.get(apiUrl +`getAllItem/${userId}`)
-      .then(response => {
+    axios
+      .get(apiUrl + `getAllItem/${userId}`)
+      .then((response) => {
         setUserData2(response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
   }, []);
 
-
-  
-
-  const updatedRows = rowData?.map(({ productName, netAmount, ...rest }) => rest);
+  const updatedRows = rowData?.map(
+    ({ productName, netAmount, ...rest }) => rest
+  );
   const deleteRows = deletedRows?.map(
     ({ productName, netAmount, ...rest }) => rest
   );
 
   //post request
   const handleClick = async (event) => {
-    let finalAmount = parseFloat(totalAmount?.toFixed(2))
+    let finalAmount = parseFloat(totalAmount?.toFixed(2));
 
-    console.log({ workorder:{
-      id: state?.id,
-      contactPersonName: contactName,
-      contactPhoneNumber: phone,
-      contactEmail: inchargeEmail,
-      adminPersonName: adminName,
-      adminPhoneNumber: adminPhone,
-      adminEmail: adminEmail,   
-      status: status,
-      type: type,
-      createdByUser: {id: userId},
-      createdDate: state?.originalcreatedDate,
-      lastModifiedDate: new Date(),
-      comments : comment,
-      category: 'workorder',
-      lastModifiedByUser: {id: userId},
-      termsAndCondition: terms,
-      //totalAmount: finalAmount,
-      technicianInfo: {id: technician},
-      noncompany:{id: tempId},
-      //company: {id: userState},
-
-  },
+    console.log({
+      workorder: {
+        id: state?.id,
+        contactPersonName: contactName,
+        contactPhoneNumber: phone,
+        contactEmail: inchargeEmail,
+        adminPersonName: adminName,
+        adminPhoneNumber: adminPhone,
+        adminEmail: adminEmail,
+        status: status,
+        type: type,
+        createdByUser: { id: userId },
+        createdDate: state?.originalcreatedDate,
+        lastModifiedDate: new Date(),
+        comments: comment,
+        category: "workorder",
+        lastModifiedByUser: { id: userId },
+        termsAndCondition: terms,
+        //totalAmount: finalAmount,
+        technicianInfo: { id: technician },
+        noncompany: { id: tempId },
+        //company: {id: userState},
+      },
       workOrderItems: updatedRows,
-      deleteWorkOrderItems: deleteRows})
-    
+      deleteWorkOrderItems: deleteRows,
+    });
+
     event.preventDefault();
 
+    if (
+      contactName &&
+      userId &&
+      phone &&
+      status &&
+      comment &&
+      terms &&
+      updatedRows &&
+      tempId
+    ) {
+      try {
+        const response = await fetch(apiUrl + "addWorkOrderWithItems", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            workorder: {
+              id: state?.id,
+              contactPersonName: contactName,
+              contactPhoneNumber: phone,
+              contactEmail: inchargeEmail,
+              adminPersonName: adminName,
+              adminPhoneNumber: adminPhone,
+              adminEmail: adminEmail,
+              status: status,
+              type: type,
+              createdByUser: { id: userId },
+              createdDate: state?.originalcreatedDate,
+              lastModifiedDate: new Date(),
+              comments: comment,
+              category: "workorder",
+              lastModifiedByUser: { id: userId },
+              termsAndCondition: terms,
+              //totalAmount: finalAmount,
+              technicianInfo: { id: technician },
+              noncompany: { id: tempId },
+              //company: {id: userState},
+            },
+            workOrderItems: updatedRows,
+            deleteWorkOrderItems: deleteRows,
+          }),
+        });
 
-    
-      if (contactName && userId && phone && status && comment && terms && updatedRows && tempId) {
-        try {
-          const response = await fetch(apiUrl +'addWorkOrderWithItems', {
-            method: 'POST',
-            headers: {
-    
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              workorder:{
-                id: state?.id,
-                contactPersonName: contactName,
-                contactPhoneNumber: phone,
-                contactEmail: inchargeEmail,
-                adminPersonName: adminName,
-                adminPhoneNumber: adminPhone,
-                adminEmail: adminEmail,   
-                status: status,
-                type: type,
-                createdByUser: {id: userId},
-                createdDate: state?.originalcreatedDate,
-                lastModifiedDate: new Date(),
-                comments : comment,
-                category: 'workorder',
-                lastModifiedByUser: {id: userId},
-                termsAndCondition: terms,
-                //totalAmount: finalAmount,
-                technicianInfo: {id: technician},
-                noncompany:{id: tempId},
-                //company: {id: userState},
-      
-            },
-                workOrderItems: updatedRows,
-                deleteWorkOrderItems: deleteRows
-        })
+        if (response.ok) {
+          // Redirect to home page upon successful submission
+
+          response.json().then((data) => {
+            navigate("/dashboard/services/workorderDetail", { state: data });
+            console.log(data);
           });
-          
-          if (response.ok) {
-            // Redirect to home page upon successful submission
-        
-           response.json().then(data => {
-            navigate('/dashboard/services/workorderDetail', { state: data });
-            console.log(data)
-      
-    });
-          } 
-        } catch (error) {
-          console.error('API call failed:', error);
         }
-      } else if (contactName && userId && phone && status && comment && terms && updatedRows && userState){
-        try {
-          const response = await fetch(apiUrl +'addWorkOrderWithItems', {
-            method: 'POST',
-            headers: {
-    
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              workorder:{
-                id: state?.id,
-                contactPersonName: contactName,
-                contactPhoneNumber: phone,
-                contactEmail: inchargeEmail,
-                adminPersonName: adminName,
-                adminPhoneNumber: adminPhone,
-                adminEmail: adminEmail,   
-                status: status,
-                type: type,
-                category: 'workorder',
-                createdByUser: {id: userId},
-                createdDate: state?.originalcreatedDate,
-                lastModifiedDate: new Date(),
-                comments : comment,
-                lastModifiedByUser: {id: userId},
-                termsAndCondition: terms,
-                //totalAmount: finalAmount,
-                technicianInfo: {id: technician},
-                //noncompany:{id: tempId},
-                company: {id: userState},
-      
-            },
-                workOrderItems: updatedRows,
-                deleteWorkOrderItems: deleteRows
-        })
-          });
-          
-          if (response.ok) {
-            // Redirect to home page upon successful submission
-        
-           response.json().then(data => {
-            navigate('/dashboard/services/workorderDetail', { state: data });
-            console.log(data)
-      
-    });
-          } 
-        } catch (error) {
-          console.error('API call failed:', error);
-        }
+      } catch (error) {
+        console.error("API call failed:", error);
       }
-    
-    };
+    } else if (
+      contactName &&
+      userId &&
+      phone &&
+      status &&
+      comment &&
+      terms &&
+      updatedRows &&
+      userState
+    ) {
+      try {
+        const response = await fetch(apiUrl + "addWorkOrderWithItems", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            workorder: {
+              id: state?.id,
+              contactPersonName: contactName,
+              contactPhoneNumber: phone,
+              contactEmail: inchargeEmail,
+              adminPersonName: adminName,
+              adminPhoneNumber: adminPhone,
+              adminEmail: adminEmail,
+              status: status,
+              type: type,
+              category: "workorder",
+              createdByUser: { id: userId },
+              createdDate: state?.originalcreatedDate,
+              lastModifiedDate: new Date(),
+              comments: comment,
+              lastModifiedByUser: { id: userId },
+              termsAndCondition: terms,
+              //totalAmount: finalAmount,
+              technicianInfo: { id: technician },
+              //noncompany:{id: tempId},
+              company: { id: userState },
+            },
+            workOrderItems: updatedRows,
+            deleteWorkOrderItems: deleteRows,
+          }),
+        });
 
+        if (response.ok) {
+          // Redirect to home page upon successful submission
+
+          response.json().then((data) => {
+            navigate("/dashboard/services/workorderDetail", { state: data });
+            console.log(data);
+          });
+        }
+      } catch (error) {
+        console.error("API call failed:", error);
+      }
+    }
+  };
 
   return (
     <div style={{ minWidth: "100%" }}>
@@ -810,6 +811,7 @@ console.log(idx, row)
                               setProductId(selectedOption.id);
                               setProductName(e.target.value);
                               setDescription(selectedOption.description);
+                              setDiscount(0);
                             }}
                             style={{ marginBottom: 10 }}
                           >
@@ -831,6 +833,18 @@ console.log(idx, row)
                             type="number"
                             value={workstation}
                             onChange={(e) => setWorkstation(e.target.value)}
+                            style={{ marginBottom: 10 }}
+                          />
+                        </Grid>
+                        <Grid xs={12} md={6}>
+                          <TextField
+                            fullWidth
+                            label="Discount in %"
+                            required
+                            name="discount"
+                            type="number"
+                            value={discount}
+                            onChange={(e) => setDiscount(e.target.value)}
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
@@ -858,6 +872,18 @@ console.log(idx, row)
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
+                        <Grid xs={12} md={6}>
+                          <TextField
+                            fullWidth
+                            label="Net Amount"
+                            required
+                            name="netamount"
+                            type="number"
+                            value={netAmount}
+                            onChange={(e) => setNetAmount(e.target.value)}
+                            style={{ marginBottom: 10 }}
+                          />
+                        </Grid>
                       </div>
                     </div>
                     <Grid xs={12} md={6}>
@@ -866,7 +892,7 @@ console.log(idx, row)
                         label="Description"
                         name="description"
                         multiline
-                        rows={4}
+                        rows={2}
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         style={{ marginBottom: 10 }}
@@ -925,13 +951,7 @@ console.log(idx, row)
                       <div>{row.igst}</div>
                     </TableCell>
                     <TableCell>
-                      <div>
-                        {(
-                          row.workstationcount * row.unitPrice +
-                          (row.workstationcount * row.unitPrice * row.igst) /
-                            100
-                        ).toFixed(2)}
-                      </div>
+                      <div>{row.netAmount}</div>
                     </TableCell>
                     <TableCell>
                       <IconButton onClick={() => handleEditRow(idx, row)}>
@@ -1030,5 +1050,5 @@ console.log(idx, row)
 };
 
 WorkOrderEditForm.propTypes = {
-  customer: PropTypes.object.isRequired
+  customer: PropTypes.object.isRequired,
 };

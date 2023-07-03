@@ -63,15 +63,21 @@ export const ViewSalesOrder = (props) => {
     axios.get(apiUrl +`getAllSalesOrderDetails/${state?.id || state?.soRecord?.id}`)
       .then(response => {
         const modifiedData = response.data.map(item => {
-          const { quantity, price, cgst, igst, sgst } = item;
+          const { quantity, price, cgst, igst, sgst, discountpercent } = item;
           const netAmount = (
             (quantity * price) +
             ((quantity * price) * cgst / 100) +
             ((quantity * price) * igst / 100) +
             ((quantity * price) * sgst / 100)
-          ).toFixed(2);
+          )
+
+             const discountedAmount =
+               netAmount - (netAmount * discountpercent) / 100;
   
-          return { ...item, netAmount };
+          return {
+            ...item,
+            netAmount: parseFloat(discountedAmount.toFixed(2)),
+          };
         });
 
         const updatedData = modifiedData.map(obj => {

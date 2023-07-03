@@ -104,12 +104,17 @@ console.log(state)
         const modifiedData = response.data.map(item => {
           const {  unitPrice,  igst,  workstationcount} = item;
         
-          const netAmount= (
-            ((parseFloat(workstationcount) * unitPrice) +
-            ((parseFloat(workstationcount) * unitPrice) * igst/ 100)).toFixed(2)
-              )
-  
-          return { ...item, netAmount };
+          const netAmount =
+            parseFloat(workstationcount) * unitPrice +
+            (parseFloat(workstationcount) * unitPrice * igst) / 100;
+
+          const discountedAmount =
+            netAmount - (netAmount * item.discountpercent) / 100;
+
+          return {
+            ...item,
+            netAmount: parseFloat(discountedAmount.toFixed(2)),
+          };
         });
 
         const updatedData = modifiedData.map(obj => {

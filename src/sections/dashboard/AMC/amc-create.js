@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import {
   Box,
   IconButton,
@@ -15,296 +15,290 @@ import {
   Divider,
   TextField,
   MenuItem,
-  Unstable_Grid2 as Grid
-} from '@mui/material';
-import { DatePicker } from 'antd';
-import './purchase-order.css'
-import IconWithPopup from '../user/user-icon';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { primaryColor } from 'src/primaryColor';
-import EditIcon from '@mui/icons-material/Edit';
-import { Scrollbar } from 'src/components/scrollbar';
-import React from 'react';
-import { Delete } from '@mui/icons-material';
-import './customTable.css'
-import { useNavigate } from 'react-router-dom';
-import 'moment-timezone';
-import { apiUrl } from 'src/config';
-import Logo from '../logo/logo';
-
+  Unstable_Grid2 as Grid,
+} from "@mui/material";
+import { DatePicker } from "antd";
+import "./purchase-order.css";
+import IconWithPopup from "../user/user-icon";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { primaryColor } from "src/primaryColor";
+import EditIcon from "@mui/icons-material/Edit";
+import { Scrollbar } from "src/components/scrollbar";
+import React from "react";
+import { Delete } from "@mui/icons-material";
+import "./customTable.css";
+import { useNavigate } from "react-router-dom";
+import "moment-timezone";
+import { apiUrl } from "src/config";
+import Logo from "../logo/logo";
 
 //get userId
-const userId = parseInt(sessionStorage.getItem('user')|| localStorage.getItem('user'))
+const userId = parseInt(
+  sessionStorage.getItem("user") || localStorage.getItem("user")
+);
 
 //set customer type
 const customerType = [
   {
-    label: 'Customer',
-    value: 'Customer'
+    label: "Customer",
+    value: "Customer",
   },
   {
-    label: 'Vendor',
-    value: 'Vendor'
-  }
+    label: "Vendor",
+    value: "Vendor",
+  },
 ];
 
 //set status type
 const userOptions = [
   {
-    label: 'Draft',
-    value: 'Draft'
+    label: "Draft",
+    value: "Draft",
   },
   {
-    label: 'Waiting for Approval',
-    value: 'Waiting for Approval'
+    label: "Waiting for Approval",
+    value: "Waiting for Approval",
   },
   {
-    label: 'Cancelled',
-    value: 'Cancelled'
+    label: "Cancelled",
+    value: "Cancelled",
   },
   {
-    label: 'Approved',
-    value: 'Approved'
+    label: "Approved",
+    value: "Approved",
   },
   {
-    label: 'Delivered',
-    value: 'Delivered'
+    label: "Delivered",
+    value: "Delivered",
   },
- 
 ];
 
 //parts row dimensions
-const tableHeader=[
+const tableHeader = [
   {
-      id:'product_name',
-      name:'Part Description',
-      width: 200,
-      
-  },
-  {
-    id:'cost',
-    name:'Unit Price',
-    width: 150,
-  },
-  {
-    id:'workstation',
-    name:'No. Of workstations',
+    id: "product_name",
+    name: "Part Description",
     width: 200,
   },
   {
-    id:'igst',
-    name:'IGST',
+    id: "cost",
+    name: "Unit Price",
     width: 150,
   },
   {
-    id:'amount',
-    name:'Net Amount',
+    id: "workstation",
+    name: "No. Of workstations",
+    width: 200,
+  },
+  {
+    id: "igst",
+    name: "IGST",
     width: 150,
   },
   {
-    id:'add',
-    name:'',
+    id: "amount",
+    name: "Net Amount",
+    width: 150,
+  },
+  {
+    id: "add",
+    name: "",
     width: 50,
   },
   {
-    id:'delete',
-    name:'',
+    id: "delete",
+    name: "",
     width: 50,
-  }
+  },
 ];
 
 export const AmcCreateForm = (props) => {
+  const [userData, setUserData] = useState([]);
 
+  //react router haldle state transfer
+  const navigate = useNavigate();
+  //form state handeling
+  const [userName, setUserName] = useState("");
+  const [type, setType] = useState("");
+  const [assignmentStart, setAssignmentStart] = useState("");
+  const [assignmentEnd, setAssignmentEnd] = useState("");
+  const [status, setStatus] = useState("");
+  const [contactName, setContactName] = useState("");
+  const [adminName, setAdminName] = useState("");
+  const [adminEmail, setAdminEmail] = useState("");
+  const [adminPhone, setAdminPhone] = useState("");
+  const [inchargeEmail, setInchargeEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [tempId, setTempId] = useState();
+  const [userState, setUserState] = useState();
+  const [terms, setTerms] = useState("");
+  const [comment, setComment] = useState("");
+  const [technician, setTechnician] = useState("");
+  const [technicianData, setTechnicianData] = useState([]);
 
-const [userData, setUserData]= useState([])
+  //add product state
+  const [productName, setProductName] = useState("");
+  const [workstation, setWorkstation] = useState();
+  const [igst, setIgst] = useState();
+  const [price, setPrice] = useState();
+  const [description, setDescription] = useState("");
+  const [netAmount, setNetAmount] = useState();
+  const [discount, setDiscount] = useState();
+  //state related to parts row edit, delete, update
+  const [rows, setRows] = useState([]);
+  const [showForm, setShowForm] = useState(false);
+  const [editIndex, setEditIndex] = useState(null);
 
-//react router haldle state transfer
-const navigate = useNavigate();
-//form state handeling
-const [userName, setUserName] = useState('');
-const [type, setType] = useState("");
-const [assignmentStart, setAssignmentStart] = useState('');
-const [assignmentEnd, setAssignmentEnd]= useState('')
-const [status, setStatus] = useState("");
-const [contactName,setContactName] = useState('')
-const [adminName,setAdminName] = useState('')
-const [adminEmail, setAdminEmail] = useState('');
-const [adminPhone, setAdminPhone] = useState('');
-const [inchargeEmail, setInchargeEmail] = useState('');
-const [phone, setPhone] = useState('');
-const [tempId, setTempId] = useState();
-const [userState, setUserState] = useState();
-const [terms, setTerms] = useState('');
-const [comment, setComment] = useState('');
-const [technician, setTechnician] = useState('');
-const [technicianData, setTechnicianData] = useState([]);
+  const [userData2, setUserData2] = useState([]);
+  const [productId, setProductId] = useState();
 
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [touched, setTouched] = useState(false);
 
-//add product state
-const [productName, setProductName] = useState('');
-const [workstation, setWorkstation] = useState();
-const [igst, setIgst] = useState();
-const [price, setPrice] = useState();
-const [description, setDescription] = useState('');
-//state related to parts row edit, delete, update
-const [rows, setRows] = useState([]);
-const [showForm, setShowForm] = useState(false);
-const [editIndex, setEditIndex] = useState(null);
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
 
-const [userData2, setUserData2] = useState([])
-const [productId, setProductId] = useState()
-
-const [totalAmount, setTotalAmount] = useState(0);
-const [touched, setTouched] = useState(false);
- 
-
-const handleInputChange = (event) => {
-  const { name, value } = event.target;
-
-  switch (name) {
-  
-      case 'user':
+    switch (name) {
+      case "user":
         setUserName(value);
-          break;
-      case 'contactName':
+        break;
+      case "contactName":
         setContactName(value);
         break;
-      case 'adminname':
+      case "adminname":
         setAdminName(value);
         break;
-      case 'adminemail':
+      case "adminemail":
         setAdminEmail(value);
         break;
-      case 'adminphone':
+      case "adminphone":
         setAdminPhone(value);
         break;
-      case 'inchargeemail':
+      case "inchargeemail":
         setInchargeEmail(value);
         break;
-      case 'mobileno':
+      case "mobileno":
         setPhone(value);
         break;
-        case 'technician':
-          setTechnician(value);
-          break;
-      case 'type':
+      case "technician":
+        setTechnician(value);
+        break;
+      case "type":
         setType(value);
         break;
-      case 'status':
+      case "status":
         setStatus(value);
         break;
-    default:
-      break;
-  }
-};
+      default:
+        break;
+    }
+  };
 
-//email validation
-const handleBlur = () => {
-  setTouched(true);
-};
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const hasError = touched && !emailRegex.test(adminEmail);
-const hasError2 = touched && !emailRegex.test(inchargeEmail);
+  //email validation
+  const handleBlur = () => {
+    setTouched(true);
+  };
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const hasError = touched && !emailRegex.test(adminEmail);
+  const hasError2 = touched && !emailRegex.test(inchargeEmail);
 
+  //assignment start and end
+  const handleDateStart = (date) => {
+    setAssignmentStart(date);
+  };
+  const handleDateEnd = (date) => {
+    setAssignmentEnd(date);
+  };
 
-//assignment start and end
-const handleDateStart = (date) => {
-  setAssignmentStart(date);
-
-};
-const handleDateEnd = (date) => {
-  setAssignmentEnd(date)
-};
-
-//get temp user
-useEffect(() => {
-    axios.get(apiUrl + `getAllTempUsers/${userId}`)
-      .then(response => {
-        setUserData(prevData => [...prevData, ...response.data]);
-        setTechnicianData(response.data)
-        console.log(response.data)
-     
+  //get temp user
+  useEffect(() => {
+    axios
+      .get(apiUrl + `getAllTempUsers/${userId}`)
+      .then((response) => {
+        setUserData((prevData) => [...prevData, ...response.data]);
+        setTechnicianData(response.data);
+        console.log(response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
-  
-    axios.get(apiUrl + `getAllUsersBasedOnType/${userId}`)
-      .then(response => {
-        setUserData(prevData => [...prevData, ...response.data]);
 
+    axios
+      .get(apiUrl + `getAllUsersBasedOnType/${userId}`)
+      .then((response) => {
+        setUserData((prevData) => [...prevData, ...response.data]);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
   }, []);
 
-//convert assignment start date to iso string
-const deliveryDateAntd = assignmentStart;
-const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
-const deliveryIST = deliveryDateJS;
-//convert assignment  end date to iso string
-const deliveryDateAntd2 = assignmentEnd;
-const deliveryDateJS2 = deliveryDateAntd2 ? deliveryDateAntd2.toDate() : null;
-const deliveryIST2 = deliveryDateJS2
+  //convert assignment start date to iso string
+  const deliveryDateAntd = assignmentStart;
+  const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
+  const deliveryIST = deliveryDateJS;
+  //convert assignment  end date to iso string
+  const deliveryDateAntd2 = assignmentEnd;
+  const deliveryDateJS2 = deliveryDateAntd2 ? deliveryDateAntd2.toDate() : null;
+  const deliveryIST2 = deliveryDateJS2;
 
+  const filteredData = technicianData?.filter(
+    (item) => item.type === "Technician"
+  );
 
-const filteredData = technicianData?.filter(item => item.type === 'Technician')
-
-//handles row delete
-const handleRemoveRow = (idx) => () => {
+  //handles row delete
+  const handleRemoveRow = (idx) => () => {
     const updatedRows = rows.filter((_, index) => index !== idx);
     setRows(updatedRows);
-  
+
     const calculatedTotalAmount = updatedRows.reduce(
-      (total, row) =>
-        total +
-        row.workstationcount * row.unitPrice +
-          (row.workstationcount * row.unitPrice * row.igst) / 100,
+      (total, row) => total + row.netAmount,
       0
     );
-  
-    setTotalAmount(calculatedTotalAmount);
-};
 
-//show/hide popup form
-const toggleForm = () => {
+    setTotalAmount(calculatedTotalAmount);
+  };
+
+  //show/hide popup form
+  const toggleForm = () => {
     setShowForm((prevState) => !prevState);
     setEditIndex(null);
     clearFormFields();
-};
+  };
 
-const handleModalClick = (event) => {
-    if (event.target.classList.contains('modal')) {
+  const handleModalClick = (event) => {
+    if (event.target.classList.contains("modal")) {
       toggleForm();
     }
-};
-
-//handle parts submission
-const handleSubmit = (e) => {
+  };
+  useEffect(() => {
+    const calculatedNetAmount =
+      workstation * price + (workstation * price * igst) / 100;
+    const discountedAmount =
+      calculatedNetAmount - (calculatedNetAmount * discount) / 100;
+    setNetAmount(discountedAmount.toFixed(2));
+  }, [workstation, price, igst, discount]);
+  //handle parts submission
+  const handleSubmit = (e) => {
     e.preventDefault();
-  
-    if (
-      price &&
-      productName &&
-      workstation &&
-      igst &&
-      description
-    ) {
+
+    if (price && productName && workstation && igst && description) {
       const newRow = {
-        product: {id: productId},
+        product: { id: productId },
         productName,
         workOrderId: null,
         unitPrice: parseFloat(price),
+        discountpercent: parseFloat(discount),
+        netAmount: parseFloat(netAmount),
         description,
         workstationcount: parseFloat(workstation),
         igst: parseFloat(igst),
         comment: comment,
       };
-  
+
       let updatedRows;
-  
+
       if (editIndex !== null) {
         updatedRows = [...rows];
         updatedRows[editIndex] = newRow;
@@ -313,174 +307,179 @@ const handleSubmit = (e) => {
         updatedRows = [...rows, newRow];
         setRows(updatedRows);
       }
-  
+
       clearFormFields();
       setShowForm(false);
       setEditIndex(null);
-  
+
       const calculatedTotalAmount = updatedRows.reduce(
-        (total, row) =>
-          total +
-          row.workstationcount * row.unitPrice +
-          (row.workstationcount * row.unitPrice * row.igst) / 100,
+        (total, row) => total + row.netAmount,
         0
       );
-  
+
       setTotalAmount(calculatedTotalAmount);
     }
   };
 
-//handle row edit
-const handleEditRow = (idx, row) => {
-  setProductName(row.productName);
-  setPrice(row.unitPrice);
-  setIgst(row.igst)
-  setWorkstation(row.workstationcount)
-  setDescription(row.description);
-  setEditIndex(idx);
-  setShowForm(true);
-};
-  
-//handle clear form on save/close
-const clearFormFields = () => {
-    setProductName('');
-    setPrice('');
-    setIgst('')
-    setWorkstation('')
-    setDescription('');
-};
+  //handle row edit
+  const handleEditRow = (idx, row) => {
+    setProductName(row.productName);
+    setPrice(row.unitPrice);
+    setIgst(row.igst);
+    setWorkstation(row.workstationcount);
+    setDescription(row.description);
+    setEditIndex(idx);
+    setShowForm(true);
+    setDiscount(row.discountpercent);
+    setNetAmount(row.netAmount);
+  };
 
-//get parts
-useEffect(() => {
-    axios.get(apiUrl + `getAllItem/${userId}`)
-      .then(response => {
+  //handle clear form on save/close
+  const clearFormFields = () => {
+    setProductName("");
+    setPrice("");
+    setIgst("");
+    setWorkstation("");
+    setDescription("");
+    setDiscount("");
+    setNetAmount("");
+  };
+
+  //get parts
+  useEffect(() => {
+    axios
+      .get(apiUrl + `getAllItem/${userId}`)
+      .then((response) => {
         setUserData2(response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
-}, []);
+  }, []);
 
-
-//exclude product name from rows and include comments
-const updatedRows = rows.map(({ productName, ...rest }) => ({
+  //exclude product name from rows and include comments
+  const updatedRows = rows.map(({ productName, netAmount, ...rest }) => ({
     ...rest,
-    comment : comment,
-    
-}));
+    comment: comment,
+  }));
 
-//handle work order submission
-const handleClick = async (event) => {
-
-    let finalAmount = totalAmount.toFixed(2)
+  //handle work order submission
+  const handleClick = async (event) => {
+    let finalAmount = totalAmount.toFixed(2);
 
     event.preventDefault();
-    
-      if (contactName && userId && phone && status && comment && terms && updatedRows && tempId) {
-        try {
-          const response = await fetch(apiUrl + 'addWorkOrderWithItems', {
-            method: 'POST',
-            headers: {
-    
-              'Content-Type': 'application/json'
+
+    if (
+      contactName &&
+      userId &&
+      phone &&
+      status &&
+      comment &&
+      terms &&
+      updatedRows &&
+      tempId
+    ) {
+      try {
+        const response = await fetch(apiUrl + "addWorkOrderWithItems", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            workorder: {
+              contactPersonName: contactName,
+              contactPhoneNumber: phone,
+              contactEmail: inchargeEmail,
+              adminPersonName: adminName,
+              adminPhoneNumber: adminPhone,
+              adminEmail: adminEmail,
+              status: status,
+              type: type,
+              category: "amc",
+              startdate: deliveryIST,
+              enddate: deliveryIST2,
+              createdByUser: { id: userId },
+              createdDate: new Date(),
+              lastModifiedDate: new Date(),
+              comments: comment,
+              lastModifiedByUser: { id: userId },
+              termsAndCondition: terms,
+              //totalAmount: finalAmount,
+              technicianInfo: { id: technician },
+              noncompany: { id: tempId },
+              //company: {id: userState},
             },
-            body: JSON.stringify({
-              workorder:{
-                  contactPersonName: contactName,
-                  contactPhoneNumber: phone,
-                  contactEmail: inchargeEmail,
-                  adminPersonName: adminName,
-                  adminPhoneNumber: adminPhone,
-                  adminEmail: adminEmail,   
-                  status: status,
-                  type: type,
-                  category: 'amc',
-                  startdate: deliveryIST,
-                  enddate: deliveryIST2,
-                  createdByUser: {id: userId},
-                  createdDate: new Date(),
-                  lastModifiedDate: new Date(),
-                  comments : comment,
-                  lastModifiedByUser: {id: userId},
-                  termsAndCondition: terms,
-                  //totalAmount: finalAmount,
-                  technicianInfo: {id: technician},
-                  noncompany:{id: tempId},
-                  //company: {id: userState},
-        
-              },
-                  workOrderItems: updatedRows,
-                  deleteWorkOrderItems: []
-          })
+            workOrderItems: updatedRows,
+            deleteWorkOrderItems: [],
+          }),
+        });
+
+        if (response.ok) {
+          // Redirect to home page upon successful submission
+
+          response.json().then((data) => {
+            navigate("/dashboard/services/amcDetail", { state: data });
+            console.log(data);
           });
-          
-          if (response.ok) {
-            // Redirect to home page upon successful submission
-        
-           response.json().then(data => {
-    
-      
-          navigate('/dashboard/services/amcDetail', { state: data });
-          console.log(data)
-          });
-          } 
-        } catch (error) {
-          console.error('API call failed:', error);
         }
-      } else if(contactName && userId && phone && status  && updatedRows && userState){
-        try {
-          const response = await fetch(apiUrl + 'addWorkOrderWithItems', {
-            method: 'POST',
-            headers: {
-    
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              workorder:{
-                  contactPersonName: contactName,
-                  contactPhoneNumber: phone,
-                  contactEmail: inchargeEmail,
-                  adminPersonName: adminName,
-                  adminPhoneNumber: adminPhone,
-                  adminEmail: adminEmail,   
-                  status: status,
-                  type: type,
-                  category: 'amc',
-                  startdate: deliveryIST,
-                  enddate: deliveryIST2,
-                  createdByUser: {id: userId},
-                  createdDate: new Date(),
-                  lastModifiedDate: new Date(),
-                  comments : comment,
-                  lastModifiedByUser: {id: userId},
-                  termsAndCondition: terms,
-                  //totalAmount: finalAmount,
-                  technicianInfo: {id: technician},
-                  company: {id: userState},
-        
-              },
-                  workOrderItems: updatedRows,
-                  deleteWorkOrderItems: []
-          })
-          });
-          
-          if (response.ok) {
-            // Redirect to home page upon successful submission
-        
-           response.json().then(data => {
-    
-      
-          navigate('/dashboard/services/amcDetail', { state: data });
-          console.log(data)
-          });
-          } 
-        } catch (error) {
-          console.error('API call failed:', error);
+      } catch (error) {
+        console.error("API call failed:", error);
       }
-   }
-}
+    } else if (
+      contactName &&
+      userId &&
+      phone &&
+      status &&
+      updatedRows &&
+      userState
+    ) {
+      try {
+        const response = await fetch(apiUrl + "addWorkOrderWithItems", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            workorder: {
+              contactPersonName: contactName,
+              contactPhoneNumber: phone,
+              contactEmail: inchargeEmail,
+              adminPersonName: adminName,
+              adminPhoneNumber: adminPhone,
+              adminEmail: adminEmail,
+              status: status,
+              type: type,
+              category: "amc",
+              startdate: deliveryIST,
+              enddate: deliveryIST2,
+              createdByUser: { id: userId },
+              createdDate: new Date(),
+              lastModifiedDate: new Date(),
+              comments: comment,
+              lastModifiedByUser: { id: userId },
+              termsAndCondition: terms,
+              //totalAmount: finalAmount,
+              technicianInfo: { id: technician },
+              company: { id: userState },
+            },
+            workOrderItems: updatedRows,
+            deleteWorkOrderItems: [],
+          }),
+        });
 
+        if (response.ok) {
+          // Redirect to home page upon successful submission
 
+          response.json().then((data) => {
+            navigate("/dashboard/services/amcDetail", { state: data });
+            console.log(data);
+          });
+        }
+      } catch (error) {
+        console.error("API call failed:", error);
+      }
+    }
+  };
 
   return (
     <div style={{ minWidth: "100%" }}>
@@ -732,6 +731,7 @@ const handleClick = async (event) => {
                               setProductId(selectedOption.id);
                               setProductName(e.target.value);
                               setDescription(selectedOption.description);
+                              setDiscount(0);
                             }}
                             style={{ marginBottom: 10 }}
                           >
@@ -754,6 +754,18 @@ const handleClick = async (event) => {
                             required
                             value={workstation}
                             onChange={(e) => setWorkstation(e.target.value)}
+                            style={{ marginBottom: 10 }}
+                          />
+                        </Grid>
+                        <Grid xs={12} md={6}>
+                          <TextField
+                            fullWidth
+                            label="Discount in %"
+                            required
+                            name="discount"
+                            type="number"
+                            value={discount}
+                            onChange={(e) => setDiscount(e.target.value)}
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
@@ -783,6 +795,18 @@ const handleClick = async (event) => {
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
+                        <Grid xs={12} md={6}>
+                          <TextField
+                            fullWidth
+                            label="Net Amount"
+                            required
+                            name="netamount"
+                            type="number"
+                            value={netAmount}
+                            onChange={(e) => setNetAmount(e.target.value)}
+                            style={{ marginBottom: 10 }}
+                          />
+                        </Grid>
                       </div>
                     </div>
                     <Grid xs={12} md={6}>
@@ -792,7 +816,7 @@ const handleClick = async (event) => {
                         name="description"
                         multiline
                         required
-                        rows={4}
+                        rows={2}
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         style={{ marginBottom: 10 }}
@@ -850,13 +874,7 @@ const handleClick = async (event) => {
                       <div>{row.igst}</div>
                     </TableCell>
                     <TableCell>
-                      <div>
-                        {(
-                          row.workstationcount * row.unitPrice +
-                          (row.workstationcount * row.unitPrice * row.igst) /
-                            100
-                        ).toFixed(2)}
-                      </div>
+                      <div>{row.netAmount}</div>
                     </TableCell>
                     <TableCell>
                       <IconButton onClick={() => handleEditRow(idx, row)}>
@@ -955,5 +973,5 @@ const handleClick = async (event) => {
 };
 
 AmcCreateForm.propTypes = {
-  customer: PropTypes.object.isRequired
+  customer: PropTypes.object.isRequired,
 };
