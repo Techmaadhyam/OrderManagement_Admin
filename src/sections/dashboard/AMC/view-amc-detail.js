@@ -5,7 +5,10 @@ import {
   Typography,
   Link,
   SvgIcon,
-  Grid
+  Grid,
+  TextField,
+  Icon,
+  IconButton
 } from '@mui/material';
 import './purchase-order.css'
 import {  Box} from '@mui/system';
@@ -25,6 +28,8 @@ import { useEffect } from 'react';
 import { apiUrl } from 'src/config';
 import { useNavigate } from 'react-router-dom';
 import Logo from '../logo/logo';
+import EditIcon from "@mui/icons-material/Edit";
+import SaveIcon from "@mui/icons-material/Save";
 
 
 
@@ -34,11 +39,20 @@ export const ViewAMCDetail = (props) => {
   const state = location.state;
 
   const [tempuser, setTempuser] =useState([])
-  const [rowData, setRowData] =useState()
+  const [rowData, setRowData] = useState()
+       const [isEditable, setIsEditable] = useState(false);
+       const [paidAmount, setPaidAmount] = useState(0);
 
 
   const align = 'horizontal' 
+   const handleEditClick = () => {
+     setIsEditable(true);
+   };
 
+   const handleSaveClick = () => {
+     setIsEditable(false);
+     console.log(paidAmount);
+   };
  
 const columns = [
   {
@@ -307,6 +321,48 @@ const columns = [
             }}
           >
             Total Amount : ₹{state?.totalAmount || totalNetAmount?.toFixed(2)}
+          </Typography>
+        </Grid>
+        <Grid style={{ marginTop: "20px" }}>
+          <Typography
+            style={{
+              fontFamily: "Arial, Helvetica, sans-serif",
+              fontSize: "14px",
+              display: "flex",
+              marginLeft: "10px",
+              color: "black",
+              fontWeight: "bold",
+              alignItems: "center",
+            }}
+          >
+            Paid Amount : ₹
+            {isEditable ? (
+              <TextField
+                type="number"
+                value={paidAmount}
+                onChange={(e) => setPaidAmount(e.target.value)}
+                style={{
+                  width: "100px",
+                  height: "40px",
+                  marginLeft: "10px",
+                }}
+              />
+            ) : (
+              <span>{paidAmount}</span>
+            )}
+            {isEditable ? (
+              <IconButton onClick={handleSaveClick}>
+                <Icon>
+                  <SaveIcon />
+                </Icon>
+              </IconButton>
+            ) : (
+              <IconButton onClick={handleEditClick}>
+                <Icon>
+                  <EditIcon />
+                </Icon>
+              </IconButton>
+            )}
           </Typography>
         </Grid>
         <Grid style={{ marginTop: "20px" }}>

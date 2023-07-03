@@ -8,10 +8,12 @@ import {
   SvgIcon,
   Grid,
   Button,
+  Icon,
+  IconButton,
+  TextField
 } from "@mui/material";
-
 import "./purchase-order.css";
-import { Box } from "@mui/system";
+import { Box,} from "@mui/system";
 import { PropertyList } from "src/components/property-list";
 import { PropertyListItem } from "src/components/property-list-item";
 import { useState } from "react";
@@ -28,17 +30,28 @@ import { useEffect } from "react";
 import { apiUrl } from "src/config";
 import { useNavigate } from "react-router-dom";
 import Logo from "../logo/logo";
+import EditIcon from "@mui/icons-material/Edit";
+import SaveIcon from "@mui/icons-material/Save";
 
 export const ViewPurchaseOrder = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const state = location.state.data || location.state;
+   const [isEditable, setIsEditable] = useState(false); 
+   const [paidAmount, setPaidAmount] = useState(0);
 
   const performaInvoice = location.state.performaInvoice?.file;
   const approvedInvoice = location.state.approvedInvoice?.file;
   const deliveryChallan = location.state.deliveryChallan?.file;
 
-  console.log(performaInvoice, approvedInvoice, deliveryChallan);
+    const handleEditClick = () => {
+      setIsEditable(true); 
+    };
+
+    const handleSaveClick = () => {
+      setIsEditable(false); 
+      console.log( paidAmount);
+    };
 
   const columns = [
     {
@@ -335,8 +348,7 @@ export const ViewPurchaseOrder = (props) => {
   }
   const formattedDate = formatDate(state?.purchaseOrderRec?.deliveryDate);
 
-  console.log(performaInvoiceFile, approvedInvoiceFile, deliveryChallanFile);
-  console.log(rowData);
+
 
   return (
     <div style={{ minWidth: "100%", marginTop: "1rem" }}>
@@ -467,6 +479,50 @@ export const ViewPurchaseOrder = (props) => {
           >
             Total Amount : ₹
             {state?.totalAmount || state?.purchaseOrderRec?.totalAmount}
+          </Typography>
+        </Grid>
+        <Grid style={{ marginTop: "20px" }}>
+          <Typography
+            style={{
+              fontFamily: "Arial, Helvetica, sans-serif",
+              fontSize: "14px",
+              display: "flex",
+              marginLeft: "10px",
+              color: "black",
+              fontWeight: "bold",
+              alignItems: "center",
+            }}
+          >
+            Paid Amount : ₹
+            {isEditable ? (
+              <TextField
+                type="number"
+                value={paidAmount}
+                onChange={(e) => setPaidAmount(e.target.value)}
+                style={{
+                  width: "100px",
+                  height:'40px',
+                  marginLeft: "10px",
+                }}
+              />
+            ) : (
+              <span>
+                {paidAmount}
+              </span>
+            )}
+            {isEditable ? (
+              <IconButton onClick={handleSaveClick}>
+                <Icon>
+                  <SaveIcon />
+                </Icon>
+              </IconButton>
+            ) : (
+              <IconButton onClick={handleEditClick}>
+                <Icon>
+                  <EditIcon />
+                </Icon>
+              </IconButton>
+            )}
           </Typography>
         </Grid>
         <Grid style={{ marginTop: "20px" }}>
