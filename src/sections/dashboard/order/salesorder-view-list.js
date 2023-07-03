@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { Table } from "antd";
 import "./sales-order.css";
-import { Box, border } from "@mui/system";
+import { Box } from "@mui/system";
 import React from "react";
 import { Scrollbar } from "src/components/scrollbar";
 import DownloadIcon from "@mui/icons-material/Download";
@@ -25,7 +25,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { apiUrl } from "src/config";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import imgUrl from "../pdfAssets/imageDataUrl.js";
-import techMaadhyam from "../pdfAssets/imageDataUrl2";
+// import techMaadhyam from "../pdfAssets/imageDataUrl2";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "../pdfAssets/vfs_fonts";
 import Logo from "../logo/logo";
@@ -52,11 +52,6 @@ const customerType = [
 
 const SalesOrderViewList = () => {
   const [userData, setUserData] = useState([]);
-  const [invoiceData, setInvoiceData] = useState([]);
-  const [tempGstNumber, setTempGstNumber] = useState(null);
-  const [mainGstNumber, setmainGstNumber] = useState(null);
-  const [userMain, setUserMain] = useState(true);
-  const [userData1, setUserData1] = useState([]);
 
   const [isSearching, setIsSearching] = useState(false);
   const [searchText, setSearchText] = useState("");
@@ -70,7 +65,7 @@ const SalesOrderViewList = () => {
       .get(apiUrl + `getAllSalesOrderDetailByUser/${userId}`)
       .then((response) => {
         setUserData(response.data);
-        console.log(response.data);
+        // console.log(response.data);
       })
       .catch((error) => {
         console.error(error);
@@ -197,13 +192,12 @@ const SalesOrderViewList = () => {
   };
 
   const handleInvoicePdf = async (record, heading, dateData, noData) => {
-    console.log(record);
+    // console.log(record);
     try {
       const response = await axios.get(
         apiUrl + `getAllSalesOrderDetails/${record.id}`
       );
-      setInvoiceData(response.data);
-      console.log(response.data);
+      // console.log(response.data);
 
       const rowData = response.data.map((product, index) => {
         let invent = JSON.parse(product.inventory);
@@ -659,20 +653,19 @@ const SalesOrderViewList = () => {
         },
       };
 
-      // pdfMake.createPdf(docDefinition).download("invoice.pdf");
-      pdfMake.createPdf(docDefinition).open();
+      pdfMake.createPdf(docDefinition).download("invoice.pdf");
+      // pdfMake.createPdf(docDefinition).open();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
   const handleChallanPdf = async (record) => {
-    console.log(record);
+    // console.log(record);
     try {
       const response = await axios.get(
         apiUrl + `getAllSalesOrderDetails/${record.id}`
       );
-      setInvoiceData(response.data);
-      console.log(response.data);
+      // console.log(response.data);
       const rowData = response.data.map((product, index) => {
         return [
           {text: index+1, style: 'tableCell'},
@@ -920,10 +913,10 @@ const SalesOrderViewList = () => {
         },
       };
 
-      // pdfMake.createPdf(docDefinition).download("deliveryChallan.pdf");
-      pdfMake.createPdf(docDefinition).open();
+      pdfMake.createPdf(docDefinition).download("deliveryChallan.pdf");
+      // pdfMake.createPdf(docDefinition).open();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -1016,7 +1009,8 @@ const SalesOrderViewList = () => {
         >
           <MenuItem value="">All</MenuItem>
           {customerType.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
+            <MenuItem key={option.value} 
+            value={option.value}>
               {option.label}
             </MenuItem>
           ))}

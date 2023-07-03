@@ -25,7 +25,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import SearchIcon from '@mui/icons-material/Search';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import imgUrl from '../pdfAssets/imageDataUrl';
-import techMaadhyam from '../pdfAssets/imageDataUrl2';
+// import techMaadhyam from '../pdfAssets/imageDataUrl2';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from '../pdfAssets/vfs_fonts';
 import { apiUrl } from 'src/config';
@@ -62,12 +62,9 @@ const categoryBuySell = [
 
 const QuotationViewTable = () => {
   const [userData, setUserData]= useState([])
-  const [userData1, setUserData1]= useState([])
   const [selectedCategory, setSelectedCategory] = useState('Purchase Quotation');
-  const [quotationData, setQuotationData] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [searchText, setSearchText] = useState('');
-  const [service, setService] = useState(true);
 
 
   const navigate = useNavigate();
@@ -77,7 +74,7 @@ const QuotationViewTable = () => {
     axios.get(apiUrl +`getAllQuotations/${userId}`)
       .then(response => {
         setUserData(response.data);
-        console.log(response.data)
+        // console.log(response.data)
       })
       .catch(error => {
         console.error(error);
@@ -215,7 +212,7 @@ const numberToWords = require("number-to-words");
   
 
 const handleQuotation = async (record) => {
-  console.log(record);
+  // console.log(record);
   try {
     const response = await axios.get(apiUrl +`getAllQuotationDetails/${record.id}`);
     
@@ -554,48 +551,17 @@ const handleQuotation = async (record) => {
       a.click();
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 const handleQuotationPdf = async (record)=>{
-  console.log(record);
+  // console.log(record);
   try{
     const response = await axios.get(apiUrl +`getAllQuotationDetails/${record.id}`)
       
-      console.log(response.data)
+      // console.log(response.data)
 
 
-
-
-const headerData = response.data.map(product => {
-  
-  if (product.cgst!==0 && product.sgst!==0) {
-    setService(false)
-    return [{ text: 'S.No.', style: 'tableLabel' },
-    { text: 'Product Description', style: 'tableLabel' },
-    { text: 'HSN/SAC Code', style: 'tableLabel' },
-    { text: 'Qty', style: 'tableLabel' },
-    { text: 'Weight', style: 'tableLabel' },
-    { text: 'Size', style: 'tableLabel' },
-    { text: 'Cost', style: 'tableLabel' },
-    { text: 'CGST', style: 'tableLabel' },
-    { text: 'SGST', style: 'tableLabel' },
-    { text: 'IGST', style: 'tableLabel' },
-    { text: 'Amount', style: 'tableLabel' },]
-  }
-  else{
-    return [{ text: 'S.No.', style: 'tableLabel' },
-    
-    { text: 'Product Description', style: 'tableLabel' },
-    
-    
-    
-    { text: 'Workstation Count', style: 'tableLabel' },
-    { text: 'IGST', style: 'tableLabel' },
-    { text: 'Cost', style: 'tableLabel' },]
-  }
-  
-})
 const rowData = response.data.map((product, index) => {
   const totalAmount = (
     product.price * product.quantity +
@@ -953,11 +919,11 @@ const rowData = response.data.map((product, index) => {
           },
           };
     
-        // pdfMake.createPdf(docDefinition).download('quotation.pdf');
-        pdfMake.createPdf(docDefinition).open();
+        pdfMake.createPdf(docDefinition).download('quotation.pdf');
+        // pdfMake.createPdf(docDefinition).open();
 }
 catch(error){
-  console.log(error)
+  console.error(error)
 }
 }
   const columns = [
@@ -1144,7 +1110,8 @@ if (deliveryDateIndex !== -1 && filteredList.some(item => item.category === "Ser
         select
       >
         {categoryBuySell.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
+          <MenuItem key={option.value} 
+          value={option.value}>
             {option.label}
           </MenuItem>
         ))}
