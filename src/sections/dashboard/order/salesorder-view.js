@@ -37,7 +37,7 @@ import SaveIcon from "@mui/icons-material/Save";
 
 
 
-
+const userId = sessionStorage.getItem("user") || localStorage.getItem("user");
 
 export const ViewSalesOrder = (props) => {
   const location = useLocation();
@@ -49,7 +49,10 @@ export const ViewSalesOrder = (props) => {
   const [tempuser, setTempuser] =useState([])
   const [rowData, setRowData] = useState()
      const [isEditable, setIsEditable] = useState(false);
-     const [paidAmount, setPaidAmount] = useState(0);
+  const [paidAmount, setPaidAmount] = useState(0);
+      const [tempId, setTempId] = useState(state?.tempUser?.id);
+      const [userState, setUserState] = useState(state?.companyuser?.id);
+      const [updatedRows, setUpdatedRows] = useState([]);
 
   const navigate = useNavigate();
 
@@ -59,9 +62,73 @@ export const ViewSalesOrder = (props) => {
      setIsEditable(true);
    };
 
-   const handleSaveClick = () => {
+  const convertedArray = updatedRows.map((obj) => {
+
+  return {
+    product: { id: obj.productId },
+    sgst: obj.sgst,
+    igst: obj.sgst,
+    cgst: obj.cgst,
+    discountpercent: obj.discountpercent,
+    weight: obj.weight,
+    quotationId: state?.quotationId,
+    price: obj.price,
+    description: obj.description,
+    comments: state?.comments,
+    size: obj.size,
+    quantity: obj.quantity,
+    createdDate: obj.createdDate,
+    lastModifiedDate: obj.lastModifiedDate,
+    id: obj.id,
+  };
+});
+   const handleSaveClick = async() => {
      setIsEditable(false);
-     console.log(paidAmount);
+   if (paidAmount) {
+      try {
+        const response = await fetch(apiUrl + "createSalesOrder", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            salesOrder: {
+              id: state?.id,
+              quotationId: state?.quotationId,
+              ...(tempId && { tempUser: { id: tempId } }),
+              ...(userState && { companyuser: { id: userState } }),
+              contactPerson: state?.contactPerson,
+              contactPhone: state?.contactPhone,
+              status: state?.status,
+              paymentMode: state?.paymentMode,
+              type: state?.type,
+              deliveryDate: state?.originalDeliveryDate,
+              deliveryAddress: state?.deliveryAddress,
+              city: state?.city,
+              state: state?.state,
+              country: state?.country,
+              pinCode: state?.pinCode,
+              createdBy: userId,
+              lastModifiedDate: new Date(),
+              createdDate: state?.originalcreatedDate,
+              comments: state?.comments,
+              paidamount: paidAmount,
+              termsAndCondition: state?.termsAndCondition,
+              totalAmount: state?.totalAmount,
+
+              lastModifiedByUser: { id: parseFloat(userId) },
+            },
+            salesOrderDetails: convertedArray,
+ 
+          }),
+        });
+
+        if (response.ok) {
+        }
+      } catch (error) {
+        console.error("API call failed:", error);
+      }
+    };
    };
 
 
@@ -116,6 +183,7 @@ export const ViewSalesOrder = (props) => {
         });
   
         setRowData(updatedData);
+         setUpdatedRows(updatedData);
       
       })
       .catch(error => {

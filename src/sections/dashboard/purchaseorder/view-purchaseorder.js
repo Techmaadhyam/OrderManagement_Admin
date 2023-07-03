@@ -33,12 +33,20 @@ import Logo from "../logo/logo";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 
+const userId = sessionStorage.getItem("user") || localStorage.getItem("user");
+
 export const ViewPurchaseOrder = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const state = location.state.data || location.state;
+  console.log(state)
    const [isEditable, setIsEditable] = useState(false); 
-   const [paidAmount, setPaidAmount] = useState(0);
+  const [paidAmount, setPaidAmount] = useState(state?.paidamount || 0);
+    const [tempId, setTempId] = useState(state?.tempUser?.id);
+  const [userState, setUserState] = useState(state?.companyuser?.id);
+  const [updatedRows, setUpdatedRows] = useState([])
+    const [tempuser, setTempuser] = useState([]);
+    const [rowData, setRowData] = useState();
 
   const performaInvoice = location.state.performaInvoice?.file;
   const approvedInvoice = location.state.approvedInvoice?.file;
@@ -48,10 +56,78 @@ export const ViewPurchaseOrder = (props) => {
       setIsEditable(true); 
     };
 
-    const handleSaveClick = () => {
-      setIsEditable(false); 
-      console.log( paidAmount);
+  console.log(updatedRows)
+const convertedArray = updatedRows.map((obj) => {
+
+  return {
+    product: { id: obj.productId },
+    sgst: obj.sgst,
+    igst: obj.sgst,
+    cgst: obj.cgst,
+    discountpercent: obj.discountpercent,
+    weight: obj.weight,
+    quotationId: state?.quotationId,
+    price: obj.price,
+    description: obj.description,
+    comments: state?.comments,
+    size: obj.size,
+    quantity: obj.quantity,
+    createdDate: obj.createdDate,
+    lastModifiedDate: obj.lastModifiedDate,
+    id: obj.id,
+  };
+});
+  
+  console.log(convertedArray)
+  const handleSaveClick =  async() => {
+    setIsEditable(false);
+  
+    if (paidAmount) {
+      try {
+        const response = await fetch(apiUrl + "createPurchaseOrder", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            purchaseOrder: {
+              id: state?.id,
+              quotationId: state?.quotationId,
+              ...(tempId && { tempUser: { id: tempId } }),
+              ...(userState && { companyuser: { id: userState } }),
+              contactPerson: state?.contactPerson,
+              contactPhone: state?.contactPhone,
+              status: state?.status,
+              paymentMode: state?.paymentMode,
+              type: state?.type,
+              deliveryDate: state?.originalDeliveryDate,
+              deliveryAddress: state?.deliveryAddress,
+              city: state?.city,
+              state: state?.state,
+              country: state?.country,
+              pinCode: state?.pinCode,
+              createdBy: userId,
+              lastModifiedDate: new Date(),
+              createdDate: state?.originalcreatedDate,
+              comments: state?.comments,
+              paidamount: paidAmount,
+              termsAndCondition: state?.termsAndCondition,
+              totalAmount: state?.totalAmount,
+
+              lastModifiedByUser: { id: parseFloat(userId) },
+            },
+            purchaseOrderDetails: convertedArray,
+            deletedPODetails:[]
+          }),
+        });
+
+        if (response.ok) {
+        }
+      } catch (error) {
+        console.error("API call failed:", error);
+      }
     };
+  }
 
   const columns = [
     {
@@ -123,8 +199,7 @@ export const ViewPurchaseOrder = (props) => {
     },
   ];
 
-  const [tempuser, setTempuser] = useState([]);
-  const [rowData, setRowData] = useState();
+
 
   const [performaInvoiceFile, setPerformaInvoiceFile] = useState(null);
   const [approvedInvoiceFile, setApprovedInvoiceFile] = useState(null);
@@ -159,6 +234,7 @@ export const ViewPurchaseOrder = (props) => {
           }`
       )
       .then((response) => {
+    
         const modifiedData = response.data.map((item) => {
           const { quantity, price, cgst, igst, sgst } = item;
           const netAmount = (
@@ -175,7 +251,7 @@ export const ViewPurchaseOrder = (props) => {
           let parsedProduct;
           try {
             parsedProduct = JSON.parse(obj.product);
-            console.log(parsedProduct);
+    
           } catch (error) {
             console.error(
               "Error parsing inventory JSON for object:",
@@ -194,6 +270,7 @@ export const ViewPurchaseOrder = (props) => {
         });
 
         setRowData(updatedData);
+        setUpdatedRows(updatedData);
       })
       .catch((error) => {
         console.error(error);
