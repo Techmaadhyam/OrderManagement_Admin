@@ -182,6 +182,7 @@ import {
                 state:registeredData.state,
                 country: registeredData.country,
                 type: registeredData.type,
+                isactive: registeredData.isactive,
                 gstNumber: registeredData.gstNumber,
                 pandcard: registeredData.pandcard,
                 createdDate: registeredData.createdDate,
