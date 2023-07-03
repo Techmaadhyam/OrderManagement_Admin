@@ -65,7 +65,7 @@ export const ViewTemporaryUserDetail = (props) => {
             <Typography variant="subtitle2">
               Back To{" "}
               <span style={{ color: `${primaryColor}`, fontWeight: 600 }}>
-                Customer List
+                Customer / Vendor List
               </span>
             </Typography>
           </Link>
@@ -77,9 +77,11 @@ export const ViewTemporaryUserDetail = (props) => {
           <IconWithPopup />
         </div>
       </div>
-      <h2>Customer</h2>
+      <h2>{state?.type === "Vendor" ? "Vendor" : "Customer"}</h2>
       <Card style={{ marginBottom: "12px" }}>
-        <CardHeader title="Customer Detail" />
+        <CardHeader
+          title={state?.type === "Vendor" ? "Vendor Detail" : "Customer Detail"}
+        />
         <PropertyList>
           <PropertyListItem align={align} label="Company Contact Person">
             <Typography variant="subtitle2">
