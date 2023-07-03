@@ -343,7 +343,7 @@ export const PurchaseOrderCreateForm = (props) => {
   const handleDateChange = (date) => {
     setDeliveryDate(date);
   };
-
+console.log(tempId, userState)
   //get temporary user data
   useEffect(() => {
     axios
@@ -852,7 +852,7 @@ export const PurchaseOrderCreateForm = (props) => {
                   value={userName}
                   onChange={(e) => {
                     const selectedOption = userData.find(
-                      (option) => option.companyName === e.target.value
+                      (option) => option.id=== e.target.value
                     );
                     if (selectedOption) {
                       if (selectedOption.hasOwnProperty("createdByUser")) {
@@ -872,7 +872,7 @@ export const PurchaseOrderCreateForm = (props) => {
                     .map(
                       (option) =>
                         option.companyName && (
-                          <MenuItem key={option.id} value={option.companyName}>
+                          <MenuItem key={option.id} value={option.id}>
                             {option.companyName}
                           </MenuItem>
                         )
