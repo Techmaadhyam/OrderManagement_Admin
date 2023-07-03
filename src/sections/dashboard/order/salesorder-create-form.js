@@ -26,7 +26,7 @@ import { primaryColor } from "src/primaryColor";
 import EditIcon from "@mui/icons-material/Edit";
 import { Scrollbar } from "src/components/scrollbar";
 import React from "react";
-import { Delete } from "@mui/icons-material";
+import { Delete} from "@mui/icons-material";
 import "./customTable.css";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
@@ -41,6 +41,7 @@ import {
   fetchCities,
   fetchIndianStates,
 } from "src/utils/api-service";
+
 
 const userId = parseInt(
   sessionStorage.getItem("user") || localStorage.getItem("user")
@@ -169,6 +170,8 @@ export const SalesOrderCreateForm = (props) => {
   const [cgst, setCgst] = useState();
   const [size, setSize] = useState();
   const [description, setDescription] = useState("");
+  const [netAmount, setNetAmount] = useState()
+  const [discount, setDiscount] = useState()
 
   const [rows, setRows] = useState([]);
   const [showForm, setShowForm] = useState(false);
@@ -403,27 +406,15 @@ export const SalesOrderCreateForm = (props) => {
 
   const deliveryDateAntd = deliveryDate;
   const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
-
   const deliveryIST = deliveryDateJS;
 
-
-  console.log(deliveryDate);
-
-  //////////////
-  //add product//
-  /////////////
 
   const handleRemoveRow = (idx) => () => {
     const updatedRows = rows.filter((_, index) => index !== idx);
     setRows(updatedRows);
 
     const calculatedTotalAmount = updatedRows.reduce(
-      (total, row) =>
-        total +
-        row.quantity * row.price +
-        (row.quantity * row.price * row.cgst) / 100 +
-        (row.quantity * row.price * row.igst) / 100 +
-        (row.quantity * row.price * row.sgst) / 100,
+      (total, row) => total + row.netAmount,
       0
     );
 
@@ -441,6 +432,16 @@ export const SalesOrderCreateForm = (props) => {
       toggleForm();
     }
   };
+   useEffect(() => {
+     const calculatedNetAmount =
+       quantity * price +
+       (quantity * price * cgst) / 100 +
+       (quantity * price * igst) / 100 +
+       (quantity * price * sgst) / 100;
+     const discountedAmount =
+       calculatedNetAmount - (calculatedNetAmount * discount) / 100;
+     setNetAmount(discountedAmount.toFixed(2));
+   }, [quantity, price, cgst, igst, sgst, discount]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -476,6 +477,8 @@ export const SalesOrderCreateForm = (props) => {
         productId,
         productName,
         weight,
+        discountpercent: parseFloat(discount),
+        netAmount: parseFloat(netAmount),
         quantity: parseFloat(quantity),
         price: parseFloat(price),
         cgst: parseFloat(cgst),
@@ -507,10 +510,7 @@ export const SalesOrderCreateForm = (props) => {
       const calculatedTotalAmount = updatedRows.reduce(
         (total, row) =>
           total +
-          row.quantity * row.price +
-          (row.quantity * row.price * row.cgst) / 100 +
-          (row.quantity * row.price * row.igst) / 100 +
-          (row.quantity * row.price * row.sgst) / 100,
+          row.netAmount,
         0
       );
 
@@ -518,7 +518,6 @@ export const SalesOrderCreateForm = (props) => {
     }
   };
 
-  console.log(currentDate);
 
   const handleEditRow = (idx, row) => {
     setProductName(row.productName);
@@ -529,6 +528,8 @@ export const SalesOrderCreateForm = (props) => {
     setIgst(row.igst);
     setSgst(row.sgst);
     setSize(row.size);
+    setDiscount(row.discountpercent);
+    setNetAmount(row.netAmount)
     setDescription(row.productDescription);
     setEditIndex(idx);
     setShowForm(true);
@@ -544,6 +545,8 @@ export const SalesOrderCreateForm = (props) => {
     setIgst("");
     setSgst("");
     setDescription("");
+    setDiscount('');
+    setNetAmount('')
   };
 
   //
@@ -559,9 +562,9 @@ export const SalesOrderCreateForm = (props) => {
       });
   }, []);
 
-  console.log(deliveryIST);
+
   const updatedRows = rows.map(
-    ({ productName, productDescription, productId, ...rest }) => rest
+    ({ productName, productDescription, productId, netAmount, ...rest }) => rest
   );
   //post request
 
@@ -941,6 +944,7 @@ export const SalesOrderCreateForm = (props) => {
                                 setDescription(
                                   selectedOption.productDescription
                                 );
+                                setDiscount(0)
                                 setProductDescription(
                                   selectedOption.productDescription
                                 );
@@ -992,6 +996,18 @@ export const SalesOrderCreateForm = (props) => {
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
+                        <Grid xs={12} md={6}>
+                          <TextField
+                            fullWidth
+                            label="Discount in %"
+                            required
+                            name="discount"
+                            type="number"
+                            value={discount}
+                            onChange={(e) => setDiscount(e.target.value)}
+                            style={{ marginBottom: 10 }}
+                          />
+                        </Grid>
                       </div>
                       <div className="popup-right">
                         <Grid xs={12} md={6}>
@@ -1019,7 +1035,6 @@ export const SalesOrderCreateForm = (props) => {
                             required
                             type="number"
                             value={price}
-                            onChange={(e) => setPrice(e.target.value)}
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
@@ -1043,7 +1058,19 @@ export const SalesOrderCreateForm = (props) => {
                             type="number"
                             value={cgst}
                             onChange={(e) => setCgst(e.target.value)}
-                            style={{ marginBottom: 16 }}
+                            style={{ marginBottom: 10 }}
+                          />
+                        </Grid>
+                        <Grid xs={12} md={6}>
+                          <TextField
+                            fullWidth
+                            label="Net Amount"
+                            required
+                            name="netamount"
+                            type="number"
+                            value={netAmount}
+                            onChange={(e) => setNetAmount(e.target.value)}
+                            style={{ marginBottom: 10 }}
                           />
                         </Grid>
                       </div>
@@ -1054,7 +1081,7 @@ export const SalesOrderCreateForm = (props) => {
                         label="Description"
                         name="description"
                         multiline
-                        rows={4}
+                        rows={2}
                         required
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
@@ -1128,12 +1155,7 @@ export const SalesOrderCreateForm = (props) => {
 
                     <TableCell>
                       <div>
-                        {(
-                          row.quantity * row.price +
-                          (row.quantity * row.price * row.cgst) / 100 +
-                          (row.quantity * row.price * row.igst) / 100 +
-                          (row.quantity * row.price * row.sgst) / 100
-                        ).toFixed(2)}
+                        {row.netAmount}
                       </div>
                     </TableCell>
                     <TableCell>

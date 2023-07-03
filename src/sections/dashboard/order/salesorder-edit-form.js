@@ -181,6 +181,8 @@ const [productName, setProductName] = useState('');
   const [description, setDescription] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
+    const [netAmount, setNetAmount] = useState();
+    const [discount, setDiscount] = useState();
 
   const [userData2, setUserData2] = useState([])
   const [productId, setProductId] = useState()
@@ -218,22 +220,34 @@ const [productName, setProductName] = useState('');
   useEffect(() => {
     axios.get(apiUrl +`getAllSalesOrderDetails/${state?.id || state?.soRecord?.id}`)
       .then(response => {
-        const updatedData = response.data.map(obj => {
+        const updatedData = response.data.map((obj) => {
           let parsedInventoryId;
           try {
             const parsedInventory = JSON.parse(obj.inventory);
             parsedInventoryId = parsedInventory.id;
           } catch (error) {
-            console.error("Error parsing inventory JSON for object:", obj, error);
+            console.error(
+              "Error parsing inventory JSON for object:",
+              obj,
+              error
+            );
             parsedInventoryId = null;
           }
-  
+
+          const netAmount =
+            obj.quantity * obj.price +
+            (obj.quantity * obj.price * obj.cgst) / 100 +
+            (obj.quantity * obj.price * obj.igst) / 100 +
+            (obj.quantity * obj.price * obj.sgst) / 100;
+          const discountedAmount =
+            netAmount - (netAmount * obj.discountpercent) / 100;
+
           return {
             ...obj,
-            inventory: { id: parsedInventoryId }
+            inventory: { id: parsedInventoryId },
+            netAmount: parseFloat(discountedAmount.toFixed(2)),
           };
         });
-  
         setRowData(updatedData);
         setTotalAmount(state?.totalAmount);
   
@@ -573,15 +587,10 @@ console.log(deliveryIST)
     setRowData(updatedRows);
   
     const calculatedTotalAmount = updatedRows.reduce(
-      (total, row) =>
-        total +
-        row.quantity * row.price +
-        (row.quantity * row.price * row.cgst) / 100 +
-        (row.quantity * row.price * row.igst) / 100 +
-        (row.quantity * row.price * row.sgst) / 100,
+      (total, row) => total + row.netAmount,
       0
     );
-  
+
     setTotalAmount(calculatedTotalAmount);
   };
 
@@ -596,6 +605,16 @@ console.log(deliveryIST)
       toggleForm();
     }
   };
+    useEffect(() => {
+      const calculatedNetAmount =
+        quantity * price +
+        (quantity * price * cgst) / 100 +
+        (quantity * price * igst) / 100 +
+        (quantity * price * sgst) / 100;
+      const discountedAmount =
+        calculatedNetAmount - (calculatedNetAmount * discount) / 100;
+      setNetAmount(discountedAmount.toFixed(2));
+    }, [quantity, price, cgst, igst, sgst, discount]);
 
         //toast notification from toastify library
 const notify = (type, message) => {
@@ -637,12 +656,14 @@ const notify = (type, message) => {
 
       const newRow = {
         id: Id,
-        inventory: {id: inventoryId},
+        inventory: { id: inventoryId },
         productDescription,
         productId,
         productName,
         weight,
         quotationId: quotation,
+        discountpercent: parseFloat(discount),
+        netAmount: parseFloat(netAmount),
         quantity: parseFloat(quantity),
         price: parseFloat(price),
         cgst: parseFloat(cgst),
@@ -674,15 +695,10 @@ const notify = (type, message) => {
       setEditIndex(null);
   
       const calculatedTotalAmount = updatedRows.reduce(
-        (total, row) =>
-          total +
-          row.quantity * row.price +
-          (row.quantity * row.price * row.cgst) / 100 +
-          (row.quantity * row.price * row.igst) / 100 +
-          (row.quantity * row.price * row.sgst) / 100,
+        (total, row) => total + row.netAmount,
         0
       );
-  
+
       setTotalAmount(calculatedTotalAmount);
     }
   };
@@ -706,7 +722,9 @@ const notify = (type, message) => {
   setCgst(row.cgst);
   setIgst(row.igst)
   setSgst(row.sgst)
-  setSize(row.size)
+    setSize(row.size)
+     setDiscount(row.discountpercent);
+     setNetAmount(row.netAmount);
   setDescription(row.description);
   setEditIndex(idx);
   setShowForm(true);
@@ -723,6 +741,8 @@ const notify = (type, message) => {
     setIgst('')
     setSgst('')
     setDescription('');
+        setDiscount("");
+        setNetAmount("");
     setId(undefined)
   };
 
@@ -739,8 +759,12 @@ const notify = (type, message) => {
 
 
   
-  const updatedRows = rowData?.map(({ productName, productDescription, productId, ...rest }) => rest);
-  const deleteRows= deletedRows?.map(({ productName, productDescription,  productId,...rest }) => rest);
+  const updatedRows = rowData?.map(
+    ({ productName, productDescription, productId, netAmount, ...rest }) => rest
+  );
+  const deleteRows = deletedRows?.map(
+    ({ productName, productDescription, productId, netAmount, ...rest }) => rest
+  );
   //post request
   const handleClick = async (event) => {
     let finalAmount = parseFloat(totalAmount.toFixed(2))
@@ -1111,6 +1135,7 @@ const notify = (type, message) => {
                                 setQuantity(1);
                                 setSize(selectedOption.size);
                                 setPrice(selectedOption.price);
+                                setDiscount(0)
                                 setInventoryId(selectedOption.inventoryId);
                                 setDescription(
                                   selectedOption.productDescription
@@ -1164,6 +1189,18 @@ const notify = (type, message) => {
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
+                        <Grid xs={12} md={6}>
+                          <TextField
+                            fullWidth
+                            label="Discount in %"
+                            required
+                            name="discount"
+                            type="number"
+                            value={discount}
+                            onChange={(e) => setDiscount(e.target.value)}
+                            style={{ marginBottom: 10 }}
+                          />
+                        </Grid>
                       </div>
                       <div className="popup-right">
                         <Grid xs={12} md={6}>
@@ -1211,7 +1248,19 @@ const notify = (type, message) => {
                             type="number"
                             value={cgst}
                             onChange={(e) => setCgst(e.target.value)}
-                            style={{ marginBottom: 16 }}
+                            style={{ marginBottom: 10 }}
+                          />
+                        </Grid>
+                        <Grid xs={12} md={6}>
+                          <TextField
+                            fullWidth
+                            label="Net Amount"
+                            required
+                            name="netamount"
+                            type="number"
+                            value={netAmount}
+                            onChange={(e) => setNetAmount(e.target.value)}
+                            style={{ marginBottom: 10 }}
                           />
                         </Grid>
                       </div>
@@ -1222,7 +1271,7 @@ const notify = (type, message) => {
                         label="Description"
                         name="description"
                         multiline
-                        rows={4}
+                        rows={2}
                         value={description}
                         style={{ marginBottom: 10 }}
                       />
@@ -1293,12 +1342,7 @@ const notify = (type, message) => {
                     </TableCell>
                     <TableCell>
                       <div>
-                        {(
-                          row.quantity * row.price +
-                          (row.quantity * row.price * row.cgst) / 100 +
-                          (row.quantity * row.price * row.igst) / 100 +
-                          (row.quantity * row.price * row.sgst) / 100
-                        ).toFixed(2)}
+                        {row.netAmount}
                       </div>
                     </TableCell>
                     <TableCell>
@@ -1332,7 +1376,7 @@ const notify = (type, message) => {
               fontWeight: "bold",
             }}
           >
-            Total Amount : {totalAmount.toFixed(2)}
+            Total Amount : {totalAmount?.toFixed(2)}
           </label>
         </Grid>
         <Grid xs={12} md={6} style={{ marginTop: "20px" }}>
