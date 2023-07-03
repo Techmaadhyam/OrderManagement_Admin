@@ -53,6 +53,16 @@ const InventoryDetailPage = lazy(()=> import('src/pages/dashboard/inventory/view
 const LogisticsDashboardPage = lazy(() => import('src/pages/dashboard/logistics/dashboard'));
 const LogisticsFleetPage = lazy(() => import('src/pages/dashboard/logistics/view'));
 const LogisticsViewDetailPage = lazy(() => import('src/pages/dashboard/logistics/viewDetail'));
+const LogisticsViewAllSo = lazy(() => import('src/pages/dashboard/logistics/viewAllSales'));
+const LogisticsViewAllPo = lazy(() =>
+  import("src/pages/dashboard/logistics/viewAllPurchase")
+);
+const LogisticsViewAllQo = lazy(() =>
+  import("src/pages/dashboard/logistics/viewAllQuotation")
+);
+const LogisticsViewAllWo = lazy(() =>
+  import("src/pages/dashboard/logistics/viewAllWork")
+);
 
 //add technician
 const TechnicianCreatePage = lazy(() => import('src/pages/dashboard/services/technician/dashboard'));
@@ -79,7 +89,7 @@ const BlankPage = lazy(() => import('src/pages/dashboard/blank'));
 
 export const dashboardRoutes = [
   {
-    path: 'dashboard',
+    path: "dashboard",
     element: (
       <DashboardLayout>
         <Suspense>
@@ -90,105 +100,120 @@ export const dashboardRoutes = [
     children: [
       {
         index: true,
-        element: <IndexPage />
+        element: <IndexPage />,
       },
       {
-        path: 'quotation',
+        path: "quotation",
         children: [
           {
-            path: 'buy',
-            element: <QuotationBuyPage />
+            path: "buy",
+            element: <QuotationBuyPage />,
           },
           {
-            path: 'sell',
-            element: <QuotationSellPage />
+            path: "sell",
+            element: <QuotationSellPage />,
           },
           {
-            path: 'service',
-            element: <QuotationServicePage />
+            path: "service",
+            element: <QuotationServicePage />,
           },
-              {
-                path: ':courseId',
-                element: <QuotationViewPage />
-              },
-              // {
-              //   path: 'invoice',
-              //   element: <QuotationInvoicePage/>
-              // },
-              {
-                path: 'viewDetail',
-                element: <QuotationViewDetailPage/>
-              },
-              {
-                path: 'edit',
-                element: <QuotationEditPage/>
-              },
-              {
-                path: 'editSales',
-                element: <SalesQuotationEdit/>
-              },
-              {
-                path: 'editService',
-                element: <QuotationServiceEditPage/>
-              }
-        ]
+          {
+            path: ":courseId",
+            element: <QuotationViewPage />,
+          },
+          // {
+          //   path: 'invoice',
+          //   element: <QuotationInvoicePage/>
+          // },
+          {
+            path: "viewDetail",
+            element: <QuotationViewDetailPage />,
+          },
+          {
+            path: "edit",
+            element: <QuotationEditPage />,
+          },
+          {
+            path: "editSales",
+            element: <SalesQuotationEdit />,
+          },
+          {
+            path: "editService",
+            element: <QuotationServiceEditPage />,
+          },
+        ],
       },
       {
-        path: 'purchaseorder',
-        children: [
-          {
-            index: true,
-            element: <PurchaseOrderCreatePage />
-          },
-          {
-            path: ':customerId',
-            element: <PurchaseOrderViewPage />
-          },
-          {
-            path: 'viewDetail/:id',
-            element: <PurchaseOrderViewDetailPage/>
-          },{
-            path: 'edit',
-            element: <PurchaseOrderEdit/>
-          },
-      
-         
-        ]
-      },
-      
-      {
-        path: 'invoices',
+        path: "purchaseorder",
         children: [
           {
             index: true,
-            element: <InvoiceListPage />
+            element: <PurchaseOrderCreatePage />,
           },
           {
-            path: ':invoiceId',
-            element: <InvoiceDetailPage />
+            path: ":customerId",
+            element: <PurchaseOrderViewPage />,
           },
           {
-            path:'viewDetail',
-            element: <InvoiceViewPage/>
+            path: "viewDetail/:id",
+            element: <PurchaseOrderViewDetailPage />,
           },
-        ]
+          {
+            path: "edit",
+            element: <PurchaseOrderEdit />,
+          },
+        ],
       },
+
       {
-        path: 'logistics',
+        path: "invoices",
         children: [
           {
             index: true,
-            element: <LogisticsDashboardPage />
+            element: <InvoiceListPage />,
           },
           {
-            path: 'fleet',
-            element: <LogisticsFleetPage />
+            path: ":invoiceId",
+            element: <InvoiceDetailPage />,
           },
           {
-            path:'viewDetail',
-            element: <LogisticsViewDetailPage/>
+            path: "viewDetail",
+            element: <InvoiceViewPage />,
           },
-        ]
+        ],
+      },
+      {
+        path: "logistics",
+        children: [
+          {
+            index: true,
+            element: <LogisticsDashboardPage />,
+          },
+          {
+            path: "fleet",
+            element: <LogisticsFleetPage />,
+          },
+          {
+            path: "viewDetail",
+            element: <LogisticsViewDetailPage />,
+          },
+          {
+            path: "viewAllPo",
+            element: <LogisticsViewAllPo />,
+          },
+          {
+            path: "viewAllSo",
+            element: <LogisticsViewAllSo />,
+          },
+          {
+            path: "viewAllQo",
+            element: <LogisticsViewAllQo />,
+          },
+          {
+            path: "viewAllWo",
+            element: <LogisticsViewAllWo />,
+          },
+        ],
       },
       // {
       //   path: 'technician',
@@ -225,145 +250,140 @@ export const dashboardRoutes = [
       //       path: 'edit',
       //       element: <WorkOrderEdit/>
       //     },
-          
-      
-         
+
       //   ]
       // },
       {
-        path: 'services',
+        path: "services",
         children: [
           {
-            path: 'workorder',
-            element: <WorkOrderCreatePage />
+            path: "workorder",
+            element: <WorkOrderCreatePage />,
           },
           {
-            path: 'workorderview',
-            element: <WorkOrderViewPage />
+            path: "workorderview",
+            element: <WorkOrderViewPage />,
           },
           {
-            path: 'workorderDetail',
-            element: <WorkOrderViewDetailPage/>
-          },{
-            path: 'workorderedit',
-            element: <WorkOrderEdit/>
+            path: "workorderDetail",
+            element: <WorkOrderViewDetailPage />,
           },
           {
-            path: 'workorderdownload',
-            element: <WorkOrderDownload/>
+            path: "workorderedit",
+            element: <WorkOrderEdit />,
           },
           {
-            path: 'amc',
-            element: <AMCCreatePage />
+            path: "workorderdownload",
+            element: <WorkOrderDownload />,
           },
           {
-            path: 'amcview',
-            element: <AMCViewPage />
+            path: "amc",
+            element: <AMCCreatePage />,
           },
           {
-            path: 'amcDetail',
-            element: <AMCViewDetailPage/>
-          },{
-            path: 'amcedit',
-            element: <AMCOrderEdit/>
+            path: "amcview",
+            element: <AMCViewPage />,
+          },
+          {
+            path: "amcDetail",
+            element: <AMCViewDetailPage />,
+          },
+          {
+            path: "amcedit",
+            element: <AMCOrderEdit />,
           },
 
           {
-            path: 'technician',
-            element: <TechnicianCreatePage />
+            path: "technician",
+            element: <TechnicianCreatePage />,
           },
           {
-            path: 'technicianview',
-            element: <TechnicianViewPage />
+            path: "technicianview",
+            element: <TechnicianViewPage />,
           },
           {
-            path:'technicianDetail',
-            element: <TechnicianViewDetailPage />
+            path: "technicianDetail",
+            element: <TechnicianViewDetailPage />,
           },
-      
-         
-        ]
+        ],
+      },
+      {
+        path: "orders",
+        children: [
+          {
+            index: true,
+            element: <OrderListPage />,
+          },
+          {
+            path: ":orderId",
+            element: <OrderInvoicePage />,
+          },
+          {
+            path: "details",
 
+            element: <OrderViewPage />,
+          },
+          {
+            path: "viewDetail/:id",
+            element: <OrderViewDetailPage />,
+          },
+          {
+            path: "edit",
+            element: <OrderEditPage />,
+          },
+        ],
       },
       {
-        path: 'orders',
+        path: "inventory",
+        children: [
+          {
+            path: "view",
+            element: <InventoryViewPage />,
+          },
+          {
+            path: "create",
+            element: <InventoryCreatePage />,
+          },
+          {
+            path: "edit",
+            element: <InventoryEditPage />,
+          },
+          {
+            path: "viewDetail/:id",
+            element: <InventoryDetailPage />,
+          },
+        ],
+      },
+      {
+        path: "social",
+        children: [
+          {
+            path: "profile",
+            element: <SocialProfilePage />,
+          },
+        ],
+      },
+      {
+        path: "products",
         children: [
           {
             index: true,
-            element: <OrderListPage />
+            element: <ProductListPage />,
           },
           {
-            path: ':orderId',
-            element: <OrderInvoicePage />
+            path: "create",
+            element: <ProductCreatePage />,
           },
           {
-            path: 'details',
-           
-            element: <OrderViewPage />
+            path: "viewDetail/:id",
+            element: <ProductViewPage />,
           },
-          {
-            path:'viewDetail/:id',
-            element: <OrderViewDetailPage/>
-          },
-          {
-            path:'edit',
-            element: <OrderEditPage/>
-          }
-        ]
+        ],
       },
       {
-        path: 'inventory',
-        children: [
-          {
-            
-            path: 'view',
-            element: <InventoryViewPage />
-          },
-          {
-            path: 'create',
-            element: <InventoryCreatePage />
-          },
-          {
-            
-            path: 'edit',
-            element: <InventoryEditPage />
-          },
-          {
-            path: 'viewDetail/:id',
-            element: <InventoryDetailPage />
-          }
-        ]
+        path: "blank",
+        element: <BlankPage />,
       },
-      {
-        path: 'social',
-        children: [
-          {
-            path: 'profile',
-            element: <SocialProfilePage />
-          }
-        ]
-      },
-      {
-        path: 'products',
-        children: [
-          {
-            index: true,
-            element: <ProductListPage />
-          },
-          {
-            path: 'create',
-            element: <ProductCreatePage />
-          },
-          {
-            path: 'viewDetail/:id',
-            element: <ProductViewPage />
-          }
-        ]
-      },
-      {
-        path: 'blank',
-        element: <BlankPage />
-      },
-    ]
-  }
+    ],
+  },
 ];
