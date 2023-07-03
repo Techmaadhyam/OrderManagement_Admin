@@ -949,7 +949,7 @@ const SalesOrderViewList = () => {
             }}
             underline="hover"
           >
-            <Typography variant="subtitle1">{name}</Typography>
+            <Typography variant="subtitle1">SP:{name}</Typography>
           </Link>
         );
       },

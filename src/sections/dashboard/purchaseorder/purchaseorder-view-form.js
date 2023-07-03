@@ -181,7 +181,7 @@ const PurchaseOrderViewForm = () => {
             }}
             underline="hover"
           >
-            <Typography variant="subtitle1">{name}</Typography>
+            <Typography variant="subtitle1">PO:{name}</Typography>
           </Link>
         );
       },
