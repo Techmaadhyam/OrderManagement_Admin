@@ -21,7 +21,9 @@ const User = () => {
     axios.get(apiUrl + `getUserByUsername/${mail}`)
       .then(response => {
     
-        setUserData(response.data[0]);
+        setUserData(response.data.loggedIUser[0]);
+ 
+     
      
       })
       .catch(error => {

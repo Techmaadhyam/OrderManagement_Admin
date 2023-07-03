@@ -21,6 +21,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ArrowCircleLeftOutlinedIcon from "@mui/icons-material/ArrowCircleLeftOutlined";
 import { apiUrl } from "src/config";
+import { Delete } from "@mui/icons-material";
 import {
   fetchAccessToken,
   fetchCountries,
@@ -80,6 +81,9 @@ const Register = () => {
 
   const [step, setStep] = useState(1);
   const [touched, setTouched] = useState(false);
+
+  //handle file uploads
+  const [uploadFile, setUploadFile] = useState(null);
 
   //updating form state
   const handleInputChange = (event) => {
@@ -296,7 +300,7 @@ const Register = () => {
     const intervalId = setInterval(handleImageChange, 3000);
     return () => clearInterval(intervalId);
   }, [handleImageChange]);
-
+console.log(uploadFile)
   //calls toast notification on sucessful registration and redirects to login page, handles fetch POST request
   const handleToHome = async (event) => {
     event.preventDefault();
@@ -343,16 +347,47 @@ const Register = () => {
             }),
           });
 
-          if (response.ok) {
+          if (!response.ok) {
             // Redirect to home page upon successful submission
 
-            response.json().then((data) => {
-              notify(
-                "success",
-                "You have successfully registered your account. Please Log In."
-              );
-              localStorage.setItem("notification", true);
-              window.location.href = paths.index;
+            response.json().then(async (data) => {
+              if (uploadFile) {
+                const formData = new FormData();
+
+                let jsonBodyData = {};
+
+                let file = uploadFile;
+    
+                jsonBodyData.fileName = "companylogo";
+                jsonBodyData.fileType = uploadFile?.type;
+                jsonBodyData.createdbyid = 143;
+                jsonBodyData.lastmodifybyid = null;
+                jsonBodyData.createdDate = new Date();
+                jsonBodyData.lastModifiedDate = new Date();
+
+                formData.append("file", file);
+                formData.append("fileWrapper", JSON.stringify(jsonBodyData));
+
+                try {
+                  const uploadResponse = await fetch(apiUrl + "upload", {
+                    method: "POST",
+                    body: formData,
+                  });
+
+                  if (uploadResponse.ok) {
+                    notify(
+                      "success",
+                      "You have successfully registered your account. Please Log In."
+                    );
+                    localStorage.setItem("notification", true);
+                    window.location.href = paths.index;
+                  } else {
+                    console.error("Logo upload failed");
+                  }
+                } catch (error) {
+                  console.error(error);
+                }
+              }
             });
           } else {
             notify(
@@ -374,6 +409,30 @@ const Register = () => {
     }
   };
 
+  const handleUploadChange = (event) => {
+    const file = event.target.files[0];
+    setUploadFile(file);
+
+    if (file && (file.type === "image/png" || file.type === "image/jpeg")) {
+      // Perform necessary operations with the file, such as saving or previewing
+
+    } else {
+      // Display an error message or perform any other error handling
+      alert("Invalid file format. Please select a PNG or JPEG file.");
+    }
+  };
+
+  //delete uploaded files from state
+  const handleDeleteFile = (fileType) => {
+    switch (fileType) {
+      case "upload":
+        setUploadFile(null);
+        document.getElementById("upload").value = "";
+        break;
+      default:
+        break;
+    }
+  };
   const renderFormStep = () => {
     switch (step) {
       case 1:
@@ -676,6 +735,41 @@ const Register = () => {
                             value={confirmPassword}
                             onChange={handleInputChange}
                           ></TextField>
+                        </Grid>
+                        <Grid xs={12} md={6}>
+                          <div>
+                            <div style={{ display: "inline-block" }}>
+                              <Button
+                                color="primary"
+                                variant="contained"
+                                align="right"
+                                onClick={() =>
+                                  document.getElementById("upload").click()
+                                }
+                              >
+                                Upload Company Logo
+                              </Button>
+                              {uploadFile && (
+                                <Button
+                                  color="secondary"
+                                  onClick={() => handleDeleteFile("upload")}
+                                  startIcon={<Delete />}
+                                  sx={{ color: "grey" }}
+                                >
+                                  Delete
+                                </Button>
+                              )}
+                            </div>
+                            <input
+                              type="file"
+                              id="upload"
+                              onChange={handleUploadChange}
+                              style={{ display: "none" }}
+                            />
+                          </div>
+                          <Typography variant="subtitle2" sx={{ mt: 1 }}>
+                            File must be in PNG/JPEG format
+                          </Typography>
                         </Grid>
                       </Grid>
                       {step > 1 && (

@@ -45,14 +45,23 @@ class AuthApi {
     await axios
       .get(apiUrl + `getUserByUsername/${email}`)
       .then((response) => {
-            users = response.data[0];
+            users = response.data.loggedIUser[0];
 
-          if(response && response.data && response.data.length > 0 && password === response.data[0].password){
-       
-         
-            window.sessionStorage.setItem('user', response.data[0].id);
-            window.sessionStorage.setItem('mail', response.data[0].userName);
-            localStorage.setItem('user', response.data[0].id);
+          if (
+            response &&
+            response.data &&
+            response.data.loggedIUser.length > 0 &&
+            password === response.data.loggedIUser[0].password
+          ) {
+            window.sessionStorage.setItem(
+              "user",
+              response.data.loggedIUser[0].id
+            );
+            window.sessionStorage.setItem(
+              "mail",
+              response.data.loggedIUser[0].userName
+            );
+            localStorage.setItem("user", response.data.loggedIUser[0].id);
             //const accessToken = sign({ userId: user.id }, user.id, null);
             //const accessToken = sign({ userId: user.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 
