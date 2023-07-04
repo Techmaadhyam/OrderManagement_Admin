@@ -10,7 +10,7 @@ import {
 import { Table } from 'antd';
 import './purchase-order.css'
 import { Box } from '@mui/system';
-import React from 'react';
+import {React, useContext} from 'react';
 import { Scrollbar } from 'src/components/scrollbar';
 import EditIcon from '@mui/icons-material/Edit';
 import {  Delete } from '@mui/icons-material';
@@ -24,12 +24,14 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SearchIcon from '@mui/icons-material/Search';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import imgUrl from '../pdfAssets/imageDataUrl';
+// import imgUrl from '../pdfAssets/imageDataUrl';
 // import techMaadhyam from '../pdfAssets/imageDataUrl2';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from '../pdfAssets/vfs_fonts';
 import { apiUrl } from 'src/config';
 import Logo from '../logo/logo';
+import { LogoContext } from 'src/utils/logoContext';
+
 
 
 
@@ -61,6 +63,7 @@ const categoryBuySell = [
 ];
 
 const QuotationViewTable = () => {
+  const { logo } = useContext(LogoContext);
   const [userData, setUserData]= useState([])
   const [selectedCategory, setSelectedCategory] = useState('Purchase Quotation');
   const [isSearching, setIsSearching] = useState(false);
@@ -242,8 +245,8 @@ const handleQuotation = async (record) => {
     worksheet.mergeCells('A1:K1');
     worksheet.mergeCells('A2:B6');
     const image = workbook.addImage({
-      base64: imgUrl,
-      extension: 'png',
+      base64: `data:${logo.fileType};base64, ${logo.file}`,
+      extension: logo.fileType.split('/')[1],
     });
     worksheet.addImage(image, {
       tl: { col: 0, row: 1.2},
@@ -606,7 +609,7 @@ const rowData = response.data.map((product, index) => {
                     {
                       columns: [
                         {
-                          image: imgUrl,
+                          image:`data:${logo.fileType};base64, ${logo.file}`,
                           width: 100,
                           alignment: "left",
                         },
