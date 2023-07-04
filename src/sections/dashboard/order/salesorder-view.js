@@ -75,9 +75,6 @@ export const ViewSalesOrder = (props) => {
     cgst: obj.cgst,
     discountpercent: obj.discountpercent,
     weight: obj.weight,
-    ...(state?.quotationId && {
-      quotationId: { id: state?.quotationId },
-    }),
     price: obj.price,
     description: obj.description,
     comments: state?.comments,
@@ -101,8 +98,8 @@ export const ViewSalesOrder = (props) => {
           body: JSON.stringify({
             salesOrder: {
               id: state?.id,
-              ...(state?.quotationId && {
-                quotationId: { id: state?.quotationId },
+              ...(state?.quotid && {
+                quotid: { id: state?.quotid },
               }),
               ...(tempId && { tempUser: { id: tempId } }),
               ...(userState && { companyuser: { id: userState } }),
@@ -351,7 +348,7 @@ const columns = [
             align={align}
             label="Quotation"
             value={String(
-              state?.quotationId || state?.soRecord?.quotationId || "Empty"
+              state?.quotid || state?.soRecord?.quotid || "Empty"
             )}
           />
           <Divider />

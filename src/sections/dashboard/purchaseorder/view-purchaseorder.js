@@ -66,9 +66,7 @@ export const ViewPurchaseOrder = (props) => {
       igst: obj.sgst,
       cgst: obj.cgst,
       weight: obj.weight,
-      ...(state?.quotationId && {
-        quotationId: { id: state?.quotationId },
-      }),
+    
       price: obj.price,
       description: obj.description,
       comments: state?.comments,
@@ -95,8 +93,8 @@ export const ViewPurchaseOrder = (props) => {
             purchaseOrder: {
               id: state?.id,
 
-              ...(state?.quotationId && {
-                quotationId: { id: state?.quotationId },
+              ...(state?.quotid && {
+                quotid: { id: state?.quotid },
               }),
               ...(tempId && { tempUser: { id: tempId } }),
               ...(userState && { companyuser: { id: userState } }),
@@ -495,8 +493,8 @@ export const ViewPurchaseOrder = (props) => {
             align={align}
             label="Quotation"
             value={String(
-              state?.quotationId ||
-                state?.purchaseOrderRec?.quotationId ||
+              state?.quotid ||
+                state?.purchaseOrderRec?.quotid ||
                 "Empty"
             )}
           />

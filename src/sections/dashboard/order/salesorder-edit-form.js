@@ -152,7 +152,7 @@ export const SalesOrderEditForm = (props) => {
 //form state handeling
 
 const [type, setType] = useState(state?.type||"");
-const [quotation, setQuotation] = useState(state?.quotationId ||'');
+const [quotation, setQuotation] = useState(state?.quotid||'');
 const [deliveryDate, setDeliveryDate] = useState(dayjs(state?.originalDeliveryDate|| ''));
 const [status, setStatus] = useState(state?.status || "");
 const [contactName,setContactName] = useState(state?.contactPerson||'')
@@ -658,7 +658,6 @@ const notify = (type, message) => {
         productId,
         productName,
         weight,
-        ...(quotation && { quotationId: { id: quotation } }),
         discountpercent: parseFloat(discount),
         netAmount: parseFloat(netAmount),
         quantity: parseFloat(quantity),
@@ -780,7 +779,7 @@ const notify = (type, message) => {
             body: JSON.stringify({
               salesOrder: {
                 id: state?.id,
-                ...(quotation && { quotationId: { id: quotation } }),
+                ...(quotation && { quotid: quotation }),
                 ...(tempId && { tempUser: { id: tempId } }),
                 ...(userState && { companyuser: { id: userState } }),
                 contactPerson: contactName,

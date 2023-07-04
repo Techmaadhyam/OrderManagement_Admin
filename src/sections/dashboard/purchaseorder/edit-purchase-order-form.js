@@ -142,7 +142,7 @@ export const PurchaseOrderEditForm = (props) => {
   //form state handeling
 
   const [type, setType] = useState(state?.type || "");
-  const [quotation, setQuotation] = useState(state?.quotationId || "");
+  const [quotation, setQuotation] = useState(state?.quotation || "");
   const [deliveryDate, setDeliveryDate] = useState(
     dayjs(state?.originalDeliveryDate || "")
   );
@@ -626,7 +626,6 @@ export const PurchaseOrderEditForm = (props) => {
         product: { id: productId },
         productName,
         weight,
-        ...(quotation && { quotationId: { id: quotation } }),
         quantity: parseFloat(quantity),
         price: parseFloat(price),
         description,
@@ -749,7 +748,7 @@ export const PurchaseOrderEditForm = (props) => {
           body: JSON.stringify({
             purchaseOrder: {
               id: state?.id,
-              ...(quotation && { quotationId: { id: quotation } }),
+              ...(quotation && { quotation: { id: quotation } }),
               ...(tempId && { tempUser: { id: tempId } }),
               ...(userState && { companyuser: { id: userState } }),
               contactPerson: contactName,

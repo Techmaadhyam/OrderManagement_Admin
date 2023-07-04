@@ -469,10 +469,9 @@ export const SalesOrderCreateForm = (props) => {
       const newRow = {
         //inventoryId: inventoryId,
         inventory: { id: inventoryId },
-        ...(quotation && { quotationId: { id: quotation } }),
         productDescription,
         productId,
-        
+
         productName,
         weight,
         discountpercent: parseFloat(discount),
@@ -579,8 +578,7 @@ export const SalesOrderCreateForm = (props) => {
           },
           body: JSON.stringify({
             salesOrder: {
-          
-              ...(quotation && { quotationId: { id: quotation } }),
+              ...(quotation && { quotid: quotation }),
               ...(tempId && { tempUser: { id: tempId } }),
               ...(userState && { companyuser: { id: userState } }),
               contactPerson: contactName,
