@@ -49,7 +49,7 @@ console.log(state)
   const [tempuser, setTempuser] =useState([])
   const [rowData, setRowData] = useState()
      const [isEditable, setIsEditable] = useState(false);
-  const [paidAmount, setPaidAmount] = useState(state?.paidamount || 0);
+  const [paidAmount, setPaidAmount] = useState(state?.paidamount || state?.workorder?.paidamount || 0);
     const [tempId, setTempId] = useState(state?.noncompany?.id);
     const [userState, setUserState] = useState(state?.company?.id);
     const [updatedRows, setUpdatedRows] = useState([]);

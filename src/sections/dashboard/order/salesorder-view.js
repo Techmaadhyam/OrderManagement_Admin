@@ -51,7 +51,9 @@ export const ViewSalesOrder = (props) => {
   const [tempuser, setTempuser] =useState([])
   const [rowData, setRowData] = useState()
      const [isEditable, setIsEditable] = useState(false);
-  const [paidAmount, setPaidAmount] = useState(state?.paidamount || 0);
+  const [paidAmount, setPaidAmount] = useState(
+    state?.paidamount || state?.soRecord?.paidamount || 0
+  );
       const [tempId, setTempId] = useState(state?.tempUser?.id);
       const [userState, setUserState] = useState(state?.companyuser?.id);
       const [updatedRows, setUpdatedRows] = useState([]);

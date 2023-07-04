@@ -10,10 +10,10 @@ import {
   Button,
   Icon,
   IconButton,
-  TextField
+  TextField,
 } from "@mui/material";
 import "./purchase-order.css";
-import { Box,} from "@mui/system";
+import { Box } from "@mui/system";
 import { PropertyList } from "src/components/property-list";
 import { PropertyListItem } from "src/components/property-list-item";
 import { useState } from "react";
@@ -39,50 +39,51 @@ export const ViewPurchaseOrder = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const state = location.state.data || location.state;
-  console.log(state)
-   const [isEditable, setIsEditable] = useState(false); 
-  const [paidAmount, setPaidAmount] = useState(state?.paidamount || 0);
-    const [tempId, setTempId] = useState(state?.tempUser?.id);
+  console.log(state);
+  const [isEditable, setIsEditable] = useState(false);
+  const [paidAmount, setPaidAmount] = useState(
+    state?.paidamount || state?.purchaseOrderRec?.paidamount || 0
+  );
+  const [tempId, setTempId] = useState(state?.tempUser?.id);
   const [userState, setUserState] = useState(state?.companyuser?.id);
-  const [updatedRows, setUpdatedRows] = useState([])
-    const [tempuser, setTempuser] = useState([]);
-    const [rowData, setRowData] = useState();
+  const [updatedRows, setUpdatedRows] = useState([]);
+  const [tempuser, setTempuser] = useState([]);
+  const [rowData, setRowData] = useState();
 
   const performaInvoice = location.state.performaInvoice?.file;
   const approvedInvoice = location.state.approvedInvoice?.file;
   const deliveryChallan = location.state.deliveryChallan?.file;
 
-    const handleEditClick = () => {
-      setIsEditable(true); 
-    };
-
-  console.log(updatedRows)
-const convertedArray = updatedRows.map((obj) => {
-
-  return {
-    product: { id: obj.productId },
-    sgst: obj.sgst,
-    igst: obj.sgst,
-    cgst: obj.cgst,
-    weight: obj.weight,
-    ...(state?.quotationId && {
-      quotationId: { id: state?.quotationId },
-    }),
-    price: obj.price,
-    description: obj.description,
-    comments: state?.comments,
-    size: obj.size,
-    quantity: obj.quantity,
-    createdDate: obj.createdDate,
-    lastModifiedDate: obj.lastModifiedDate,
-    id: obj.id,
+  const handleEditClick = () => {
+    setIsEditable(true);
   };
-});
-  
-  console.log(convertedArray)
-  const handleSaveClick =  async() => {
+
+  console.log(updatedRows);
+  const convertedArray = updatedRows.map((obj) => {
+    return {
+      product: { id: obj.productId },
+      sgst: obj.sgst,
+      igst: obj.sgst,
+      cgst: obj.cgst,
+      weight: obj.weight,
+      ...(state?.quotationId && {
+        quotationId: { id: state?.quotationId },
+      }),
+      price: obj.price,
+      description: obj.description,
+      comments: state?.comments,
+      size: obj.size,
+      quantity: obj.quantity,
+      createdDate: obj.createdDate,
+      lastModifiedDate: obj.lastModifiedDate,
+      id: obj.id,
+    };
+  });
+
+  console.log(convertedArray);
+  const handleSaveClick = async () => {
     setIsEditable(false);
-  
+
     if (paidAmount) {
       try {
         const response = await fetch(apiUrl + "createPurchaseOrder", {
@@ -93,7 +94,7 @@ const convertedArray = updatedRows.map((obj) => {
           body: JSON.stringify({
             purchaseOrder: {
               id: state?.id,
-          
+
               ...(state?.quotationId && {
                 quotationId: { id: state?.quotationId },
               }),
@@ -126,14 +127,12 @@ const convertedArray = updatedRows.map((obj) => {
         });
 
         if (response.ok) {
-
-
         }
       } catch (error) {
         console.error("API call failed:", error);
       }
-    };
-  }
+    }
+  };
 
   const columns = [
     {
@@ -153,7 +152,6 @@ const convertedArray = updatedRows.map((obj) => {
             onClick={handleNavigation}
             sx={{
               alignItems: "center",
-      
             }}
             underline="hover"
           >
@@ -205,8 +203,6 @@ const convertedArray = updatedRows.map((obj) => {
     },
   ];
 
-
-
   const [performaInvoiceFile, setPerformaInvoiceFile] = useState(null);
   const [approvedInvoiceFile, setApprovedInvoiceFile] = useState(null);
   const [deliveryChallanFile, setDeliveryChallanFile] = useState(null);
@@ -240,7 +236,6 @@ const convertedArray = updatedRows.map((obj) => {
           }`
       )
       .then((response) => {
-    
         const modifiedData = response.data.map((item) => {
           const { quantity, price, cgst, igst, sgst } = item;
           const netAmount = (
@@ -257,7 +252,6 @@ const convertedArray = updatedRows.map((obj) => {
           let parsedProduct;
           try {
             parsedProduct = JSON.parse(obj.product);
-    
           } catch (error) {
             console.error(
               "Error parsing inventory JSON for object:",
@@ -431,8 +425,6 @@ const convertedArray = updatedRows.map((obj) => {
   }
   const formattedDate = formatDate(state?.purchaseOrderRec?.deliveryDate);
 
-
-
   return (
     <div style={{ minWidth: "100%", marginTop: "1rem" }}>
       <div
@@ -584,14 +576,12 @@ const convertedArray = updatedRows.map((obj) => {
                 onChange={(e) => setPaidAmount(e.target.value)}
                 style={{
                   width: "100px",
-                  height:'40px',
+                  height: "40px",
                   marginLeft: "10px",
                 }}
               />
             ) : (
-              <span>
-                {paidAmount}
-              </span>
+              <span>{paidAmount}</span>
             )}
             {isEditable ? (
               <IconButton onClick={handleSaveClick}>

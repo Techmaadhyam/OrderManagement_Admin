@@ -343,7 +343,7 @@ export const WorkOrderEditForm = (props) => {
         id: Id,
         product: { id: productId },
         productName,
-        workOrderId: state?.id,
+        workOrderId: { id: state?.id },
         unitPrice: parseFloat(price),
         description,
         discountpercent: parseFloat(discount),
@@ -443,34 +443,6 @@ export const WorkOrderEditForm = (props) => {
   //post request
   const handleClick = async (event) => {
     let finalAmount = parseFloat(totalAmount?.toFixed(2));
-
-    console.log({
-      workorder: {
-        id: state?.id,
-        contactPersonName: contactName,
-        contactPhoneNumber: phone,
-        contactEmail: inchargeEmail,
-        adminPersonName: adminName,
-        adminPhoneNumber: adminPhone,
-        adminEmail: adminEmail,
-        status: status,
-        type: type,
-        createdByUser: { id: userId },
-        createdDate: state?.originalcreatedDate,
-        lastModifiedDate: new Date(),
-        comments: comment,
-        category: "workorder",
-        lastModifiedByUser: { id: userId },
-        termsAndCondition: terms,
-    
-        //totalAmount: finalAmount,
-        technicianInfo: { id: technician },
-        noncompany: { id: tempId },
-        //company: {id: userState},
-      },
-      workOrderItems: updatedRows,
-      deleteWorkOrderItems: deleteRows,
-    });
 
     event.preventDefault();
 
