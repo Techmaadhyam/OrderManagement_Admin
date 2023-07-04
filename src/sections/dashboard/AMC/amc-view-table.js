@@ -10,7 +10,7 @@ import {
 import { Table } from 'antd';
 import './purchase-order.css'
 import { Box, border } from '@mui/system';
-import React from 'react';
+import {React, useContext} from 'react';
 import { Scrollbar } from 'src/components/scrollbar';
 import EditIcon from '@mui/icons-material/Edit';
 import {  Delete } from '@mui/icons-material';
@@ -27,8 +27,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { apiUrl } from 'src/config';
 import Logo from '../logo/logo';
-import imgUrl from '../pdfAssets/imageDataUrl';
+// import imgUrl from '../pdfAssets/imageDataUrl';
 import pdfFonts from '../pdfAssets/vfs_fonts';
+import { LogoContext } from 'src/utils/logoContext';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 pdfMake.fonts = {
   Helvetica: {
@@ -40,10 +41,10 @@ const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
 
 
 const AmcViewTable = () => {
+  const {logo} = useContext(LogoContext)
   const [userData, setUserData]= useState([])
   const [isSearching, setIsSearching] = useState(false);
   const [searchText, setSearchText] = useState('');
-  const [invoiceData, setInvoiceData] = useState([]);
 
   const navigate = useNavigate();
   
@@ -188,13 +189,12 @@ const handleWorkInvoice = async (record) => {
   console.log(record);
   try{
         const response = await axios.get(apiUrl +`getAllWorkOrderItems/${record.id}`)
-          setInvoiceData(response.data);
           console.log(response.data)
           const rowData = response.data.map((item,index) => {
             let subTotal = item.unitPrice * item.workstationcount;
             let igst = item.igst;
             let igstAmount = (subTotal * igst) / 100;
-            let total = subTotal + igstAmount;
+            let total = (subTotal + igstAmount).toFixed(2);
             return [index+1, item.product.productName, item.unitPrice,`${item.workstationcount} WORK STATIONS`,subTotal,item.igst,total];
           })
           const totalAmount = response.data.map((item)=>{
@@ -202,7 +202,7 @@ const handleWorkInvoice = async (record) => {
             let igst = item.igst;
             let igstAmount = (subTotal * igst) / 100;
             let total = subTotal + igstAmount;
-            return total;
+            return total.toFixed(2);
           }) 
           const docDefinition = {
             pageOrientation: "landscape",
@@ -213,7 +213,7 @@ const handleWorkInvoice = async (record) => {
               {
                 columns: [
                   {
-                    image: imgUrl,
+                    image:`data:${logo.fileType};base64, ${logo.file}`,
                     width: 100,
                     alignment: "left",
                   },
@@ -517,13 +517,15 @@ const handleWorkInvoice = async (record) => {
               {
                 stack: [
                   {
-                    text: `Total INR: ${totalAmount}`,
+                    // text: `Total INR: ${record.totalAmount}`,
+                    text: `Total INR: ${record.paidamount}`,
                     style: "workDetails",
                     bold: true,
                   },
                   {
                     text: `Total in words: ${convertAmountToWords(
-                      totalAmount
+                      // record.totalAmount
+                      record.paidamount
                     )}`,
                     style: "workDetails",
                     bold: true,

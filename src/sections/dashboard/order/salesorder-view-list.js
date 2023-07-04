@@ -10,7 +10,7 @@ import {
 import { Table } from "antd";
 import "./sales-order.css";
 import { Box } from "@mui/system";
-import React from "react";
+import {React, useContext} from "react";
 import { Scrollbar } from "src/components/scrollbar";
 import DownloadIcon from "@mui/icons-material/Download";
 import IconWithPopup from "../user/user-icon";
@@ -24,11 +24,13 @@ import "react-toastify/dist/ReactToastify.css";
 import SearchIcon from "@mui/icons-material/Search";
 import { apiUrl } from "src/config";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import imgUrl from "../pdfAssets/imageDataUrl.js";
+// import imgUrl from "../pdfAssets/imageDataUrl.js";
 // import techMaadhyam from "../pdfAssets/imageDataUrl2";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "../pdfAssets/vfs_fonts";
 import Logo from "../logo/logo";
+import {LogoContext} from 'src/utils/logoContext'
+
 
 const userId = sessionStorage.getItem("user") || localStorage.getItem("user");
 
@@ -51,6 +53,7 @@ const customerType = [
 ];
 
 const SalesOrderViewList = () => {
+  const { logo } = useContext(LogoContext);
   const [userData, setUserData] = useState([]);
 
   const [isSearching, setIsSearching] = useState(false);
@@ -192,6 +195,7 @@ const SalesOrderViewList = () => {
   };
 
   const handleInvoicePdf = async (record, heading, dateData, noData) => {
+    
     // console.log(record);
     try {
       const response = await axios.get(
@@ -234,7 +238,8 @@ const SalesOrderViewList = () => {
                   {
                     columns: [
                       {
-                        image: imgUrl,
+                        image:`data:${logo.fileType};base64, ${logo.file}`,
+                        // image: pdfLogo,
                         width: 100,
                         alignment: "left",
                       },
@@ -688,7 +693,8 @@ const SalesOrderViewList = () => {
                   {
                     columns: [
                       {
-                        image: imgUrl,
+                        image:`data:${logo.fileType};base64, ${logo.file}`,
+                        // image: imgUrl,
                         width: 100,
                         alignment: "left",
                       },
