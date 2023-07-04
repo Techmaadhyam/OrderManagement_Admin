@@ -193,6 +193,8 @@ export const ViewTemporaryUserDetail = (props) => {
   const [po, setPo] = useState([])
   const [so, setSo] = useState([]);
   const [wo, setWo] = useState([]);
+  const [month, setMonth] = useState("");
+  const [year, setYear] = useState("");
   const [quotation, setQuotation] = useState([]);
    const [selectedDate, setSelectedDate] = useState(
      dayjs(`${currentMonth} ${currentYear}`)
@@ -209,19 +211,20 @@ export const ViewTemporaryUserDetail = (props) => {
       return `${year}/${month}/${day}`;
   }
   
-  let month;
-  let year;
+
   const handleDateChange = (date) => {
     setSelectedDate(date);
     const monthYear = date?.format("MMMM/YYYY").toLowerCase();
-     [month, year] = monthYear.split("/");
+    const [newMonth, newYear] = monthYear.split("/");
+    setMonth(newMonth);
+    setYear(newYear);
 
     axios
       .get(
         apiUrl +
           `getRecordBasedOnCustomerId/${userId}/${state.id}/${
-            month || currentMonth?.toLowerCase()
-          }/${year || currentYear}`
+            newMonth || currentMonth?.toLowerCase()
+          }/${newYear || currentYear}`
       )
       .then((response) => {
         let poList = [
@@ -278,6 +281,8 @@ export const ViewTemporaryUserDetail = (props) => {
         console.error("Error fetching data:", error);
       });
   };
+
+
 
   useEffect(() => {
     const fetchData = () => {
@@ -386,7 +391,7 @@ export const ViewTemporaryUserDetail = (props) => {
         },
       });
     };
-  
+  console.log(month, year)
 
   return (
     <div style={{ minWidth: "100%", marginTop: "1rem" }}>

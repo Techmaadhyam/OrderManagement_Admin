@@ -315,8 +315,7 @@ console.log(state)
             value={String(state?.id || state?.quotation?.id)}
           />
           <Divider />
-          {state?.category !== "Service Quotation" ||
-            (state?.quotation?.category !== "Service Quotation" && (
+          {(state?.category !== "Service Quotation"  && (
               <>
                 <PropertyListItem
                   align={align}
@@ -342,8 +341,8 @@ console.log(state)
             }
           />
           <Divider />
-          {state?.adminPersonName ||
-            (state?.quotation.adminPersonName && (
+          {
+            (state?.adminPersonName && (
               <>
                 <PropertyListItem
                   align={align}

@@ -152,7 +152,7 @@ export const ViewInventoryDetail = (props) => {
                   onClick={handleWarehouseNavigation}
                   style={{ cursor: "pointer" }}
                 >
-                  <Typography variant="subtitle1">
+                  <Typography variant="subtitle2">
                     {state?.warehouseName || warehouseName}
                   </Typography>
                 </Link>
@@ -203,7 +203,7 @@ export const ViewInventoryDetail = (props) => {
                   onClick={handleProductNavigation}
                   style={{ cursor: "pointer" }}
                 >
-                  <Typography variant="subtitle1">
+                  <Typography variant="subtitle2">
                     {state?.productName || productName}
                   </Typography>
                 </Link>
