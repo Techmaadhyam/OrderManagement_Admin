@@ -18,6 +18,7 @@ import { useAnalytics } from './hooks/use-analytics';
 import { routes } from './routes';
 import { store } from './store';
 import { createTheme } from './theme';
+
 // Remove if react-quill is not used
 import 'react-quill/dist/quill.snow.css';
 // Remove if react-draft-wysiwyg is not used
@@ -28,6 +29,7 @@ import 'simplebar-react/dist/simplebar.min.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
 // Remove if locales are not used
 import './locales/i18n';
+import Logo from './sections/dashboard/logo/logoAPI';
 
 export const App = () => {
   useAnalytics(gtmConfig);
@@ -42,6 +44,7 @@ export const App = () => {
           <AuthConsumer>
             {(auth) => (
               <SettingsProvider>
+                <Logo />
                 <SettingsConsumer>
                   {(settings) => {
                     // Prevent theme flicker when restoring custom settings from browser storage
@@ -54,7 +57,7 @@ export const App = () => {
                       contrast: settings.contrast,
                       direction: settings.direction,
                       paletteMode: settings.paletteMode,
-                      responsiveFontSizes: settings.responsiveFontSizes
+                      responsiveFontSizes: settings.responsiveFontSizes,
                     });
 
                     // Prevent guards from redirecting
@@ -74,13 +77,13 @@ export const App = () => {
                         </Helmet>
                         <RTL direction={settings.direction}>
                           <CssBaseline />
-                          {showSlashScreen
-                            ? <SplashScreen />
-                            : (
-                              <>
-                                {element}
-                                
-                                {/* <SettingsDrawer
+                          {showSlashScreen ? (
+                            <SplashScreen />
+                          ) : (
+                            <>
+                              {element}
+
+                              {/* <SettingsDrawer
                                   canReset={settings.isCustom}
                                   onClose={settings.handleDrawerClose}
                                   onReset={settings.handleReset}
@@ -97,8 +100,8 @@ export const App = () => {
                                     navColor: settings.navColor
                                   }}
                                 /> */}
-                              </>
-                            )}
+                            </>
+                          )}
                           <Toaster />
                         </RTL>
                       </ThemeProvider>

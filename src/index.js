@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { App } from './app';
 import LogoutBroadcast from './logoutBroadcast';
+import { LogoProvider } from "./utils/logoContext";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -11,8 +12,10 @@ root.render(
   <HelmetProvider>
     <BrowserRouter>
       <Suspense>
-      <LogoutBroadcast/>
-        <App />
+        <LogoProvider>
+          <LogoutBroadcast />
+          <App />
+        </LogoProvider>
       </Suspense>
     </BrowserRouter>
   </HelmetProvider>
