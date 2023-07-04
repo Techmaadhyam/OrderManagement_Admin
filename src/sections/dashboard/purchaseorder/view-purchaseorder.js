@@ -153,7 +153,7 @@ const convertedArray = updatedRows.map((obj) => {
             onClick={handleNavigation}
             sx={{
               alignItems: "center",
-              textAlign: "center",
+      
             }}
             underline="hover"
           >

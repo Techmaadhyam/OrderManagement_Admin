@@ -139,7 +139,7 @@ console.log(state)
             onClick={handleNavigation}
             sx={{
               alignItems: 'center',
-              textAlign: 'center',
+
             }}
             underline="hover"
           >

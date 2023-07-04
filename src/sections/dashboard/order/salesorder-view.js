@@ -225,7 +225,7 @@ const columns = [
           onClick={handleNavigation}
           sx={{
             alignItems: 'center',
-            textAlign: 'center',
+       
           }}
           underline="hover"
         >

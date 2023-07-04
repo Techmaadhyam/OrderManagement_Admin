@@ -50,7 +50,7 @@ export const ViewWarehouseDetail = (props) => {
             onClick={handleNavigation}
             sx={{
               alignItems: 'center',
-              textAlign: 'center',
+
             }}
             underline="hover"
           >

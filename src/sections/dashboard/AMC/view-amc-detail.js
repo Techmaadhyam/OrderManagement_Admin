@@ -110,7 +110,12 @@ export const ViewAMCDetail = (props) => {
        });
 
        if (response.ok) {
-       }
+         response.json().then((data) => {
+         
+           setPaidAmount(data.paidamount);
+
+         });
+       } 
      } catch (error) {
        console.error("API call failed:", error);
      }
@@ -135,7 +140,7 @@ const columns = [
           onClick={handleNavigation}
           sx={{
             alignItems: "center",
-            textAlign: "center",
+        
           }}
           underline="hover"
         >
