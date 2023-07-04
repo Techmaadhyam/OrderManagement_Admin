@@ -347,7 +347,7 @@ console.log(uploadFile)
             }),
           });
 
-          if (!response.ok) {
+          if (response.ok) {
             // Redirect to home page upon successful submission
 
             response.json().then(async (data) => {
