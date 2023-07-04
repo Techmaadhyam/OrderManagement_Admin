@@ -142,7 +142,7 @@ export const PurchaseOrderEditForm = (props) => {
   //form state handeling
 
   const [type, setType] = useState(state?.type || "");
-  const [quotation, setQuotation] = useState(state?.quotation || "");
+  const [quotation, setQuotation] = useState(state?.quotid || "");
   const [deliveryDate, setDeliveryDate] = useState(
     dayjs(state?.originalDeliveryDate || "")
   );
@@ -748,7 +748,7 @@ export const PurchaseOrderEditForm = (props) => {
           body: JSON.stringify({
             purchaseOrder: {
               id: state?.id,
-              ...(quotation && { quotation: { id: quotation } }),
+              ...(quotation && { quotid: { id: quotation } }),
               ...(tempId && { tempUser: { id: tempId } }),
               ...(userState && { companyuser: { id: userState } }),
               contactPerson: contactName,
