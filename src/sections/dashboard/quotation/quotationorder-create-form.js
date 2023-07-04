@@ -854,23 +854,20 @@ export const QuotationOrderCreateForm = (props) => {
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
+
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
-                            label="IGST"
-                            name="igst"
+                            label="CGST"
+                            name="cgst"
                             required
                             type="number"
-                            value={igst}
+                            value={cgst}
                             onChange={(e) => {
-                              setIgst(e.target.value);
-                              setSgst(""); // Reset sgst when igst is changed
-                              setCgst(""); // Reset cgst when igst is changed
+                              setCgst(e.target.value);
+                              setIgst(""); // Reset igst when cgst is changed
                             }}
-                            disabled={
-                              (cgst !== "" && cgst !== 0) ||
-                              (sgst !== "" && sgst !== 0)
-                            }
+                            disabled={igst !== "" && igst !== 0}
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
@@ -914,16 +911,20 @@ export const QuotationOrderCreateForm = (props) => {
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
-                            label="CGST"
-                            name="cgst"
+                            label="IGST"
+                            name="igst"
                             required
                             type="number"
-                            value={cgst}
+                            value={igst}
                             onChange={(e) => {
-                              setCgst(e.target.value);
-                              setIgst(""); // Reset igst when cgst is changed
+                              setIgst(e.target.value);
+                              setSgst(""); // Reset sgst when igst is changed
+                              setCgst(""); // Reset cgst when igst is changed
                             }}
-                            disabled={igst !== "" && igst !== 0}
+                            disabled={
+                              (cgst !== "" && cgst !== 0) ||
+                              (sgst !== "" && sgst !== 0)
+                            }
                             style={{ marginBottom: 16 }}
                           />
                         </Grid>

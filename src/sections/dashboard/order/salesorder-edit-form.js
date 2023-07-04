@@ -1132,7 +1132,7 @@ const notify = (type, message) => {
                                 setQuantity(1);
                                 setSize(selectedOption.size);
                                 setPrice(selectedOption.price);
-                                setDiscount(0)
+                                setDiscount(0);
                                 setInventoryId(selectedOption.inventoryId);
                                 setDescription(
                                   selectedOption.productDescription
@@ -1171,21 +1171,20 @@ const notify = (type, message) => {
                             name="sgst"
                             type="number"
                             value={sgst}
-                  
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
-                            label="IGST"
-                            name="igst"
+                            label="CGST"
+                            name="cgst"
                             type="number"
-                            value={igst}
-                
+                            value={cgst}
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
+
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
@@ -1240,11 +1239,10 @@ const notify = (type, message) => {
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
-                            label="CGST"
-                            name="cgst"
+                            label="IGST"
+                            name="igst"
                             type="number"
-                            value={cgst}
-                     
+                            value={igst}
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
@@ -1338,9 +1336,7 @@ const notify = (type, message) => {
                       <div>{row.igst}</div>
                     </TableCell>
                     <TableCell>
-                      <div>
-                        {row.netAmount}
-                      </div>
+                      <div>{row.netAmount}</div>
                     </TableCell>
                     <TableCell>
                       <IconButton onClick={() => handleEditRow(idx, row)}>

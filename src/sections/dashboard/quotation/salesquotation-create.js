@@ -914,20 +914,18 @@ export const QuotationOrderCreateForm = (props) => {
                             required
                             type="number"
                             value={sgst}
-                    
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
-                            label="IGST"
-                            name="igst"
+                            label="CGST"
+                            name="cgst"
                             required
                             type="number"
-                            value={igst}
-                        
-                            style={{ marginBottom: 10 }}
+                            value={cgst}
+                            style={{ marginBottom: 16 }}
                           />
                         </Grid>
                       </div>
@@ -975,13 +973,12 @@ export const QuotationOrderCreateForm = (props) => {
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
-                            label="CGST"
-                            name="cgst"
+                            label="IGST"
+                            name="igst"
                             required
                             type="number"
-                            value={cgst}
-                     
-                            style={{ marginBottom: 16 }}
+                            value={igst}
+                            style={{ marginBottom: 10 }}
                           />
                         </Grid>
                       </div>

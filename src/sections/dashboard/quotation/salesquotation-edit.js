@@ -1090,19 +1090,17 @@ const notify = (type, message) => {
                             name="sgst"
                             type="number"
                             value={sgst}
-                  
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
-                            label="IGST"
-                            name="igst"
+                            label="CGST"
+                            name="cgst"
                             type="number"
-                            value={igst}
-                   
-                            style={{ marginBottom: 10 }}
+                            value={cgst}
+                            style={{ marginBottom: 16 }}
                           />
                         </Grid>
                       </div>
@@ -1147,12 +1145,11 @@ const notify = (type, message) => {
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
-                            label="CGST"
-                            name="cgst"
+                            label="IGST"
+                            name="igst"
                             type="number"
-                            value={cgst}
-          
-                            style={{ marginBottom: 16 }}
+                            value={igst}
+                            style={{ marginBottom: 10 }}
                           />
                         </Grid>
                       </div>

@@ -981,23 +981,21 @@ export const SalesOrderCreateForm = (props) => {
                             name="sgst"
                             type="number"
                             value={sgst}
-                
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
-                            label="IGST"
+                            label="CGST"
                             required
-                            name="igst"
+                            name="cgst"
                             type="number"
-                      
-                            value={igst}
-                      
+                            value={cgst}
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
+
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
@@ -1054,12 +1052,11 @@ export const SalesOrderCreateForm = (props) => {
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
-                            label="CGST"
+                            label="IGST"
                             required
-                            name="cgst"
+                            name="igst"
                             type="number"
-                            value={cgst}
-                          
+                            value={igst}
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
