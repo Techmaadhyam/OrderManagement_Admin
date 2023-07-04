@@ -429,10 +429,7 @@ console.log(tempId, userState)
     if (
       quantity &&
       price &&
-      cgst &&
       productName &&
-      sgst &&
-      igst &&
       description &&
       weight &&
       size
@@ -445,12 +442,12 @@ console.log(tempId, userState)
         inventory: null,
         quantity: parseFloat(quantity),
         price: parseFloat(price),
-        cgst: parseFloat(cgst),
         description,
         createdBy: userId,
         size: size,
-        sgst: parseFloat(sgst),
-        igst: parseFloat(igst),
+        cgst: parseFloat(cgst) || 0,
+        sgst: parseFloat(sgst) || 0,
+        igst: parseFloat(igst) || 0,
         createdDate: new Date(),
         lastModifiedDate: new Date(),
       };
@@ -796,8 +793,8 @@ console.log(tempId, userState)
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          marginTop: '1rem',
-          marginBottom: '1rem'
+          marginTop: "1rem",
+          marginBottom: "1rem",
         }}
       >
         <div style={{ flex: 1 }}>
@@ -853,7 +850,7 @@ console.log(tempId, userState)
                   value={userName}
                   onChange={(e) => {
                     const selectedOption = userData.find(
-                      (option) => option.id=== e.target.value
+                      (option) => option.id === e.target.value
                     );
                     if (selectedOption) {
                       if (selectedOption.hasOwnProperty("createdByUser")) {
@@ -1103,7 +1100,11 @@ console.log(tempId, userState)
                             type="number"
                             required
                             value={sgst}
-                            onChange={(e) => setSgst(e.target.value)}
+                            onChange={(e) => {
+                              setSgst(e.target.value);
+                              setIgst(""); // Reset igst when sgst is changed
+                            }}
+                            disabled={igst !== "" && igst !== 0}
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
@@ -1115,7 +1116,12 @@ console.log(tempId, userState)
                             type="number"
                             required
                             value={igst}
-                            onChange={(e) => setIgst(e.target.value)}
+                            onChange={(e) => {
+                              setIgst(e.target.value);
+                              setSgst(""); // Reset sgst when igst is changed
+                              setCgst(""); // Reset cgst when igst is changed
+                            }}
+                            disabled={cgst !== "" && cgst !== 0 || sgst !== "" && sgst !==0}
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
@@ -1164,7 +1170,11 @@ console.log(tempId, userState)
                             type="number"
                             required
                             value={cgst}
-                            onChange={(e) => setCgst(e.target.value)}
+                            onChange={(e) => {
+                              setCgst(e.target.value);
+                              setIgst(""); // Reset igst when cgst is changed
+                            }}
+                            disabled={igst !== "" && igst !== 0}
                             style={{ marginBottom: 16 }}
                           />
                         </Grid>

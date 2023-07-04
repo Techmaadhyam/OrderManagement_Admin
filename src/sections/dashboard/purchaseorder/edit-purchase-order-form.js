@@ -616,10 +616,7 @@ export const PurchaseOrderEditForm = (props) => {
     if (
       quantity &&
       price &&
-      cgst &&
       productName &&
-      sgst &&
-      igst &&
       description &&
       weight &&
       size
@@ -632,12 +629,12 @@ export const PurchaseOrderEditForm = (props) => {
         ...(quotation && { quotationId: { id: quotation } }),
         quantity: parseFloat(quantity),
         price: parseFloat(price),
-        cgst: parseFloat(cgst),
         description,
         createdBy: userId,
         size: size,
-        sgst: parseFloat(sgst),
-        igst: parseFloat(igst),
+        cgst: parseFloat(cgst) || 0,
+        sgst: parseFloat(sgst) || 0,
+        igst: parseFloat(igst) || 0,
         comments: comment,
         createdDate: new Date(),
         lastModifiedDate: new Date(),
@@ -787,7 +784,7 @@ export const PurchaseOrderEditForm = (props) => {
             let deliveryChallanData = null;
 
             // Performa Invoice upload
-            if (1 + 1 === 2) {
+            if (performaInvoiceFile) {
               const formData = new FormData();
 
               let jsonBodyData = {};
@@ -1369,7 +1366,11 @@ export const PurchaseOrderEditForm = (props) => {
                             name="sgst"
                             type="number"
                             value={sgst}
-                            onChange={(e) => setSgst(e.target.value)}
+                            onChange={(e) => {
+                              setSgst(e.target.value);
+                              setIgst(""); // Reset igst when sgst is changed
+                            }}
+                            disabled={igst !== "" && igst !== 0}
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
@@ -1380,7 +1381,15 @@ export const PurchaseOrderEditForm = (props) => {
                             name="igst"
                             type="number"
                             value={igst}
-                            onChange={(e) => setIgst(e.target.value)}
+                            onChange={(e) => {
+                              setIgst(e.target.value);
+                              setSgst(""); // Reset sgst when igst is changed
+                              setCgst(""); // Reset cgst when igst is changed
+                            }}
+                            disabled={
+                              (cgst !== "" && cgst !== 0) ||
+                              (sgst !== "" && sgst !== 0)
+                            }
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
@@ -1425,7 +1434,11 @@ export const PurchaseOrderEditForm = (props) => {
                             name="cgst"
                             type="number"
                             value={cgst}
-                            onChange={(e) => setCgst(e.target.value)}
+                            onChange={(e) => {
+                              setCgst(e.target.value);
+                              setIgst(""); // Reset igst when cgst is changed
+                            }}
+                            disabled={igst !== "" && igst !== 0}
                             style={{ marginBottom: 16 }}
                           />
                         </Grid>

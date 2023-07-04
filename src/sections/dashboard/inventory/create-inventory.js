@@ -255,9 +255,9 @@ useEffect(() => {
         product: {id: selectedId},
         purchaseOrderId:purchaseId,
         warehouseId:warehouseId,
-        sgst:parseFloat(sgst),
-        cgst:parseFloat(cgst),
-        igst:parseFloat(igst),
+        sgst:parseFloat(sgst) || 0,
+        cgst:parseFloat(cgst) || 0,
+        igst:parseFloat(igst) || 0,
         createdDate: new Date(),
         lastModifiedByUser: {id: userId},
       },
@@ -274,39 +274,34 @@ useEffect(() => {
 
       
   }
-  let inventoryWithRack={
-
-    inventory:{
-        
-      quantity:parseFloat(quantity),
-      weight:weight,
-      size:size,
-      hsncode:hsnCode,
-      price:parseFloat(cost),
-      description:description,
+  let inventoryWithRack = {
+    inventory: {
+      quantity: parseFloat(quantity),
+      weight: weight,
+      size: size,
+      hsncode: hsnCode,
+      price: parseFloat(cost),
+      description: description,
       createdBy: parseFloat(userId),
       //productId: selectedId,
-      product: {id: selectedId},
-      purchaseOrderId:purchaseId,
-      warehouseId:warehouseId,
-      sgst:parseFloat(sgst),
-      cgst:parseFloat(cgst),
-      igst:parseFloat(igst),
+      product: { id: selectedId },
+      purchaseOrderId: purchaseId,
+      warehouseId: warehouseId,
+      sgst: parseFloat(sgst) || 0,
+      cgst: parseFloat(cgst) || 0,
+      igst: parseFloat(igst) || 0,
       createdDate: new Date(),
-      lastModifiedByUser: {id: userId},
+      lastModifiedByUser: { id: userId },
     },
 
-    rack:{
-          id: rack
-       
+    rack: {
+      id: rack,
     },
 
-    category:{
-        id: categoryId
-    }
-
-    
-}
+    category: {
+      id: categoryId,
+    },
+  };
 
     if ( showAdditionalFields &&  warehouseId && quantity && weight && hsnCode && cost && userId) {
       try {
@@ -601,7 +596,11 @@ useEffect(() => {
                   type="number"
                   required
                   value={cgst}
-                  onChange={handleInputChange}
+                  onChange={(e) => {
+                    setCgst(e.target.value);
+                    setIgst(""); // Reset igst when cgst is changed
+                  }}
+                  disabled={igst !== "" && igst !== 0}
                 />
               </Grid>
               <Grid xs={12} md={6}>
@@ -612,7 +611,11 @@ useEffect(() => {
                   type="number"
                   required
                   value={sgst}
-                  onChange={handleInputChange}
+                  onChange={(e) => {
+                    setSgst(e.target.value);
+                    setIgst(""); // Reset igst when sgst is changed
+                  }}
+                  disabled={igst !== "" && igst !== 0}
                 />
               </Grid>
               <Grid xs={12} md={6}>
@@ -623,7 +626,14 @@ useEffect(() => {
                   type="number"
                   required
                   value={igst}
-                  onChange={handleInputChange}
+                  onChange={(e) => {
+                    setIgst(e.target.value);
+                    setSgst(""); // Reset sgst when igst is changed
+                    setCgst(""); // Reset cgst when igst is changed
+                  }}
+                  disabled={
+                    (cgst !== "" && cgst !== 0) || (sgst !== "" && sgst !== 0)
+                  }
                 />
               </Grid>
             </Grid>

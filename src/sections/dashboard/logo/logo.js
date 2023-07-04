@@ -19,7 +19,7 @@ const Logo = () => {
 
       })
       .catch((error) => {
-        console.error(error);
+        console.error('company logo is not uploaded');
       });
   }, []);
 

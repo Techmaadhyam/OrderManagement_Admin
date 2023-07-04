@@ -592,10 +592,7 @@ const notify = (type, message) => {
     if (
       quantity &&
       price &&
-      cgst &&
       productName &&
-      sgst &&
-      igst &&
       description &&
       weight &&
       size
@@ -1093,7 +1090,7 @@ const notify = (type, message) => {
                             name="sgst"
                             type="number"
                             value={sgst}
-                            onChange={(e) => setSgst(e.target.value)}
+                  
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
@@ -1104,7 +1101,7 @@ const notify = (type, message) => {
                             name="igst"
                             type="number"
                             value={igst}
-                            onChange={(e) => setIgst(e.target.value)}
+                   
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
@@ -1154,7 +1151,7 @@ const notify = (type, message) => {
                             name="cgst"
                             type="number"
                             value={cgst}
-                            onChange={(e) => setCgst(e.target.value)}
+          
                             style={{ marginBottom: 16 }}
                           />
                         </Grid>

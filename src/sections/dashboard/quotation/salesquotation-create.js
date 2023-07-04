@@ -438,10 +438,7 @@ export const QuotationOrderCreateForm = (props) => {
     if (
       quantity &&
       price &&
-      cgst &&
       productName &&
-      sgst &&
-      igst &&
       description &&
       weight &&
       size
@@ -917,7 +914,7 @@ export const QuotationOrderCreateForm = (props) => {
                             required
                             type="number"
                             value={sgst}
-                            onChange={(e) => setSgst(e.target.value)}
+                    
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
@@ -929,7 +926,7 @@ export const QuotationOrderCreateForm = (props) => {
                             required
                             type="number"
                             value={igst}
-                            onChange={(e) => setIgst(e.target.value)}
+                        
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
@@ -983,7 +980,7 @@ export const QuotationOrderCreateForm = (props) => {
                             required
                             type="number"
                             value={cgst}
-                            onChange={(e) => setCgst(e.target.value)}
+                     
                             style={{ marginBottom: 16 }}
                           />
                         </Grid>

@@ -461,10 +461,7 @@ export const SalesOrderCreateForm = (props) => {
     if (
       quantity &&
       price &&
-      cgst &&
       productName &&
-      sgst &&
-      igst &&
       description &&
       weight &&
       size
@@ -947,7 +944,7 @@ export const SalesOrderCreateForm = (props) => {
                                 setDescription(
                                   selectedOption.productDescription
                                 );
-                                setDiscount(0)
+                                setDiscount(0);
                                 setProductDescription(
                                   selectedOption.productDescription
                                 );
@@ -984,6 +981,7 @@ export const SalesOrderCreateForm = (props) => {
                             name="sgst"
                             type="number"
                             value={sgst}
+                
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
@@ -994,8 +992,9 @@ export const SalesOrderCreateForm = (props) => {
                             required
                             name="igst"
                             type="number"
+                      
                             value={igst}
-                            onChange={(e) => setIgst(e.target.value)}
+                      
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
@@ -1060,7 +1059,7 @@ export const SalesOrderCreateForm = (props) => {
                             name="cgst"
                             type="number"
                             value={cgst}
-                            onChange={(e) => setCgst(e.target.value)}
+                          
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
@@ -1157,9 +1156,7 @@ export const SalesOrderCreateForm = (props) => {
                     </TableCell>
 
                     <TableCell>
-                      <div>
-                        {row.netAmount}
-                      </div>
+                      <div>{row.netAmount}</div>
                     </TableCell>
                     <TableCell>
                       <IconButton onClick={() => handleEditRow(idx, row)}>

@@ -403,10 +403,7 @@ export const QuotationOrderCreateForm = (props) => {
     if (
       quantity &&
       price &&
-      cgst &&
       productName &&
-      sgst &&
-      igst &&
       description &&
       weight &&
       size
@@ -418,12 +415,12 @@ export const QuotationOrderCreateForm = (props) => {
         quotationId: null,
         quantity: parseFloat(quantity),
         price: parseFloat(price),
-        cgst: parseFloat(cgst),
         description,
         createdBy: userId,
         size: size,
-        sgst: parseFloat(sgst),
-        igst: parseFloat(igst),
+        cgst: parseFloat(cgst) || 0,
+        sgst: parseFloat(sgst) || 0,
+        igst: parseFloat(igst) || 0,
         comments: comment,
         createdDate: new Date(),
         lastModifiedDate: new Date(),
@@ -849,7 +846,11 @@ export const QuotationOrderCreateForm = (props) => {
                             required
                             type="number"
                             value={sgst}
-                            onChange={(e) => setSgst(e.target.value)}
+                            onChange={(e) => {
+                              setSgst(e.target.value);
+                              setIgst(""); // Reset igst when sgst is changed
+                            }}
+                            disabled={igst !== "" && igst !== 0}
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
@@ -861,7 +862,15 @@ export const QuotationOrderCreateForm = (props) => {
                             required
                             type="number"
                             value={igst}
-                            onChange={(e) => setIgst(e.target.value)}
+                            onChange={(e) => {
+                              setIgst(e.target.value);
+                              setSgst(""); // Reset sgst when igst is changed
+                              setCgst(""); // Reset cgst when igst is changed
+                            }}
+                            disabled={
+                              (cgst !== "" && cgst !== 0) ||
+                              (sgst !== "" && sgst !== 0)
+                            }
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
@@ -910,7 +919,11 @@ export const QuotationOrderCreateForm = (props) => {
                             required
                             type="number"
                             value={cgst}
-                            onChange={(e) => setCgst(e.target.value)}
+                            onChange={(e) => {
+                              setCgst(e.target.value);
+                              setIgst(""); // Reset igst when cgst is changed
+                            }}
+                            disabled={igst !== "" && igst !== 0}
                             style={{ marginBottom: 16 }}
                           />
                         </Grid>

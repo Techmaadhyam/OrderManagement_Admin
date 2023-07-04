@@ -264,73 +264,65 @@ useEffect(() => {
     //   lastModifiedDate: createdDate
     // }
 
-    let inventory={
-      inventory:{
-          
+    let inventory = {
+      inventory: {
         id: state?.inventoryId,
-        quantity:parseFloat(quantity),
-        weight:weight,
-        size:size,
-        hsncode:hsnCode,
-        price:parseFloat(cost),
-        description:description,
+        quantity: parseFloat(quantity),
+        weight: weight,
+        size: size,
+        hsncode: hsnCode,
+        price: parseFloat(cost),
+        description: description,
         createdBy: parseFloat(userId),
         //productId: selectedId,
-        product: {id: selectedId},
-        purchaseOrderId:purchaseId,
-        warehouseId:warehouseId,
-        sgst:parseFloat(sgst),
-        cgst:parseFloat(cgst),
-        igst:parseFloat(igst),
-        lastModifiedByUser: {id: userId},
+        product: { id: selectedId },
+        purchaseOrderId: purchaseId,
+        warehouseId: warehouseId,
+        sgst: parseFloat(sgst) || 0,
+        cgst: parseFloat(cgst) || 0,
+        igst: parseFloat(igst) || 0,
+        lastModifiedByUser: { id: userId },
       },
 
-      rack:{
-            name: rackName,
-            description: rackDesc,
-            createdBy:parseFloat(userId),
+      rack: {
+        name: rackName,
+        description: rackDesc,
+        createdBy: parseFloat(userId),
       },
 
-      category:{
-          id: categoryId
-      }
+      category: {
+        id: categoryId,
+      },
+    };
 
-      
-  }
-
-  let inventoryWithRack={
-
-    inventory:{
-        
-      quantity:parseFloat(quantity),
+  let inventoryWithRack = {
+    inventory: {
+      quantity: parseFloat(quantity),
       id: state?.inventoryId,
-      weight:weight,
-      size:size,
-      hsncode:hsnCode,
-      price:parseFloat(cost),
-      description:description,
+      weight: weight,
+      size: size,
+      hsncode: hsnCode,
+      price: parseFloat(cost),
+      description: description,
       createdBy: parseFloat(userId),
       //productId: selectedId,
-      product: {id: selectedId},
-      purchaseOrderId:purchaseId,
-      warehouseId:warehouseId,
-      sgst:parseFloat(sgst),
-      cgst:parseFloat(cgst),
-      igst:parseFloat(igst),
-      lastModifiedByUser: {id: userId},
+      product: { id: selectedId },
+      purchaseOrderId: purchaseId,
+      warehouseId: warehouseId,
+      sgst: parseFloat(sgst) || 0,
+      cgst: parseFloat(cgst) || 0,
+      igst: parseFloat(igst) || 0,
+      lastModifiedByUser: { id: userId },
     },
 
-    rack:{
-          id: rack
-       
+    rack: {
+      id: rack,
     },
 
-    category:{
-        id: categoryId
-    }
-
-    
-}
+    category: {
+      id: categoryId,
+    },
+  };
   console.log(JSON.stringify(inventory))
 
     if ( showAdditionalFields && warehouseId && quantity && weight  && hsnCode && rack && cost && description && userId) {
@@ -626,7 +618,11 @@ useEffect(() => {
                   required
                   name="cgst"
                   value={cgst}
-                  onChange={handleInputChange}
+                  onChange={(e) => {
+                    setCgst(e.target.value);
+                    setIgst(""); // Reset igst when cgst is changed
+                  }}
+                  disabled={igst !== "" && igst !== 0}
                 />
               </Grid>
               <Grid xs={12} md={6}>
@@ -637,7 +633,11 @@ useEffect(() => {
                   required
                   name="sgst"
                   value={sgst}
-                  onChange={handleInputChange}
+                  onChange={(e) => {
+                    setSgst(e.target.value);
+                    setIgst(""); // Reset igst when sgst is changed
+                  }}
+                  disabled={igst !== "" && igst !== 0}
                 />
               </Grid>
               <Grid xs={12} md={6}>
@@ -648,7 +648,14 @@ useEffect(() => {
                   type="number"
                   required
                   value={igst}
-                  onChange={handleInputChange}
+                  onChange={(e) => {
+                    setIgst(e.target.value);
+                    setSgst(""); // Reset sgst when igst is changed
+                    setCgst(""); // Reset cgst when igst is changed
+                  }}
+                  disabled={
+                    (cgst !== "" && cgst !== 0) || (sgst !== "" && sgst !== 0)
+                  }
                 />
               </Grid>
             </Grid>
