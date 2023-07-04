@@ -43,13 +43,15 @@ export const ViewSalesOrder = (props) => {
   const location = useLocation();
   const state = location.state;
 
+  console.log(state)
+
 
 
 
   const [tempuser, setTempuser] =useState([])
   const [rowData, setRowData] = useState()
      const [isEditable, setIsEditable] = useState(false);
-  const [paidAmount, setPaidAmount] = useState(0);
+  const [paidAmount, setPaidAmount] = useState(state?.paidamount || 0);
       const [tempId, setTempId] = useState(state?.tempUser?.id);
       const [userState, setUserState] = useState(state?.companyuser?.id);
       const [updatedRows, setUpdatedRows] = useState([]);
@@ -65,19 +67,22 @@ export const ViewSalesOrder = (props) => {
   const convertedArray = updatedRows.map((obj) => {
 
   return {
-    product: { id: obj.productId },
+    inventory: { id: obj.inventoryId },
     sgst: obj.sgst,
     igst: obj.sgst,
     cgst: obj.cgst,
     discountpercent: obj.discountpercent,
     weight: obj.weight,
-    quotationId: state?.quotationId,
+    ...(state?.quotationId && {
+      quotationId: { id: state?.quotationId },
+    }),
     price: obj.price,
     description: obj.description,
     comments: state?.comments,
     size: obj.size,
     quantity: obj.quantity,
     createdDate: obj.createdDate,
+    createdBy: userId,
     lastModifiedDate: obj.lastModifiedDate,
     id: obj.id,
   };
@@ -94,7 +99,9 @@ export const ViewSalesOrder = (props) => {
           body: JSON.stringify({
             salesOrder: {
               id: state?.id,
-              quotationId: state?.quotationId,
+              ...(state?.quotationId && {
+                quotationId: { id: state?.quotationId },
+              }),
               ...(tempId && { tempUser: { id: tempId } }),
               ...(userState && { companyuser: { id: userState } }),
               contactPerson: state?.contactPerson,
@@ -114,12 +121,11 @@ export const ViewSalesOrder = (props) => {
               comments: state?.comments,
               paidamount: paidAmount,
               termsAndCondition: state?.termsAndCondition,
+              modeofdelivery: state?.modeofdelivery,
               totalAmount: state?.totalAmount,
-
               lastModifiedByUser: { id: parseFloat(userId) },
             },
             salesOrderDetails: convertedArray,
- 
           }),
         });
 

@@ -386,6 +386,7 @@ export const WorkOrderCreateForm = (props) => {
               //totalAmount: finalAmount,
               technicianInfo: { id: technician },
               noncompany: { id: tempId },
+              paidamount:0
               //company: {id: userState},
             },
             workOrderItems: updatedRows,

@@ -661,7 +661,7 @@ const notify = (type, message) => {
         productId,
         productName,
         weight,
-        quotationId: quotation,
+        ...(quotation && { quotationId: { id: quotation } }),
         discountpercent: parseFloat(discount),
         netAmount: parseFloat(netAmount),
         quantity: parseFloat(quantity),
@@ -775,41 +775,41 @@ const notify = (type, message) => {
     
       if (contactName && address && userId && phone && status && address && comment && terms && updatedRows) {
         try {
-          const response = await fetch(apiUrl +'createSalesOrder', {
-            method: 'POST',
+          const response = await fetch(apiUrl + "createSalesOrder", {
+            method: "POST",
             headers: {
-    
-              'Content-Type': 'application/json'
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              salesOrder:{
-                  id: state?.id,
-                  quotationId: quotation,
-                  ...(tempId && { tempUser: { id: tempId } }),
-                  ...(userState && { companyuser: { id: userState } }),
-                  contactPerson: contactName,
-                  contactPhone: phone,    
-                  status: status,
-                  paymentMode: payment,
-                  type: type,
-                  deliveryDate: deliveryIST,
-                  deliveryAddress: address,
-                  city: currentCity,
-                  state: currentState,
-                  country: currentCountry,
-                  pinCode: zipcode,
-                  createdBy: userId,
-                  lastModifiedDate:new Date(),
-                  createdDate: state?.originalcreatedDate,
-                  comments : comment,
-                  termsAndCondition: terms,
-                  modeofdelivery: deliveryMode,
-                  totalAmount: finalAmount,
-                  lastModifiedByUser: {id: userId},
+              salesOrder: {
+                id: state?.id,
+                ...(quotation && { quotationId: { id: quotation } }),
+                ...(tempId && { tempUser: { id: tempId } }),
+                ...(userState && { companyuser: { id: userState } }),
+                contactPerson: contactName,
+                contactPhone: phone,
+                status: status,
+                paymentMode: payment,
+                type: type,
+                deliveryDate: deliveryIST,
+                deliveryAddress: address,
+                city: currentCity,
+                state: currentState,
+                country: currentCountry,
+                pinCode: zipcode,
+                createdBy: userId,
+                lastModifiedDate: new Date(),
+                createdDate: state?.originalcreatedDate,
+                comments: comment,
+                termsAndCondition: terms,
+                paidamount: state?.paidamount,
+                modeofdelivery: deliveryMode,
+                totalAmount: finalAmount,
+                lastModifiedByUser: { id: userId },
               },
-                  salesOrderDetails: updatedRows,
-                  deletedSODetails: deleteRows
-          })
+              salesOrderDetails: updatedRows,
+              deletedSODetails: deleteRows,
+            }),
           });
           
           if (response.ok) {

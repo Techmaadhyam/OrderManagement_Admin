@@ -64,9 +64,10 @@ const convertedArray = updatedRows.map((obj) => {
     sgst: obj.sgst,
     igst: obj.sgst,
     cgst: obj.cgst,
-    discountpercent: obj.discountpercent,
     weight: obj.weight,
-    quotationId: state?.quotationId,
+    ...(state?.quotationId && {
+      quotationId: { id: state?.quotationId },
+    }),
     price: obj.price,
     description: obj.description,
     comments: state?.comments,
@@ -92,7 +93,10 @@ const convertedArray = updatedRows.map((obj) => {
           body: JSON.stringify({
             purchaseOrder: {
               id: state?.id,
-              quotationId: state?.quotationId,
+          
+              ...(state?.quotationId && {
+                quotationId: { id: state?.quotationId },
+              }),
               ...(tempId && { tempUser: { id: tempId } }),
               ...(userState && { companyuser: { id: userState } }),
               contactPerson: state?.contactPerson,
@@ -117,11 +121,13 @@ const convertedArray = updatedRows.map((obj) => {
               lastModifiedByUser: { id: parseFloat(userId) },
             },
             purchaseOrderDetails: convertedArray,
-            deletedPODetails:[]
+            deletedPODetails: [],
           }),
         });
 
         if (response.ok) {
+
+
         }
       } catch (error) {
         console.error("API call failed:", error);

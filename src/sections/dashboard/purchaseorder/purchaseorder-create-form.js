@@ -441,7 +441,7 @@ console.log(tempId, userState)
         product: { id: productId },
         productName,
         weight,
-        quotationId: quotation,
+        ...(quotation && { quotationId: { id: quotation } }),
         inventory: null,
         quantity: parseFloat(quantity),
         price: parseFloat(price),
@@ -550,7 +550,7 @@ console.log(tempId, userState)
           },
           body: JSON.stringify({
             purchaseOrder: {
-              quotationId: quotation,
+              ...(quotation && { quotationId: { id: quotation } }),
               salesOrderId: null,
               ...(tempId && { tempUser: { id: tempId } }),
               ...(userState && { companyuser: { id: userState } }),
@@ -566,6 +566,7 @@ console.log(tempId, userState)
               country: currentCountry,
               pinCode: zipcode,
               createdBy: userId,
+              paidamount: 0,
               createdDate: new Date(),
               lastModifiedDate: new Date(),
               comments: comment,

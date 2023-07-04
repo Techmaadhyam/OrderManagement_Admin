@@ -462,6 +462,7 @@ export const WorkOrderEditForm = (props) => {
         category: "workorder",
         lastModifiedByUser: { id: userId },
         termsAndCondition: terms,
+    
         //totalAmount: finalAmount,
         technicianInfo: { id: technician },
         noncompany: { id: tempId },
@@ -509,6 +510,7 @@ export const WorkOrderEditForm = (props) => {
               termsAndCondition: terms,
               //totalAmount: finalAmount,
               technicianInfo: { id: technician },
+              paidamount: state?.paidamount,
               noncompany: { id: tempId },
               //company: {id: userState},
             },

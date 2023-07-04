@@ -629,7 +629,7 @@ export const PurchaseOrderEditForm = (props) => {
         product: { id: productId },
         productName,
         weight,
-        quotationId: quotation,
+        ...(quotation && { quotationId: { id: quotation } }),
         quantity: parseFloat(quantity),
         price: parseFloat(price),
         cgst: parseFloat(cgst),
@@ -752,7 +752,7 @@ export const PurchaseOrderEditForm = (props) => {
           body: JSON.stringify({
             purchaseOrder: {
               id: state?.id,
-              quotationId: quotation,
+              ...(quotation && { quotationId: { id: quotation } }),
               ...(tempId && { tempUser: { id: tempId } }),
               ...(userState && { companyuser: { id: userState } }),
               contactPerson: contactName,
@@ -770,6 +770,7 @@ export const PurchaseOrderEditForm = (props) => {
               lastModifiedDate: new Date(),
               createdDate: state?.originalcreatedDate,
               comments: comment,
+              paidamount: state?.paidamount,
               termsAndCondition: terms,
               totalAmount: finalAmount,
               lastModifiedByUser: { id: userId },

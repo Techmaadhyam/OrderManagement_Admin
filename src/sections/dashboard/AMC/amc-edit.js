@@ -509,6 +509,7 @@ export const AmcEditForm = (props) => {
               comments: comment,
               lastModifiedByUser: { id: userId },
               termsAndCondition: terms,
+              paidamount: state?.paidamount,
               //totalAmount: finalAmount,
               technicianInfo: { id: technician },
               noncompany: { id: tempId },

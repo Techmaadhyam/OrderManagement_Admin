@@ -751,7 +751,7 @@ console.log(rowData)
       </div>
       <form>
         <Card>
-          <CardHeader title="Product Order Detail" />
+          <CardHeader title="Order Detail" />
           <CardContent sx={{ pt: 0 }}>
             <Grid container spacing={3}>
               <Grid xs={12} md={6}>

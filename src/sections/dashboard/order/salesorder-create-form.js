@@ -146,7 +146,7 @@ export const SalesOrderCreateForm = (props) => {
   //form state handeling
   const [userName, setUserName] = useState("");
   const [type, setType] = useState("");
-  const [quotation, setQuotation] = useState("");
+  const [quotation, setQuotation] = useState(null);
   const [deliveryDate, setDeliveryDate] = useState("");
   const [status, setStatus] = useState("");
   const [contactName, setContactName] = useState("");
@@ -472,9 +472,10 @@ export const SalesOrderCreateForm = (props) => {
       const newRow = {
         //inventoryId: inventoryId,
         inventory: { id: inventoryId },
-        quotationId: quotation,
+        ...(quotation && { quotationId: { id: quotation } }),
         productDescription,
         productId,
+        
         productName,
         weight,
         discountpercent: parseFloat(discount),
@@ -581,7 +582,8 @@ export const SalesOrderCreateForm = (props) => {
           },
           body: JSON.stringify({
             salesOrder: {
-              quotationId: quotation,
+          
+              ...(quotation && { quotationId: { id: quotation } }),
               ...(tempId && { tempUser: { id: tempId } }),
               ...(userState && { companyuser: { id: userState } }),
               contactPerson: contactName,
@@ -601,6 +603,7 @@ export const SalesOrderCreateForm = (props) => {
               comments: comment,
               termsAndCondition: terms,
               totalAmount: finalAmount,
+              paidamount: 0,
               modeofdelivery: deliveryMode,
               lastModifiedByUser: { id: userId },
             },

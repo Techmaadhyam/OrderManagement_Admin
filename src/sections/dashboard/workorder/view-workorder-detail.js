@@ -35,7 +35,7 @@ import SaveIcon from "@mui/icons-material/Save";
 
 
 
-
+const userId = sessionStorage.getItem("user") || localStorage.getItem("user");
 
 
 
@@ -49,7 +49,10 @@ console.log(state)
   const [tempuser, setTempuser] =useState([])
   const [rowData, setRowData] = useState()
      const [isEditable, setIsEditable] = useState(false);
-     const [paidAmount, setPaidAmount] = useState(0);
+  const [paidAmount, setPaidAmount] = useState(state?.paidamount || 0);
+    const [tempId, setTempId] = useState(state?.noncompany?.id);
+    const [userState, setUserState] = useState(state?.company?.id);
+    const [updatedRows, setUpdatedRows] = useState([]);
 
 
   const align = 'horizontal' 
@@ -58,10 +61,67 @@ console.log(state)
        setIsEditable(true);
      };
 
-     const handleSaveClick = () => {
-       setIsEditable(false);
-       console.log(paidAmount);
-     };
+    const convertedArray = updatedRows.map((obj) => {
+      return {
+        product: { id: obj.productId },
+        workOrderId: { id: obj.workOrderId.id },
+        igst: obj.igst,
+        unitPrice: obj.unitPrice,
+        description: obj.description,
+        comment: obj?.comment,
+        discountpercent: obj.discountpercent,
+        workstationcount: obj.workstationcount,
+        id: obj.id,
+      };
+    });
+
+  console.log(convertedArray)
+    const handleSaveClick = async () => {
+      setIsEditable(false);
+
+      if (paidAmount) {
+        try {
+          const response = await fetch(apiUrl + "addWorkOrderWithItems", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              workorder: {
+                id: state?.id,
+                contactPersonName: state?.contactPersonName,
+                contactPhoneNumber: state?.contactPhoneNumber,
+                contactEmail: state?.contactEmail,
+                adminPersonName: state?.adminPersonName,
+                adminPhoneNumber: state?.adminPhoneNumber,
+                adminEmail: state?.adminEmail,
+                status: state?.status,
+                type: state?.type,
+                category: "workorder",
+                createdByUser: { id: userId },
+                createdDate: state?.originalcreatedDate,
+                lastModifiedDate: new Date(),
+                comments: state?.comments,
+                lastModifiedByUser: { id: userId },
+                paidamount: paidAmount,
+                termsAndCondition: state?.termsAndCondition,
+                //totalAmount: finalAmount,
+                technicianInfo: { id: state?.technicianInfo.id },
+                ...(tempId && { noncompany: { id: tempId } }),
+                ...(userState && { company: { id: userState } }),
+              },
+              workOrderItems: convertedArray,
+              deleteWorkOrderItems: [],
+            }),
+          });
+
+          if (response.ok) {
+          }
+        } catch (error) {
+          console.error("API call failed:", error);
+        }
+      }
+    };
 
   const columns=[
     {
@@ -155,6 +215,7 @@ console.log(state)
         });
   
         setRowData(updatedData);
+        setUpdatedRows(updatedData)
       
       })
       .catch(error => {

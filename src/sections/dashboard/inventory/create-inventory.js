@@ -446,7 +446,7 @@ useEffect(() => {
                   value={categoryName ? categoryName : ""}
                   onChange={(e) => {
                     const selectedOption = category?.find(
-                      (option) => option.name === e.target.value
+                      (option) => option.id === e.target.value
                     );
                     setCategoryId(selectedOption?.id || "");
                     setCategoryName(e.target.value);
@@ -456,7 +456,7 @@ useEffect(() => {
                   {category?.map(
                     (option) =>
                       option.name && (
-                        <MenuItem key={option.id} value={option.name}>
+                        <MenuItem key={option.id} value={option.id}>
                           {option.name}
                         </MenuItem>
                       )
