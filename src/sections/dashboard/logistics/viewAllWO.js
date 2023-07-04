@@ -89,7 +89,10 @@ const ViewTemporaryUser = () => {
   useEffect(() => {
     const fetchData = () => {
       axios
-        .get(apiUrl + `getRecordBasedOnCustomerId/${userId}/${state}/june/2023`)
+        .get(
+          apiUrl +
+            `getRecordBasedOnCustomerId/${userId}/${state?.id}/${state?.month}/${state?.year}`
+        )
         .then((response) => {
           let woList = [
             ...response.data.workOrderList.slice(-4).map((obj) => ({

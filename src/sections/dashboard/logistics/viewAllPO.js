@@ -98,7 +98,8 @@ const purchaseColumn = [
     const fetchData = () => {
       axios
         .get(
-          apiUrl + `getRecordBasedOnCustomerId/${userId}/${state}/june/2023`
+          apiUrl +
+            `getRecordBasedOnCustomerId/${userId}/${state?.id}/${state?.month}/${state?.year}`
         )
         .then((response) => {
           let poList = [
@@ -112,9 +113,8 @@ const purchaseColumn = [
               category: "poList",
             })),
           ];
-        
-          setPo(poList);
 
+          setPo(poList);
         })
         .catch((error) => {
           console.error(error);

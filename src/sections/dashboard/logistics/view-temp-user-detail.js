@@ -25,9 +25,16 @@ import { Table } from "antd";
 import { Box } from "@mui/system";
 import { Scrollbar } from "src/components/scrollbar";
 import { useNavigate } from "react-router-dom";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from "dayjs";
 
 
 const userId = sessionStorage.getItem("user") || localStorage.getItem("user");
+const currentMonth = new Date().toLocaleString("default", { month: "long" });
+const currentYear = new Date().getFullYear().toString();
 
 const quotationColumn = [
   {
@@ -187,6 +194,9 @@ export const ViewTemporaryUserDetail = (props) => {
   const [so, setSo] = useState([]);
   const [wo, setWo] = useState([]);
   const [quotation, setQuotation] = useState([]);
+   const [selectedDate, setSelectedDate] = useState(
+     dayjs(`${currentMonth} ${currentYear}`)
+   );
 
 
   const align = 'horizontal' 
@@ -197,17 +207,89 @@ export const ViewTemporaryUserDetail = (props) => {
       const month = String(parsedDate.getMonth() + 1).padStart(2, "0");
       const day = String(parsedDate.getDate()).padStart(2, "0");
       return `${year}/${month}/${day}`;
-    }
+  }
+  
+  let month;
+  let year;
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    const monthYear = date?.format("MMMM/YYYY").toLowerCase();
+     [month, year] = monthYear.split("/");
+
+    axios
+      .get(
+        apiUrl +
+          `getRecordBasedOnCustomerId/${userId}/${state.id}/${
+            month || currentMonth?.toLowerCase()
+          }/${year || currentYear}`
+      )
+      .then((response) => {
+        let poList = [
+          ...response.data.poList.slice(-4).map((obj) => ({
+            ...obj,
+            lastModifiedDate: formatDate(obj.lastModifiedDate),
+            createdDate: formatDate(obj.createdDate),
+            deliveryDate: formatDate(obj.deliveryDate),
+            companyName:
+              obj.tempUser?.companyName || obj.companyuser?.companyName,
+            category: "poList",
+          })),
+        ];
+        let soList = [
+          ...response.data.soList.slice(-4).map((obj) => ({
+            ...obj,
+            lastModifiedDate: formatDate(obj.lastModifiedDate),
+            createdDate: formatDate(obj.createdDate),
+            deliveryDate: formatDate(obj.deliveryDate),
+            companyName:
+              obj.tempUser?.companyName || obj.companyuser?.companyName,
+            category: "soList",
+          })),
+        ];
+
+        let woList = [
+          ...response.data.workOrderList.slice(-4).map((obj) => ({
+            ...obj,
+            lastModifiedDate: formatDate(obj.lastModifiedDate),
+            createdDate: formatDate(obj.createdDate),
+            companyName:
+              obj.noncompany?.companyName || obj.company?.companyName,
+            category: "woList",
+          })),
+        ];
+        let quotationList = [
+          ...response.data.quotationList.slice(-4).map((obj) => ({
+            ...obj,
+            lastModifiedDate: formatDate(obj.lastModifiedDate),
+            createdDate: formatDate(obj.createdDate),
+            deliveryDate: formatDate(obj.deliveryDate),
+            companyName:
+              obj.tempUser?.companyName || obj.companyuser?.companyName,
+            category: "qoList",
+          })),
+        ];
+
+        setPo(poList);
+        setSo(soList);
+        setWo(woList);
+        setQuotation(quotationList);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
 
   useEffect(() => {
     const fetchData = () => {
       axios
         .get(
           apiUrl +
-            `getRecordBasedOnCustomerId/${userId}/${state.id}/june/2023`
+            `getRecordBasedOnCustomerId/${userId}/${
+              state.id
+            }/${currentMonth?.toLowerCase()}/${currentYear}`
         )
         .then((response) => {
-    
+          console.log(response.data);
 
           let poList = [
             ...response.data.poList.slice(-4).map((obj) => ({
@@ -220,17 +302,17 @@ export const ViewTemporaryUserDetail = (props) => {
               category: "poList",
             })),
           ];
-            let soList = [
-              ...response.data.soList.slice(-4).map((obj) => ({
-                ...obj,
-                lastModifiedDate: formatDate(obj.lastModifiedDate),
-                createdDate: formatDate(obj.createdDate),
-                deliveryDate: formatDate(obj.deliveryDate),
-                companyName:
-                  obj.tempUser?.companyName || obj.companyuser?.companyName,
-                category: "soList",
-              })),
-            ];
+          let soList = [
+            ...response.data.soList.slice(-4).map((obj) => ({
+              ...obj,
+              lastModifiedDate: formatDate(obj.lastModifiedDate),
+              createdDate: formatDate(obj.createdDate),
+              deliveryDate: formatDate(obj.deliveryDate),
+              companyName:
+                obj.tempUser?.companyName || obj.companyuser?.companyName,
+              category: "soList",
+            })),
+          ];
 
           let woList = [
             ...response.data.workOrderList.slice(-4).map((obj) => ({
@@ -256,9 +338,8 @@ export const ViewTemporaryUserDetail = (props) => {
 
           setPo(poList);
           setSo(soList);
-          setWo(woList)
-          setQuotation(quotationList)
-      
+          setWo(woList);
+          setQuotation(quotationList);
         })
         .catch((error) => {
           console.error(error);
@@ -266,20 +347,44 @@ export const ViewTemporaryUserDetail = (props) => {
     };
 
     fetchData();
-  }, [userId, state?.id]);
+  }, [userId, state?.id, currentMonth, currentYear]);
 
 
    const handleNavigation1 = () => {
-     navigate(`/dashboard/logistics/viewAllQo`, { state: state.id });
+     navigate(`/dashboard/logistics/viewAllQo`, {
+       state: {
+         id: state.id,
+         month: month || currentMonth?.toLowerCase(),
+         year: year || currentYear,
+       },
+     });
   };
     const handleNavigation2 = () => {
-      navigate(`/dashboard/logistics/viewAllSo`, { state: state.id });
+      navigate(`/dashboard/logistics/viewAllSo`, {
+        state: {
+          id: state.id,
+          month: month || currentMonth?.toLowerCase(),
+          year: year || currentYear,
+        },
+      });
     };
   const handleNavigation3 = () => {
-    navigate(`/dashboard/logistics/viewAllPo`, { state: state.id});
+    navigate(`/dashboard/logistics/viewAllPo`, {
+      state: {
+        id: state.id,
+        month: month || currentMonth?.toLowerCase(),
+        year: year || currentYear,
+      },
+    });
   };
     const handleNavigation4 = () => {
-      navigate(`/dashboard/logistics/viewAllWo`, { state: state.id });
+      navigate(`/dashboard/logistics/viewAllWo`, {
+        state: {
+          id: state.id,
+          month: month || currentMonth?.toLowerCase(),
+          year: year || currentYear,
+        },
+      });
     };
   
 
@@ -372,6 +477,27 @@ export const ViewTemporaryUserDetail = (props) => {
           />
         </PropertyList>
         <Divider />
+      </Card>
+      <Card style={{ marginBottom: "12px" }}>
+        <CardHeader
+          title="Based on the selected time period"
+          action={
+            <>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={["DatePicker"]}>
+                  <DatePicker
+                    variant="filled"
+                    label={"Month and Year"}
+                    views={["month", "year"]}
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                  />
+                </DemoContainer>
+              </LocalizationProvider>
+            </>
+          }
+        />
+       
       </Card>
       <Card style={{ marginBottom: "12px" }}>
         <CardHeader
