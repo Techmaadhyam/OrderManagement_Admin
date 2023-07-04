@@ -360,7 +360,7 @@ console.log(uploadFile)
     
                 jsonBodyData.fileName = "companylogo";
                 jsonBodyData.fileType = uploadFile?.type;
-                jsonBodyData.createdbyid = 143;
+                jsonBodyData.createdbyid = data.id;
                 jsonBodyData.lastmodifybyid = null;
                 jsonBodyData.createdDate = new Date();
                 jsonBodyData.lastModifiedDate = new Date();
