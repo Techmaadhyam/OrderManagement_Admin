@@ -30,6 +30,7 @@ import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "../pdfAssets/vfs_fonts";
 import Logo from "../logo/logo";
 import {LogoContext} from 'src/utils/logoContext'
+import imgUrl from "../pdfAssets/imageDataUrl";
 
 
 const userId = sessionStorage.getItem("user") || localStorage.getItem("user");
@@ -238,7 +239,7 @@ const SalesOrderViewList = () => {
                   {
                     columns: [
                       {
-                        image:`data:${logo.fileType};base64, ${logo.file}`,
+                        image: imgUrl,
                         // image: pdfLogo,
                         width: 100,
                         alignment: "left",
@@ -246,15 +247,15 @@ const SalesOrderViewList = () => {
                       {
                         stack: [
                           {
-                            text: `${record.createdByUser.companyName}`,
+                            text: `Note Automation and Solutions`,
                             style: "header",
                           },
                           {
-                            text: `${record.createdByUser.address}, ${record.createdByUser.city}, ${record.createdByUser.pincode}, ${record.createdByUser.state}, ${record.createdByUser.country}`,
+                            text: `# 95, 4th Cross, Maragondahalli, Bangalore- 560036`,
                             style: "subheader",
                           },
                           {
-                            text: `GSTIN: ${record.createdByUser.gstNumber}`,
+                            text: `GSTN NO: 29AARFN6647D1ZR`,
                             style: "subheader",
                           },
                         ],
@@ -267,9 +268,15 @@ const SalesOrderViewList = () => {
                         alignment: "center",
                       },
 
-                      { text: heading, style: "header", alignment: "right", margin: [0, 0, 20, 0] },
+                      {
+                        text: heading,
+                        style: "header",
+                        alignment: "right",
+                        margin: [0, 0, 20, 0],
+                      },
                     ],
-                    border: [true, true, true, false],margin: [0, 10, 0, 0]
+                    border: [true, true, true, false],
+                    margin: [0, 10, 0, 0],
                   },
                 ],
               ],
@@ -444,9 +451,11 @@ const SalesOrderViewList = () => {
                     border: [true, false, true, false],
                   },
                   {
-                    text: `GST Registration Number: ${record.tempUser
-                      ? record.tempUser.gstNumber
-                      : record.companyuser.gstNumber}`,
+                    text: `GST Registration Number: ${
+                      record.tempUser
+                        ? record.tempUser.gstNumber
+                        : record.companyuser.gstNumber
+                    }`,
                     border: [true, false, true, false],
                     style: "font10",
                   },
@@ -482,7 +491,7 @@ const SalesOrderViewList = () => {
                 ...(rowData.length > 0
                   ? Array(rowData.length - 1)
                       .fill(0)
-                      .concat([120 - (rowData.length - 1) * 20])
+                      .concat([100 - (rowData.length - 1) * 20])
                   : [120]),
               ],
               body: [
@@ -531,7 +540,7 @@ const SalesOrderViewList = () => {
           {
             table: {
               heights: [50],
-              widths: ["*", "auto","*"],
+              widths: ["*", "auto", "*"],
               body: [
                 [
                   {
@@ -542,7 +551,7 @@ const SalesOrderViewList = () => {
                     border: [true, false, false, true],
                   },
                   {
-                    text: '',
+                    text: "",
                     border: [false, false, false, true],
                   },
                   {
@@ -609,7 +618,7 @@ const SalesOrderViewList = () => {
                   {
                     stack: [
                       {
-                        text: `For ${record.createdByUser.companyName}`,
+                        text: `For Note Automation and Solutions`,
                         bold: true,
                         alignment: "center",
                         fontSize: 12,
@@ -693,7 +702,7 @@ const SalesOrderViewList = () => {
                   {
                     columns: [
                       {
-                        image:`data:${logo.fileType};base64, ${logo.file}`,
+                        image: `data:${logo.fileType};base64, ${logo.file}`,
                         // image: imgUrl,
                         width: 100,
                         alignment: "left",
@@ -701,29 +710,40 @@ const SalesOrderViewList = () => {
                       {
                         stack: [
                           {
-                            text: `${record.createdByUser.companyName}`,
+                            text: `Note Automation and Solutions`,
                             style: "header",
                           },
                           {
-                            text: `${record.createdByUser.address}, ${record.createdByUser.city}, ${record.createdByUser.pincode}, ${record.createdByUser.state}, ${record.createdByUser.country}`,
+                            text: `# 95, 4th Cross, Maragondahalli, Bangalore- 560036`,
                             style: "subheader",
                           },
                           {
-                            text: `GSTN NO: ${record.createdByUser.gstNumber}`,
+                            text: `GSTN NO: 29AARFN6647D1ZR`,
                             style: "subheader",
                           },
                         ],
                         margin: [20, 0, 0, 0],
                       },
-        
-                      { text: "ORIGINAL", style: "header", alignment: "center" },
-        
-                      { text: "DELIVERY CHALLAN", style: "header", alignment: "right",margin: [0, 0, 10, 0]},
-                    ],border: [true, true, true, false],margin: [0, 10, 0, 0],
+
+                      {
+                        text: "ORIGINAL",
+                        style: "header",
+                        alignment: "center",
+                      },
+
+                      {
+                        text: "DELIVERY CHALLAN",
+                        style: "header",
+                        alignment: "right",
+                        margin: [0, 0, 10, 0],
+                      },
+                    ],
+                    border: [true, true, true, false],
+                    margin: [0, 10, 0, 0],
                   },
-                ]
-              ]
-            }
+                ],
+              ],
+            },
           },
           {
             style: "newTable",
@@ -731,26 +751,63 @@ const SalesOrderViewList = () => {
               widths: ["*", "auto", "auto", "auto", "auto"],
               body: [
                 [
-                  { 
-                    text: '',
+                  {
+                    text: "",
                     border: [true, false, false, false],
                   },
-                  { 
-                  text: 'Delivery Challan No.',
-                  style: 'font10',
-                  border: [true, true, true, false],
-                  alignment: "center",
-                },
-                  { text: 'Date', style: 'font10', border: [true, true, true, false],alignment: "center", },
-                  { text: 'Customer ID', style: 'font10', border: [true, true, true, false],alignment: "center", },
-                  { text: 'Customer Contact', style: 'font10', border: [true, true, true, false],alignment: "center", },
+                  {
+                    text: "Delivery Challan No.",
+                    style: "font10",
+                    border: [true, true, true, false],
+                    alignment: "center",
+                  },
+                  {
+                    text: "Date",
+                    style: "font10",
+                    border: [true, true, true, false],
+                    alignment: "center",
+                  },
+                  {
+                    text: "Customer ID",
+                    style: "font10",
+                    border: [true, true, true, false],
+                    alignment: "center",
+                  },
+                  {
+                    text: "Customer Contact",
+                    style: "font10",
+                    border: [true, true, true, false],
+                    alignment: "center",
+                  },
                 ],
                 [
-                  { text: '', border: [true, false, false, false] },
-                  { text: record.id, style: 'font10', border: [true, false, true, false],alignment: "center", },
-                  { text: formatDate(record.createdDate), style: 'font10', border: [true, false, true, false],alignment: "center", },
-                  { text: record.tempUser ? record.tempUser.id : record.companyuser.id, style: 'font10', border: [true, false, true, false],alignment: "center", },
-                  { text: record.contactPhone, style: 'font10', border: [true, false, true, false],alignment: "center", },
+                  { text: "", border: [true, false, false, false] },
+                  {
+                    text: record.id,
+                    style: "font10",
+                    border: [true, false, true, false],
+                    alignment: "center",
+                  },
+                  {
+                    text: formatDate(record.createdDate),
+                    style: "font10",
+                    border: [true, false, true, false],
+                    alignment: "center",
+                  },
+                  {
+                    text: record.tempUser
+                      ? record.tempUser.id
+                      : record.companyuser.id,
+                    style: "font10",
+                    border: [true, false, true, false],
+                    alignment: "center",
+                  },
+                  {
+                    text: record.contactPhone,
+                    style: "font10",
+                    border: [true, false, true, false],
+                    alignment: "center",
+                  },
                 ],
               ],
             },
@@ -762,42 +819,90 @@ const SalesOrderViewList = () => {
               heights: ["auto", 80],
               body: [
                 [
-                  { text: `Bill To: ${record.tempUser ? record.tempUser.companyName : record.companyuser.companyName}`, style: 'tableLabel', border: [true, true, true, false], marginBottom: 5 },
-                  { text: `Ship To: ${record.contactPerson}`, style: 'tableLabel', border: [true, true, true, false], marginBottom: 5 },
-                  { text: 'Customer GST Registration information', style: 'font10', bold:true },
+                  {
+                    text: `Bill To: ${
+                      record.tempUser
+                        ? record.tempUser.companyName
+                        : record.companyuser.companyName
+                    }`,
+                    style: "tableLabel",
+                    border: [true, true, true, false],
+                    marginBottom: 5,
+                  },
+                  {
+                    text: `Ship To: ${record.contactPerson}`,
+                    style: "tableLabel",
+                    border: [true, true, true, false],
+                    marginBottom: 5,
+                  },
+                  {
+                    text: "Customer GST Registration information",
+                    style: "font10",
+                    bold: true,
+                  },
                 ],
                 [
-                  record.tempUser?{stack: [
-                    {text: record.tempUser.address, style: 'font10', marginBottom: 5},
-                    {text: `${record.tempUser.city} - ${record.tempUser.pincode}`, style: 'font10',marginBottom: 5},
-                    {text: record.tempUser.state, style: 'font10'},
-                    {text: record.tempUser.country, style: 'font10'},
-                  ],
-                  border: [true, false, true, false],
-                }:
-                {stack: [
-                  {text: record.companyuser.address, style: 'font10', marginBottom: 5},
-                  {text: `${record.companyuser.city} - ${record.companyuser.pincode}`, style: 'font10',marginBottom: 5},
-                  {text: record.companyuser.state, style: 'font10'},
-                  {text: record.companyuser.country, style: 'font10'},
-                ],
-                border: [true, false, true, false],
-              },
-                  {stack: [
-                    {text: record.deliveryAddress, style: 'font10', marginBottom: 5},
-                    {text: `${record.city} - ${record.pinCode}`, style: 'font10',marginBottom: 5},
-                    {text: record.state, style: 'font10'},
-                    {text: record.country, style: 'font10'},
-                  ],
-                  border: [true, false, true, false],
-                },
-                {
-                  text: `GST Registration Number: ${record.tempUser
-                    ? record.tempUser.gstNumber
-                    : record.companyuser.gstNumber}`,
-                  border: [true, false, true, false],
-                  style: "font10",
-                },
+                  record.tempUser
+                    ? {
+                        stack: [
+                          {
+                            text: record.tempUser.address,
+                            style: "font10",
+                            marginBottom: 5,
+                          },
+                          {
+                            text: `${record.tempUser.city} - ${record.tempUser.pincode}`,
+                            style: "font10",
+                            marginBottom: 5,
+                          },
+                          { text: record.tempUser.state, style: "font10" },
+                          { text: record.tempUser.country, style: "font10" },
+                        ],
+                        border: [true, false, true, false],
+                      }
+                    : {
+                        stack: [
+                          {
+                            text: record.companyuser.address,
+                            style: "font10",
+                            marginBottom: 5,
+                          },
+                          {
+                            text: `${record.companyuser.city} - ${record.companyuser.pincode}`,
+                            style: "font10",
+                            marginBottom: 5,
+                          },
+                          { text: record.companyuser.state, style: "font10" },
+                          { text: record.companyuser.country, style: "font10" },
+                        ],
+                        border: [true, false, true, false],
+                      },
+                  {
+                    stack: [
+                      {
+                        text: record.deliveryAddress,
+                        style: "font10",
+                        marginBottom: 5,
+                      },
+                      {
+                        text: `${record.city} - ${record.pinCode}`,
+                        style: "font10",
+                        marginBottom: 5,
+                      },
+                      { text: record.state, style: "font10" },
+                      { text: record.country, style: "font10" },
+                    ],
+                    border: [true, false, true, false],
+                  },
+                  {
+                    text: `GST Registration Number: ${
+                      record.tempUser
+                        ? record.tempUser.gstNumber
+                        : record.companyuser.gstNumber
+                    }`,
+                    border: [true, false, true, false],
+                    style: "font10",
+                  },
                 ],
               ],
             },
@@ -829,16 +934,20 @@ const SalesOrderViewList = () => {
             },
             layout: {
               hLineWidth: function (i, node) {
-                return (i === 0 || i === node.table.body.length) ? 1 : 1;
+                return i === 0 || i === node.table.body.length ? 1 : 1;
               },
               vLineWidth: function (i, node) {
-                return (i === 0 || i === node.table.widths.length) ? 1 : 1;
+                return i === 0 || i === node.table.widths.length ? 1 : 1;
               },
               hLineColor: function (i, node) {
-                return (i === 0 || i === node.table.body.length) ? 'black' : 'gray';
+                return i === 0 || i === node.table.body.length
+                  ? "black"
+                  : "gray";
               },
               vLineColor: function (i, node) {
-                return (i === 0 || i === node.table.widths.length) ? 'black' : 'gray';
+                return i === 0 || i === node.table.widths.length
+                  ? "black"
+                  : "gray";
               },
               paddingTop: function () {
                 return 5;
@@ -846,7 +955,7 @@ const SalesOrderViewList = () => {
               paddingBottom: function () {
                 return 5;
               },
-            } 
+            },
           },
           {
             table: {
@@ -854,7 +963,13 @@ const SalesOrderViewList = () => {
               widths: ["*"],
               body: [
                 [
-                  { text: 'NOTE:  Standby Returnable Basis, Kindly share the WO', alignment: 'left', style: 'font10',bold: true,  border: [true, false, true, true] },
+                  {
+                    text: "NOTE:  Standby Returnable Basis, Kindly share the WO",
+                    alignment: "left",
+                    style: "font10",
+                    bold: true,
+                    border: [true, false, true, true],
+                  },
                 ],
               ],
             },
@@ -866,26 +981,52 @@ const SalesOrderViewList = () => {
               body: [
                 [
                   {
-                    stack:[
-                        { text: 'Terms & Conditions',bold: true, style: 'font10'},
-                        { text: `${record.termsAndCondition}`, style: 'font10'}
-                ],
-                border: [true, false, false, true],alignment:'left'
-            },
-            {
-              stack:[
-                  { text: `Received In Good Condition`,bold:true, fontSize:12,alignment:'center'},
-                  { text: `Customer Signature`, margin:[0,40,0,0], style: 'font10'},
-              ],
-              border: [false, false, false, true] ,alignment:'center'
-          },
-          {
-              stack:[
-                  { text: `For ${record.createdByUser.companyName}`,bold:true, fontSize:12,alignment:'center'},
-                  { text: `Authorize Signature`, margin:[0,40,0,0], style: 'font10',alignment:'center'},
-              ],
-              border: [false, false, true, true], alignment:'right'
-          },
+                    stack: [
+                      {
+                        text: "Terms & Conditions",
+                        bold: true,
+                        style: "font10",
+                      },
+                      { text: `${record.termsAndCondition}`, style: "font10" },
+                    ],
+                    border: [true, false, false, true],
+                    alignment: "left",
+                  },
+                  {
+                    stack: [
+                      {
+                        text: `Received In Good Condition`,
+                        bold: true,
+                        fontSize: 12,
+                        alignment: "center",
+                      },
+                      {
+                        text: `Customer Signature`,
+                        margin: [0, 40, 0, 0],
+                        style: "font10",
+                      },
+                    ],
+                    border: [false, false, false, true],
+                    alignment: "center",
+                  },
+                  {
+                    stack: [
+                      {
+                        text: `For ${record.createdByUser.companyName}`,
+                        bold: true,
+                        fontSize: 12,
+                        alignment: "center",
+                      },
+                      {
+                        text: `Authorize Signature`,
+                        margin: [0, 40, 0, 0],
+                        style: "font10",
+                        alignment: "center",
+                      },
+                    ],
+                    border: [false, false, true, true],
+                    alignment: "right",
+                  },
                 ],
               ],
             },
@@ -898,22 +1039,22 @@ const SalesOrderViewList = () => {
             margin: [0, 0, 0, 5],
           },
           subheader: {
-              fontSize: 12,
-              marginBottom: 5,
-              },
+            fontSize: 12,
+            marginBottom: 5,
+          },
           tableLabel: {
             bold: true,
             fontSize: 10,
             // border: [false, false, false, true],
           },
-          font10:{
-              fontSize: 10,
+          font10: {
+            fontSize: 10,
           },
           tableCell: {
             fontSize: 8,
           },
           tableHeader: {
-            fillColor: '#eeeeee',
+            fillColor: "#eeeeee",
             bold: true,
           },
         },
