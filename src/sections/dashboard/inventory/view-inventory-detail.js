@@ -52,9 +52,11 @@ export const ViewInventoryDetail = (props) => {
       });
   }, []);
 
-  const matchingObject = userData.find(item => item.inventoryId === state?.id || state?.inventoryId);
+  const matchingObject = userData.find(item => item.inventoryId ===state?.inventoryId);
   const warehouseName = matchingObject?.warehouseName;
   const productName = matchingObject?.productName;
+
+  console.log(matchingObject)
 
   const handleWarehouseNavigation = () => {
 
