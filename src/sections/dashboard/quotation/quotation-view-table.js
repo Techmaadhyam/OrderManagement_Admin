@@ -457,7 +457,7 @@ const handleQuotation = async (record) => {
         (product.price * product.quantity * product.sgst) / 100 +
         (product.price * product.quantity * product.igst) / 100
       ).toFixed(2);
-      if (product.cgst=== 0 && product.sgst=== 0) {
+      if (record.category === 'Service Quotation') {
         return{
           id: index + 1,
           productDescription: product.description,
@@ -558,11 +558,11 @@ const handleQuotation = async (record) => {
   }
 };
 const handleQuotationPdf = async (record)=>{
-  // console.log(record);
+  console.log(record);
   try{
     const response = await axios.get(apiUrl +`getAllQuotationDetails/${record.id}`)
       
-      // console.log(response.data)
+      console.log(response.data)
 
 
 const rowData = response.data.map((product, index) => {
@@ -573,7 +573,7 @@ const rowData = response.data.map((product, index) => {
     (product.price * product.quantity * product.igst) / 100
   ).toFixed(2);
 
-  if (product.cgst===0 && product.sgst===0) {
+  if (record.category === 'Service Quotation') {
     return[
       {text: index +1 , style: 'tableCell'},
       {text: product.description, style: 'tableCell'},
@@ -681,7 +681,7 @@ const rowData = response.data.map((product, index) => {
                     { text: `Ship To: ${record.contactPersonName}`, style: 'tableLabel', border: [true, true, true, false], marginBottom: 5 },
                     { text: 'Customer GST Registration information', style: 'font10', bold: true },
                     {
-                      text: `Mode of Dispatch: N/A`,
+                      text: `Mode of Dispatch: ${record.modeofdelivery}`,
                       style: "font10",
                       border: [true, true, true, true],
                     },
