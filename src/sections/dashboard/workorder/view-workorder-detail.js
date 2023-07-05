@@ -89,6 +89,9 @@ console.log(state)
             body: JSON.stringify({
               workorder: {
                 id: state?.id,
+                ...(state?.quotid && {
+                  quotid: { id: state?.quotid },
+                }),
                 contactPersonName: state?.contactPersonName,
                 contactPhoneNumber: state?.contactPhoneNumber,
                 contactEmail: state?.contactEmail,

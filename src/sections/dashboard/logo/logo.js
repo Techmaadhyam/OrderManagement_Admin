@@ -22,14 +22,14 @@ const Logo = () => {
           mr: 0,
         }}
         alt="logo"
-        //src={`data:${logo.fileType};base64, ${logo.file}`}
-        src="/assets/logos/notelogo.png"
+        src={`data:${logo.fileType};base64, ${logo.file}`}
+        //src="/assets/logos/notelogo.png"
       />
       <h3 style={{ margin: "0px", fontSize: "15px" }}>
-        Note Automation and Solutions
+        {logo.company}
       </h3>
       <p style={{ margin: "0px", fontSize: "12px" }}>
-        GSTN NO: 29AARFN6647D1ZR
+        GSTN NO: {logo.gstn}
       </p>
     </>
   );

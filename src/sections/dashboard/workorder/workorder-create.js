@@ -396,7 +396,7 @@ export const WorkOrderCreateForm = (props) => {
           },
           body: JSON.stringify({
             workorder: {
-              //...(quotation && { quotid: quotation }),
+              ...(quotation && { quotid: quotation }),
               contactPersonName: contactName,
               contactPhoneNumber: phone,
               contactEmail: inchargeEmail,
@@ -450,7 +450,7 @@ export const WorkOrderCreateForm = (props) => {
           },
           body: JSON.stringify({
             workorder: {
-              //...(quotation && { quotid: quotation }),
+              ...(quotation && { quotid: quotation }),
               contactPersonName: contactName,
               contactPhoneNumber: phone,
               contactEmail: inchargeEmail,

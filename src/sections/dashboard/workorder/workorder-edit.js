@@ -492,7 +492,7 @@ export const WorkOrderEditForm = (props) => {
           body: JSON.stringify({
             workorder: {
               id: state?.id,
-              //...(quotation && { quotid: quotation }),
+              ...(quotation && { quotid: quotation }),
               contactPersonName: contactName,
               contactPhoneNumber: phone,
               contactEmail: inchargeEmail,
@@ -549,7 +549,7 @@ export const WorkOrderEditForm = (props) => {
           body: JSON.stringify({
             workorder: {
               id: state?.id,
-              //...(quotation && { quotid: quotation }),
+              ...(quotation && { quotid: quotation }),
               contactPersonName: contactName,
               contactPhoneNumber: phone,
               contactEmail: inchargeEmail,

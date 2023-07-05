@@ -20,6 +20,8 @@ const Logo = () => {
                 setLogo({
                   file: response.data.documents[0].fileData,
                   fileType: response.data.documents[0].fileType,
+                  company: response.data.loggedIUser[0].companyName,
+                  gstn: response.data.loggedIUser[0].gstNumber,
                 });
             })
             .catch((error) => {

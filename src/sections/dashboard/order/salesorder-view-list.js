@@ -240,7 +240,7 @@ const SalesOrderViewList = () => {
                   {
                     columns: [
                       {
-                        image: imgUrl,
+                        image: `data:${logo.fileType};base64, ${logo.file}`,
                         // image: pdfLogo,
                         width: 100,
                         alignment: "left",
@@ -248,15 +248,15 @@ const SalesOrderViewList = () => {
                       {
                         stack: [
                           {
-                            text: `Note Automation and Solutions`,
+                            text: `${record.createdByUser.companyName}`,
                             style: "header",
                           },
                           {
-                            text: `# 95, 4th Cross, Maragondahalli, Bangalore- 560036`,
+                            text: `${record.createdByUser.address}, ${record.createdByUser.city}, ${record.createdByUser.pincode}, ${record.createdByUser.state}, ${record.createdByUser.country}`,
                             style: "subheader",
                           },
                           {
-                            text: `GSTN NO: 29AARFN6647D1ZR`,
+                            text: `GSTN NO: ${record.createdByUser.gstNumber}`,
                             style: "subheader",
                           },
                         ],
@@ -619,7 +619,7 @@ const SalesOrderViewList = () => {
                   {
                     stack: [
                       {
-                        text: `For Note Automation and Solutions`,
+                        text: `For ${record.createdByUser.companyName}`,
                         bold: true,
                         alignment: "center",
                         fontSize: 12,
@@ -711,15 +711,15 @@ const SalesOrderViewList = () => {
                       {
                         stack: [
                           {
-                            text: `Note Automation and Solutions`,
+                            text: `${record.createdByUser.companyName}`,
                             style: "header",
                           },
                           {
-                            text: `# 95, 4th Cross, Maragondahalli, Bangalore- 560036`,
+                            text: `${record.createdByUser.address}, ${record.createdByUser.city}, ${record.createdByUser.pincode}, ${record.createdByUser.state}, ${record.createdByUser.country}`,
                             style: "subheader",
                           },
                           {
-                            text: `GSTN NO: 29AARFN6647D1ZR`,
+                            text: `GSTN NO: ${record.createdByUser.gstNumber}`,
                             style: "subheader",
                           },
                         ],
