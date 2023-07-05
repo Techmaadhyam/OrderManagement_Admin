@@ -197,18 +197,19 @@ const SalesOrderViewList = () => {
 
   const handleInvoicePdf = async (record, heading, dateData, noData) => {
     
-    // console.log(record);
+    console.log(record);
     try {
       const response = await axios.get(
         apiUrl + `getAllSalesOrderDetails/${record.id}`
       );
-      // console.log(response.data);
+      console.log(response.data);
 
       const rowData = response.data.map((product, index) => {
         let invent = JSON.parse(product.inventory);
         let TotalBD = product.price * product.quantity;
-        let TotalAD = TotalBD - product.discountAmount;
-        let TotalGST = product.cgst + product.sgst + product.igst;
+        let discount = (TotalBD * product.discountpercent) / 100;
+        let TotalAD = TotalBD - discount;
+        let TotalGST = product.sgst + product.cgst + product.igst;
         let TotalGSTAmount = (TotalAD * TotalGST) / 100;
         return [
                     { text: index + 1, style: 'tableCell'},
@@ -217,7 +218,7 @@ const SalesOrderViewList = () => {
                     { text: product.price, style: 'tableCell' },
                     { text: product.quantity, style: 'tableCell' },
                     { text: TotalBD, style: 'tableCell' },
-                    { text: product.discountAmount, style: 'tableCell' },
+                    { text: discount, style: 'tableCell' },
                     { text: TotalAD, style: 'tableCell' },
                     { text: product.sgst, style: 'tableCell' },
                     { text: product.cgst, style: 'tableCell' },
