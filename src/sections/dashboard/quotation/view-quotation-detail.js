@@ -53,7 +53,7 @@ console.log(state)
       render: (name, record) => {
         let handleNavigation;
   
-        if (state?.category === 'Purchase Quotation') {
+        if (state?.category ||state?.quotation?.category === 'Purchase Quotation') {
           handleNavigation = () => {
             navigate(`/dashboard/products/viewDetail/${record?.productId}`, { state: record });
           };
