@@ -390,7 +390,8 @@ export const SalesOrderCreateForm = (props) => {
       .get(apiUrl + `getAllQuotations/${userId}`)
       .then((response) => {
         const filteredQuotations = response.data.filter(
-          (item) => item.status === "Delivered"
+          (item) =>
+            item.status === "Delivered" && item.category === "Sales Quotation"
         );
         setAllQuotation(filteredQuotations);
       })

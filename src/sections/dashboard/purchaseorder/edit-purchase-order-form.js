@@ -556,7 +556,7 @@ export const PurchaseOrderEditForm = (props) => {
       .get(apiUrl + `getAllQuotations/${userId}`)
       .then((response) => {
         const filteredQuotations = response.data.filter(
-          (item) => item.status === "Delivered"
+          (item) => item.status === "Delivered" && item.category === "Purchase Quotation"
         );
         setAllQuotation(filteredQuotations);
       })

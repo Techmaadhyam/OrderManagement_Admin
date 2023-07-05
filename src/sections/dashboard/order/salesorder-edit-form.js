@@ -556,7 +556,10 @@ console.log(deliveryIST)
   useEffect(() => {
     axios.get(apiUrl +`getAllQuotations/${userId}`)
       .then(response => {
-        const filteredQuotations = response.data.filter(item => item.status === "Delivered");
+        const filteredQuotations = response.data.filter(
+          (item) =>
+            item.status === "Delivered" && item.category === "Sales Quotation"
+        );
         setAllQuotation(filteredQuotations);
       })
       .catch(error => {

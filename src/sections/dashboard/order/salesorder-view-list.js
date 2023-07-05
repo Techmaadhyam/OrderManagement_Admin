@@ -709,7 +709,7 @@ const SalesOrderViewList = () => {
                             style: "subheader",
                           },
                           {
-                            text: `GSTIN: ${record.createdByUser.gstNumber}`,
+                            text: `GSTN NO: ${record.createdByUser.gstNumber}`,
                             style: "subheader",
                           },
                         ],

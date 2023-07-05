@@ -8,7 +8,6 @@ const Logo = () => {
 
   const { logo } = useContext(LogoContext);
   
-  console.log(logo)
 
   return (
     <>
