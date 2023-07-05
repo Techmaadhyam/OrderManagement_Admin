@@ -134,6 +134,7 @@ export const WorkOrderCreateForm = (props) => {
   const [comment, setComment] = useState("");
   const [technician, setTechnician] = useState("");
   const [technicianData, setTechnicianData] = useState([]);
+   const [quotation, setQuotation] = useState(null);
 
   //add product state
   const [productName, setProductName] = useState("");
@@ -153,6 +154,7 @@ export const WorkOrderCreateForm = (props) => {
 
   const [totalAmount, setTotalAmount] = useState(0);
   const [touched, setTouched] = useState(false);
+  const [allQuotation, setAllQuotation] = useState([]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -169,6 +171,9 @@ export const WorkOrderCreateForm = (props) => {
         break;
       case "adminemail":
         setAdminEmail(value);
+        break;
+      case "quotation":
+        setQuotation(value);
         break;
       case "adminphone":
         setAdminPhone(value);
@@ -338,6 +343,29 @@ export const WorkOrderCreateForm = (props) => {
       });
   }, []);
 
+  //get quotation data
+  useEffect(() => {
+    axios
+      .get(apiUrl + `getAllQuotations/${userId}`)
+      .then((response) => {
+        const filteredQuotations = response.data.filter(
+          (item) =>
+            item.status === "Delivered" &&
+            item.category === "Service Quotation"
+        );
+        setAllQuotation(filteredQuotations);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  //only show quotations that have status: delivered
+  const approvedQuotation = allQuotation.map((item) => ({
+    value: item.id,
+    label: item.id,
+  }));
+
   //exclude product name from rows and include comments
   const updatedRows = rows.map(({ productName, netAmount, ...rest }) => ({
     ...rest,
@@ -368,6 +396,7 @@ export const WorkOrderCreateForm = (props) => {
           },
           body: JSON.stringify({
             workorder: {
+              //...(quotation && { quotid: quotation }),
               contactPersonName: contactName,
               contactPhoneNumber: phone,
               contactEmail: inchargeEmail,
@@ -386,7 +415,7 @@ export const WorkOrderCreateForm = (props) => {
               //totalAmount: finalAmount,
               technicianInfo: { id: technician },
               noncompany: { id: tempId },
-              paidamount:0
+              paidamount: 0,
               //company: {id: userState},
             },
             workOrderItems: updatedRows,
@@ -421,6 +450,7 @@ export const WorkOrderCreateForm = (props) => {
           },
           body: JSON.stringify({
             workorder: {
+              //...(quotation && { quotid: quotation }),
               contactPersonName: contactName,
               contactPhoneNumber: phone,
               contactEmail: inchargeEmail,
@@ -503,7 +533,22 @@ export const WorkOrderCreateForm = (props) => {
                   ))}
                 </TextField>
               </Grid>
-              <Grid xs={12} md={4}></Grid>
+              <Grid xs={12} md={4}>
+                <TextField
+                  fullWidth
+                  label="Quotation"
+                  name="quotation"
+                  value={quotation}
+                  select
+                  onChange={handleInputChange}
+                >
+                  {approvedQuotation.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
               <Grid xs={12} md={4}></Grid>
               <Grid xs={12} md={4}>
                 <TextField

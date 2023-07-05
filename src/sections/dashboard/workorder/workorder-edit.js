@@ -134,6 +134,7 @@ export const WorkOrderEditForm = (props) => {
   const [adminEmail, setAdminEmail] = useState(state?.adminEmail || "");
   const [adminPhone, setAdminPhone] = useState(state?.adminPhoneNumber || "");
   const [inchargeEmail, setInchargeEmail] = useState(state?.contactEmail || "");
+    const [quotation, setQuotation] = useState(state?.quotid || "");
   const [phone, setPhone] = useState(state?.contactPhoneNumber || "");
   const [address, setAddress] = useState(state?.deliveryAddress || "");
   const [tempId, setTempId] = useState(state?.noncompany?.id);
@@ -163,6 +164,7 @@ export const WorkOrderEditForm = (props) => {
   const [workstation, setWorkstation] = useState();
   const [netAmount, setNetAmount] = useState();
   const [discount, setDiscount] = useState();
+  const [allQuotation, setAllQuotation] = useState([]);
 
   const [userData2, setUserData2] = useState([]);
   const [productId, setProductId] = useState();
@@ -243,6 +245,9 @@ export const WorkOrderEditForm = (props) => {
       case "adminemail":
         setAdminEmail(value);
         break;
+      case "quotation":
+        setQuotation(value);
+        break;
       case "adminphone":
         setAdminPhone(value);
         break;
@@ -294,6 +299,28 @@ export const WorkOrderEditForm = (props) => {
   const filteredData = technicianData?.filter(
     (item) => item.type === "Technician"
   );
+
+  //get quotation data
+  useEffect(() => {
+    axios
+      .get(apiUrl + `getAllQuotations/${userId}`)
+      .then((response) => {
+        const filteredQuotations = response.data.filter(
+          (item) =>
+            item.status === "Delivered" && item.category === "Service Quotation"
+        );
+        setAllQuotation(filteredQuotations);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  //only show quotations that have status: delivered
+  const approvedQuotation = allQuotation.map((item) => ({
+    value: item.id,
+    label: item.id,
+  }));
 
   //////////////
   //add product//
@@ -465,6 +492,7 @@ export const WorkOrderEditForm = (props) => {
           body: JSON.stringify({
             workorder: {
               id: state?.id,
+              //...(quotation && { quotid: quotation }),
               contactPersonName: contactName,
               contactPhoneNumber: phone,
               contactEmail: inchargeEmail,
@@ -521,6 +549,7 @@ export const WorkOrderEditForm = (props) => {
           body: JSON.stringify({
             workorder: {
               id: state?.id,
+              //...(quotation && { quotid: quotation }),
               contactPersonName: contactName,
               contactPhoneNumber: phone,
               contactEmail: inchargeEmail,
@@ -602,7 +631,22 @@ export const WorkOrderEditForm = (props) => {
                   ))}
                 </TextField>
               </Grid>
-              <Grid xs={12} md={4}></Grid>
+              <Grid xs={12} md={4}>
+                <TextField
+                  fullWidth
+                  label="Quotation"
+                  name="quotation"
+                  value={quotation}
+                  select
+                  onChange={handleInputChange}
+                >
+                  {approvedQuotation.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
               <Grid xs={12} md={4}></Grid>
               <Grid xs={12} md={4}>
                 {" "}
