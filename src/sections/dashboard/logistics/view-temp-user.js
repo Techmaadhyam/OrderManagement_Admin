@@ -127,40 +127,18 @@ const handleEditRecord = (record) => {
 const handleSaveRecord = async (editedRecord) => {
 
   console.log('Saving edited record:', editedRecord);
-  console.log(JSON.stringify({
-
-    id: editedRecord.id,
-
-    userName: editedRecord.emailId,
-    contactpersonname: editedRecord?.contactpersonname,
-    companyName: editedRecord.companyName,
-    emailId: editedRecord.emailId,
-    mobile: editedRecord.mobile,
-    address: editedRecord.address,
-    type: editedRecord.type,
-    pincode: editedRecord.pincode,
-    city: editedRecord.city,
-    gstNumber: editedRecord.gstNumber,
-    state: editedRecord.state,
-    pancard: editedRecord?.pancard,
-    country: editedRecord.country,
-    createdBy: editedRecord.createdBy,
-    lastModifiedDate: new Date(currentDate)
-  }))
+ 
 
   if (currentDate) {
     try {
-      const response = await fetch(apiUrl +'addTempUser', {
-        method: 'POST',
+      const response = await fetch(apiUrl + "addTempUser", {
+        method: "POST",
         headers: {
-
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-
           id: editedRecord.id,
-          firstName : editedRecord.firstName,
-          lastName: editedRecord.lastName,
+          contactpersonname: editedRecord?.contactpersonname,
           userName: editedRecord.emailId,
           companyName: editedRecord.companyName,
           emailId: editedRecord.emailId,
@@ -172,11 +150,11 @@ const handleSaveRecord = async (editedRecord) => {
           city: editedRecord.city,
           state: editedRecord.state,
           country: editedRecord.country,
-          pancard: editedRecord?.pancard,
-          createdByUser: {id: editedRecord.createdByUser.id},
+          pandcard: editedRecord?.pandcard,
+          createdByUser: { id: editedRecord.createdByUser.id },
           lastModifiedDate: new Date(),
-          lastModifiedByUser: {id: userId},
-        })
+          lastModifiedByUser: { id: userId },
+        }),
       });
       
       if (response.ok) {
