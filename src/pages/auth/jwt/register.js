@@ -876,7 +876,7 @@ console.log(uploadFile)
               <img
                 alt=""
                 src={images[currentImage]}
-                style={{ width: 350, height: "auto" }}
+                style={{ width: 450, height: "auto" }}
               />
             </Stack>
           </Box>

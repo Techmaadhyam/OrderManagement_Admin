@@ -989,7 +989,7 @@ catch(error){
       dataIndex: 'lastModifiedDate',
     },
     {
-      title: 'Order Date',
+      title: 'Created Date',
       key: 'createdDate',
       dataIndex: 'createdDate',
     },
