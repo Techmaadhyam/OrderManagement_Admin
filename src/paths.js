@@ -49,6 +49,10 @@ export const paths = {
   },
   dashboard: {
     index: "/dashboard",
+    active: "/dashboard/active",
+    inactive: "/dashboard/inactive",
+    inactiveView: "/dashboard/inactiveView",
+    activeView:"/dashboard/activeView",
     quotation: {
       index: "dashboard/quotation",
       buy: "/dashboard/quotation/buy",
