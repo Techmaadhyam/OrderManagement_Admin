@@ -439,7 +439,6 @@ console.log(tempId, userState)
         product: { id: productId },
         productName,
         weight,
-
         inventory: null,
         quantity: parseFloat(quantity),
         price: parseFloat(price),

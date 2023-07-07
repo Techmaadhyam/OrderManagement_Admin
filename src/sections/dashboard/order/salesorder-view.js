@@ -99,7 +99,7 @@ export const ViewSalesOrder = (props) => {
             salesOrder: {
               id: state?.id,
               ...(state?.quotid && {
-                quotid: { id: state?.quotid },
+                quotid: state?.quotid 
               }),
               ...(tempId && { tempUser: { id: tempId } }),
               ...(userState && { companyuser: { id: userState } }),

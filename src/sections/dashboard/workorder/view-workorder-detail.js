@@ -90,7 +90,7 @@ console.log(state)
               workorder: {
                 id: state?.id,
                 ...(state?.quotid && {
-                  quotid: { id: state?.quotid },
+                  quotid:  state?.quotid
                 }),
                 contactPersonName: state?.contactPersonName,
                 contactPhoneNumber: state?.contactPhoneNumber,

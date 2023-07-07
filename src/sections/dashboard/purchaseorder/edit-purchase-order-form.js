@@ -626,6 +626,7 @@ export const PurchaseOrderEditForm = (props) => {
         product: { id: productId },
         productName,
         weight,
+        inventory: null,
         quantity: parseFloat(quantity),
         price: parseFloat(price),
         description,
@@ -718,10 +719,10 @@ export const PurchaseOrderEditForm = (props) => {
   console.log(user, tempId, userState);
 
   const updatedRows = rowData?.map(
-    ({ productName, inventory, productId, ...rest }) => rest
+    ({ productName, productId, ...rest }) => rest
   );
   const deleteRows = deletedRows?.map(
-    ({ productName, inventory, productId, ...rest }) => rest
+    ({ productName, productId, ...rest }) => rest
   );
   //post request
   const handleClick = async (event) => {
@@ -748,7 +749,7 @@ export const PurchaseOrderEditForm = (props) => {
           body: JSON.stringify({
             purchaseOrder: {
               id: state?.id,
-              ...(quotation && { quotid: { id: quotation } }),
+              ...(quotation && { quotid: quotation }),
               ...(tempId && { tempUser: { id: tempId } }),
               ...(userState && { companyuser: { id: userState } }),
               contactPerson: contactName,
