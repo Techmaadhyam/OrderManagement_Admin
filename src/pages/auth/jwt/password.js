@@ -161,34 +161,34 @@ import {
       if (password === confirmPassword) {
         if ( password) {
           try {
-            const response = await fetch( apiUrl + 'addUser', {
-              method: 'POST',
+            const response = await fetch(apiUrl + "addUser", {
+              method: "POST",
               headers: {
-  
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json",
               },
               body: JSON.stringify({
                 id: registeredData.id,
                 password: password,
-        
+
                 companyName: registeredData.companyName,
-                userName : registeredData.emailId,
+                userName: registeredData.emailId,
                 firstName: registeredData.firstName,
                 lastName: registeredData.lastName,
                 emailId: registeredData.emailId,
                 mobile: registeredData.mobile,
                 address: registeredData.address,
                 city: registeredData.city,
-                state:registeredData.state,
+                state: registeredData.state,
                 country: registeredData.country,
                 type: registeredData.type,
+                issuperuser: registeredData.issuperuser,
                 isactive: registeredData.isactive,
                 gstNumber: registeredData.gstNumber,
                 pandcard: registeredData.pandcard,
                 createdDate: registeredData.createdDate,
-                pincode:registeredData.pincode,
-                unpdatedDate:new Date()
-              })
+                pincode: registeredData.pincode,
+                updatedDate: new Date(),
+              }),
             });
             
             if (response.ok) {

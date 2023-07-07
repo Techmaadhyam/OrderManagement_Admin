@@ -21,6 +21,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ArrowCircleLeftOutlinedIcon from "@mui/icons-material/ArrowCircleLeftOutlined";
 import { apiUrl } from "src/config";
+import Switch from "@mui/material/Switch";
 import { Delete } from "@mui/icons-material";
 import {
   fetchAccessToken,
@@ -84,6 +85,7 @@ const Register = () => {
 
   //handle file uploads
   const [uploadFile, setUploadFile] = useState(null);
+    const [checked, setChecked] = useState(false);
 
   //updating form state
   const handleInputChange = (event) => {
@@ -291,6 +293,11 @@ const Register = () => {
     "/assets/logos/logo10.png",
   ];
 
+  //handle switch
+    const handleChange = (event) => {
+      setChecked(event.target.checked);
+    };
+
   //handles image carousel
   const handleImageChange = useCallback(() => {
     setCurrentImage((currentImage) => (currentImage + 1) % images.length);
@@ -342,6 +349,8 @@ console.log(uploadFile)
               gstNumber: gstn,
               pandcard: pan,
               pincode: zipcode,
+              issuperuser: checked,
+              isactive:true,
               createdDate: new Date(),
               unpdatedDate: new Date(),
             }),
@@ -735,6 +744,26 @@ console.log(uploadFile)
                             value={confirmPassword}
                             onChange={handleInputChange}
                           ></TextField>
+                        </Grid>
+                        <Grid
+                          container
+                          direction="row"
+                          alignItems="center"
+                          xs={12}
+                          md={6}
+                        >
+                          <Grid item>
+                            <Typography variant="subtitle2">
+                              Admin access:
+                            </Typography>
+                          </Grid>
+                          <Grid item>
+                            <Switch
+                              checked={checked}
+                              onChange={handleChange}
+                              inputProps={{ "aria-label": "controlled" }}
+                            />
+                          </Grid>
                         </Grid>
                         <Grid xs={12} md={6}>
                           <div>
