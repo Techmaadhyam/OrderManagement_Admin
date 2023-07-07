@@ -681,7 +681,7 @@ const rowData = response.data.map((product, index) => {
                     { text: `Ship To: ${record.contactPersonName}`, style: 'tableLabel', border: [true, true, true, false], marginBottom: 5 },
                     { text: 'Customer GST Registration information', style: 'font10', bold: true },
                     {
-                      text: `Mode of Dispatch: ${record.modeofdelivery}`,
+                      text: `Mode of Dispatch: ${record.modeofdelivery || 'N/A'}`,
                       style: "font10",
                       border: [true, true, true, true],
                     },
