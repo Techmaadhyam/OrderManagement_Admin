@@ -31,17 +31,17 @@ export const ViewInventoryDetail = (props) => {
   const location = useLocation();
   const navigate = useNavigate();
   const state = location.state;
-  const [userData, setUserData]= useState([])
+  const [userData, setUserData] = useState([])
 
 
   console.log(state)
 
 
 
-  const align = 'horizontal' 
+  const align = 'horizontal'
 
   useEffect(() => {
-    axios.get(apiUrl +`getInventoryByUserId/${userId}`)
+    axios.get(apiUrl + `getInventoryByUserId/${userId}`)
       .then(response => {
         setUserData(response.data);
         console.log(response.data)
@@ -52,11 +52,10 @@ export const ViewInventoryDetail = (props) => {
       });
   }, []);
 
-  const matchingObject = userData.find(item => item.inventoryId ===state?.inventoryId);
+  const matchingObject = userData.find(item => item.inventoryId === state?.id || state?.inventoryId);
   const warehouseName = matchingObject?.warehouseName;
   const productName = matchingObject?.productName;
 
-  console.log(matchingObject)
 
   const handleWarehouseNavigation = () => {
 
@@ -80,8 +79,10 @@ export const ViewInventoryDetail = (props) => {
     axios
     .get(apiUrl +`getAllItem/${userId}`)
     .then(response => {
-      const matchedData = response.data.filter(obj => obj.id === state?.productId || state?.product?.id );
+      const matchedData = response.data.filter(obj => {
 
+  return obj.id === state?.product?.id || obj.id === state?.productId;
+});
       if (matchedData.length > 0) {
         navigate(`/dashboard/products/viewDetail/${matchedData[0].id}`, { state: matchedData[0] });
       } else {
