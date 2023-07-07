@@ -191,7 +191,7 @@ const Page = () => {
                 }}
               >
                 <div style={{ flex: 1 }}>
-                  <h2 style={{ margin: 0 }}>All Inctive Users</h2>
+                  <h2 style={{ margin: 0 }}>All Inactive Users</h2>
                 </div>
                 <div style={{ flex: 1, textAlign: "center" }}>
                   <Logo />
