@@ -29,7 +29,7 @@ import { apiUrl } from "src/config";
 
 const Page = (props) => {
   const location = useLocation();
-  const state = location.state;
+ const [state, setState] = useState(location.state);
 
   const [checked, setChecked] = useState(state?.isactive);
   const [editMode, setEditMode] = useState(false);
@@ -101,6 +101,7 @@ const Page = (props) => {
         if (response.ok) {
           setEditMode(false);
           response.json().then((data) => {
+            setState(data);
             alert("update success");
           });
         }

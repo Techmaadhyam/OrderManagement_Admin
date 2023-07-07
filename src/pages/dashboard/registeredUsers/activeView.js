@@ -29,7 +29,7 @@ import { apiUrl } from "src/config";
 
 const Page = (props) => {
   const location = useLocation();
-  const state = location.state;
+ const [state, setState] = useState(location.state);
 
   const [checked, setChecked] = useState(state?.isactive);
   const [editMode, setEditMode] = useState(false);
@@ -58,7 +58,7 @@ const Page = (props) => {
   const handleEditClick = () => {
     setEditMode(true);
   };
-  console.log(modifiedValues);
+ 
 
   const handleCancelClick = () => {
     setEditMode(false);
@@ -85,7 +85,9 @@ const Page = (props) => {
       pincode: state?.pincode,
       updatedDate: new Date(),
     });
-  };
+    };
+    
+    
 
   const handleSaveClick = async () => {
     if (state?.id) {
@@ -99,8 +101,9 @@ const Page = (props) => {
         });
 
         if (response.ok) {
-          setEditMode(false);
-          response.json().then((data) => {
+    setEditMode(false)
+            response.json().then((data) => {
+         setState(data);
             alert("update success");
           });
         }
