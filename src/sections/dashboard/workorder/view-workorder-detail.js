@@ -64,7 +64,6 @@ console.log(state)
     const convertedArray = updatedRows.map((obj) => {
       return {
         product: { id: obj.productId },
-        workOrderId: { id: obj.workOrderId.id },
         igst: obj.igst,
         unitPrice: obj.unitPrice,
         description: obj.description,

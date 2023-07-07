@@ -370,7 +370,6 @@ export const WorkOrderEditForm = (props) => {
         id: Id,
         product: { id: productId },
         productName,
-        workOrderId: { id: state?.id },
         unitPrice: parseFloat(price),
         description,
         discountpercent: parseFloat(discount),

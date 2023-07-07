@@ -369,7 +369,6 @@ export const AmcEditForm = (props) => {
         id: Id,
         product: { id: productId },
         productName,
-        workOrderId: { id: state?.id },
         unitPrice: parseFloat(price),
         discountpercent: parseFloat(discount),
         netAmount: parseFloat(netAmount),

@@ -273,7 +273,6 @@ export const WorkOrderCreateForm = (props) => {
       const newRow = {
         product: { id: productId },
         productName,
-        workOrderId: null,
         unitPrice: parseFloat(price),
         discountpercent: parseFloat(discount),
         netAmount: parseFloat(netAmount),
