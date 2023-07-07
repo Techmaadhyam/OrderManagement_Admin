@@ -87,6 +87,18 @@ const SocialProfilePage = lazy(() => import('src/pages/dashboard/social/profile'
 // Other
 const BlankPage = lazy(() => import('src/pages/dashboard/blank'));
 
+//registered users
+const ActiveUsers = lazy(() => import('src/pages/dashboard/registeredUsers/active'))
+const InactiveUsers = lazy(() =>
+  import("src/pages/dashboard/registeredUsers/inactive")
+);
+const ActiveView = lazy(() =>
+  import("src/pages/dashboard/registeredUsers/activeView")
+);
+const InactiveView = lazy(() =>
+  import("src/pages/dashboard/registeredUsers/inactiveView")
+);
+
 export const dashboardRoutes = [
   {
     path: "dashboard",
@@ -101,6 +113,23 @@ export const dashboardRoutes = [
       {
         index: true,
         element: <IndexPage />,
+      },
+
+      {
+        path: "active",
+        element: <ActiveUsers />,
+      },
+      {
+        path: "inactive",
+        element: <InactiveUsers />,
+      },
+      {
+        path: "activeView",
+        element: <ActiveView />,
+      },
+      {
+        path: "inactiveView",
+        element: <InactiveView />,
       },
       {
         path: "quotation",
