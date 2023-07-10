@@ -93,7 +93,7 @@ const filteredData =
         key: "id",
         render: (name, record) => {
           const handleNavigation = () => {
-            navigate("/dashboard/activeView", { state: record });
+            navigate("/dashboard/logistics/activeView", { state: record });
           };
 
           return (

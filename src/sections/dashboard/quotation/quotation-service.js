@@ -38,13 +38,17 @@ const userId = parseInt(sessionStorage.getItem('user')|| localStorage.getItem('u
 
 const customerType = [
   {
-    label: 'Customer',
-    value: 'Customer'
+    label: "Distributor",
+    value: "Distributor",
   },
   {
-    label: 'Vendor',
-    value: 'Vendor'
-  }
+    label: "Retailer",
+    value: "Retailer",
+  },
+  {
+    label: "Manufacturer",
+    value: "Manufacturer",
+  },
 ];
 
 

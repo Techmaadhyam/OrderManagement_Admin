@@ -42,20 +42,6 @@ export const useSections = () => {
                 <HomeSmileIcon />
               </SvgIcon>
             ),
-            items: [
-              {
-                title: t(tokens.nav.home),
-                path: paths.dashboard.index,
-              },
-              {
-                title: t(tokens.nav.isActive),
-                path: paths.dashboard.active,
-              },
-              {
-                title: t(tokens.nav.isInactive),
-                path: paths.dashboard.inactive,
-              },
-            ],
           },
           {
             title: t(tokens.nav.products),
@@ -127,7 +113,16 @@ export const useSections = () => {
             items: [
               {
                 title: t(tokens.nav.view),
-                path: paths.dashboard.logistics.fleet,
+                items: [
+                  {
+                    title: t(tokens.nav.isActive),
+                    path: paths.dashboard.logistics.active,
+                  },
+                  {
+                    title: t(tokens.nav.isInactive),
+                    path: paths.dashboard.logistics.inactive
+                  },
+                ],
               },
               {
                 title: t(tokens.nav.create),
@@ -218,19 +213,15 @@ export const useSections = () => {
               </SvgIcon>
             ),
             items: [
-             
-            
-      
-                  {
-                    title: t(tokens.nav.view),
-                    path: paths.dashboard.services.AMCview,
-                  },
-                  {
-                    title: t(tokens.nav.create),
-                    path: paths.dashboard.services.createAMC,
-                  },
-             
-             
+              {
+                title: t(tokens.nav.view),
+                path: paths.dashboard.services.AMCview,
+              },
+              {
+                title: t(tokens.nav.create),
+                path: paths.dashboard.services.createAMC,
+              },
+
               {
                 title: t(tokens.nav.technician),
 
@@ -247,7 +238,6 @@ export const useSections = () => {
               },
             ],
           },
-          
         ],
       },
       // {

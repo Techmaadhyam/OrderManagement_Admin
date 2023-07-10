@@ -41,12 +41,16 @@ const userId = parseInt(
 //set customer type
 const customerType = [
   {
-    label: "Customer",
-    value: "Customer",
+    label: "Distributor",
+    value: "Distributor",
   },
   {
-    label: "Vendor",
-    value: "Vendor",
+    label: "Retailer",
+    value: "Retailer",
+  },
+  {
+    label: "Manufacturer",
+    value: "Manufacturer",
   },
 ];
 
@@ -617,7 +621,7 @@ export const AmcCreateForm = (props) => {
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Admin Name"
+                  label="Project Manager Name"
                   name="adminname"
                   required
                   value={adminName}
@@ -627,7 +631,7 @@ export const AmcCreateForm = (props) => {
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Admin Email"
+                  label="Project Manager Email"
                   name="adminemail"
                   required
                   value={adminEmail}
@@ -640,7 +644,7 @@ export const AmcCreateForm = (props) => {
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Admin Phone"
+                  label="Project Manager Phone"
                   name="adminphone"
                   type="number"
                   required
@@ -703,14 +707,14 @@ export const AmcCreateForm = (props) => {
                   align="right"
                   onClick={toggleForm}
                 >
-                  Add Parts
+                  Add Services
                 </Button>
               </Box>
             </Grid>
             {showForm && (
               <div className="modal" onClick={handleModalClick}>
                 <div className="modal-content-service">
-                  <h5 className="product-detail-heading">Add Part Details</h5>
+                  <h5 className="product-detail-heading">Add Service Details</h5>
                   <form className="form">
                     {/* Form fields */}
                     <div className="form-row">

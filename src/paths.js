@@ -49,10 +49,7 @@ export const paths = {
   },
   dashboard: {
     index: "/dashboard",
-    active: "/dashboard/active",
-    inactive: "/dashboard/inactive",
-    inactiveView: "/dashboard/inactiveView",
-    activeView:"/dashboard/activeView",
+
     quotation: {
       index: "dashboard/quotation",
       buy: "/dashboard/quotation/buy",
@@ -123,6 +120,10 @@ export const paths = {
       viewAllSo: "/dashboard/logistics/viewAllSo",
       viewAllQo: "/dashboard/logistics/viewAllQo",
       viewAllWo: "/dashboard/logistics/viewAllWo",
+      active: "/dashboard/logistics/active",
+      inactive: "/dashboard/logistics/inactive",
+      inactiveView: "/dashboard/logistics/inactiveView",
+      activeView: "/dashboard/logistics/activeView",
     },
 
     mail: "/dashboard/mail",

@@ -216,7 +216,7 @@ const Page = (props) => {
                   <Link
                     color="text.primary"
                     component={RouterLink}
-                    href={paths.dashboard.active}
+                    href={paths.dashboard.logistics.active}
                     sx={{
                       alignItems: "center",
                       display: "inline-flex",

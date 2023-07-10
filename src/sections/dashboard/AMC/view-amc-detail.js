@@ -314,7 +314,7 @@ const columns = [
           <Divider />
           <PropertyListItem
             align={align}
-            label="Incharge Name"
+            label="Architect Name"
             value={
               state?.contactPersonName || state?.workorder?.contactPersonName
             }
@@ -322,7 +322,7 @@ const columns = [
           <Divider />
           <PropertyListItem
             align={align}
-            label="Incharge Phone"
+            label="Architect Phone"
             value={
               state?.contactPhoneNumber || state?.workorder?.contactPhoneNumber
             }
@@ -330,13 +330,13 @@ const columns = [
           <Divider />
           <PropertyListItem
             align={align}
-            label="Admin Name"
+            label="Project Manager Name"
             value={state?.adminPersonName || state?.workorder?.adminPersonName}
           />
           <Divider />
           <PropertyListItem
             align={align}
-            label="Admin Phone"
+            label="Project Manager Phone"
             value={
               state?.adminPhoneNumber || state?.workorder?.adminPhoneNumber
             }
@@ -344,7 +344,7 @@ const columns = [
           <Divider />
           <PropertyListItem
             align={align}
-            label="Admin Email"
+            label="Project Manager Email"
             value={state?.adminEmail || state?.workorder?.adminEmail}
           />
           <Divider />

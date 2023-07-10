@@ -99,7 +99,7 @@ const Page = () => {
       key: "id",
       render: (name, record) => {
         const handleNavigation = () => {
-          navigate("/dashboard/inactiveView", { state: record });
+          navigate("/dashboard/logistics/inactiveView", { state: record });
         };
 
         return (

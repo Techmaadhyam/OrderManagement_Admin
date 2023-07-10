@@ -44,12 +44,16 @@ const dateFormat = "M/D/YYYY, h:mm:ss A";
 
 const customerType = [
   {
-    label: "Customer",
-    value: "Customer",
+    label: "Distributor",
+    value: "Distributor",
   },
   {
-    label: "Vendor",
-    value: "Vendor",
+    label: "Retailer",
+    value: "Retailer",
+  },
+  {
+    label: "Manufacturer",
+    value: "Manufacturer",
   },
 ];
 
@@ -728,7 +732,7 @@ export const AmcEditForm = (props) => {
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Admin Name"
+                  label="Project Manager Name"
                   name="adminname"
                   value={adminName}
                   onChange={handleInputChange}
@@ -737,7 +741,7 @@ export const AmcEditForm = (props) => {
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Admin Email"
+                  label="Project Manager Email"
                   name="adminemail"
                   helperText={hasError && "Please enter a valid email."}
                   onBlur={handleBlur}
@@ -749,7 +753,7 @@ export const AmcEditForm = (props) => {
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Admin Phone"
+                  label="Project Manager Phone"
                   name="adminphone"
                   type="number"
                   value={adminPhone}
@@ -759,7 +763,7 @@ export const AmcEditForm = (props) => {
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Incharge Name"
+                  label="Architect Name"
                   name="contactName"
                   value={contactName}
                   onChange={handleInputChange}
@@ -768,7 +772,7 @@ export const AmcEditForm = (props) => {
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Incharge Email"
+                  label="Architect Email"
                   name="inchargeemail"
                   value={inchargeEmail}
                   helperText={hasError2 && "Please enter a valid email."}
@@ -780,7 +784,7 @@ export const AmcEditForm = (props) => {
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Incharge Phone"
+                  label="Architect Phone"
                   name="mobileno"
                   type="number"
                   value={phone}
@@ -808,7 +812,7 @@ export const AmcEditForm = (props) => {
                   align="right"
                   onClick={toggleForm}
                 >
-                  Add Parts
+                  Add Services
                 </Button>
               </Box>
             </Grid>
@@ -816,7 +820,7 @@ export const AmcEditForm = (props) => {
             {showForm && (
               <div className="modal" onClick={handleModalClick}>
                 <div className="modal-content-service">
-                  <h5 className="product-detail-heading">Add Part Details</h5>
+                  <h5 className="product-detail-heading">Add Service Details</h5>
                   <form className="form">
                     {/* Form fields */}
                     <div className="form-row">

@@ -81,25 +81,8 @@ export const dashboardRoutes = [
       },
 
       {
-        path: "active",
-        element: <ActiveUsers />,
-      },
-      {
-        path: "inactive",
-        element: <InactiveUsers />,
-      },
-      {
-        path: "activeView",
-        element: <ActiveView />,
-      },
-      {
-        path: "inactiveView",
-        element: <InactiveView />,
-      },
-      {
         path: "quotation",
         children: [
-       
           {
             path: "service",
             element: <QuotationServicePage />,
@@ -122,9 +105,7 @@ export const dashboardRoutes = [
           },
         ],
       },
-    
 
-      
       {
         path: "logistics",
         children: [
@@ -156,13 +137,28 @@ export const dashboardRoutes = [
             path: "viewAllWo",
             element: <LogisticsViewAllWo />,
           },
+          {
+            path: "active",
+            element: <ActiveUsers />,
+          },
+          {
+            path: "inactive",
+            element: <InactiveUsers />,
+          },
+          {
+            path: "activeView",
+            element: <ActiveView />,
+          },
+          {
+            path: "inactiveView",
+            element: <InactiveView />,
+          },
         ],
       },
-    
+
       {
         path: "services",
         children: [
-         
           {
             path: "amc",
             element: <AMCCreatePage />,
@@ -194,8 +190,7 @@ export const dashboardRoutes = [
           },
         ],
       },
-      
-     
+
       {
         path: "social",
         children: [
