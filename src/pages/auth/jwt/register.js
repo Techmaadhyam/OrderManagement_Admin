@@ -44,10 +44,6 @@ const customerType = [
     label: "Manufacturer",
     value: "Manufacturer",
   },
-  {
-    label: "Customer",
-    value: "Customer",
-  },
 ];
 
 const Register = () => {
@@ -350,7 +346,7 @@ console.log(uploadFile)
               pandcard: pan,
               pincode: zipcode,
               issuperuser: checked,
-              isactive:true,
+              isactive:checked,
               createdDate: new Date(),
               unpdatedDate: new Date(),
             }),
@@ -397,6 +393,7 @@ console.log(uploadFile)
                   console.error(error);
                 }
               }
+        
             });
           } else {
             notify(

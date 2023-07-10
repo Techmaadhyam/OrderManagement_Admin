@@ -102,6 +102,7 @@ const Page = (props) => {
 
         if (response.ok) {
           setEditMode(false);
+      
           response.json().then(async (data) => {
             setState(data);
 
@@ -141,7 +142,9 @@ const Page = (props) => {
 
        
           });
+              alert("update success");
         }
+
       } catch (error) {
         console.error(error);
       }

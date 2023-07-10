@@ -1,576 +1,817 @@
-import PropTypes from 'prop-types';
 import {
   Button,
   Card,
   CardContent,
   CardHeader,
   Divider,
+  Box,
+  Stack,
   TextField,
   MenuItem,
-  Unstable_Grid2 as Grid
-} from '@mui/material';
-import { Box } from '@mui/system';
-import IconWithPopup from '../user/user-icon';
-import { useState, useEffect, useCallback, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { apiUrl } from 'src/config';
-import Logo from '../logo/logo';
+  Unstable_Grid2 as Grid,
+  SvgIcon,
+  Typography,
+  Link,
+} from "@mui/material";
+import { RouterLink } from "src/components/router-link";
+import { paths } from "src/paths";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { primaryColor } from "src/primaryColor";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import ArrowCircleLeftOutlinedIcon from "@mui/icons-material/ArrowCircleLeftOutlined";
+import { apiUrl } from "src/config";
+import Switch from "@mui/material/Switch";
+import { Delete } from "@mui/icons-material";
+import {
+  fetchAccessToken,
+  fetchCountries,
+  fetchStates,
+  fetchCities,
+  fetchIndianStates,
+} from "src/utils/api-service";
+import Logo from "../logo/logo";
+import User from "../user/user-icon";
+import { useNavigate } from "react-router-dom";
 
+const customerType = [
+  {
+    label: "Distributor",
+    value: "Distributor",
+  },
+  {
+    label: "Retailer",
+    value: "Retailer",
+  },
+  {
+    label: "Manufacturer",
+    value: "Manufacturer",
+  },
+];
 
-  //get userid 
-const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
-
-  const customerType = [
-    {
-      label: 'Customer',
-      value: 'Customer'
-    },
-    {
-      label: 'Vendor',
-      value: 'Vendor'
-    }
-  ];
-  const addressOption = [
-    {
-      label: 'Add Address',
-      value: 'address'
-    },
-
-  ];
-
-
-export const TempUserCreateForm = (props) => {
-
-
+const TempUserCreateForm = () => {
+    const navigate = useNavigate();
+  //image carousel state handeling
+  const [currentImage, setCurrentImage] = useState(0);
   // country, state, city API access token
   const [accessToken, setAccessToken] = useState(null);
 
-
-
   //state management for countries,states and cities
   const [countries, setCountries] = useState([]);
-  const [states, setStates]= useState([])
-  const [cities, setCities]= useState([])
-  const [currentCountry, setCurrentCountry]= useState('India')
-  const [currentState, setCurrentState]= useState('')
-  const [currentCity, setCurrentCity] =useState('')
-    
-//form state handling
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [currentCountry, setCurrentCountry] = useState("India");
+  const [currentState, setCurrentState] = useState([]);
+  const [currentCity, setCurrentCity] = useState([]);
 
-const [firstName, setFirstName] = useState('');
-const [lastName, setLastName] = useState('');
-const [userName, setUserName] = useState('');
-const [email, setEmail] = useState('');
-const [phone, setPhone] = useState('');
-const [company, setCompany] = useState("");
-const [type, setType] = useState("Customer");
-const [address, setAddress] = useState("");
-const [zipcode, setZipcode] = useState("");
-const [currentDate, setCurrentDate] = useState('');
-const [gstn, setGstn]= useState('')
-const [touched, setTouched] = useState(false);
-const [pan, setPan]= useState('')
+  //form state handling
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [username, setUsername] = useState("");
+  const [company, setCompany] = useState("");
+  const [type, setType] = useState("");
+  const [address, setAddress] = useState("");
+  const [zipcode, setZipcode] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [currentDate, setCurrentDate] = useState("");
+  const [gstn, setGstn] = useState("");
+  const [pan, setPan] = useState("");
 
+  const [step, setStep] = useState(1);
+  const [touched, setTouched] = useState(false);
 
+  //handle file uploads
+  const [uploadFile, setUploadFile] = useState(null);
+    const [checked, setChecked] = useState(false);
 
-const handleBlur = () => {
-  setTouched(true);
-};
+  //updating form state
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
 
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const hasError = touched && !emailRegex.test(email);
- ////
- const handleInputChange = (event) => {
-  const { name, value } = event.target;
-
-  switch (name) {
-  
-    case 'firstname':
+    switch (name) {
+      case "firstname":
         setFirstName(value);
         break;
-      case 'lastname':
+      case "lastname":
         setLastName(value);
         break;
-      case 'username':
-        setUserName(value);
-          break;
-      case 'email':
+      case "Email":
         setEmail(value);
         break;
-      case 'phone':
+      case "phone":
         setPhone(value);
         break;
-      case 'type':
-        setType(value);
+      case "username":
+        setUsername(value);
         break;
-      case 'company':
+      case "company":
         setCompany(value);
         break;
-      case 'gstn':
+      case "gstn":
         setGstn(value);
         break;
-      case 'pan':
-          setPan(value);
-            break;
-    case 'address':
-      setAddress(value);
+      case "pan":
+        setPan(value);
         break;
-    case 'zipcode':
-      setZipcode(value);
+      case "type":
+        setType(value);
         break;
-    default:
-      break;
-  }
-};
-////
-  //getting current date
-  useEffect(() => {
-    const today = new Date();
-    const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
-    const formattedDate = today.toLocaleDateString('en-ZA', options);
-    setCurrentDate(formattedDate);
-  }, []);
-
-
-useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const response = await fetch('https://www.universal-tutorial.com/api/getaccesstoken', {
-        headers: {
-          'Accept': 'application/json',
-          'api-token': '8HWETQvEFegKi6tGPUkSWDiQKfW8UdZxPqbzHX6JdShA3YShkrgKuHUbnTMkd11QGkE',
-          'user-email': 'mithesh.dev.work@gmail.com'
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch access token');
-      }
-
-      const data = await response.json();
-
-      setAccessToken(data.auth_token);
-
-    } catch (error) {
-      console.error(error);
-
+      case "address":
+        setAddress(value);
+        break;
+      case "zipcode":
+        setZipcode(value);
+        break;
+      case "password":
+        setPassword(value);
+        break;
+      case "confirmpassword":
+        setConfirmPassword(value);
+        break;
+      default:
+        break;
     }
   };
 
-  fetchData();
-}, []);
-//fetches country list for dropdown and pushesh it to state which is later mapped 
-const fetchCountries = useCallback(async () => {
-  try {
-    const response = await fetch("https://www.universal-tutorial.com/api/countries/", {
-      headers: {
-        "Authorization": "Bearer " + accessToken,
-        "Accept": "application/json"
+  //check if email field is open
+  const handleBlur = () => {
+    setTouched(true);
+  };
+
+  //add email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const hasError = touched && !emailRegex.test(email);
+
+  //handle next and back button
+  const handleNext = (e) => {
+    e.preventDefault();
+    setStep(step + 1);
+  };
+
+  const handleBack = (e) => {
+    e.preventDefault();
+    setStep(step - 1);
+  };
+
+  //getting current date
+  useEffect(() => {
+    const today = new Date();
+    const options = { year: "numeric", month: "numeric", day: "numeric" };
+    const formattedDate = today.toLocaleDateString("en-ZA", options);
+    setCurrentDate(formattedDate);
+  }, []);
+
+  //get access token
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const accessToken = await fetchAccessToken();
+        setAccessToken(accessToken);
+      } catch (error) {
+        console.error(error);
       }
-    });
+    };
 
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    const data = await response.json();
-    setCountries(data);
-  } catch (error) {
-    console.error("Error fetching countries:", error);
-  }
-}, [accessToken]);
+    fetchData();
+  }, []);
 
-//using useeffect to prevent fetch request being called on render
-useEffect(()=>{
-  fetchCountries()
-},[fetchCountries])
-
-//mapping countries to MUI select input field
-const userOptions = useMemo(() => {
-  return countries.map(country => ({
-    label: country.country_name,
-    value: country.country_name
-  }));
-}, [countries]);
-
-//mapping states to MUI select input field
-const userOptionsState = useMemo(() => {
-  return states.map(state => ({
-    label: state.state_name,
-    value: state.state_name
-  }));
-}, [states]);
-
-//mapping cities to MUI select input field
-const userOptionsCities = useMemo(() => {
-  return cities.map(city => ({
-    label: city.city_name,
-    value: city.city_name
-  }));
-}, [cities]);
-
-//fetches states list for dropdown and pushesh it to setStates which is later mapped 
-const handleCountry = async (event) => {
-  try {
-    setCurrentCountry(event.target.value);
-    const response = await fetch(`https://www.universal-tutorial.com/api/states/${event.target.value}`, {
-      headers: {
-        "Authorization": "Bearer " + accessToken,
-        "Accept": "application/json"
-      }
-    });
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    const data = await response.json();
-    setStates(data);
-  } catch (error) {
-    console.error("Error fetching states:", error);
-  }
-};
-
-//fetches cities list for dropdown and pushesh it to setCities which is later mapped 
-const handleState = async (event) => {
-  try {
-    setCurrentState(event.target.value);
-    const response = await fetch(`https://www.universal-tutorial.com/api/cities/${event.target.value}`, {
-      headers: {
-        "Authorization": "Bearer " + accessToken,
-        "Accept": "application/json"
-      }
-    });
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    const data = await response.json();
-    setCities(data);
-  } catch (error) {
-    console.error("Error fetching states:", error);
-  }
-};
-
-//sets default country to India and fetches state list for India and is pushed to setStates
-const handleDefaultState = async () => {
-try {;
-if (currentCountry === 'India') {
-  const response = await fetch('https://www.universal-tutorial.com/api/states/India', {
-    headers: {
-      "Authorization": "Bearer " + accessToken,
-      "Accept": "application/json"
-    }
-  });
-  if (!response.ok) {
-    throw new Error("Network response was not ok");
-  }
-  const data = await response.json();
-  setStates(data);
-}
-} catch (error) {
-console.error("Error fetching states:", error);
-}
-};
-
-//sets current city value in MUI select field onchange event
-const handleCities = async (event) => {
-setCurrentCity(event.target.value);
-}
-
-//for sending response body via route
-const navigate = useNavigate();
-
-const handleClick = async (event) => {
-event.preventDefault();
-
-  if (email && phone && type && company && currentCountry && currentState && address && currentCity && zipcode && currentDate) {
+  //fetches country list for dropdown and pushesh it to state which is later mapped
+  const fetchCountriesData = useCallback(async () => {
     try {
-      const response = await fetch(apiUrl +'addTempUser', {
-        method: 'POST',
-        headers: {
-
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-
-      
-          userName: email,
-          contactpersonname: userName,
-          companyName: company,
-          emailId: email,
-          mobile: phone,
-          address: address,
-          type: type,
-          gstNumber: gstn,
-          pandcard: pan,
-          pincode: zipcode,
-          city: currentCity,
-          state: currentState,
-          country: currentCountry,
-          createdByUser: {id: parseFloat(userId)},
-          createdDate:new Date(),
-          lastModifiedDate:new Date(),
-          lastModifiedByUser: {id: parseFloat(userId)},
-        })
-      });
-      
-      if (response.ok) {
-        // Redirect to home page upon successful submission
-    
-       response.json().then(data => {
-        console.log(data);
-       
-        navigate('/dashboard/logistics/viewDetail', { state: data });
-       
-});
-      } 
+      if (accessToken) {
+        const countries = await fetchCountries(accessToken);
+        setCountries(countries);
+      }
     } catch (error) {
-      console.error('API call failed:', error);
+      console.error("Error fetching countries:", error);
     }
-  } 
+  }, [accessToken]);
 
-};
+  //fetches states list for dropdown and pushesh it to setStates which is later mapped
+  const handleCountry = async (event) => {
+    try {
+      setCurrentCountry(event.target.value);
+      if (accessToken) {
+        const states = await fetchStates(accessToken, event.target.value);
+        setStates(states);
+      }
+    } catch (error) {
+      console.error("Error fetching states:", error);
+    }
+  };
+
+  //fetches cities list for dropdown and pushesh it to setCities which is later mapped
+  const handleState = async (event) => {
+    try {
+      setCurrentState(event.target.value);
+      if (accessToken) {
+        const cities = await fetchCities(accessToken, event.target.value);
+        setCities(cities);
+      }
+    } catch (error) {
+      console.error("Error fetching cities:", error);
+    }
+  };
+
+  //sets default country to India and fetches state list for India and is pushed to setStates
+  const handleDefaultState = useCallback(async () => {
+    try {
+      if (currentCountry === "India" && accessToken) {
+        const states = await fetchIndianStates(accessToken);
+        setStates(states);
+      }
+    } catch (error) {
+      console.error("Error fetching Indian states:", error);
+    }
+  }, [accessToken, currentCountry]);
+
+  //useeffect fetch request being called on componet mount
+  useEffect(() => {
+    if (accessToken) {
+      fetchCountriesData();
+      handleDefaultState();
+    }
+  }, [accessToken, fetchCountriesData, handleDefaultState]);
+
+  //sets current city value in MUI select field onchange event
+  const handleCities = async (event) => {
+    setCurrentCity(event.target.value);
+  };
+
+  //mapping countries to MUI select input field
+  const userOptionsCountry = useMemo(() => {
+    return countries?.map((country) => ({
+      label: country.country_name,
+      value: country.country_name,
+    }));
+  }, [countries]);
+
+  //mapping states to MUI select input field
+  const userOptionsState = useMemo(() => {
+    return states?.map((state) => ({
+      label: state.state_name,
+      value: state.state_name,
+    }));
+  }, [states]);
+
+  //mapping cities to MUI select input field
+  const userOptionsCities = useMemo(() => {
+    return cities?.map((city) => ({
+      label: city.city_name,
+      value: city.city_name,
+    }));
+  }, [cities]);
+
+  //toast notification from toastify library
+  const notify = (type, message) => {
+    toast[type](message, {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
+
+
+
+  //handle switch
+    const handleChange = (event) => {
+      setChecked(event.target.checked);
+    };
 
  
+  //calls toast notification on sucessful registration and redirects to login page, handles fetch POST request
+  const handleToHome = async (event) => {
+    event.preventDefault();
+
+    if (password === confirmPassword) {
+      if (
+        firstName &&
+        lastName &&
+        email &&
+        phone &&
+        company &&
+        type &&
+        currentCountry &&
+        currentState &&
+        currentCity &&
+        zipcode &&
+        password &&
+        currentDate &&
+        uploadFile
+      ) {
+        try {
+          const response = await fetch(apiUrl + "addUser", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              companyName: company,
+              userName: email,
+              password: password,
+              firstName: firstName,
+              lastName: lastName,
+              emailId: email,
+              mobile: `+91 ${phone}`,
+              address: address,
+              city: currentCity,
+              state: currentState,
+              country: currentCountry,
+              type: type,
+              gstNumber: gstn,
+              pandcard: pan,
+              pincode: zipcode,
+              issuperuser: checked,
+              isactive:checked,
+              createdDate: new Date(),
+              unpdatedDate: new Date(),
+            }),
+          });
+
+          if (response.ok) {
+            // Redirect to home page upon successful submission
+
+            response.json().then(async (data) => {
+              if (uploadFile) {
+                const formData = new FormData();
+
+                let jsonBodyData = {};
+
+                let file = uploadFile;
+    
+                jsonBodyData.fileName = "companylogo";
+                jsonBodyData.fileType = uploadFile?.type;
+                jsonBodyData.createdbyid = data.id;
+                jsonBodyData.lastmodifybyid = null;
+                jsonBodyData.createdDate = new Date();
+                jsonBodyData.lastModifiedDate = new Date();
+
+                formData.append("file", file);
+                formData.append("fileWrapper", JSON.stringify(jsonBodyData));
+
+                try {
+                  const uploadResponse = await fetch(apiUrl + "upload", {
+                    method: "POST",
+                    body: formData,
+                  });
+
+                  if (uploadResponse.ok) {
+                    if (data.isactive === true) {
+                       navigate("/dashboard/logistics/activeView", {
+                         state: data,
+                       });
+                    } else {
+                      navigate("/dashboard/logistics/inactiveView", {
+                        state: data,
+                      });
+                    }
+                   
+                  } else {
+                    console.error("Logo upload failed");
+                  }
+                } catch (error) {
+                  console.error(error);
+                }
+              }
+            });
+          } else {
+            notify(
+              "error",
+              "Failed to submit the form. Please try again later."
+            );
+          }
+        } catch (error) {
+          notify(
+            "error",
+            "An error occurred while submitting the form. Please try again later."
+          );
+        }
+      } else {
+        notify("error", "Please input all fields and company logo before submitting.");
+      }
+    } else {
+      notify("error", "Your password does not match, please re-verify.");
+    }
+  };
+
+  const handleUploadChange = (event) => {
+    const file = event.target.files[0];
+    setUploadFile(file);
+
+    if (file && (file.type === "image/png" || file.type === "image/jpeg")) {
+      // Perform necessary operations with the file, such as saving or previewing
+
+    } else {
+      // Display an error message or perform any other error handling
+      alert("Invalid file format. Please select a PNG or JPEG file.");
+    }
+  };
+
+  //delete uploaded files from state
+  const handleDeleteFile = (fileType) => {
+    switch (fileType) {
+      case "upload":
+        setUploadFile(null);
+        document.getElementById("upload").value = "";
+        break;
+      default:
+        break;
+    }
+  };
+  const renderFormStep = () => {
+    switch (step) {
+      case 1:
+        return (
+          <>
+       
+
+            <div style={{ minWidth: "100%", marginBottom: "1rem" }}>
+       
+              <form>
+                <Card>
+                  <CardHeader title="Create new account" />
+                  <CardContent sx={{ pt: 0 }}>
+                    <Grid container spacing={3}>
+                      <Grid xs={12} md={6}>
+                        <TextField
+                          fullWidth
+                          label="First Name"
+                          name="firstname"
+                          value={firstName}
+                          onChange={handleInputChange}
+                        ></TextField>
+                      </Grid>
+                      <Grid xs={12} md={6}>
+                        <TextField
+                          fullWidth
+                          label="Last Name"
+                          name="lastname"
+                          value={lastName}
+                          onChange={handleInputChange}
+                        ></TextField>
+                      </Grid>
+                      <Grid xs={12} md={12}>
+                        <TextField
+                          fullWidth
+                          label="Email"
+                          name="Email"
+                          value={email}
+                          onChange={handleInputChange}
+                          helperText={hasError && "Please enter a valid email."}
+                          onBlur={handleBlur}
+                          error={hasError}
+                        ></TextField>
+                      </Grid>
+                      <Grid xs={12} md={12}>
+                        <div style={{ display: "flex" }}>
+                          <TextField
+                            style={{ width: 100, marginRight: 10 }}
+                            label="Code"
+                            name="countryCode"
+                            type="text"
+                            value={"+91"}
+                          />
+                          <TextField
+                            style={{ flexGrow: 1 }}
+                            fullWidth
+                            label="Phone"
+                            name="phone"
+                            type="number"
+                            value={phone}
+                            onChange={handleInputChange}
+                          />
+                        </div>
+                      </Grid>
+
+                      <Grid xs={12} md={6}>
+                        <TextField
+                          fullWidth
+                          label="Company"
+                          name="company"
+                          value={company}
+                          onChange={handleInputChange}
+                        ></TextField>
+                      </Grid>
+                      <Grid xs={12} md={6}>
+                        <TextField
+                          fullWidth
+                          label="PAN Number"
+                          name="pan"
+                          value={pan}
+                          onChange={handleInputChange}
+                        ></TextField>
+                      </Grid>
+                    </Grid>
+                    <Grid xs={12} md={6}>
+                      <Box
+                        sx={{ mt: 2 }}
+                        display="flex"
+                        justifyContent="flex-end"
+                      >
+                        {step < 2 && (
+                          <Button
+                            color="primary"
+                            variant="contained"
+                            align="right"
+                            onClick={handleNext}
+                          >
+                            Next
+                          </Button>
+                        )}
+                      </Box>
+                    </Grid>
+                  </CardContent>
+                  <Divider />
+                </Card>
+              </form>
+            </div>
+          </>
+        );
+      case 2:
+        return (
+          <>
+            <Box>
+              <div style={{ minWidth: "100%", marginBottom: "1rem" }}>
+                <form>
+                  <Card>
+                    <CardHeader title="Create new account" />
+                    <CardContent sx={{ pt: 0 }}>
+                      <Grid container spacing={3}>
+                        <Grid xs={12} md={6}>
+                          <TextField
+                            fullWidth
+                            label="GST Number"
+                            name="gstn"
+                            value={gstn}
+                            onChange={handleInputChange}
+                          ></TextField>
+                        </Grid>
+                        <Grid xs={12} md={6}>
+                          <TextField
+                            fullWidth
+                            label="Type"
+                            name="type"
+                            value={type}
+                            select
+                            onChange={handleInputChange}
+                          >
+                            {customerType.map((option) => (
+                              <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                              </MenuItem>
+                            ))}
+                          </TextField>
+                        </Grid>
+                        <Grid xs={12} md={12}>
+                          <TextField
+                            fullWidth
+                            label="Address"
+                            name="address"
+                            multiline
+                            rows={2}
+                            value={address}
+                            onChange={handleInputChange}
+                          ></TextField>
+                        </Grid>
+                        <Grid xs={12} md={6}>
+                          <TextField
+                            fullWidth
+                            label="Country"
+                            name="country"
+                            select
+                            defaultValue=""
+                            value={currentCountry}
+                            onChange={handleCountry}
+                          >
+                            {userOptionsCountry?.map((option) => (
+                              <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                              </MenuItem>
+                            ))}
+                          </TextField>
+                        </Grid>
+                        <Grid xs={12} md={6}>
+                          <TextField
+                            fullWidth
+                            label="State"
+                            name="state"
+                            select
+                            defaultValue=""
+                            value={currentState}
+                            onChange={handleState}
+                            onFocus={handleDefaultState}
+                          >
+                            {userOptionsState?.map((option) => (
+                              <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                              </MenuItem>
+                            ))}
+                          </TextField>
+                        </Grid>
+                        <Grid xs={12} md={6}>
+                          <TextField
+                            fullWidth
+                            label="City"
+                            name="city"
+                            select
+                            defaultValue=""
+                            value={currentCity}
+                            onChange={handleCities}
+                          >
+                            {userOptionsCities?.map((option) => (
+                              <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                              </MenuItem>
+                            ))}
+                          </TextField>
+                        </Grid>
+                        <Grid xs={12} md={6}>
+                          <TextField
+                            fullWidth
+                            label="Zip Code"
+                            name="zipcode"
+                            value={zipcode}
+                            onChange={handleInputChange}
+                          ></TextField>
+                        </Grid>
+                        <Grid xs={12} md={6}>
+                          <TextField
+                            fullWidth
+                            label="Password"
+                            name="password"
+                            type="password"
+                            value={password}
+                            onChange={handleInputChange}
+                          ></TextField>
+                        </Grid>
+                        <Grid xs={12} md={6}>
+                          <TextField
+                            fullWidth
+                            label="Confirm Password"
+                            name="confirmpassword"
+                            type="password"
+                            value={confirmPassword}
+                            onChange={handleInputChange}
+                          ></TextField>
+                        </Grid>
+                        <Grid
+                          container
+                          direction="row"
+                          alignItems="center"
+                          xs={12}
+                          md={6}
+                        >
+                          <Grid item>
+                            <Typography variant="subtitle2">
+                              Admin access:
+                            </Typography>
+                          </Grid>
+                          <Grid item>
+                            <Switch
+                              checked={checked}
+                              onChange={handleChange}
+                              inputProps={{ "aria-label": "controlled" }}
+                            />
+                          </Grid>
+                        </Grid>
+                        <Grid xs={12} md={6}>
+                          <div>
+                            <div style={{ display: "inline-block" }}>
+                              <Button
+                                color="primary"
+                                variant="contained"
+                                align="right"
+                                onClick={() =>
+                                  document.getElementById("upload").click()
+                                }
+                              >
+                                Upload Company Logo
+                              </Button>
+                              {uploadFile && (
+                                <Button
+                                  color="secondary"
+                                  onClick={() => handleDeleteFile("upload")}
+                                  startIcon={<Delete />}
+                                  sx={{ color: "grey" }}
+                                >
+                                  Delete
+                                </Button>
+                              )}
+                            </div>
+                            <input
+                              type="file"
+                              id="upload"
+                              onChange={handleUploadChange}
+                              style={{ display: "none" }}
+                            />
+                          </div>
+                          <Typography variant="subtitle2" sx={{ mt: 1 }}>
+                            File must be in PNG/JPEG format
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                      {step > 1 && (
+                        <Button
+                          color="primary"
+                          variant="contained"
+                          align="right"
+                          sx={{ mt: 2 }}
+                          onClick={handleBack}
+                        >
+                          Back
+                        </Button>
+                      )}
+                    </CardContent>
+                    <Divider />
+                  </Card>
+                </form>
+                <Grid xs={12} md={6}>
+                  <Box sx={{ mt: 2 }} display="flex" justifyContent="flex-end">
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      align="right"
+                      onClick={handleToHome}
+                      href={paths.index}
+                      type="submit"
+                    >
+                      Save
+                    </Button>
+                    <ToastContainer
+                      position="top-right"
+                      autoClose={2000}
+                      hideProgressBar={false}
+                      newestOnTop={false}
+                      closeOnClick
+                      rtl={false}
+                      pauseOnFocusLoss
+                      draggable
+                      pauseOnHover
+                      theme="light"
+                    />
+                  </Box>
+                </Grid>
+              </div>
+            </Box>
+          </>
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
-    <div style={{ minWidth: "100%", marginBottom: "1rem" }}>
+    <>
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
           marginTop: "1rem",
-          marginBottom: "1rem",
+  
         }}
       >
         <div style={{ flex: 1 }}>
-          <h2 style={{ margin: 0 }}>Add Customer / Vendor</h2>
+          <h2 style={{ margin: 0 }}>Add Customer</h2>
         </div>
         <div style={{ flex: 1, textAlign: "center" }}>
           <Logo />
         </div>
         <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
-          <IconWithPopup />
+          <User />
         </div>
       </div>
 
-      <TextField
-        label="Type"
-        name="type"
-        select
-        sx={{ minWidth: 250, mb: 2 }}
-        value={type}
-        onChange={handleInputChange}
+      <Box
+        sx={{
+          backgroundColor: "background.paper",
+          display: "flex",
+          flex: {
+            xs: "1 1 auto",
+            md: "0 0 auto",
+          },
+          flexDirection: "column",
+          maxWidth: "100%",
+          p: {
+            xs: 1,
+            md: 1,
+          },
+
+          overflowY: "hidden",
+        }}
       >
-        {customerType.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
-            {option.label}
-          </MenuItem>
-        ))}
-      </TextField>
-      <form>
-        <Card>
-          <CardHeader
-            title={type === "Customer" ? "New Customer" : "New Vendor"}
-          />
-          <CardContent sx={{ pt: 0 }}>
-            <Grid container spacing={3}>
-              {/* <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-                fullWidth
-                label="First Name"
-                name="firstname"
-                required
-                value={firstName}
-                onChange={handleInputChange}
-
-
-              />
-            </Grid>
-            <Grid
-              xs={12}
-              md={6}
-            >
-              <TextField
-                fullWidth
-                label="Last Name"
-                name="lastname"
-                required
-                value={lastName}
-                onChange={handleInputChange}
-
-         
-              />
-            </Grid> */}
-              <Grid xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Company Contact Person"
-                  name="username"
-                  required
-                  value={userName}
-                  onChange={handleInputChange}
-                />
-              </Grid>
-              <Grid xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Company Email"
-                  name="email"
-                  required
-                  value={email}
-                  helperText={hasError && "Please enter a valid email."}
-                  onBlur={handleBlur}
-                  error={hasError}
-                  onChange={handleInputChange}
-                />
-              </Grid>
-              <Grid xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Company Phone"
-                  name="phone"
-                  type="number"
-                  required
-                  value={phone}
-                  onChange={handleInputChange}
-                />
-              </Grid>
-              <Grid xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="PAN number"
-                  name="pan"
-                  required
-                  value={pan}
-                  onChange={handleInputChange}
-                ></TextField>
-              </Grid>
-
-              <Grid xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Company Name"
-                  name="company"
-                  required
-                  value={company}
-                  onChange={handleInputChange}
-                />
-              </Grid>
-              <Grid xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="GST Number"
-                  name="gstn"
-                  required
-                  value={gstn}
-                  onChange={handleInputChange}
-                />
-              </Grid>
-
-              <Grid xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Billing Address"
-                  multiline
-                  required
-                  minRows={3}
-                  name="address"
-                  value={address}
-                  onChange={handleInputChange}
-                />
-              </Grid>
-              <Grid />
-              <Grid xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Country"
-                  name="country"
-                  required
-                  select
-                  defaultValue=""
-                  value={currentCountry}
-                  onChange={handleCountry}
-                >
-                  {userOptions?.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="State"
-                  name="state"
-                  required
-                  select
-                  defaultValue=""
-                  value={currentState}
-                  onChange={handleState}
-                  onFocus={handleDefaultState}
-                >
-                  {userOptionsState?.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="City"
-                  name="city"
-                  required
-                  select
-                  defaultValue=""
-                  value={currentCity}
-                  onChange={handleCities}
-                >
-                  {userOptionsCities?.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="ZipCode"
-                  name="zipcode"
-                  required
-                  value={zipcode}
-                  onChange={handleInputChange}
-                />
-              </Grid>
-              <Grid />
-            </Grid>
-          </CardContent>
-          <Divider />
-        </Card>
-      </form>
-      <Grid xs={12} md={6}>
-        <Box sx={{ mt: 2 }} display="flex" justifyContent="flex-end">
-          <Button
-            color="primary"
-            variant="contained"
-            align="right"
-            onClick={handleClick}
-          >
-            Save
-          </Button>
-        </Box>
-      </Grid>
-    </div>
+        {renderFormStep()}
+      </Box>
+    </>
   );
 };
 
-TempUserCreateForm.propTypes = {
-  customer: PropTypes.object.isRequired
-};
+export default TempUserCreateForm;

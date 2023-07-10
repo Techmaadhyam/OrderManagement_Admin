@@ -9,7 +9,7 @@ import { usePageView } from 'src/hooks/use-page-view';
 import { customersApi } from 'src/api/customers';
 import { useMounted } from 'src/hooks/use-mounted';
 import { useState,useCallback, useEffect } from 'react';
-import { TempUserCreateForm } from 'src/sections/dashboard/logistics/temp-user-create-form';
+import TempUserCreateForm from 'src/sections/dashboard/logistics/temp-user-create-form';
 
 const useCustomer = () => {
   const isMounted = useMounted();

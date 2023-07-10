@@ -243,7 +243,7 @@ const hasError2 = touched && !emailRegex.test(inchargeEmail);
     axios.get(apiUrl +`getAllUsersBasedOnType/${userId}`)
       .then(response => {
         setUserData(prevData => [...prevData, ...response.data]);
-
+console.log(response.data)
       })
       .catch(error => {
         console.error(error);
