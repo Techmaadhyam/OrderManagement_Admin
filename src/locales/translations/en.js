@@ -33,6 +33,7 @@ export const en = {
   [tokens.nav.addAmc]: "Add AMC",
   [tokens.nav.error]: "Error",
   [tokens.nav.feed]: "Feed",
+  [tokens.nav.home]: "Overview",
   [tokens.nav.fileManager]: "File Manager",
   [tokens.nav.finance]: "Finance",
   [tokens.nav.fleet]: "Fleet",

@@ -36,13 +36,17 @@ export const useSections = () => {
         items: [
           {
             title: t(tokens.nav.overview),
-            path: paths.dashboard.index.index,
+            path: paths.dashboard.index,
             icon: (
               <SvgIcon fontSize="small">
                 <HomeSmileIcon />
               </SvgIcon>
             ),
             items: [
+              {
+                title: t(tokens.nav.home),
+                path: paths.dashboard.index,
+              },
               {
                 title: t(tokens.nav.isActive),
                 path: paths.dashboard.active,

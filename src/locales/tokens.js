@@ -30,6 +30,7 @@ export const tokens = {
     invoice: "nav.invoice",
     invoices: "nav.invoices",
     amc: "nav.amc",
+    home: 'nav.home',
     addAmc: "nav.addAmc",
     error: "nav.error",
     feed: "nav.feed",

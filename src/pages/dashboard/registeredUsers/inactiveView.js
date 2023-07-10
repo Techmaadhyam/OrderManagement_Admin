@@ -238,252 +238,269 @@ const Page = (props) => {
                     />
                   </PropertyListItem>
                   <Divider />
-                  <Grid xs={12} md={6}>
-                    <PropertyListItem align={align} label="First name">
-                      {editMode ? (
-                        <TextField
-                          name="firstName"
-                          value={modifiedValues.firstName}
-                          onChange={handleInputChange}
-                          variant="standard"
-                        />
-                      ) : (
-                        <Typography variant="subtitle2">
-                          {state?.firstName}
-                        </Typography>
-                      )}
-                    </PropertyListItem>
+
+                  <Grid container>
+                    <Grid item xs={12} md={6}>
+                      <PropertyListItem align={align} label="First name">
+                        {editMode ? (
+                          <TextField
+                            name="firstName"
+                            value={modifiedValues.firstName}
+                            onChange={handleInputChange}
+                            variant="standard"
+                          />
+                        ) : (
+                          <Typography variant="subtitle2">
+                            {state?.firstName}
+                          </Typography>
+                        )}
+                      </PropertyListItem>
+                      <Divider />
+                      <PropertyListItem
+                        align={align}
+                        label="Email"
+                        value={state?.emailId}
+                      >
+                        {editMode ? (
+                          <TextField
+                            name="emailId"
+                            value={modifiedValues.emailId}
+                            onChange={handleInputChange}
+                            variant="standard"
+                          />
+                        ) : (
+                          <Typography variant="body2">
+                            {state?.emailId}
+                          </Typography>
+                        )}
+                      </PropertyListItem>
+                      <Divider />
+                      <PropertyListItem
+                        align={align}
+                        label="Company"
+                        value={state?.companyName}
+                      >
+                        {editMode ? (
+                          <TextField
+                            name="companyName"
+                            value={modifiedValues.companyName}
+                            onChange={handleInputChange}
+                            variant="standard"
+                          />
+                        ) : (
+                          <Typography variant="body2">
+                            {state?.companyName}
+                          </Typography>
+                        )}
+                      </PropertyListItem>
+                      <Divider />
+                      <PropertyListItem
+                        align={align}
+                        label="GSTN NO"
+                        value={state?.gstNumber}
+                      >
+                        {editMode ? (
+                          <TextField
+                            name="gstNumber"
+                            value={modifiedValues.gstNumber}
+                            onChange={handleInputChange}
+                            variant="standard"
+                          />
+                        ) : (
+                          <Typography variant="body2">
+                            {state?.gstNumber}
+                          </Typography>
+                        )}
+                      </PropertyListItem>
+                      <Divider />
+                      <PropertyListItem
+                        align={align}
+                        label="Type"
+                        value={state?.type}
+                      >
+                        {editMode ? (
+                          <TextField
+                            name="type"
+                            value={modifiedValues.type}
+                            onChange={handleInputChange}
+                            variant="standard"
+                          />
+                        ) : (
+                          <Typography variant="body2">{state?.type}</Typography>
+                        )}
+                      </PropertyListItem>
+                      <Divider />
+                      <PropertyListItem
+                        align={align}
+                        label="Address"
+                        value={state?.address}
+                      >
+                        {editMode ? (
+                          <TextField
+                            name="address"
+                            value={modifiedValues.address}
+                            onChange={handleInputChange}
+                            variant="standard"
+                          />
+                        ) : (
+                          <Typography variant="body2">
+                            {state?.address}
+                          </Typography>
+                        )}
+                      </PropertyListItem>
+                      <Divider />
+                      <PropertyListItem
+                        align={align}
+                        label="State"
+                        value={state?.state}
+                      >
+                        {editMode ? (
+                          <TextField
+                            name="state"
+                            value={modifiedValues.state}
+                            onChange={handleInputChange}
+                            variant="standard"
+                          />
+                        ) : (
+                          <Typography variant="body2">
+                            {state?.state}
+                          </Typography>
+                        )}
+                      </PropertyListItem>
+                    </Grid>
+
+                    <Grid item xs={12} md={6}>
+                      <PropertyListItem
+                        align={align}
+                        label="Last name"
+                        value={state?.lastName}
+                      >
+                        {editMode ? (
+                          <TextField
+                            name="lastName"
+                            value={modifiedValues.lastName}
+                            onChange={handleInputChange}
+                            variant="standard"
+                          />
+                        ) : (
+                          <Typography variant="body2">
+                            {state?.lastName}
+                          </Typography>
+                        )}
+                      </PropertyListItem>
+                      <Divider />
+                      <PropertyListItem
+                        align={align}
+                        label="Phone"
+                        value={state?.mobile}
+                      >
+                        {editMode ? (
+                          <TextField
+                            name="mobile"
+                            value={modifiedValues.mobile}
+                            onChange={handleInputChange}
+                            variant="standard"
+                          />
+                        ) : (
+                          <Typography variant="body2">
+                            {state?.mobile}
+                          </Typography>
+                        )}
+                      </PropertyListItem>
+                      <Divider />
+                      <PropertyListItem
+                        align={align}
+                        label="PAN"
+                        value={state?.pandcard}
+                      >
+                        {editMode ? (
+                          <TextField
+                            name="pandcard"
+                            value={modifiedValues.pandcard}
+                            onChange={handleInputChange}
+                            variant="standard"
+                          />
+                        ) : (
+                          <Typography variant="body2">
+                            {state?.pandcard}
+                          </Typography>
+                        )}
+                      </PropertyListItem>
+                      <Divider />
+                      <PropertyListItem
+                        align={align}
+                        label="City"
+                        value={state?.city}
+                      >
+                        {editMode ? (
+                          <TextField
+                            name="city"
+                            value={modifiedValues.city}
+                            onChange={handleInputChange}
+                            variant="standard"
+                          />
+                        ) : (
+                          <Typography variant="body2">{state?.city}</Typography>
+                        )}
+                      </PropertyListItem>
+                      <Divider />
+                      <PropertyListItem
+                        align={align}
+                        label="Country"
+                        value={state?.country}
+                      >
+                        {editMode ? (
+                          <TextField
+                            name="country"
+                            value={modifiedValues.country}
+                            onChange={handleInputChange}
+                            variant="standard"
+                          />
+                        ) : (
+                          <Typography variant="body2">
+                            {state?.country}
+                          </Typography>
+                        )}
+                      </PropertyListItem>
+                      <Divider />
+                      <PropertyListItem
+                        align={align}
+                        label="Pincode"
+                        value={state?.pincode}
+                      >
+                        {editMode ? (
+                          <TextField
+                            name="pincode"
+                            value={modifiedValues.pincode}
+                            onChange={handleInputChange}
+                            variant="standard"
+                          />
+                        ) : (
+                          <Typography variant="body2">
+                            {state?.pincode}
+                          </Typography>
+                        )}
+                      </PropertyListItem>
+                    </Grid>
                   </Grid>
+
                   <Divider />
-                  <Grid xs={12} md={6}>
-                    <PropertyListItem
-                      align={align}
-                      label="Last name"
-                      value={state?.lastName}
+                  <Box
+                    sx={{ mt: 3, mb: 2 }}
+                    display="flex"
+                    justifyContent="flex-end"
+                    marginRight="12px"
+                  >
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      align="right"
+                      onClick={handleSaveClick}
                     >
-                      {editMode ? (
-                        <TextField
-                          name="lastName"
-                          value={modifiedValues.lastName}
-                          onChange={handleInputChange}
-                          variant="standard"
-                        />
-                      ) : (
-                        <Typography variant="body2">
-                          {state?.lastName}
-                        </Typography>
-                      )}
-                    </PropertyListItem>
-                  </Grid>
-                  <Divider />
-                  <PropertyListItem
-                    align={align}
-                    label="Email"
-                    value={state?.emailId}
-                  >
-                    {editMode ? (
-                      <TextField
-                        name="emailId"
-                        value={modifiedValues.emailId}
-                        onChange={handleInputChange}
-                        variant="standard"
-                      />
-                    ) : (
-                      <Typography variant="body2">{state?.emailId}</Typography>
-                    )}
-                  </PropertyListItem>
-                  <Divider />
-                  <PropertyListItem
-                    align={align}
-                    label="Phone"
-                    value={state?.mobile}
-                  >
-                    {editMode ? (
-                      <TextField
-                        name="mobile"
-                        value={modifiedValues.mobile}
-                        onChange={handleInputChange}
-                        variant="standard"
-                      />
-                    ) : (
-                      <Typography variant="body2">{state?.mobile}</Typography>
-                    )}
-                  </PropertyListItem>
-                  <Divider />
-                  <PropertyListItem
-                    align={align}
-                    label="Company"
-                    value={state?.companyName}
-                  >
-                    {editMode ? (
-                      <TextField
-                        name="companyName"
-                        value={modifiedValues.companyName}
-                        onChange={handleInputChange}
-                        variant="standard"
-                      />
-                    ) : (
-                      <Typography variant="body2">
-                        {state?.companyName}
-                      </Typography>
-                    )}
-                  </PropertyListItem>
-                  <Divider />
-                  <PropertyListItem
-                    align={align}
-                    label="GSTN NO"
-                    value={state?.gstNumber}
-                  >
-                    {editMode ? (
-                      <TextField
-                        name="gstNumber"
-                        value={modifiedValues.gstNumber}
-                        onChange={handleInputChange}
-                        variant="standard"
-                      />
-                    ) : (
-                      <Typography variant="body2">
-                        {state?.gstNumber}
-                      </Typography>
-                    )}
-                  </PropertyListItem>
-                  <Divider />
-                  <PropertyListItem
-                    align={align}
-                    label="PAN"
-                    value={state?.pandcard}
-                  >
-                    {editMode ? (
-                      <TextField
-                        name="pandcard"
-                        value={modifiedValues.pandcard}
-                        onChange={handleInputChange}
-                        variant="standard"
-                      />
-                    ) : (
-                      <Typography variant="body2">{state?.pandcard}</Typography>
-                    )}
-                  </PropertyListItem>
-                  <Divider />
-                  <PropertyListItem
-                    align={align}
-                    label="Type"
-                    value={state?.type}
-                  >
-                    {editMode ? (
-                      <TextField
-                        name="type"
-                        value={modifiedValues.type}
-                        onChange={handleInputChange}
-                        variant="standard"
-                      />
-                    ) : (
-                      <Typography variant="body2">{state?.type}</Typography>
-                    )}
-                  </PropertyListItem>
-                  <Divider />
-                  <PropertyListItem
-                    align={align}
-                    label="Address"
-                    value={state?.address}
-                  >
-                    {editMode ? (
-                      <TextField
-                        name="address"
-                        value={modifiedValues.address}
-                        onChange={handleInputChange}
-                        variant="standard"
-                      />
-                    ) : (
-                      <Typography variant="body2">{state?.address}</Typography>
-                    )}
-                  </PropertyListItem>
-                  <Divider />
-                  <PropertyListItem
-                    align={align}
-                    label="City"
-                    value={state?.city}
-                  >
-                    {editMode ? (
-                      <TextField
-                        name="city"
-                        value={modifiedValues.city}
-                        onChange={handleInputChange}
-                        variant="standard"
-                      />
-                    ) : (
-                      <Typography variant="body2">{state?.city}</Typography>
-                    )}
-                  </PropertyListItem>
-                  <Divider />
-                  <PropertyListItem
-                    align={align}
-                    label="State"
-                    value={state?.state}
-                  >
-                    {editMode ? (
-                      <TextField
-                        name="state"
-                        value={modifiedValues.state}
-                        onChange={handleInputChange}
-                        variant="standard"
-                      />
-                    ) : (
-                      <Typography variant="body2">{state?.state}</Typography>
-                    )}
-                  </PropertyListItem>
-                  <Divider />
-                  <PropertyListItem
-                    align={align}
-                    label="Country"
-                    value={state?.country}
-                  >
-                    {editMode ? (
-                      <TextField
-                        name="country"
-                        value={modifiedValues.country}
-                        onChange={handleInputChange}
-                        variant="standard"
-                      />
-                    ) : (
-                      <Typography variant="body2">{state?.country}</Typography>
-                    )}
-                  </PropertyListItem>
-                  <Divider />
-                  <PropertyListItem
-                    align={align}
-                    label="Pincode"
-                    value={state?.pincode}
-                  >
-                    {editMode ? (
-                      <TextField
-                        name="pincode"
-                        value={modifiedValues.pincode}
-                        onChange={handleInputChange}
-                        variant="standard"
-                      />
-                    ) : (
-                      <Typography variant="body2">{state?.pincode}</Typography>
-                    )}
-                  </PropertyListItem>
-                  <Divider />
+                      Save
+                    </Button>
+                  </Box>
                 </PropertyList>
-                <Divider />
-                <Box
-                  sx={{ mt: 3, mb: 2 }}
-                  display="flex"
-                  justifyContent="flex-end"
-                  marginRight="12px"
-                >
-                  <Button
-                    color="primary"
-                    variant="contained"
-                    align="right"
-                    onClick={handleSaveClick}
-                  >
-                    Save
-                  </Button>
-                </Box>
               </Card>
             </div>
           </Stack>
