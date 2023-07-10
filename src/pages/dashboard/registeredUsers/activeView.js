@@ -26,13 +26,16 @@ import Logo from "src/sections/dashboard/logo/logo";
 import { useState } from "react";
 import Switch from "@mui/material/Switch";
 import { apiUrl } from "src/config";
+import { Delete } from "@mui/icons-material";
 
 const Page = (props) => {
   const location = useLocation();
- const [state, setState] = useState(location.state);
+  const [state, setState] = useState(location.state);
 
   const [checked, setChecked] = useState(state?.isactive);
   const [editMode, setEditMode] = useState(false);
+  //handle file uploads
+  const [uploadFile, setUploadFile] = useState(null);
   const [modifiedValues, setModifiedValues] = useState({
     id: state?.id,
     password: state?.password,
@@ -58,7 +61,6 @@ const Page = (props) => {
   const handleEditClick = () => {
     setEditMode(true);
   };
- 
 
   const handleCancelClick = () => {
     setEditMode(false);
@@ -85,9 +87,7 @@ const Page = (props) => {
       pincode: state?.pincode,
       updatedDate: new Date(),
     });
-    };
-    
-    
+  };
 
   const handleSaveClick = async () => {
     if (state?.id) {
@@ -101,15 +101,74 @@ const Page = (props) => {
         });
 
         if (response.ok) {
-    setEditMode(false)
-            response.json().then((data) => {
-         setState(data);
-            alert("update success");
+          setEditMode(false);
+          response.json().then(async (data) => {
+            setState(data);
+
+            if (uploadFile) {
+              const formData = new FormData();
+
+              let jsonBodyData = {};
+
+              let file = uploadFile;
+
+              jsonBodyData.fileName = "companylogo";
+              jsonBodyData.fileType = uploadFile?.type;
+              jsonBodyData.createdbyid = data.id;
+              jsonBodyData.lastmodifybyid = null;
+              jsonBodyData.createdDate = data.createdDate;
+              jsonBodyData.lastModifiedDate = new Date();
+
+              formData.append("file", file);
+              formData.append("fileWrapper", JSON.stringify(jsonBodyData));
+
+              try {
+                const uploadResponse = await fetch(apiUrl + "upload", {
+                  method: "POST",
+                  body: formData,
+                });
+
+                if (uploadResponse.ok) {
+                     alert("update success");
+   
+                } else {
+                  console.error("Logo upload failed");
+                }
+              } catch (error) {
+                console.error(error);
+              }
+            }
+
+       
           });
         }
       } catch (error) {
         console.error(error);
       }
+    }
+  };
+
+  const handleUploadChange = (event) => {
+    const file = event.target.files[0];
+    setUploadFile(file);
+
+    if (file && (file.type === "image/png" || file.type === "image/jpeg")) {
+      // Perform necessary operations with the file, such as saving or previewing
+    } else {
+      // Display an error message or perform any other error handling
+      alert("Invalid file format. Please select a PNG or JPEG file.");
+    }
+  };
+
+  //delete uploaded files from state
+  const handleDeleteFile = (fileType) => {
+    switch (fileType) {
+      case "upload":
+        setUploadFile(null);
+        document.getElementById("upload").value = "";
+        break;
+      default:
+        break;
     }
   };
 
@@ -483,6 +542,41 @@ const Page = (props) => {
                           </Typography>
                         )}
                       </PropertyListItem>
+                      {/* <Grid xs={12} md={6}>
+                        <div>
+                          <div style={{ display: "inline-block" }}>
+                            <Button
+                              color="primary"
+                              variant="contained"
+                              align="right"
+                              onClick={() =>
+                                document.getElementById("upload").click()
+                              }
+                            >
+                              Upload Company Logo
+                            </Button>
+                            {uploadFile && (
+                              <Button
+                                color="secondary"
+                                onClick={() => handleDeleteFile("upload")}
+                                startIcon={<Delete />}
+                                sx={{ color: "grey" }}
+                              >
+                                Delete
+                              </Button>
+                            )}
+                          </div>
+                          <input
+                            type="file"
+                            id="upload"
+                            onChange={handleUploadChange}
+                            style={{ display: "none" }}
+                          />
+                        </div>
+                        <Typography variant="subtitle2" sx={{ mt: 1 }}>
+                          File must be in PNG/JPEG format
+                        </Typography>
+                      </Grid> */}
                     </Grid>
                   </Grid>
 
