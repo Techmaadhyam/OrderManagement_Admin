@@ -22,18 +22,7 @@ const AMCOrderEdit = lazy(() => import('src/pages/dashboard/services/AMC/edit'))
 
 // Temporary User (do not delete)
 const LogisticsDashboardPage = lazy(() => import('src/pages/dashboard/logistics/dashboard'));
-const LogisticsFleetPage = lazy(() => import('src/pages/dashboard/logistics/view'));
-const LogisticsViewDetailPage = lazy(() => import('src/pages/dashboard/logistics/viewDetail'));
-const LogisticsViewAllSo = lazy(() => import('src/pages/dashboard/logistics/viewAllSales'));
-const LogisticsViewAllPo = lazy(() =>
-  import("src/pages/dashboard/logistics/viewAllPurchase")
-);
-const LogisticsViewAllQo = lazy(() =>
-  import("src/pages/dashboard/logistics/viewAllQuotation")
-);
-const LogisticsViewAllWo = lazy(() =>
-  import("src/pages/dashboard/logistics/viewAllWork")
-);
+
 
 //add technician
 const TechnicianCreatePage = lazy(() => import('src/pages/dashboard/services/technician/dashboard'));
@@ -112,30 +101,6 @@ export const dashboardRoutes = [
           {
             index: true,
             element: <LogisticsDashboardPage />,
-          },
-          {
-            path: "fleet",
-            element: <LogisticsFleetPage />,
-          },
-          {
-            path: "viewDetail",
-            element: <LogisticsViewDetailPage />,
-          },
-          {
-            path: "viewAllPo",
-            element: <LogisticsViewAllPo />,
-          },
-          {
-            path: "viewAllSo",
-            element: <LogisticsViewAllSo />,
-          },
-          {
-            path: "viewAllQo",
-            element: <LogisticsViewAllQo />,
-          },
-          {
-            path: "viewAllWo",
-            element: <LogisticsViewAllWo />,
           },
           {
             path: "active",
