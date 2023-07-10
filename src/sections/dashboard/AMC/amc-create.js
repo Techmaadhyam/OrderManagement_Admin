@@ -42,15 +42,15 @@ const userId = parseInt(
 const customerType = [
   {
     label: "Distributor",
-    value: "Distributor",
+    value: "distributor",
   },
   {
     label: "Retailer",
-    value: "Retailer",
+    value: "retailer",
   },
   {
     label: "Manufacturer",
-    value: "Manufacturer",
+    value: "manufacturer",
   },
 ];
 
@@ -220,7 +220,7 @@ export const AmcCreateForm = (props) => {
     axios
       .get(apiUrl + `getAllTempUsers/${userId}`)
       .then((response) => {
-        setUserData((prevData) => [...prevData, ...response.data]);
+
         setTechnicianData(response.data);
         console.log(response.data);
       })
@@ -229,14 +229,14 @@ export const AmcCreateForm = (props) => {
       });
 
     axios
-      .get(apiUrl + `getAllUsersBasedOnType/${userId}`)
+      .get(apiUrl + `getAllUsersByType/${userId}/${type}`)
       .then((response) => {
-        setUserData((prevData) => [...prevData, ...response.data]);
+        setUserData(response.data);
       })
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  }, [type]);
 
   //convert assignment start date to iso string
   const deliveryDateAntd = assignmentStart;
@@ -560,12 +560,12 @@ export const AmcCreateForm = (props) => {
                       (option) => option.id === e.target.value
                     );
                     if (selectedOption) {
-                      if (selectedOption.hasOwnProperty("createdByUser")) {
-                        setTempId(selectedOption.id || "");
-                        setUserState(null);
-                      } else {
+                      if (selectedOption.hasOwnProperty("isactive")) {
                         setUserState(selectedOption.id || "");
                         setTempId(null);
+                      } else {
+                        setTempId(selectedOption.id || "");
+                        setUserState(null);
                       }
                     }
                     setUserName(e.target.value);
@@ -573,7 +573,11 @@ export const AmcCreateForm = (props) => {
                   style={{ marginBottom: 10 }}
                 >
                   {userData
-                    .filter((option) => option.type === type)
+                    .filter((option) => {
+                      const capitalizedType =
+                        type.charAt(0).toUpperCase() + type.slice(1);
+                      return option.type === capitalizedType;
+                    })
                     .map(
                       (option) =>
                         option.companyName && (
@@ -655,7 +659,7 @@ export const AmcCreateForm = (props) => {
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Incharge Name"
+                  label="Architect Name"
                   name="contactName"
                   required
                   value={contactName}
@@ -665,7 +669,7 @@ export const AmcCreateForm = (props) => {
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Incharge Email"
+                  label="Architect Email"
                   name="inchargeemail"
                   required
                   value={inchargeEmail}
@@ -678,7 +682,7 @@ export const AmcCreateForm = (props) => {
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Incharge Phone"
+                  label="Architect Phone"
                   name="mobileno"
                   type="number"
                   required
@@ -714,7 +718,9 @@ export const AmcCreateForm = (props) => {
             {showForm && (
               <div className="modal" onClick={handleModalClick}>
                 <div className="modal-content-service">
-                  <h5 className="product-detail-heading">Add Service Details</h5>
+                  <h5 className="product-detail-heading">
+                    Add Service Details
+                  </h5>
                   <form className="form">
                     {/* Form fields */}
                     <div className="form-row">

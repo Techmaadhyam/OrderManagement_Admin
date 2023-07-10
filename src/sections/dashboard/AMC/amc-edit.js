@@ -45,15 +45,15 @@ const dateFormat = "M/D/YYYY, h:mm:ss A";
 const customerType = [
   {
     label: "Distributor",
-    value: "Distributor",
+    value: "distributor",
   },
   {
     label: "Retailer",
-    value: "Retailer",
+    value: "retailer",
   },
   {
     label: "Manufacturer",
-    value: "Manufacturer",
+    value: "manufacturer",
   },
 ];
 
@@ -285,13 +285,13 @@ export const AmcEditForm = (props) => {
   //get temp user
   useEffect(() => {
     const request1 = axios.get(apiUrl + `getAllTempUsers/${userId}`);
-    const request2 = axios.get(apiUrl + `getAllUsersBasedOnType/${userId}`);
+    const request2 = axios.get(apiUrl + `getAllUsersByType/${userId}/${type}`);
 
     Promise.all([request1, request2])
       .then(([response1, response2]) => {
         const tempUsersData = response1.data;
         const usersData = response2.data;
-        const combinedData = [...tempUsersData, ...usersData];
+        const combinedData = usersData;
         setUserData(combinedData);
         setTechnicianData(tempUsersData);
 
@@ -303,7 +303,7 @@ export const AmcEditForm = (props) => {
       .catch((error) => {
         console.error(error);
       });
-  }, [state?.tempUserId, state?.userId]);
+  }, [state?.tempUserId, state?.userId, type]);
 
   const deliveryDateAntd = deliveryDate;
   const deliveryDateJS = deliveryDateAntd ? deliveryDateAntd.toDate() : null;
@@ -672,12 +672,13 @@ export const AmcEditForm = (props) => {
                       (option) => option.id === e.target.value
                     );
                     if (selectedOption) {
-                      if (selectedOption.hasOwnProperty("createdByUser")) {
-                        setTempId(selectedOption.id || "");
-                        setUserState(null);
+                      if (selectedOption.hasOwnProperty("isactive")) {
+              setUserState(selectedOption.id || "");
+              setTempId(null);
                       } else {
-                        setUserState(selectedOption.id || "");
-                        setTempId(null);
+                     
+                                     setTempId(selectedOption.id || "");
+                                     setUserState(null);
                       }
                     }
                     setUser(e.target.value);
@@ -685,7 +686,11 @@ export const AmcEditForm = (props) => {
                   style={{ marginBottom: 10 }}
                 >
                   {userData
-                    .filter((option) => option.type === type)
+                    .filter((option) => {
+                      const capitalizedType =
+                        type.charAt(0).toUpperCase() + type.slice(1);
+                      return option.type === capitalizedType;
+                    })
                     .map(
                       (option) =>
                         option.companyName && (
@@ -820,7 +825,9 @@ export const AmcEditForm = (props) => {
             {showForm && (
               <div className="modal" onClick={handleModalClick}>
                 <div className="modal-content-service">
-                  <h5 className="product-detail-heading">Add Service Details</h5>
+                  <h5 className="product-detail-heading">
+                    Add Service Details
+                  </h5>
                   <form className="form">
                     {/* Form fields */}
                     <div className="form-row">

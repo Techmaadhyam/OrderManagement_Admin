@@ -44,15 +44,15 @@ const dateFormat = 'M/D/YYYY, h:mm:ss A';
 const customerType = [
   {
     label: "Distributor",
-    value: "Distributor",
+    value: "distributor",
   },
   {
     label: "Retailer",
-    value: "Retailer",
+    value: "retailer",
   },
   {
     label: "Manufacturer",
-    value: "Manufacturer",
+    value: "manufacturer",
   },
 ];
 
@@ -279,13 +279,13 @@ const hasError2 = touched && !emailRegex.test(inchargeEmail);
    //get temp user
    useEffect(() => {
     const request1 = axios.get(apiUrl +`getAllTempUsers/${userId}`);
-    const request2 = axios.get(apiUrl +`getAllUsersBasedOnType/${userId}`);
+    const request2 =  axios.get(apiUrl + `getAllUsersByType/${userId}/${type}`)
   
     Promise.all([request1, request2])
       .then(([response1, response2]) => {
         const tempUsersData = response1.data;
         const usersData = response2.data;
-        const combinedData = [...tempUsersData, ...usersData];
+        const combinedData = usersData;
         setUserData(combinedData);
   
         const selecteduserId = combinedData.find((option) => (option.id !== 0 && option.id === state?.tempUserId) || option.id === state?.userId);
@@ -295,7 +295,7 @@ const hasError2 = touched && !emailRegex.test(inchargeEmail);
       .catch(error => {
         console.error(error);
       });
-  }, [state?.tempUserId, state?.userId]);
+  }, [state?.tempUserId, state?.userId, type]);
 
  
   const deliveryDateAntd = deliveryDate;
@@ -601,12 +601,13 @@ console.log(idx, row)
                       (option) => option.id === e.target.value
                     );
                     if (selectedOption) {
-                      if (selectedOption.hasOwnProperty("createdByUser")) {
-                        setTempId(selectedOption.id || "");
-                        setUserState(null);
+                      if (selectedOption.hasOwnProperty("isactive")) {
+                    
+                              setUserState(selectedOption.id || "");
+                              setTempId(null);
                       } else {
-                        setUserState(selectedOption.id || "");
-                        setTempId(null);
+                      setTempId(selectedOption.id || "");
+                      setUserState(null);
                       }
                     }
                     setUser(e.target.value);
@@ -614,7 +615,11 @@ console.log(idx, row)
                   style={{ marginBottom: 10 }}
                 >
                   {userData
-                    .filter((option) => option.type === type)
+                    .filter((option) => {
+                      const capitalizedType =
+                        type.charAt(0).toUpperCase() + type.slice(1);
+                      return option.type === capitalizedType;
+                    })
                     .map(
                       (option) =>
                         option.companyName && (
@@ -741,7 +746,9 @@ console.log(idx, row)
             {showForm && (
               <div className="modal" onClick={handleModalClick}>
                 <div className="modal-content-service">
-                  <h5 className="product-detail-heading">Add Service Details</h5>
+                  <h5 className="product-detail-heading">
+                    Add Service Details
+                  </h5>
                   <form className="form">
                     {/* Form fields */}
                     <div className="form-row">

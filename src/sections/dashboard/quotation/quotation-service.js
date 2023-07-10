@@ -39,15 +39,15 @@ const userId = parseInt(sessionStorage.getItem('user')|| localStorage.getItem('u
 const customerType = [
   {
     label: "Distributor",
-    value: "Distributor",
+    value: "distributor",
   },
   {
     label: "Retailer",
-    value: "Retailer",
+    value: "retailer",
   },
   {
     label: "Manufacturer",
-    value: "Manufacturer",
+    value: "manufacturer",
   },
 ];
 
@@ -231,24 +231,18 @@ const hasError2 = touched && !emailRegex.test(inchargeEmail);
 
    //get temp user
    useEffect(() => {
-    axios.get(apiUrl +`getAllTempUsers/${userId}`)
-      .then(response => {
-        setUserData(prevData => [...prevData, ...response.data]);
-     
-      })
-      .catch(error => {
-        console.error(error);
-      });
   
-    axios.get(apiUrl +`getAllUsersBasedOnType/${userId}`)
-      .then(response => {
-        setUserData(prevData => [...prevData, ...response.data]);
-console.log(response.data)
+  
+    axios
+      .get(apiUrl + `getAllUsersByType/${userId}/${type}`)
+      .then((response) => {
+        setUserData(response.data);
+        console.log(response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
-  }, []);
+  }, [type]);
 
   //convert assignment start date to iso string
 const deliveryDateAntd = assignmentStart;
@@ -513,12 +507,12 @@ const deliveryIST2 = deliveryDateJS2
                       (option) => option.id === e.target.value
                     );
                     if (selectedOption) {
-                      if (selectedOption.hasOwnProperty("createdByUser")) {
-                        setTempId(selectedOption.id || "");
-                        setUserState(null);
-                      } else {
+                      if (selectedOption.hasOwnProperty("isactive")) {
                         setUserState(selectedOption.id || "");
                         setTempId(null);
+                      } else {
+                        setTempId(selectedOption.id || "");
+                        setUserState(null);
                       }
                     }
                     setUserName(e.target.value);
@@ -526,7 +520,11 @@ const deliveryIST2 = deliveryDateJS2
                   style={{ marginBottom: 10 }}
                 >
                   {userData
-                    .filter((option) => option.type === type)
+                    .filter((option) => {
+                      const capitalizedType =
+                        type.charAt(0).toUpperCase() + type.slice(1);
+                      return option.type === capitalizedType;
+                    })
                     .map(
                       (option) =>
                         option.companyName && (
