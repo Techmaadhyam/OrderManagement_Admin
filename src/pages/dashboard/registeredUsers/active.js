@@ -186,7 +186,7 @@ const filteredData =
                 }}
               >
                 <div style={{ flex: 1 }}>
-                  <h2 style={{ margin: 0 }}>All Active Users</h2>
+                  <h2 style={{ margin: 0 }}>All Active Customers</h2>
                 </div>
                 <div style={{ flex: 1, textAlign: "center" }}>
                   <Logo />
@@ -223,7 +223,6 @@ const filteredData =
                   theme="light"
                 />
               </Box>
-         
             </div>
           </Stack>
         </Container>

@@ -60,6 +60,6 @@ export const en = {
   [tokens.nav.resetPassword]: "Reset Password",
   [tokens.nav.socialMedia]: "Social Media",
   [tokens.nav.verifyCode]: "Verify Code",
-  [tokens.nav.isActive]: "Active Users",
-  [tokens.nav.isInactive]: "Inactive Users",
+  [tokens.nav.isActive]: "Active Customers",
+  [tokens.nav.isInactive]: "Inactive Customers",
 };

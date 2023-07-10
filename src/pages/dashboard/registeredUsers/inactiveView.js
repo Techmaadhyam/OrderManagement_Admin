@@ -178,7 +178,7 @@ const Page = (props) => {
                       <span
                         style={{ color: `${primaryColor}`, fontWeight: 600 }}
                       >
-                        inactive users
+                        inactive customers
                       </span>
                     </Typography>
                   </Link>
@@ -197,7 +197,7 @@ const Page = (props) => {
                 </div>
               </div>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <h2>Inactive User Detail</h2>
+                <h2>Inactive Customer Detail</h2>
                 <Box
                   sx={{ mt: 3, mb: 2 }}
                   display="flex"
