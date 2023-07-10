@@ -325,12 +325,12 @@ const columns = [
 
     return (
       <Dialog open={true} onClose={onClose}>
-        <DialogTitle>Edit Parts</DialogTitle>
+        <DialogTitle>Edit Product</DialogTitle>
         <DialogContent>
           <Grid container spacing={2}>
-            <Grid xs={12} md={6}>
+            <Grid xs={12} md={12}>
               <TextField
-                label="Part Name"
+                label="Product Name"
                 name="productName"
                 fullWidth
                 value={editedRecord.productName}
@@ -362,7 +362,7 @@ const columns = [
           </Grid> */}
             <Grid xs={12} md={12}>
               <TextField
-                label="Description"
+                label="Product description"
                 name="description"
                 value={editedRecord.description}
                 fullWidth

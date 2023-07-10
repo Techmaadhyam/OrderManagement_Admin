@@ -90,7 +90,7 @@ export const ViewProductDetail = (props) => {
             <Typography variant="subtitle2">
               Back To{" "}
               <span style={{ color: `${primaryColor}`, fontWeight: 600 }}>
-                Parts
+                Products
               </span>
             </Typography>
           </Link>

@@ -210,7 +210,7 @@ export const CreateProduct = (props) => {
         }}
       >
         <div style={{ flex: 1 }}>
-          <h2 style={{ margin: 0 }}>Add Parts / Products</h2>
+          <h2 style={{ margin: 0 }}>Add Products</h2>
         </div>
         <div style={{ flex: 1, textAlign: "center" }}>
           <Logo />
@@ -222,7 +222,7 @@ export const CreateProduct = (props) => {
 
       <form>
         <Card>
-          <CardHeader title="Part Detail" />
+          <CardHeader title="Product Detail" />
           <CardContent sx={{ pt: 0 }}>
             <Grid container spacing={3}>
               {" "}
