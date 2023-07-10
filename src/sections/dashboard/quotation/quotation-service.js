@@ -561,7 +561,7 @@ const deliveryIST2 = deliveryDateJS2
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Admin Name"
+                  label="Project Manager Name"
                   name="adminname"
                   required
                   value={adminName}
@@ -571,7 +571,7 @@ const deliveryIST2 = deliveryDateJS2
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Admin Email"
+                  label="Project Manager Email"
                   name="adminemail"
                   required
                   value={adminEmail}
@@ -584,7 +584,7 @@ const deliveryIST2 = deliveryDateJS2
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Admin Phone"
+                  label="Project Manager Phone"
                   name="adminphone"
                   required
                   type="number"
@@ -595,7 +595,7 @@ const deliveryIST2 = deliveryDateJS2
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Incharge Name"
+                  label="Architect Name"
                   name="contactName"
                   required
                   value={contactName}
@@ -605,7 +605,7 @@ const deliveryIST2 = deliveryDateJS2
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Incharge Email"
+                  label="Architect Email"
                   name="inchargeemail"
                   required
                   value={inchargeEmail}
@@ -618,7 +618,7 @@ const deliveryIST2 = deliveryDateJS2
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Incharge Phone"
+                  label="Architect Phone"
                   name="mobileno"
                   required
                   type="number"
@@ -647,7 +647,7 @@ const deliveryIST2 = deliveryDateJS2
                   align="right"
                   onClick={toggleForm}
                 >
-                  Add Parts
+                  Add Services
                 </Button>
               </Box>
             </Grid>
@@ -655,7 +655,9 @@ const deliveryIST2 = deliveryDateJS2
             {showForm && (
               <div className="modal" onClick={handleModalClick}>
                 <div className="modal-content-service">
-                  <h5 className="product-detail-heading">Add Part Details</h5>
+                  <h5 className="product-detail-heading">
+                    Add Service Details
+                  </h5>
                   <form className="form">
                     {/* Form fields */}
                     <div className="form-row">

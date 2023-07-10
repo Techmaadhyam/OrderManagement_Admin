@@ -25,7 +25,7 @@ export const en = {
   [tokens.nav.buyer]: "Purchase Quotation",
   [tokens.nav.seller]: "Sales Quotation",
   [tokens.nav.service]: "Service Quotation",
-  [tokens.nav.technician]: "Add Technician",
+  [tokens.nav.technician]: "Resources",
   [tokens.nav.ecommerce]: "E-Commerce",
   [tokens.nav.invoice]: "Invoice",
   [tokens.nav.invoices]: "Invoices",

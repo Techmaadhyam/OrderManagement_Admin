@@ -76,44 +76,44 @@ export const useSections = () => {
               },
             ],
           },
-          {
-            title: t(tokens.nav.warehouse),
-            path: paths.dashboard.invoices.index,
-            icon: (
-              <SvgIcon fontSize="small">
-                <ReceiptCheckIcon />
-              </SvgIcon>
-            ),
-            items: [
-              {
-                title: t(tokens.nav.view),
-                path: paths.dashboard.invoices.details,
-              },
-              {
-                title: t(tokens.nav.create),
-                path: paths.dashboard.invoices.index,
-              },
-            ],
-          },
-          {
-            title: t(tokens.nav.inventory),
-            path: paths.dashboard.inventory.index,
-            icon: (
-              <SvgIcon fontSize="small">
-                <ShoppingBag03Icon />
-              </SvgIcon>
-            ),
-            items: [
-              {
-                title: t(tokens.nav.view),
-                path: paths.dashboard.inventory.view,
-              },
-              {
-                title: t(tokens.nav.create),
-                path: paths.dashboard.inventory.create,
-              },
-            ],
-          },
+          // {
+          //   title: t(tokens.nav.warehouse),
+          //   path: paths.dashboard.invoices.index,
+          //   icon: (
+          //     <SvgIcon fontSize="small">
+          //       <ReceiptCheckIcon />
+          //     </SvgIcon>
+          //   ),
+          //   items: [
+          //     {
+          //       title: t(tokens.nav.view),
+          //       path: paths.dashboard.invoices.details,
+          //     },
+          //     {
+          //       title: t(tokens.nav.create),
+          //       path: paths.dashboard.invoices.index,
+          //     },
+          //   ],
+          // },
+          // {
+          //   title: t(tokens.nav.inventory),
+          //   path: paths.dashboard.inventory.index,
+          //   icon: (
+          //     <SvgIcon fontSize="small">
+          //       <ShoppingBag03Icon />
+          //     </SvgIcon>
+          //   ),
+          //   items: [
+          //     {
+          //       title: t(tokens.nav.view),
+          //       path: paths.dashboard.inventory.view,
+          //     },
+          //     {
+          //       title: t(tokens.nav.create),
+          //       path: paths.dashboard.inventory.create,
+          //     },
+          //   ],
+          // },
 
           {
             title: t(tokens.nav.user),
@@ -151,21 +151,7 @@ export const useSections = () => {
               },
               {
                 title: t(tokens.nav.create),
-
-                items: [
-                  {
-                    title: t(tokens.nav.buyer),
-                    path: paths.dashboard.quotation.buy,
-                  },
-                  {
-                    title: t(tokens.nav.seller),
-                    path: paths.dashboard.quotation.sell,
-                  },
-                  {
-                    title: t(tokens.nav.service),
-                    path: paths.dashboard.quotation.service,
-                  },
-                ],
+                path: paths.dashboard.quotation.service,
               },
 
               // {
@@ -174,54 +160,54 @@ export const useSections = () => {
               // }
             ],
           },
-          {
-            title: t(tokens.nav.orderList),
-            icon: (
-              <SvgIcon fontSize="small">
-                <InventoryTwoToneIcon />
-              </SvgIcon>
-            ),
-            path: paths.dashboard.orders.index,
-            items: [
-              {
-                title: t(tokens.nav.create),
-                path: paths.dashboard.orders.index,
-              },
-              {
-                title: t(tokens.nav.invoices),
-                path: paths.dashboard.orders.details,
-              },
-              // {
-              //   title: t(tokens.nav.invoice),
-              //   path: paths.dashboard.orders.invoice
-              // },
-            ],
-          },
-          {
-            title: t(tokens.nav.purchaseorder),
-            path: paths.dashboard.purchaseorder.index,
-            icon: (
-              <SvgIcon fontSize="small">
-                <ShoppingCart01Icon />
-                {/* <Users03Icon /> */}
-              </SvgIcon>
-            ),
-            items: [
-              {
-                title: t(tokens.nav.view),
-                path: paths.dashboard.purchaseorder.view,
-              },
-              {
-                title: t(tokens.nav.create),
-                path: paths.dashboard.purchaseorder.create,
-              },
+          // {
+          //   title: t(tokens.nav.orderList),
+          //   icon: (
+          //     <SvgIcon fontSize="small">
+          //       <InventoryTwoToneIcon />
+          //     </SvgIcon>
+          //   ),
+          //   path: paths.dashboard.orders.index,
+          //   items: [
+          //     {
+          //       title: t(tokens.nav.create),
+          //       path: paths.dashboard.orders.index,
+          //     },
+          //     {
+          //       title: t(tokens.nav.invoices),
+          //       path: paths.dashboard.orders.details,
+          //     },
+          //     // {
+          //     //   title: t(tokens.nav.invoice),
+          //     //   path: paths.dashboard.orders.invoice
+          //     // },
+          //   ],
+          // },
+          // {
+          //   title: t(tokens.nav.purchaseorder),
+          //   path: paths.dashboard.purchaseorder.index,
+          //   icon: (
+          //     <SvgIcon fontSize="small">
+          //       <ShoppingCart01Icon />
+          //       {/* <Users03Icon /> */}
+          //     </SvgIcon>
+          //   ),
+          //   items: [
+          //     {
+          //       title: t(tokens.nav.view),
+          //       path: paths.dashboard.purchaseorder.view,
+          //     },
+          //     {
+          //       title: t(tokens.nav.create),
+          //       path: paths.dashboard.purchaseorder.create,
+          //     },
 
-              // {
-              //   title: t(tokens.nav.invoice),
-              //   path: paths.dashboard.purchaseorder.invoice
-              // },
-            ],
-          },
+          //     // {
+          //     //   title: t(tokens.nav.invoice),
+          //     //   path: paths.dashboard.purchaseorder.invoice
+          //     // },
+          //   ],
+          // },
           {
             title: t(tokens.nav.services),
             path: paths.dashboard.services.index,
@@ -232,29 +218,9 @@ export const useSections = () => {
               </SvgIcon>
             ),
             items: [
-              {
-                title: t(tokens.nav.workorder),
-
-                items: [
-                  {
-                    title: t(tokens.nav.view),
-                    path: paths.dashboard.services.workorderview,
-                  },
-                  {
-                    title: t(tokens.nav.create),
-                    path: paths.dashboard.services.createWorkorder,
-                  },
-
-                  // {
-                  //   title: t(tokens.nav.amc),
-                  //   path: paths.dashboard.services.workorderdownload
-                  // },
-                ],
-              },
-              {
-                title: t(tokens.nav.addAmc),
-
-                items: [
+             
+            
+      
                   {
                     title: t(tokens.nav.view),
                     path: paths.dashboard.services.AMCview,
@@ -263,8 +229,8 @@ export const useSections = () => {
                     title: t(tokens.nav.create),
                     path: paths.dashboard.services.createAMC,
                   },
-                ],
-              },
+             
+             
               {
                 title: t(tokens.nav.technician),
 
@@ -281,6 +247,7 @@ export const useSections = () => {
               },
             ],
           },
+          
         ],
       },
       // {

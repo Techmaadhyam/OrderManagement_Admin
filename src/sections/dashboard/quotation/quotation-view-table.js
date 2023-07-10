@@ -46,26 +46,11 @@ pdfMake.fonts = {
 
 const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
 
-const categoryBuySell = [
-   
-  {
-    label: 'Purchase Quotation',
-    value: 'Purchase Quotation'
-  },
-  {
-    label: 'Sales Quotation',
-    value: 'Sales Quotation'
-  },
-  {
-    label: 'Service Quotation',
-    value: 'Service Quotation'
-  }
-];
+
 
 const QuotationViewTable = () => {
   const { logo } = useContext(LogoContext);
   const [userData, setUserData]= useState([])
-  const [selectedCategory, setSelectedCategory] = useState('Purchase Quotation');
   const [isSearching, setIsSearching] = useState(false);
   const [searchText, setSearchText] = useState('');
 
@@ -123,13 +108,10 @@ const QuotationViewTable = () => {
     key: item.id 
   }));
 
-  const filteredData = selectedCategory
-  ? dataWithKeys.filter((item) => item.category === selectedCategory)
-  : dataWithKeys;
+  const filteredData = "Service Quotation"
+    ? dataWithKeys.filter((item) => item.category === "Service Quotation")
+    : dataWithKeys;
 
-const handleCategoryChange = (event) => {
-  setSelectedCategory(event.target.value);
-};
 
   //toast notification from toastify library
   const notify = (type, message) => {
@@ -160,13 +142,9 @@ const handleCategoryChange = (event) => {
   };
 
   const handleNavigation = record => {
-    if (record.category === 'Purchase Quotation') {
-      navigate('/dashboard/quotation/edit', { state: record });
-    } else if (record.category === 'Service Quotation') {
-      navigate('/dashboard/quotation/editService', { state: record });
-    } else if(record.category === 'Sales Quotation') {
-      navigate('/dashboard/quotation/editSales', { state: record });
-    }
+    if (record.category === "Service Quotation") {
+      navigate("/dashboard/quotation/editService", { state: record });
+    } 
   };
   //company search
 const handleCompanyClick = () => {
@@ -1104,21 +1082,7 @@ if (deliveryDateIndex !== -1 && filteredList.some(item => item.category === "Ser
         </div>
       </div>
 
-      <TextField
-        label="Category"
-        name="category"
-        sx={{ minWidth: 250 }}
-        value={selectedCategory}
-        onChange={handleCategoryChange}
-        select
-      >
-        {categoryBuySell.map((option) => (
-          <MenuItem key={option.value} 
-          value={option.value}>
-            {option.label}
-          </MenuItem>
-        ))}
-      </TextField>
+      
 
       <Box sx={{ position: "relative", overflowX: "auto", marginTop: "30px" }}>
         <Scrollbar>

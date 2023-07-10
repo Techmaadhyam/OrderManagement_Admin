@@ -329,7 +329,7 @@ console.log(state)
 
           <PropertyListItem
             align={align}
-            label="Contact Name"
+            label="Architect Name"
             value={
               state?.contactPersonName || state?.quotation?.contactPersonName
             }
@@ -337,7 +337,7 @@ console.log(state)
           <Divider />
           <PropertyListItem
             align={align}
-            label="Contact No"
+            label="Architect No"
             value={
               state?.contactPhoneNumber || state?.quotation?.contactPhoneNumber
             }
@@ -359,7 +359,7 @@ console.log(state)
               <Divider />
               <PropertyListItem
                 align={align}
-                label="Admin Name"
+                label="Project Manager Name"
                 value={
                   state?.adminPersonName || state?.quotation?.adminPersonName
                 }
@@ -367,7 +367,7 @@ console.log(state)
               <Divider />
               <PropertyListItem
                 align={align}
-                label="Admin Phone"
+                label="Project Manager Phone"
                 value={
                   state?.adminPhoneNumber || state?.quotation?.adminPhoneNumber
                 }
@@ -375,7 +375,7 @@ console.log(state)
               <Divider />
               <PropertyListItem
                 align={align}
-                label="Admin Email"
+                label="Project Manager Email"
                 value={state?.adminEmail || state?.quotation?.adminEmail}
               />
               <Divider />

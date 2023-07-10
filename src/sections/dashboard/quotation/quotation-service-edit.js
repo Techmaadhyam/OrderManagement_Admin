@@ -649,7 +649,7 @@ console.log(idx, row)
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Admin Name"
+                  label="Project Manager Name"
                   name="adminname"
                   value={adminName}
                   onChange={handleInputChange}
@@ -658,7 +658,7 @@ console.log(idx, row)
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Admin Email"
+                  label="Project Manager Email"
                   name="adminemail"
                   helperText={hasError && "Please enter a valid email."}
                   onBlur={handleBlur}
@@ -670,7 +670,7 @@ console.log(idx, row)
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Admin Phone"
+                  label="Project Manager Phone"
                   type="number"
                   name="adminphone"
                   value={adminPhone}
@@ -680,7 +680,7 @@ console.log(idx, row)
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Incharge Name"
+                  label="Architect Name"
                   name="contactName"
                   value={contactName}
                   onChange={handleInputChange}
@@ -689,7 +689,7 @@ console.log(idx, row)
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Incharge Email"
+                  label="Architect Email"
                   name="inchargeemail"
                   helperText={hasError2 && "Please enter a valid email."}
                   onBlur={handleBlur}
@@ -701,7 +701,7 @@ console.log(idx, row)
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Incharge Phone"
+                  label="Architect Phone"
                   type="number"
                   name="mobileno"
                   value={phone}
@@ -729,7 +729,7 @@ console.log(idx, row)
                   align="right"
                   onClick={toggleForm}
                 >
-                  Add Parts
+                  Add Services
                 </Button>
               </Box>
             </Grid>
@@ -737,7 +737,7 @@ console.log(idx, row)
             {showForm && (
               <div className="modal" onClick={handleModalClick}>
                 <div className="modal-content-service">
-                  <h5 className="product-detail-heading">Add Part Details</h5>
+                  <h5 className="product-detail-heading">Add Service Details</h5>
                   <form className="form">
                     {/* Form fields */}
                     <div className="form-row">
