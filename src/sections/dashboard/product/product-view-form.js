@@ -399,7 +399,7 @@ const columns = [
         }}
       >
         <div style={{ flex: 1 }}>
-          <h2 style={{ margin: 0 }}>View Products</h2>
+          <h2 style={{ margin: 0 }}>View Products / Services</h2>
         </div>
         <div style={{ flex: 1, textAlign: "center" }}>
           <Logo />

@@ -54,7 +54,7 @@ export const en = {
   [tokens.nav.postList]: "Post List",
   [tokens.nav.pricing]: "Pricing",
   [tokens.nav.inventory]: "Inventory",
-  [tokens.nav.products]: "Products",
+  [tokens.nav.products]: "Products / Services",
   [tokens.nav.profile]: "Profile",
   [tokens.nav.register]: "Register",
   [tokens.nav.resetPassword]: "Reset Password",

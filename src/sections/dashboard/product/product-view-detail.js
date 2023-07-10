@@ -90,7 +90,7 @@ export const ViewProductDetail = (props) => {
             <Typography variant="subtitle2">
               Back To{" "}
               <span style={{ color: `${primaryColor}`, fontWeight: 600 }}>
-                Products
+                Products / Services
               </span>
             </Typography>
           </Link>
@@ -106,11 +106,13 @@ export const ViewProductDetail = (props) => {
       <Card style={{ marginBottom: "12px" }}>
         <CardHeader title="Product Detail" />
         <PropertyList>
-          <PropertyListItem align={align} label="Product Name" value={ state?.productName || state?.name}>
-        
-          </PropertyListItem>
+          <PropertyListItem
+            align={align}
+            label="Product Name"
+            value={state?.productName || state?.name}
+          ></PropertyListItem>
           <Divider />
-   
+
           <PropertyListItem
             align={align}
             label="Product description"

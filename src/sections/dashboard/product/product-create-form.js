@@ -210,7 +210,7 @@ export const CreateProduct = (props) => {
         }}
       >
         <div style={{ flex: 1 }}>
-          <h2 style={{ margin: 0 }}>Add Products</h2>
+          <h2 style={{ margin: 0 }}>Add Products / Services</h2>
         </div>
         <div style={{ flex: 1, textAlign: "center" }}>
           <Logo />
@@ -249,10 +249,6 @@ export const CreateProduct = (props) => {
                 ))}
             </TextField>
                </Grid>*/}
-           
-        
-               
-                
               <Grid xs={12} md={6}>
                 <TextField
                   fullWidth
@@ -263,7 +259,6 @@ export const CreateProduct = (props) => {
                   onChange={handleProduct}
                 ></TextField>
               </Grid>
-             
             </Grid>
             <Grid xs={12} md={6} style={{ marginTop: "20px" }}>
               <TextField
