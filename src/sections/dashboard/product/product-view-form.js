@@ -192,43 +192,16 @@ const handleProductCancel = () => {
   setIsSearching(false);
   setSearchText('');
 };
-//warehouse search
-const handleWarehouseClick = () => {
-  setIsSearchingWarehouse(true);
-};
 
-const handleWarehouseInputChange = event => {
-  setWarehouseText(event.target.value);
-};
 
-const handleWarehouseCancel = () => {
-  setIsSearchingWarehouse(false);
-  setWarehouseText('');
-};
-
-//category search
-const handleCategoryClick = () => {
-  setIsSearchingCategory(true);
-};
-
-const handleCategoryInputChange = event => {
-  setCategoryText(event.target.value);
-};
-
-const handleCategoryCancel = () => {
-  setIsSearchingCategory(false);
-  setCategoryText('');
-};
 
 const filteredProducts = filteredData.filter(product => {
   const productNameMatch = product.productName?.toLowerCase().includes(searchText.toLowerCase());
-  const warehouseNameMatch = product.partnumber?.toLowerCase().includes(warehouseText.toLowerCase());
-  const categoryNameMatch = product.category.name?.toLowerCase().includes(categoryText.toLowerCase());
+  ;
 
   return (
-    (searchText === '' || productNameMatch) &&
-    (warehouseText === '' || warehouseNameMatch) &&
-    (categoryText === '' || categoryNameMatch)
+    (searchText === '' || productNameMatch) 
+  
   );
 });
 
@@ -238,7 +211,7 @@ const columns = [
       <div style={{ display: 'flex', alignItems: 'center' }}>
         {!isSearching ? (
           <>
-            <Typography variant="subtitle2">Part Name</Typography>
+            <Typography variant="subtitle2">Product Name</Typography>
             <IconButton onClick={handleProductClick}>
               <SearchIcon />
             </IconButton>
@@ -273,7 +246,7 @@ const columns = [
           onClick={handleNavigation}
           sx={{
             alignItems: 'center',
-            textAlign: 'center',
+         
           }}
           underline="hover"
         >
@@ -283,69 +256,10 @@ const columns = [
     }
   },
   {
-    title: (
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        {!isSearchingWarehouse? (
-          <>
-            <Typography variant="subtitle2">Part Number</Typography>
-            <IconButton onClick={handleWarehouseClick}>
-              <SearchIcon />
-            </IconButton>
-          </>
-        ) : (
-          <>
-            <InputBase
-              value={warehouseText}
-              onChange={handleWarehouseInputChange}
-              placeholder="Search Number..."
-            />
-            <IconButton onClick={handleWarehouseCancel}>
-              <Icon>
-                <HighlightOffIcon />
-              </Icon>
-            </IconButton>
-          </>
-        )}
-      </div>
-  ),
-    key: 'partnumber',
-    dataIndex: 'partnumber',
-  },
-  {
-    title: (
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        {!isSearchingCategory ? (
-          <>
-            <Typography variant="subtitle2">Model</Typography>
-            <IconButton onClick={handleCategoryClick}>
-              <SearchIcon />
-            </IconButton>
-          </>
-        ) : (
-          <>
-            <InputBase
-              value={categoryText}
-              onChange={handleCategoryInputChange}
-              placeholder="Search Model..."
-            />
-            <IconButton onClick={handleCategoryCancel}>
-              <Icon>
-                <HighlightOffIcon />
-              </Icon>
-            </IconButton>
-          </>
-        )}
-      </div>
-  ),
-    key: 'category',
-    dataIndex: 'category',
-    render: (category) => category?.name
-  },
-  {
     title: 'Description',
-    key: 'category',
-    dataIndex: 'category',
-    render: (category) => category?.description
+    key: 'description',
+    dataIndex: 'description',
+
   },
   {
     dataIndex: 'actionEdit',
@@ -423,14 +337,7 @@ const columns = [
                 onChange={handleChange}
               />
             </Grid>
-            <Grid xs={12} md={6}>
-              <TextField
-                label="Model"
-                name="category"
-                value={editedRecord.category.name}
-                fullWidth
-              />
-            </Grid>
+           
             {/* <Grid
               xs={6}
               md={6}
@@ -457,7 +364,7 @@ const columns = [
               <TextField
                 label="Description"
                 name="description"
-                value={editedRecord.category.description}
+                value={editedRecord.description}
                 fullWidth
                 multiline
                 rows={2}
@@ -492,7 +399,7 @@ const columns = [
         }}
       >
         <div style={{ flex: 1 }}>
-          <h2 style={{ margin: 0 }}>View Parts / Products</h2>
+          <h2 style={{ margin: 0 }}>View Products</h2>
         </div>
         <div style={{ flex: 1, textAlign: "center" }}>
           <Logo />

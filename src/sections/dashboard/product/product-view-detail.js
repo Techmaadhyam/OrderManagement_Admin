@@ -33,88 +33,25 @@ import Logo from '../logo/logo';
 export const ViewProductDetail = (props) => {
   const location = useLocation();
   const state = location.state;
+  console.log(state)
 
 
-  const [currentDate, setCurrentDate] = useState('');
   
 
-  const [editOpen, setEditOpen] = useState(false);
   const [editedData, setEditedData] = useState({
   name: state?.productName || state?.name,
   category: state?.category?.name,
   type: state?.type,
   description: state?.category?.description
   });
-  const [editedCategory, setEditedCategory] = useState(editedData.category || state?.category || '');
-  const [editedDescription, setEditedDescription] = useState(editedData.description || state?.description ||"");
-
-    //for sending response body via route
-    const navigate = useNavigate();
-
-  const handleEditOpen = () => {
-    setEditOpen(true);
-  };
-
-  const handleEditClose = () => {
-    setEditOpen(false);
-  };
-
-  const handleEditFieldChange = (field, value) => {
-    setEditedData((prevData) => ({
-      ...prevData,
-      [field]: value
-    }));
-  };
-  
-
-  console.log(editedData)
-   //  get date
- useEffect(() => {
-  const today = new Date();
-  const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
-  const formattedDate = today.toLocaleDateString('IN', options);
-  setCurrentDate(formattedDate);
-}, []);
+ 
 
 
 
-  const handleSave = () => {
 
-    const responseBody ={
-        name: editedCategory,
-        id: state?.category.id,
-        description: editedDescription,
-        lastModifiedDate: new Date()
-      }
-      console.log(JSON.stringify(responseBody))
-    
-    if (editedData?.category && editedData?.description) {
-        try {
-  
-          const response = fetch(apiUrl +`addCategory`, {
-            method: 'POST',
-            headers: {
-    
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(responseBody)
-          });
-   
-          if (response.ok || response === 200) {
-         
-           response.json().then(data => {
-           
-           });
-     
-           window.location.reload()
-          } 
-        } catch (error) {
-          console.error('API call failed:', error);
-        }
-      } 
-    
-    handleEditClose();
-  };
+
+
+
  
   const align = 'horizontal' 
 
@@ -165,79 +102,18 @@ export const ViewProductDetail = (props) => {
           <IconWithPopup />
         </div>
       </div>
-      <h2>Parts</h2>
+      <h2>Product</h2>
       <Card style={{ marginBottom: "12px" }}>
-        <CardHeader title="Part Detail" />
+        <CardHeader title="Product Detail" />
         <PropertyList>
-          <PropertyListItem align={align} label="Part Name">
-            <Typography variant="subtitle2">
-              <div style={{ gap: "30px", display: "flex" }}>
-                {state?.productName || state?.name}
-
-                <Dialog open={editOpen} onClose={handleEditClose}>
-                  <DialogTitle>Update Product</DialogTitle>
-                  <DialogContent>
-                    <Grid container spacing={0}>
-                      <Grid item xs={12} md={12}>
-                        <TextField
-                          label="Model Name"
-                          name="model"
-                          value={editedCategory}
-                          onChange={(e) => setEditedCategory(e.target.value)}
-                          fullWidth
-                          style={{ marginBottom: 20, marginTop: 10 }}
-                        />
-                      </Grid>
-
-                      <TextField
-                        label="Description"
-                        name="desc"
-                        value={editedDescription}
-                        onChange={(e) => setEditedDescription(e.target.value)}
-                        fullWidth
-                        multiline
-                        rows={3}
-                      />
-                    </Grid>
-                  </DialogContent>
-                  <DialogActions>
-                    <Button onClick={handleEditClose} color="primary">
-                      Cancel
-                    </Button>
-                    <Button onClick={handleSave} color="primary">
-                      Save
-                    </Button>
-                  </DialogActions>
-                </Dialog>
-              </div>
-            </Typography>
+          <PropertyListItem align={align} label="Product Name" value={ state?.productName || state?.name}>
+        
           </PropertyListItem>
           <Divider />
+   
           <PropertyListItem
             align={align}
-            label="Part Number"
-            value={state?.partnumber}
-          />
-          <Divider />
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <div style={{ marginRight: "8px" }}>
-              <PropertyListItem
-                align={align}
-                label="Model"
-                value={state?.category?.name || state?.category}
-              />
-            </div>
-            <IconButton onClick={handleEditOpen}>
-              <Icon>
-                <EditIcon />
-              </Icon>
-            </IconButton>
-          </div>
-          <Divider />
-
-          <PropertyListItem
-            align={align}
-            label="Description"
+            label="Product description"
             value={state?.category?.description || state?.description}
           />
         </PropertyList>

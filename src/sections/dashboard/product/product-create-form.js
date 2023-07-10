@@ -148,7 +148,7 @@ export const CreateProduct = (props) => {
   
   const handleSave = () => {
 
-    if(showAdditionalFields){
+    if(product){
       requestBody = {
         product: {
           productName: product,
@@ -168,25 +168,7 @@ export const CreateProduct = (props) => {
           createdDate:new Date(),
         }
       };
-    } else if(showAdditionalFields===false && product && desc2 && userId && currentDate && category){
-      requestBody = {
-        product: {
-          productName: product,
-          partnumber: partNumber,
-          //type: type,
-          description: desc2,
-          createdBy: parseFloat(userId),
-          createdDate:new Date(),
-          lastModifiedDate:new Date(),
-          lastModifiedByUser: {id: parseFloat(userId)},
-          
-        },
-        category: {
-          id: category
-      
-        }
-      }
-    }
+    } 
     
     const config = {
       headers: {
@@ -267,71 +249,21 @@ export const CreateProduct = (props) => {
                 ))}
             </TextField>
                </Grid>*/}
+           
+        
+               
+                
               <Grid xs={12} md={6}>
                 <TextField
                   fullWidth
-                  label="Model"
-                  name="category"
-                  required
-                  select
-                  value={category}
-                  onChange={(event) => {
-                    handleCategoryChange(event);
-                  }}
-                >
-                  {updatedUserOptions.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
-              {showAdditionalFields && (
-                <>
-                  <Grid />
-                  <Grid xs={12} md={6}>
-                    <TextField
-                      fullWidth
-                      label="Add New Model"
-                      name="new category"
-                      required
-                      value={newCategory}
-                      onChange={handleNewCategory}
-                    ></TextField>
-                  </Grid>
-                  <Grid xs={12} md={6}>
-                    <TextField
-                      fullWidth
-                      label="Model Description"
-                      name="description"
-                      required
-                      value={desc1}
-                      onChange={handleDescription1}
-                      multiline
-                    />
-                  </Grid>
-                </>
-              )}
-              <Grid xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Part Name"
+                  label="Product Name"
                   name="name"
                   required
                   value={product}
                   onChange={handleProduct}
                 ></TextField>
               </Grid>
-              <Grid xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Part Number"
-                  name="partNumber"
-                  required
-                  value={partNumber}
-                  onChange={handlePart}
-                ></TextField>
-              </Grid>
+             
             </Grid>
             <Grid xs={12} md={6} style={{ marginTop: "20px" }}>
               <TextField
