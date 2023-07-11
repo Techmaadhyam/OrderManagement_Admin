@@ -657,7 +657,7 @@ console.log(idx, row)
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Project Manager Name"
+                  label="TechMaadhyam Project Manager Name"
                   name="adminname"
                   value={adminName}
                   onChange={handleInputChange}
@@ -666,7 +666,7 @@ console.log(idx, row)
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Project Manager Email"
+                  label="TechMaadhyam Project Manager Email"
                   name="adminemail"
                   helperText={hasError && "Please enter a valid email."}
                   onBlur={handleBlur}
@@ -678,7 +678,7 @@ console.log(idx, row)
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Project Manager Phone"
+                  label="TechMaadhyam Project Manager Phone"
                   type="number"
                   name="adminphone"
                   value={adminPhone}
@@ -688,7 +688,7 @@ console.log(idx, row)
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Architect Name"
+                  label="Customer Contact Person Name"
                   name="contactName"
                   value={contactName}
                   onChange={handleInputChange}
@@ -697,7 +697,7 @@ console.log(idx, row)
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Architect Email"
+                  label="Customer Contact Person Email"
                   name="inchargeemail"
                   helperText={hasError2 && "Please enter a valid email."}
                   onBlur={handleBlur}
@@ -709,7 +709,7 @@ console.log(idx, row)
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Architect Phone"
+                  label="Customer Contact Person Phone"
                   type="number"
                   name="mobileno"
                   value={phone}

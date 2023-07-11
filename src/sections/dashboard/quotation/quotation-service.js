@@ -560,7 +560,7 @@ const deliveryIST2 = deliveryDateJS2
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Project Manager Name"
+                  label="TechMaadhyam Project Manager Name"
                   name="adminname"
                   required
                   value={adminName}
@@ -570,7 +570,7 @@ const deliveryIST2 = deliveryDateJS2
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Project Manager Email"
+                  label="TechMaadhyam Project Manager Email"
                   name="adminemail"
                   required
                   value={adminEmail}
@@ -583,7 +583,7 @@ const deliveryIST2 = deliveryDateJS2
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Project Manager Phone"
+                  label="TechMaadhyam Project Manager Phone"
                   name="adminphone"
                   required
                   type="number"
@@ -594,7 +594,7 @@ const deliveryIST2 = deliveryDateJS2
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Architect Name"
+                  label="Customer Contact Person Name"
                   name="contactName"
                   required
                   value={contactName}
@@ -604,7 +604,7 @@ const deliveryIST2 = deliveryDateJS2
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Architect Email"
+                  label="Customer Contact Person Email"
                   name="inchargeemail"
                   required
                   value={inchargeEmail}
@@ -617,7 +617,7 @@ const deliveryIST2 = deliveryDateJS2
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Architect Phone"
+                  label="Customer Contact Person Phone"
                   name="mobileno"
                   required
                   type="number"
@@ -716,7 +716,7 @@ const deliveryIST2 = deliveryDateJS2
                             type="number"
                             value={igst}
                             onChange={(e) => setIgst(e.target.value)}
-                            style={{ marginBottom: 10, marginTop:68 }}
+                            style={{ marginBottom: 10, marginTop: 68 }}
                           />
                         </Grid>
                       </div>
