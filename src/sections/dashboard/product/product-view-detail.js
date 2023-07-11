@@ -112,6 +112,12 @@ export const ViewProductDetail = (props) => {
             value={state?.productName || state?.name}
           ></PropertyListItem>
           <Divider />
+          <PropertyListItem
+            align={align}
+            label="GST %"
+            value={state?.gstpercent || 0}
+          ></PropertyListItem>
+          <Divider />
 
           <PropertyListItem
             align={align}

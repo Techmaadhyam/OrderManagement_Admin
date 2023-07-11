@@ -145,16 +145,7 @@ const TempUserCreateForm = () => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const hasError = touched && !emailRegex.test(email);
 
-  //handle next and back button
-  const handleNext = (e) => {
-    e.preventDefault();
-    setStep(step + 1);
-  };
-
-  const handleBack = (e) => {
-    e.preventDefault();
-    setStep(step - 1);
-  };
+ 
 
   //getting current date
   useEffect(() => {
@@ -291,10 +282,10 @@ const TempUserCreateForm = () => {
   const handleToHome = async (event) => {
     event.preventDefault();
 
-    if (password === confirmPassword) {
+    
       if (
         firstName &&
-        lastName &&
+   
         email &&
         phone &&
         company &&
@@ -303,7 +294,6 @@ const TempUserCreateForm = () => {
         currentState &&
         currentCity &&
         zipcode &&
-        password &&
         currentDate &&
         uploadFile
       ) {
@@ -397,9 +387,7 @@ const TempUserCreateForm = () => {
       } else {
         notify("error", "Please input all fields and company logo before submitting.");
       }
-    } else {
-      notify("error", "Your password does not match, please re-verify.");
-    }
+   
   };
 
   const handleUploadChange = (event) => {
@@ -431,25 +419,23 @@ const TempUserCreateForm = () => {
       case 1:
         return (
           <>
-       
-
-            <div style={{ minWidth: "100%", marginBottom: "1rem" }}>
-       
-              <form>
-                <Card>
-                  <CardHeader title="Create new account" />
-                  <CardContent sx={{ pt: 0 }}>
-                    <Grid container spacing={3}>
-                      <Grid xs={12} md={6}>
-                        <TextField
-                          fullWidth
-                          label="First Name"
-                          name="firstname"
-                          value={firstName}
-                          onChange={handleInputChange}
-                        ></TextField>
-                      </Grid>
-                      <Grid xs={12} md={6}>
+            <Box>
+              <div style={{ minWidth: "100%", marginBottom: "1rem" }}>
+                <form>
+                  <Card>
+                    <CardHeader title="Create new customer" />
+                    <CardContent sx={{ pt: 0 }}>
+                      <Grid container spacing={3}>
+                        <Grid xs={12} md={6}>
+                          <TextField
+                            fullWidth
+                            label="Company Contact Person"
+                            name="firstname"
+                            value={firstName}
+                            onChange={handleInputChange}
+                          ></TextField>
+                        </Grid>
+                        {/* <Grid xs={12} md={6}>
                         <TextField
                           fullWidth
                           label="Last Name"
@@ -457,94 +443,60 @@ const TempUserCreateForm = () => {
                           value={lastName}
                           onChange={handleInputChange}
                         ></TextField>
-                      </Grid>
-                      <Grid xs={12} md={12}>
-                        <TextField
-                          fullWidth
-                          label="Email"
-                          name="Email"
-                          value={email}
-                          onChange={handleInputChange}
-                          helperText={hasError && "Please enter a valid email."}
-                          onBlur={handleBlur}
-                          error={hasError}
-                        ></TextField>
-                      </Grid>
-                      <Grid xs={12} md={12}>
-                        <div style={{ display: "flex" }}>
+                      </Grid> */}
+                        <Grid xs={12} md={6}>
                           <TextField
-                            style={{ width: 100, marginRight: 10 }}
-                            label="Code"
-                            name="countryCode"
-                            type="text"
-                            value={"+91"}
-                          />
-                          <TextField
-                            style={{ flexGrow: 1 }}
                             fullWidth
-                            label="Phone"
-                            name="phone"
-                            type="number"
-                            value={phone}
+                            label="Company Email"
+                            name="Email"
+                            value={email}
                             onChange={handleInputChange}
-                          />
-                        </div>
-                      </Grid>
+                            helperText={
+                              hasError && "Please enter a valid email."
+                            }
+                            onBlur={handleBlur}
+                            error={hasError}
+                          ></TextField>
+                        </Grid>
+                        <Grid xs={12} md={12}>
+                          <div style={{ display: "flex" }}>
+                            <TextField
+                              style={{ width: 100, marginRight: 10 }}
+                              label="Code"
+                              name="countryCode"
+                              type="text"
+                              value={"+91"}
+                            />
+                            <TextField
+                              style={{ flexGrow: 1 }}
+                              fullWidth
+                              label="Company Phone"
+                              name="phone"
+                              type="number"
+                              value={phone}
+                              onChange={handleInputChange}
+                            />
+                          </div>
+                        </Grid>
 
-                      <Grid xs={12} md={6}>
-                        <TextField
-                          fullWidth
-                          label="Company"
-                          name="company"
-                          value={company}
-                          onChange={handleInputChange}
-                        ></TextField>
-                      </Grid>
-                      <Grid xs={12} md={6}>
-                        <TextField
-                          fullWidth
-                          label="PAN Number"
-                          name="pan"
-                          value={pan}
-                          onChange={handleInputChange}
-                        ></TextField>
-                      </Grid>
-                    </Grid>
-                    <Grid xs={12} md={6}>
-                      <Box
-                        sx={{ mt: 2 }}
-                        display="flex"
-                        justifyContent="flex-end"
-                      >
-                        {step < 2 && (
-                          <Button
-                            color="primary"
-                            variant="contained"
-                            align="right"
-                            onClick={handleNext}
-                          >
-                            Next
-                          </Button>
-                        )}
-                      </Box>
-                    </Grid>
-                  </CardContent>
-                  <Divider />
-                </Card>
-              </form>
-            </div>
-          </>
-        );
-      case 2:
-        return (
-          <>
-            <Box>
-              <div style={{ minWidth: "100%", marginBottom: "1rem" }}>
-                <form>
-                  <Card>
-                    <CardHeader title="Create new account" />
-                    <CardContent sx={{ pt: 0 }}>
-                      <Grid container spacing={3}>
+                        <Grid xs={12} md={6}>
+                          <TextField
+                            fullWidth
+                            label="Company"
+                            name="company"
+                            value={company}
+                            onChange={handleInputChange}
+                          ></TextField>
+                        </Grid>
+                        <Grid xs={12} md={6}>
+                          <TextField
+                            fullWidth
+                            label="PAN Number"
+                            name="pan"
+                            value={pan}
+                            onChange={handleInputChange}
+                          ></TextField>
+                        </Grid>
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
@@ -570,10 +522,10 @@ const TempUserCreateForm = () => {
                             ))}
                           </TextField>
                         </Grid>
-                        <Grid xs={12} md={12}>
+                        <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
-                            label="Address"
+                            label="Billing Address"
                             name="address"
                             multiline
                             rows={2}
@@ -581,6 +533,7 @@ const TempUserCreateForm = () => {
                             onChange={handleInputChange}
                           ></TextField>
                         </Grid>
+                        <Grid/>
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
@@ -642,7 +595,7 @@ const TempUserCreateForm = () => {
                             onChange={handleInputChange}
                           ></TextField>
                         </Grid>
-                        <Grid xs={12} md={6}>
+                        {/* <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
                             label="Password"
@@ -661,7 +614,7 @@ const TempUserCreateForm = () => {
                             value={confirmPassword}
                             onChange={handleInputChange}
                           ></TextField>
-                        </Grid>
+                        </Grid> */}
                         <Grid
                           container
                           direction="row"
@@ -718,17 +671,7 @@ const TempUserCreateForm = () => {
                           </Typography>
                         </Grid>
                       </Grid>
-                      {step > 1 && (
-                        <Button
-                          color="primary"
-                          variant="contained"
-                          align="right"
-                          sx={{ mt: 2 }}
-                          onClick={handleBack}
-                        >
-                          Back
-                        </Button>
-                      )}
+                 
                     </CardContent>
                     <Divider />
                   </Card>

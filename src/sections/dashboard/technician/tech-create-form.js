@@ -325,7 +325,7 @@ event.preventDefault();
         }}
       >
         <div style={{ flex: 1 }}>
-          <h2 style={{ margin: 0 }}>Add Technician</h2>
+          <h2 style={{ margin: 0 }}>Add TechMaadhyam Resource</h2>
         </div>
         <div style={{ flex: 1, textAlign: "center" }}>
           <Logo />
@@ -336,7 +336,7 @@ event.preventDefault();
       </div>
       <form>
         <Card>
-          <CardHeader title="New Technician" />
+          <CardHeader title="New Resource" />
           <CardContent sx={{ pt: 0 }}>
             <Grid container spacing={3}>
               <Grid xs={12} md={6}>

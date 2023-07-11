@@ -83,7 +83,7 @@ const userOptions = [
 const tableHeader = [
   {
     id: "product_name",
-    name: "Part Description",
+    name: "Product / Service Description",
     width: 200,
   },
   {
@@ -91,14 +91,10 @@ const tableHeader = [
     name: "Unit Price",
     width: 150,
   },
-  {
-    id: "workstation",
-    name: "No. Of workstations",
-    width: 200,
-  },
+
   {
     id: "igst",
-    name: "IGST",
+    name: "GST %",
     width: 150,
   },
 
@@ -368,7 +364,7 @@ export const AmcEditForm = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (productName && workstation && igst && description) {
+    if (productName &&  description) {
       const newRow = {
         id: Id,
         product: { id: productId },
@@ -673,12 +669,11 @@ export const AmcEditForm = (props) => {
                     );
                     if (selectedOption) {
                       if (selectedOption.hasOwnProperty("isactive")) {
-              setUserState(selectedOption.id || "");
-              setTempId(null);
+                        setUserState(selectedOption.id || "");
+                        setTempId(null);
                       } else {
-                     
-                                     setTempId(selectedOption.id || "");
-                                     setUserState(null);
+                        setTempId(selectedOption.id || "");
+                        setUserState(null);
                       }
                     }
                     setUser(e.target.value);
@@ -721,7 +716,7 @@ export const AmcEditForm = (props) => {
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Technician"
+                  label="TechMaadhyam Resource"
                   name="technician"
                   select
                   value={technician}
@@ -737,7 +732,7 @@ export const AmcEditForm = (props) => {
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Project Manager Name"
+                  label="TechMaadhyam Project Manager Name"
                   name="adminname"
                   value={adminName}
                   onChange={handleInputChange}
@@ -746,7 +741,7 @@ export const AmcEditForm = (props) => {
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Project Manager Email"
+                  label="TechMaadhyam Project Manager Email"
                   name="adminemail"
                   helperText={hasError && "Please enter a valid email."}
                   onBlur={handleBlur}
@@ -758,7 +753,7 @@ export const AmcEditForm = (props) => {
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Project Manager Phone"
+                  label="TechMaadhyam Project Manager Phone"
                   name="adminphone"
                   type="number"
                   value={adminPhone}
@@ -768,7 +763,7 @@ export const AmcEditForm = (props) => {
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Architect Name"
+                  label="Customer Contact Person Name"
                   name="contactName"
                   value={contactName}
                   onChange={handleInputChange}
@@ -777,7 +772,7 @@ export const AmcEditForm = (props) => {
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Architect Email"
+                  label="Customer Contact Person Email"
                   name="inchargeemail"
                   value={inchargeEmail}
                   helperText={hasError2 && "Please enter a valid email."}
@@ -789,7 +784,7 @@ export const AmcEditForm = (props) => {
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Architect Phone"
+                  label="Customer Contact Person Phone"
                   name="mobileno"
                   type="number"
                   value={phone}
@@ -826,7 +821,7 @@ export const AmcEditForm = (props) => {
               <div className="modal" onClick={handleModalClick}>
                 <div className="modal-content-service">
                   <h5 className="product-detail-heading">
-                    Add Service Details
+                    Add Product / Service Details
                   </h5>
                   <form className="form">
                     {/* Form fields */}
@@ -835,7 +830,7 @@ export const AmcEditForm = (props) => {
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
-                            label="Part Name"
+                            label="Product / Service"
                             name="name"
                             select
                             value={productName}
@@ -848,6 +843,8 @@ export const AmcEditForm = (props) => {
                               setProductName(e.target.value);
                               setDescription(selectedOption.description);
                               setDiscount(0);
+                              setWorkstation(1);
+                              setIgst(selectedOption.gstpercent);
                             }}
                             style={{ marginBottom: 10 }}
                           >
@@ -861,17 +858,7 @@ export const AmcEditForm = (props) => {
                             ))}
                           </TextField>
                         </Grid>
-                        <Grid xs={12} md={6}>
-                          <TextField
-                            fullWidth
-                            label="No. Of Workstations"
-                            name="workstation"
-                            type="number"
-                            value={workstation}
-                            onChange={(e) => setWorkstation(e.target.value)}
-                            style={{ marginBottom: 10 }}
-                          />
-                        </Grid>
+
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
@@ -889,7 +876,7 @@ export const AmcEditForm = (props) => {
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
-                            label="IGST"
+                            label="GST %"
                             name="igst"
                             type="number"
                             value={igst}
@@ -980,9 +967,7 @@ export const AmcEditForm = (props) => {
                     <TableCell>
                       <div>{row.unitPrice}</div>
                     </TableCell>
-                    <TableCell>
-                      <div>{row.workstationcount}</div>
-                    </TableCell>
+
                     <TableCell>
                       <div>{row.igst}</div>
                     </TableCell>

@@ -155,6 +155,7 @@ export const CreateProduct = (props) => {
           //type: type,
           partnumber: partNumber,
           description: desc2,
+          gstpercent:0,
           createdBy: parseFloat(userId),
           createdDate: new Date(),
           lastModifiedDate:new Date(),
@@ -257,6 +258,18 @@ export const CreateProduct = (props) => {
                   required
                   value={product}
                   onChange={handleProduct}
+                ></TextField>
+              </Grid>
+            
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="GST %"
+                  defaultValue={0}
+                  name="gst"
+                  required
+                  disabled
+                
                 ></TextField>
               </Grid>
             </Grid>

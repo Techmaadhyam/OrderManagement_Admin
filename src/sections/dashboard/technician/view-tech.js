@@ -323,7 +323,7 @@ const handleCompanyCancel = () => {
 
     return (
       <Dialog open={true} onClose={onClose}>
-        <DialogTitle>Edit Technician</DialogTitle>
+        <DialogTitle>Edit TechMaadhyam Resource</DialogTitle>
         <DialogContent>
           <Grid container spacing={2}>
             <Grid xs={12} md={6}>
@@ -433,7 +433,7 @@ const handleCompanyCancel = () => {
         }}
       >
         <div style={{ flex: 1 }}>
-          <h2 style={{ margin: 0 }}>View Technician</h2>
+          <h2 style={{ margin: 0 }}>View TechMaadhyam Resource</h2>
         </div>
         <div style={{ flex: 1, textAlign: "center" }}>
           <Logo />

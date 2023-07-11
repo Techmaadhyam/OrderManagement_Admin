@@ -123,23 +123,24 @@ console.log(state)
   ];
   
   
-  const columns2=[
+  const columns2 = [
     {
-      title: 'Part Description',
-      dataIndex: 'description',
-      key: 'description',
+      title: "Product / Service Description",
+      dataIndex: "description",
+      key: "description",
       render: (name, record) => {
         const handleNavigation = () => {
-          navigate(`/dashboard/products/viewDetail/${record.productId}`, { state: record } );
+          navigate(`/dashboard/products/viewDetail/${record.productId}`, {
+            state: record,
+          });
         };
-        
+
         return (
           <Link
             color="primary"
             onClick={handleNavigation}
             sx={{
-              alignItems: 'center',
-       
+              alignItems: "center",
             }}
             underline="hover"
           >
@@ -148,27 +149,22 @@ console.log(state)
         );
       },
     },
+
     {
-      title:'No. Of Workstations',
-      dataIndex:'workstationCount',
-      key: 'workstationCount',
-  },
-    {
-      title: 'Cost',
-      dataIndex: 'price',
-      key: 'price',
+      title: "Cost",
+      dataIndex: "price",
+      key: "price",
     },
     {
-      dataIndex:'igst',
-      title:'IGST',
-     key: 'igst',
-  },
-  {
-    title: 'Net Amount',
-    key: 'netAmount2',
-    dataIndex: 'netAmount2',
-  },
-  
+      dataIndex: "igst",
+      title: "GST %",
+      key: "igst",
+    },
+    {
+      title: "Net Amount",
+      key: "netAmount2",
+      dataIndex: "netAmount2",
+    },
   ];
   
 
@@ -207,8 +203,8 @@ console.log(state)
           let parsedProduct;
           let parsedInventory;
           try {
-            parsedProduct = JSON.parse(obj.product);
-            parsedInventory = JSON.parse(obj.inventory);
+            parsedProduct = obj.product;
+            parsedInventory = obj.inventory;
           console.log(parsedInventory)
             
           } catch (error) {

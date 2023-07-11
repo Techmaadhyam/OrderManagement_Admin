@@ -125,7 +125,7 @@ export const ViewAMCDetail = (props) => {
  
 const columns = [
   {
-    title: "Part Description",
+    title: "Product / Service Description",
     dataIndex: "description",
     key: "description",
     render: (name, record) => {
@@ -141,7 +141,6 @@ const columns = [
           onClick={handleNavigation}
           sx={{
             alignItems: "center",
-        
           }}
           underline="hover"
         >
@@ -150,11 +149,7 @@ const columns = [
       );
     },
   },
-  {
-    title: "No. Of Workstations",
-    dataIndex: "workstationcount",
-    key: "workstationcount",
-  },
+
   {
     title: "Cost",
     dataIndex: "unitPrice",
@@ -162,7 +157,7 @@ const columns = [
   },
   {
     dataIndex: "igst",
-    title: "IGST",
+    title: "GST %",
     key: "igst",
   },
   {
@@ -296,7 +291,7 @@ const columns = [
           {state.technicianInfo.userName && (
             <PropertyListItem
               align={align}
-              label="Technician"
+              label="TechMaadhyam Resource"
               value={state?.technicianInfo.userName}
             />
           )}
@@ -314,7 +309,7 @@ const columns = [
           <Divider />
           <PropertyListItem
             align={align}
-            label="Architect Name"
+            label="Customer Contact Person Name"
             value={
               state?.contactPersonName || state?.workorder?.contactPersonName
             }
@@ -322,7 +317,7 @@ const columns = [
           <Divider />
           <PropertyListItem
             align={align}
-            label="Architect Phone"
+            label="Customer Contact Person Phone"
             value={
               state?.contactPhoneNumber || state?.workorder?.contactPhoneNumber
             }
@@ -330,13 +325,14 @@ const columns = [
           <Divider />
           <PropertyListItem
             align={align}
-            label="Project Manager Name"
+            label="TechMaadhyam Project Manager Name"
+      
             value={state?.adminPersonName || state?.workorder?.adminPersonName}
           />
           <Divider />
           <PropertyListItem
             align={align}
-            label="Project Manager Phone"
+            label="TechMaadhyam Project Manager Phone"
             value={
               state?.adminPhoneNumber || state?.workorder?.adminPhoneNumber
             }
@@ -344,7 +340,7 @@ const columns = [
           <Divider />
           <PropertyListItem
             align={align}
-            label="Project Manager Email"
+            label="TechMaadhyam Project Manager Email"
             value={state?.adminEmail || state?.workorder?.adminEmail}
           />
           <Divider />

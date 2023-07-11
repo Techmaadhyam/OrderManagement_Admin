@@ -64,7 +64,7 @@ export const ViewTechnicianDetail = (props) => {
             <Typography variant="subtitle2">
               Back To{" "}
               <span style={{ color: `${primaryColor}`, fontWeight: 600 }}>
-                Technician List
+                TechMaadhyam Resource List
               </span>
             </Typography>
           </Link>
@@ -76,9 +76,9 @@ export const ViewTechnicianDetail = (props) => {
           <IconWithPopup />
         </div>
       </div>
-      <h2>Technician</h2>
+      <h2>TechMaadhyam Resource</h2>
       <Card style={{ marginBottom: "12px" }}>
-        <CardHeader title="Technician Detail" />
+        <CardHeader title="TechMaadhyam Resource Detail" />
         <PropertyList>
           <PropertyListItem align={align} label="Name">
             <Typography variant="subtitle2">{state?.userName}</Typography>

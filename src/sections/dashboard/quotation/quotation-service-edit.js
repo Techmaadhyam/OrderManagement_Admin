@@ -54,6 +54,10 @@ const customerType = [
     label: "Manufacturer",
     value: "manufacturer",
   },
+  {
+    label: "Customer",
+    value: "customer",
+  },
 ];
 
 
@@ -79,47 +83,43 @@ const userOptions = [
     label: 'Delivered',
     value: 'Delivered'
   },
+  
  
 ];
 
-const tableHeader=[
+const tableHeader = [
   {
-      id:'product_name',
-      name:'Part Description',
-      width: 200,
-      
+    id: "product_name",
+    name: "Product / Service Description",
+    width: 200,
   },
   {
-    id:'cost',
-    name:'Unit Price',
+    id: "cost",
+    name: "Unit Price",
     width: 150,
-},
-  {
-      id:'workstation',
-      name:'No. Of workstations',
-      width: 200,
   },
-  {
-    id:'igst',
-    name:'IGST',
-    width: 150,
-},
 
   {
-    id:'amount',
-    name:'Net Amount',
+    id: "igst",
+    name: "GST %",
     width: 150,
-},
+  },
+
   {
-      id:'add',
-      name:'',
-      width: 50,
+    id: "amount",
+    name: "Net Amount",
+    width: 150,
   },
   {
-      id:'delete',
-      name:'',
-      width: 50,
-  }
+    id: "add",
+    name: "",
+    width: 50,
+  },
+  {
+    id: "delete",
+    name: "",
+    width: 50,
+  },
 ];
 
 
@@ -193,7 +193,7 @@ const [productName, setProductName] = useState('');
           let parsedProductId;
           let parsedProductName;
           try {
-            const parsedProduct = JSON.parse(obj.product);
+            const parsedProduct = obj.product;
             parsedProductId = parsedProduct.id;
             parsedProductName = parsedProduct.productName
           } catch (error) {
@@ -361,8 +361,8 @@ const handleDateEnd = (date) => {
     if (
      
       productName &&
-      workstation &&
-      igst &&
+   
+
       description
     ) {
       const newRow = {
@@ -602,12 +602,11 @@ console.log(idx, row)
                     );
                     if (selectedOption) {
                       if (selectedOption.hasOwnProperty("isactive")) {
-                    
-                              setUserState(selectedOption.id || "");
-                              setTempId(null);
+                        setUserState(selectedOption.id || "");
+                        setTempId(null);
                       } else {
-                      setTempId(selectedOption.id || "");
-                      setUserState(null);
+                        setTempId(selectedOption.id || "");
+                        setUserState(null);
                       }
                     }
                     setUser(e.target.value);
@@ -747,7 +746,7 @@ console.log(idx, row)
               <div className="modal" onClick={handleModalClick}>
                 <div className="modal-content-service">
                   <h5 className="product-detail-heading">
-                    Add Service Details
+                    Add Product / Service Details
                   </h5>
                   <form className="form">
                     {/* Form fields */}
@@ -756,7 +755,7 @@ console.log(idx, row)
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
-                            label="Part Name"
+                            label="Product / Service"
                             name="name"
                             select
                             value={productName}
@@ -768,6 +767,8 @@ console.log(idx, row)
                               setProductId(selectedOption.id);
                               setProductName(e.target.value);
                               setDescription(selectedOption.description);
+                              setIgst(selectedOption.gstpercent);
+                              setWorkstation(1);
                             }}
                             style={{ marginBottom: 10 }}
                           >
@@ -784,11 +785,11 @@ console.log(idx, row)
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
-                            label="No. Of Workstations"
-                            name="workstation"
+                            label="Unit Price"
+                            name="cost"
                             type="number"
-                            value={workstation}
-                            onChange={(e) => setWorkstation(e.target.value)}
+                            value={price}
+                            onChange={(e) => setPrice(e.target.value)}
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
@@ -797,22 +798,11 @@ console.log(idx, row)
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
-                            label="IGST"
+                            label="GST %"
                             name="igst"
                             type="number"
                             value={igst}
                             onChange={(e) => setIgst(e.target.value)}
-                            style={{ marginBottom: 10 }}
-                          />
-                        </Grid>
-                        <Grid xs={12} md={6}>
-                          <TextField
-                            fullWidth
-                            label="Unit Price"
-                            name="cost"
-                            type="number"
-                            value={price}
-                            onChange={(e) => setPrice(e.target.value)}
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
@@ -876,9 +866,7 @@ console.log(idx, row)
                     <TableCell>
                       <div>{row.price}</div>
                     </TableCell>
-                    <TableCell>
-                      <div>{row.workstationCount}</div>
-                    </TableCell>
+
                     <TableCell>
                       <div>{row.igst}</div>
                     </TableCell>

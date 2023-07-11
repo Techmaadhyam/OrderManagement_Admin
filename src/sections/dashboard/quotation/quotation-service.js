@@ -49,6 +49,10 @@ const customerType = [
     label: "Manufacturer",
     value: "manufacturer",
   },
+  {
+    label: "Customer",
+    value: "customer",
+  },
 ];
 
 
@@ -76,44 +80,39 @@ const userOptions = [
  
 ];
 
-const tableHeader=[
+const tableHeader = [
   {
-      id:'product_name',
-      name:'Part Description',
-      width: 200,
-      
+    id: "product_name",
+    name: "Product / Service Description",
+    width: 200,
   },
   {
-    id:'cost',
-    name:'Unit Price',
+    id: "cost",
+    name: "Unit Price",
     width: 150,
-},
-  {
-      id:'workstation',
-      name:'No. Of workstations',
-      width: 200,
   },
-  {
-    id:'igst',
-    name:'IGST',
-    width: 150,
-},
 
   {
-    id:'amount',
-    name:'Net Amount',
+    id: "igst",
+    name: "GST %",
     width: 150,
-},
+  },
+
   {
-      id:'add',
-      name:'',
-      width: 50,
+    id: "amount",
+    name: "Net Amount",
+    width: 150,
   },
   {
-      id:'delete',
-      name:'',
-      width: 50,
-  }
+    id: "add",
+    name: "",
+    width: 50,
+  },
+  {
+    id: "delete",
+    name: "",
+    width: 50,
+  },
 ];
 
 export const QuotationServiceCreateForm = (props) => {
@@ -286,8 +285,6 @@ const deliveryIST2 = deliveryDateJS2
     if (
       price &&
       productName &&
-      workstation &&
-      igst &&
       description
     ) {
       const newRow = {
@@ -658,7 +655,7 @@ const deliveryIST2 = deliveryDateJS2
               <div className="modal" onClick={handleModalClick}>
                 <div className="modal-content-service">
                   <h5 className="product-detail-heading">
-                    Add Service Details
+                    Add Product / Service Details
                   </h5>
                   <form className="form">
                     {/* Form fields */}
@@ -667,7 +664,7 @@ const deliveryIST2 = deliveryDateJS2
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
-                            label="Part Name"
+                            label="Product / Service"
                             name="name"
                             required
                             select
@@ -680,6 +677,8 @@ const deliveryIST2 = deliveryDateJS2
                               setProductId(selectedOption.id);
                               setProductName(e.target.value);
                               setDescription(selectedOption.description);
+                              setIgst(selectedOption.gstpercent);
+                              setWorkstation(1);
                             }}
                             style={{ marginBottom: 10 }}
                           >
@@ -693,33 +692,6 @@ const deliveryIST2 = deliveryDateJS2
                             ))}
                           </TextField>
                         </Grid>
-
-                        <Grid xs={12} md={6}>
-                          <TextField
-                            fullWidth
-                            label="No. Of Workstations"
-                            name="workstation"
-                            type="number"
-                            required
-                            value={workstation}
-                            onChange={(e) => setWorkstation(e.target.value)}
-                            style={{ marginBottom: 10 }}
-                          />
-                        </Grid>
-                      </div>
-                      <div className="popup-right">
-                        <Grid xs={12} md={6}>
-                          <TextField
-                            fullWidth
-                            label="IGST"
-                            name="igst"
-                            required
-                            type="number"
-                            value={igst}
-                            onChange={(e) => setIgst(e.target.value)}
-                            style={{ marginBottom: 10 }}
-                          />
-                        </Grid>
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
@@ -729,6 +701,21 @@ const deliveryIST2 = deliveryDateJS2
                             required
                             value={price}
                             onChange={(e) => setPrice(e.target.value)}
+                            style={{ marginBottom: 10 }}
+                          />
+                        </Grid>
+                        <Grid />
+                      </div>
+                      <div className="popup-right">
+                        <Grid xs={12} md={6}>
+                          <TextField
+                            fullWidth
+                            label="GST %"
+                            name="igst"
+                            required
+                            type="number"
+                            value={igst}
+                            onChange={(e) => setIgst(e.target.value)}
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
@@ -793,9 +780,7 @@ const deliveryIST2 = deliveryDateJS2
                     <TableCell>
                       <div>{row.price}</div>
                     </TableCell>
-                    <TableCell>
-                      <div>{row.workstationCount}</div>
-                    </TableCell>
+
                     <TableCell>
                       <div>{row.igst}</div>
                     </TableCell>

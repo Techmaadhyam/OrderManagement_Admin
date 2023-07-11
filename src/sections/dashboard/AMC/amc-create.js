@@ -82,7 +82,7 @@ const userOptions = [
 const tableHeader = [
   {
     id: "product_name",
-    name: "Part Description",
+    name: "Product / Service Description",
     width: 200,
   },
   {
@@ -90,14 +90,10 @@ const tableHeader = [
     name: "Unit Price",
     width: 150,
   },
-  {
-    id: "workstation",
-    name: "No. Of workstations",
-    width: 200,
-  },
+
   {
     id: "igst",
-    name: "IGST",
+    name: "GST %",
     width: 150,
   },
   {
@@ -287,7 +283,7 @@ export const AmcCreateForm = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (price && productName && workstation && igst && description) {
+    if (price && productName && description) {
       const newRow = {
         product: { id: productId },
         productName,
@@ -608,7 +604,7 @@ export const AmcCreateForm = (props) => {
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Technician"
+                  label="TechMaadhyam Resource"
                   name="technician"
                   required
                   select
@@ -625,7 +621,7 @@ export const AmcCreateForm = (props) => {
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Project Manager Name"
+                  label="TechMaadhyam Project Manager Name"
                   name="adminname"
                   required
                   value={adminName}
@@ -635,7 +631,7 @@ export const AmcCreateForm = (props) => {
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Project Manager Email"
+                  label="TechMaadhyam Project Manager Email"
                   name="adminemail"
                   required
                   value={adminEmail}
@@ -648,7 +644,7 @@ export const AmcCreateForm = (props) => {
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Project Manager Phone"
+                  label="TechMaadhyam Project Manager Phone"
                   name="adminphone"
                   type="number"
                   required
@@ -659,7 +655,7 @@ export const AmcCreateForm = (props) => {
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Architect Name"
+                  label="Customer Contact Person Name"
                   name="contactName"
                   required
                   value={contactName}
@@ -669,7 +665,7 @@ export const AmcCreateForm = (props) => {
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Architect Email"
+                  label="Customer Contact Person Email"
                   name="inchargeemail"
                   required
                   value={inchargeEmail}
@@ -682,7 +678,7 @@ export const AmcCreateForm = (props) => {
               <Grid xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Architect Phone"
+                  label="Customer Contact Person Phone"
                   name="mobileno"
                   type="number"
                   required
@@ -719,7 +715,7 @@ export const AmcCreateForm = (props) => {
               <div className="modal" onClick={handleModalClick}>
                 <div className="modal-content-service">
                   <h5 className="product-detail-heading">
-                    Add Service Details
+                    Add Product / Service Details
                   </h5>
                   <form className="form">
                     {/* Form fields */}
@@ -728,7 +724,7 @@ export const AmcCreateForm = (props) => {
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
-                            label="Part Name"
+                            label="Product / Service"
                             name="name"
                             select
                             required
@@ -742,6 +738,8 @@ export const AmcCreateForm = (props) => {
                               setProductName(e.target.value);
                               setDescription(selectedOption.description);
                               setDiscount(0);
+                              setWorkstation(1);
+                              setIgst(selectedOption.gstpercent);
                             }}
                             style={{ marginBottom: 10 }}
                           >
@@ -755,18 +753,7 @@ export const AmcCreateForm = (props) => {
                             ))}
                           </TextField>
                         </Grid>
-                        <Grid xs={12} md={6}>
-                          <TextField
-                            fullWidth
-                            label="No. Of Workstations"
-                            name="workstation"
-                            type="number"
-                            required
-                            value={workstation}
-                            onChange={(e) => setWorkstation(e.target.value)}
-                            style={{ marginBottom: 10 }}
-                          />
-                        </Grid>
+
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
@@ -784,7 +771,7 @@ export const AmcCreateForm = (props) => {
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
-                            label="IGST"
+                            label="GST %"
                             name="igst"
                             required
                             type="number"
@@ -877,9 +864,7 @@ export const AmcCreateForm = (props) => {
                     <TableCell>
                       <div>{row.unitPrice}</div>
                     </TableCell>
-                    <TableCell>
-                      <div>{row.workstationcount}</div>
-                    </TableCell>
+
                     <TableCell>
                       <div>{row.igst}</div>
                     </TableCell>
