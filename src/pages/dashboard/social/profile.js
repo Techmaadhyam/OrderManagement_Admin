@@ -17,24 +17,17 @@ import { usePageView } from "src/hooks/use-page-view";
 import { paths } from "src/paths";
 import { PropertyList } from "src/components/property-list";
 import { PropertyListItem } from "src/components/property-list-item";
-import axios from "axios";
-import { apiUrl } from "src/config";
+import {  useContext } from "react";
+import { LogoContext } from "src/utils/logoContext";
 
-const mail = sessionStorage.getItem("mail");
+
+
+
+
 
 export const Page = () => {
-  const [userData, setUserData] = useState();
+  const { logo } = useContext(LogoContext);
 
-  useEffect(() => {
-    axios
-      .get(apiUrl + `getUserByUsername/${mail}`)
-      .then((response) => {
-        setUserData(response.data.loggedIUser[0]);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
 
   //logout
   const handleLogout = () => {
@@ -64,53 +57,53 @@ export const Page = () => {
       <Card sx={{ m: 3, mt: 2 }}>
         <PropertyList>
           <PropertyListItem align={align} label="First Name">
-            <Typography variant="subtitle2">{userData?.firstName}</Typography>
+            <Typography variant="subtitle2">{logo?.firstName}</Typography>
           </PropertyListItem>
           <Divider />
           <PropertyListItem
             align={align}
             label="Last Name"
-            value={userData?.lastName}
+            value={logo?.lastName}
           />
           <Divider />
           <PropertyListItem
             align={align}
             label="Email"
-            value={userData?.userName}
+            value={logo?.userName}
           />
           <Divider />
           <PropertyListItem
             align={align}
             label="Phone"
-            value={userData?.mobile}
+            value={logo?.mobile}
           />
           <Divider />
           <PropertyListItem
             align={align}
             label="Company"
-            value={userData?.companyName}
+            value={logo?.company}
           />
           <Divider />
-          <PropertyListItem align={align} label="Type" value={userData?.type} />
+          <PropertyListItem align={align} label="Type" value={logo?.type} />
           <Divider />
           <PropertyListItem
             align={align}
             label="Address"
             value={
-              userData?.address +
+              logo?.address +
               ", " +
-              userData?.city +
+              logo?.city +
               ", " +
-              userData?.userData +
+              logo?.state +
               ", " +
-              userData?.country
+              logo?.country
             }
           />
           <Divider />
           <PropertyListItem
             align={align}
             label="ZipCode"
-            value={userData?.pincode}
+            value={logo?.pincode}
           ></PropertyListItem>
         </PropertyList>
         <Divider />
