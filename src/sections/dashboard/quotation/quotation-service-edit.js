@@ -803,7 +803,7 @@ console.log(idx, row)
                             type="number"
                             value={igst}
                             onChange={(e) => setIgst(e.target.value)}
-                            style={{ marginBottom: 10 }}
+                            style={{ marginBottom: 10, marginTop: 68 }}
                           />
                         </Grid>
                       </div>

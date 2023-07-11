@@ -871,8 +871,6 @@ export const AmcEditForm = (props) => {
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
-                      </div>
-                      <div className="popup-right">
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
@@ -884,6 +882,8 @@ export const AmcEditForm = (props) => {
                             style={{ marginBottom: 10 }}
                           />
                         </Grid>
+                      </div>
+                      <div className="popup-right">
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
@@ -892,7 +892,7 @@ export const AmcEditForm = (props) => {
                             type="number"
                             value={price}
                             onChange={(e) => setPrice(e.target.value)}
-                            style={{ marginBottom: 10 }}
+                            style={{ marginBottom: 10, marginTop: 68 }}
                           />
                         </Grid>
                         <Grid xs={12} md={6}>
