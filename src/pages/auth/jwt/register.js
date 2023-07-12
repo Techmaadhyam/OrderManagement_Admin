@@ -348,7 +348,7 @@ console.log(uploadFile)
               issuperuser: checked,
               isactive:checked,
               createdDate: new Date(),
-              unpdatedDate: new Date(),
+              updatedDate: new Date(),
             }),
           });
 
