@@ -28,6 +28,7 @@ import Switch from "@mui/material/Switch";
 import { apiUrl } from "src/config";
 import { Delete } from "@mui/icons-material";
 
+
 const Page = (props) => {
   const location = useLocation();
   const [state, setState] = useState(location.state);

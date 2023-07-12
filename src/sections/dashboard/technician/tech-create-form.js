@@ -16,7 +16,6 @@ import { useNavigate } from 'react-router-dom';
 import { apiUrl } from 'src/config';
 import Logo from '../logo/logo';
 
-
   //get userid 
   const userId = sessionStorage.getItem('user') || localStorage.getItem('user');
 

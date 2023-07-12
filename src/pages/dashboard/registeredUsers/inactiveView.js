@@ -27,6 +27,7 @@ import { useState } from "react";
 import Switch from "@mui/material/Switch";
 import { apiUrl } from "src/config";
 
+
 const Page = (props) => {
   const location = useLocation();
  const [state, setState] = useState(location.state);

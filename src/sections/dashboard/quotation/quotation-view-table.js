@@ -24,6 +24,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SearchIcon from '@mui/icons-material/Search';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import CircularProgress from "@mui/material/CircularProgress";
 // import imgUrl from '../pdfAssets/imageDataUrl';
 // import techMaadhyam from '../pdfAssets/imageDataUrl2';
 import pdfMake from 'pdfmake/build/pdfmake';
@@ -1082,17 +1083,28 @@ if (deliveryDateIndex !== -1 && filteredList.some(item => item.category === "Ser
         </div>
       </div>
 
-      
-
       <Box sx={{ position: "relative", overflowX: "auto", marginTop: "30px" }}>
-        <Scrollbar>
-          <Table
-            sx={{ minWidth: 800, overflowX: "auto" }}
-            columns={columns}
-            dataSource={filteredList}
-            rowClassName={() => "table-data-row"}
-          ></Table>
-        </Scrollbar>
+        {userData.length !== 0 ? (
+          <Scrollbar>
+            <Table
+              sx={{ minWidth: 800, overflowX: "auto" }}
+              columns={columns}
+              dataSource={filteredList}
+              rowClassName={() => "table-data-row"}
+            ></Table>
+          </Scrollbar>
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100px",
+            }}
+          >
+            <CircularProgress />
+          </div>
+        )}
         <ToastContainer
           position="top-right"
           autoClose={2000}
