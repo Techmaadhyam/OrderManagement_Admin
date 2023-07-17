@@ -44,6 +44,7 @@ const Page = () => {
   const [userData, setUserData] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [searchText, setSearchText] = useState("");
+      const [loading, setLoading] = useState(true);
 
 
 
@@ -55,6 +56,7 @@ const Page = () => {
       .then((response) => {
         setUserData(response.data);
         console.log(response.data);
+        setLoading(false)
       })
       .catch((error) => {
         console.error(error);
@@ -208,7 +210,7 @@ const Page = () => {
                 </div>
               </div>
               <Box sx={{ position: "relative", overflowX: "auto" }}>
-                {userData.length !== 0 ? (
+                {loading === false ? (
                   <Scrollbar>
                     <Table
                       sx={{ minWidth: 800, overflowX: "auto" }}
