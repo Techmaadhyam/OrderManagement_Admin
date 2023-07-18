@@ -13,7 +13,9 @@ const Logo = () => {
     console.log("useEffect is running");
     axios
       .get(apiUrl + `getUserByUsername/${mail}`)
+
       .then((response) => {
+
         setLogo({
           file: response.data.documents[0].fileData,
           fileType: response.data.documents[0].fileType,

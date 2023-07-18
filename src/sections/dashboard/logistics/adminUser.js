@@ -275,110 +275,115 @@ const AdminUserCreateForm = () => {
 
   //calls toast notification on sucessful registration and redirects to login page, handles fetch POST request
   const handleToHome = async (event) => {
-    event.preventDefault();
+      event.preventDefault();
+      
+      if (password === confirmPassword) {
 
-    if (
-      firstName &&
-      email &&
-      phone &&
-      company &&
-      type &&
-      currentCountry &&
-      currentState &&
-      currentCity &&
-      zipcode &&
-      currentDate &&
-      uploadFile
-    ) {
-      try {
-        const response = await fetch(apiUrl + "addUser", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            companyName: company,
-            userName: email,
-            password: password,
-            firstName: firstName,
-            lastName: lastName,
-            emailId: email,
-            mobile: `+91 ${phone}`,
-            address: address,
-            city: currentCity,
-            state: currentState,
-            country: currentCountry,
-            type: type,
-            gstNumber: gstn,
-            pandcard: pan,
-            pincode: zipcode,
-            issuperuser: checked,
-            isactive: checked,
-            createdDate: new Date(),
-            unpdatedDate: new Date(),
-          }),
-        });
-
-        if (response.ok) {
-          // Redirect to home page upon successful submission
-
-          response.json().then(async (data) => {
-            if (uploadFile) {
-              const formData = new FormData();
-
-              let jsonBodyData = {};
-
-              let file = uploadFile;
-
-              jsonBodyData.fileName = "companylogo";
-              jsonBodyData.fileType = uploadFile?.type;
-              jsonBodyData.createdbyid = data.id;
-              jsonBodyData.lastmodifybyid = null;
-              jsonBodyData.createdDate = new Date();
-              jsonBodyData.lastModifiedDate = new Date();
-
-              formData.append("file", file);
-              formData.append("fileWrapper", JSON.stringify(jsonBodyData));
-
+          if (
+              firstName &&
+              email &&
+              phone &&
+              company &&
+              type &&
+              currentCountry &&
+              currentState &&
+              currentCity &&
+              zipcode &&
+              currentDate &&
+              uploadFile
+          ) {
               try {
-                const uploadResponse = await fetch(apiUrl + "upload", {
-                  method: "POST",
-                  body: formData,
-                });
+                  const response = await fetch(apiUrl + "addUser", {
+                      method: "POST",
+                      headers: {
+                          "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                          companyName: company,
+                          userName: email,
+                          password: password,
+                          firstName: firstName,
+                          lastName: lastName,
+                          emailId: email,
+                          mobile: `+91 ${phone}`,
+                          address: address,
+                          city: currentCity,
+                          state: currentState,
+                          country: currentCountry,
+                          type: type,
+                          gstNumber: gstn,
+                          pandcard: pan,
+                          pincode: zipcode,
+                          issuperuser: true,
+                          isactive: true,
+                          createdDate: new Date(),
+                          unpdatedDate: new Date(),
+                      }),
+                  });
 
-                if (uploadResponse.ok) {
-                  if (data.isactive === true) {
-                    navigate("/dashboard/logistics/activeView", {
-                      state: data,
-                    });
+                  if (response.ok) {
+                      // Redirect to home page upon successful submission
+
+                      response.json().then(async (data) => {
+                          if (uploadFile) {
+                              const formData = new FormData();
+
+                              let jsonBodyData = {};
+
+                              let file = uploadFile;
+
+                              jsonBodyData.fileName = "companylogo";
+                              jsonBodyData.fileType = uploadFile?.type;
+                              jsonBodyData.createdbyid = data.id;
+                              jsonBodyData.lastmodifybyid = null;
+                              jsonBodyData.createdDate = new Date();
+                              jsonBodyData.lastModifiedDate = new Date();
+
+                              formData.append("file", file);
+                              formData.append("fileWrapper", JSON.stringify(jsonBodyData));
+
+                              try {
+                                  const uploadResponse = await fetch(apiUrl + "upload", {
+                                      method: "POST",
+                                      body: formData,
+                                  });
+
+                                  if (uploadResponse.ok) {
+                                      if (data.isactive === true) {
+                                          navigate("/dashboard/logistics/activeView", {
+                                              state: data,
+                                          });
+                                      } else {
+                                          navigate("/dashboard/logistics/inactiveView", {
+                                              state: data,
+                                          });
+                                      }
+                                  } else {
+                                      console.error("Logo upload failed");
+                                  }
+                              } catch (error) {
+                                  console.error(error);
+                              }
+                          }
+                      });
                   } else {
-                    navigate("/dashboard/logistics/inactiveView", {
-                      state: data,
-                    });
+                      notify("error", "Failed to submit the form. Please try again later.");
                   }
-                } else {
-                  console.error("Logo upload failed");
-                }
               } catch (error) {
-                console.error(error);
+                  notify(
+                      "error",
+                      "An error occurred while submitting the form. Please try again later."
+                  );
               }
-            }
-          });
-        } else {
-          notify("error", "Failed to submit the form. Please try again later.");
-        }
-      } catch (error) {
-        notify(
-          "error",
-          "An error occurred while submitting the form. Please try again later."
-        );
+          } else {
+              notify(
+                  "error",
+                  "Please input all fields and company logo before submitting."
+              );
+          }
+      } else {
+           notify("error", "Your password does not match, please re-verify.");
       }
-    } else {
-      notify(
-        "error",
-        "Please input all fields and company logo before submitting."
-      );
-    }
   };
 
   const handleUploadChange = (event) => {
@@ -413,19 +418,19 @@ const AdminUserCreateForm = () => {
               <div style={{ minWidth: "100%", marginBottom: "1rem" }}>
                 <form>
                   <Card>
-                    <CardHeader title="Create new customer" />
+                    <CardHeader title="Create new admin" />
                     <CardContent sx={{ pt: 0 }}>
                       <Grid container spacing={3}>
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
-                            label="Company Contact Person"
+                            label="First Name"
                             name="firstname"
                             value={firstName}
                             onChange={handleInputChange}
                           ></TextField>
                         </Grid>
-                        {/* <Grid xs={12} md={6}>
+                        <Grid xs={12} md={6}>
                         <TextField
                           fullWidth
                           label="Last Name"
@@ -433,11 +438,11 @@ const AdminUserCreateForm = () => {
                           value={lastName}
                           onChange={handleInputChange}
                         ></TextField>
-                      </Grid> */}
+                      </Grid>
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
-                            label="Company Email"
+                            label="Email"
                             name="Email"
                             value={email}
                             onChange={handleInputChange}
@@ -448,7 +453,7 @@ const AdminUserCreateForm = () => {
                             error={hasError}
                           ></TextField>
                         </Grid>
-                        <Grid xs={12} md={12}>
+                        <Grid xs={12} md={6}>
                           <div style={{ display: "flex" }}>
                             <TextField
                               style={{ width: 100, marginRight: 10 }}
@@ -460,7 +465,7 @@ const AdminUserCreateForm = () => {
                             <TextField
                               style={{ flexGrow: 1 }}
                               fullWidth
-                              label="Company Phone"
+                              label="Phone"
                               name="phone"
                               type="number"
                               value={phone}
@@ -605,7 +610,7 @@ const AdminUserCreateForm = () => {
                             onChange={handleInputChange}
                           ></TextField>
                         </Grid>
-                        <Grid
+                        {/* <Grid
                           container
                           direction="row"
                           alignItems="center"
@@ -624,7 +629,7 @@ const AdminUserCreateForm = () => {
                               inputProps={{ "aria-label": "controlled" }}
                             />
                           </Grid>
-                        </Grid>
+                        </Grid> */}
                         <Grid xs={12} md={6}>
                           <div>
                             <div style={{ display: "inline-block" }}>
@@ -711,7 +716,7 @@ const AdminUserCreateForm = () => {
         }}
       >
         <div style={{ flex: 1 }}>
-          <h2 style={{ margin: 0 }}>Add Customer</h2>
+          <h2 style={{ margin: 0 }}>Add Administrator</h2>
         </div>
         <div style={{ flex: 1, textAlign: "center" }}>
           <Logo />

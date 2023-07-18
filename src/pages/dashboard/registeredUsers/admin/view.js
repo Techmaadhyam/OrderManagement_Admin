@@ -46,14 +46,15 @@ const Page = () => {
 
   useEffect(() => {
     axios
-      .get(apiUrl + `getAllUsers`)
+      .get(apiUrl + `getAllSuperUser`)
       .then((response) => {
         setUserData(response.data);
-        setLoading(false)
+        setLoading(false);
         console.log(response.data);
       })
       .catch((error) => {
         console.error(error);
+        setLoading(false);
       });
   }, []);
 
@@ -70,8 +71,7 @@ const Page = () => {
   name: `${product.firstName} ${product.lastName}`,
 }));;
  
-const filteredData =
-       filteredList.filter((item) => item.isactive === true)
+
       
 
 
@@ -189,7 +189,7 @@ const filteredData =
                 }}
               >
                 <div style={{ flex: 1 }}>
-                  <h2 style={{ margin: 0 }}>All Active Customers</h2>
+                  <h2 style={{ margin: 0 }}>All Administrators</h2>
                 </div>
                 <div style={{ flex: 1, textAlign: "center" }}>
                   <Logo />
@@ -210,7 +210,7 @@ const filteredData =
                     <Table
                       sx={{ minWidth: 800, overflowX: "auto" }}
                       columns={columns}
-                      dataSource={filteredData}
+                      dataSource={filteredList}
                       rowClassName={() => "table-data-row"}
                     ></Table>
                   </Scrollbar>

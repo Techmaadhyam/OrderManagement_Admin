@@ -282,10 +282,9 @@ const TempUserCreateForm = () => {
   const handleToHome = async (event) => {
     event.preventDefault();
 
-    
+    if (password === confirmPassword) {
       if (
         firstName &&
-   
         email &&
         phone &&
         company &&
@@ -319,8 +318,8 @@ const TempUserCreateForm = () => {
               gstNumber: gstn,
               pandcard: pan,
               pincode: zipcode,
-              issuperuser: checked,
-              isactive:checked,
+              issuperuser: false,
+              isactive: true,
               createdDate: new Date(),
               unpdatedDate: new Date(),
             }),
@@ -355,9 +354,9 @@ const TempUserCreateForm = () => {
 
                   if (uploadResponse.ok) {
                     if (data.isactive === true) {
-                       navigate("/dashboard/logistics/activeView", {
-                         state: data,
-                       });
+                      navigate("/dashboard/logistics/activeView", {
+                        state: data,
+                      });
                     } else {
                       navigate("/dashboard/logistics/inactiveView", {
                         state: data,
@@ -388,6 +387,10 @@ const TempUserCreateForm = () => {
         notify("error", "Please input all fields and company logo before submitting.");
       }
    
+  
+    } else {
+        notify("error", "Your password does not match, please re-verify.");
+    }
   };
 
   const handleUploadChange = (event) => {
@@ -429,13 +432,13 @@ const TempUserCreateForm = () => {
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
-                            label="Company Contact Person"
+                            label="First Name"
                             name="firstname"
                             value={firstName}
                             onChange={handleInputChange}
                           ></TextField>
                         </Grid>
-                        {/* <Grid xs={12} md={6}>
+                        <Grid xs={12} md={6}>
                         <TextField
                           fullWidth
                           label="Last Name"
@@ -443,11 +446,11 @@ const TempUserCreateForm = () => {
                           value={lastName}
                           onChange={handleInputChange}
                         ></TextField>
-                      </Grid> */}
+                      </Grid>
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
-                            label="Company Email"
+                            label="Email"
                             name="Email"
                             value={email}
                             onChange={handleInputChange}
@@ -458,7 +461,7 @@ const TempUserCreateForm = () => {
                             error={hasError}
                           ></TextField>
                         </Grid>
-                        <Grid xs={12} md={12}>
+                        <Grid xs={12} md={6}>
                           <div style={{ display: "flex" }}>
                             <TextField
                               style={{ width: 100, marginRight: 10 }}
@@ -470,7 +473,7 @@ const TempUserCreateForm = () => {
                             <TextField
                               style={{ flexGrow: 1 }}
                               fullWidth
-                              label="Company Phone"
+                              label="Phone"
                               name="phone"
                               type="number"
                               value={phone}
@@ -615,7 +618,7 @@ const TempUserCreateForm = () => {
                             onChange={handleInputChange}
                           ></TextField>
                         </Grid>
-                        <Grid
+                        {/* <Grid
                           container
                           direction="row"
                           alignItems="center"
@@ -634,7 +637,7 @@ const TempUserCreateForm = () => {
                               inputProps={{ "aria-label": "controlled" }}
                             />
                           </Grid>
-                        </Grid>
+                        </Grid> */}
                         <Grid xs={12} md={6}>
                           <div>
                             <div style={{ display: "inline-block" }}>

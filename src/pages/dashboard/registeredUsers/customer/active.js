@@ -46,14 +46,15 @@ const Page = () => {
 
   useEffect(() => {
     axios
-      .get(apiUrl + `getAllUsers`)
+      .get(apiUrl + `getAllUsersByCustomer`)
       .then((response) => {
         setUserData(response.data);
-        setLoading(false)
+        setLoading(false);
         console.log(response.data);
       })
       .catch((error) => {
         console.error(error);
+        setLoading(false);
       });
   }, []);
 

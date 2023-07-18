@@ -27,11 +27,15 @@ import { useState } from "react";
 import Switch from "@mui/material/Switch";
 import { apiUrl } from "src/config";
 import { Delete } from "@mui/icons-material";
-
+import axios from "axios";
+import { useEffect } from "react";
+import FileUploadRoundedIcon from "@mui/icons-material/FileUploadRounded";
 
 const Page = (props) => {
   const location = useLocation();
+  const [logo1, setLogo1] = useState();
   const [state, setState] = useState(location.state);
+  const [logoPreview, setLogoPreview] = useState(null);
 
   const [checked, setChecked] = useState(state?.isactive);
   const [editMode, setEditMode] = useState(false);
@@ -90,6 +94,18 @@ const Page = (props) => {
     });
   };
 
+    useEffect(() => {
+      axios
+        .get(apiUrl + `getUserLogo/${state?.id}`)
+        .then((response) => {
+          setLogo1(response.data[0]);
+          console.log(response.data[0]);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }, []);
+
   const handleSaveClick = async () => {
     if (state?.id) {
       try {
@@ -103,7 +119,7 @@ const Page = (props) => {
 
         if (response.ok) {
           setEditMode(false);
-      
+
           response.json().then(async (data) => {
             setState(data);
 
@@ -120,6 +136,10 @@ const Page = (props) => {
               jsonBodyData.lastmodifybyid = null;
               jsonBodyData.createdDate = data.createdDate;
               jsonBodyData.lastModifiedDate = new Date();
+              if (logo1?.id) {
+                    jsonBodyData.fileId = logo1.id;
+                  }
+
 
               formData.append("file", file);
               formData.append("fileWrapper", JSON.stringify(jsonBodyData));
@@ -131,8 +151,8 @@ const Page = (props) => {
                 });
 
                 if (uploadResponse.ok) {
-                     alert("update success");
-   
+       
+                  window.location.reload()
                 } else {
                   console.error("Logo upload failed");
                 }
@@ -140,12 +160,9 @@ const Page = (props) => {
                 console.error(error);
               }
             }
-
-       
           });
-              alert("update success");
+          alert("userdata update success");
         }
-
       } catch (error) {
         console.error(error);
       }
@@ -154,10 +171,15 @@ const Page = (props) => {
 
   const handleUploadChange = (event) => {
     const file = event.target.files[0];
-    setUploadFile(file);
 
     if (file && (file.type === "image/png" || file.type === "image/jpeg")) {
+      setUploadFile(file);
       // Perform necessary operations with the file, such as saving or previewing
+      const reader = new FileReader();
+      reader.onload = () => {
+        setLogoPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
     } else {
       // Display an error message or perform any other error handling
       alert("Invalid file format. Please select a PNG or JPEG file.");
@@ -169,6 +191,7 @@ const Page = (props) => {
     switch (fileType) {
       case "upload":
         setUploadFile(null);
+        setLogoPreview(null);
         document.getElementById("upload").value = "";
         break;
       default:
@@ -243,7 +266,7 @@ const Page = (props) => {
                       <span
                         style={{ color: `${primaryColor}`, fontWeight: 600 }}
                       >
-                        active customers
+                        admin list
                       </span>
                     </Typography>
                   </Link>
@@ -262,7 +285,7 @@ const Page = (props) => {
                 </div>
               </div>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <h2>Active Customer Detail</h2>
+                <h2>Admin Detail</h2>
                 <Box
                   sx={{ mt: 3, mb: 2 }}
                   display="flex"
@@ -293,15 +316,111 @@ const Page = (props) => {
               <Card style={{ marginBottom: "12px" }}>
                 <PropertyList>
                   <PropertyListItem>
-                    <Typography variant="h6" component="span">
-                      Account Status:
-                    </Typography>
-                    <Switch
-                      checked={checked}
-                      onChange={handleChange}
-                      inputProps={{ "aria-label": "controlled" }}
-                    />
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      {editMode ? (
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "left",
+                          }}
+                        >
+                          <Box
+                            component="img"
+                            sx={{
+                              height: 70,
+                              width: "auto",
+                              ml: 0,
+                              mt: 0,
+                              mb: 0,
+                              mr: 3,
+                            }}
+                            alt="logo"
+                            src={
+                              logoPreview
+                                ? `${logoPreview}`
+                                : `data:${logo1?.fileType};base64, ${logo1?.fileData}`
+                            }
+                          />
+                          <Grid>
+                            <div>
+                              <div style={{ display: "inline-block" }}>
+                                <Button
+                                  color="primary"
+                                  variant="contained"
+                                  align="right"
+                                  sx={{
+                                    borderRadius: "50%",
+                                    minWidth: 40,
+                                    minHeight: 40,
+                                    width: 40,
+                                    height: 40,
+                                    p: 0,
+                                  }}
+                                  onClick={() =>
+                                    document.getElementById("upload").click()
+                                  }
+                                >
+                                  <FileUploadRoundedIcon />
+                                </Button>
+                                {uploadFile && (
+                                  <Button
+                                    color="secondary"
+                                    onClick={() => handleDeleteFile("upload")}
+                                    startIcon={<Delete />}
+                                    sx={{ color: "grey" }}
+                                  >
+                                    Delete
+                                  </Button>
+                                )}
+                              </div>
+                              <input
+                                type="file"
+                                id="upload"
+                                onChange={handleUploadChange}
+                                style={{ display: "none" }}
+                              />
+                            </div>
+                          </Grid>
+                        </div>
+                      ) : (
+                        <Box
+                          component="img"
+                          sx={{
+                            height: 70,
+                            width: "auto",
+                            ml: 0,
+                            mt: 0,
+                            mb: 0,
+                            mr: 2,
+                          }}
+                          alt="logo"
+                          src={`data:${logo1?.fileType};base64, ${logo1?.fileData}`}
+                        />
+                      )}
+                      <Box>
+                        {editMode && (
+                          <>
+                            <Typography variant="h6" component="span">
+                              Account Status:
+                            </Typography>
+                            <Switch
+                              checked={checked}
+                              onChange={handleChange}
+                              inputProps={{ "aria-label": "controlled" }}
+                            />
+                          </>
+                        )}
+                      </Box>
+                    </Box>
                   </PropertyListItem>
+
                   <Divider />
 
                   <Grid container>
@@ -585,21 +704,23 @@ const Page = (props) => {
                   </Grid>
 
                   <Divider />
-                  <Box
-                    sx={{ mt: 3, mb: 2 }}
-                    display="flex"
-                    justifyContent="flex-end"
-                    marginRight="12px"
-                  >
-                    <Button
-                      color="primary"
-                      variant="contained"
-                      align="right"
-                      onClick={handleSaveClick}
+                  {editMode && (
+                    <Box
+                      sx={{ mt: 3, mb: 2 }}
+                      display="flex"
+                      justifyContent="flex-end"
+                      marginRight="12px"
                     >
-                      Save
-                    </Button>
-                  </Box>
+                      <Button
+                        color="primary"
+                        variant="contained"
+                        align="right"
+                        onClick={handleSaveClick}
+                      >
+                        Save
+                      </Button>
+                    </Box>
+                  )}
                 </PropertyList>
               </Card>
             </div>
