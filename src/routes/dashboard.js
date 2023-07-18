@@ -1,56 +1,94 @@
-import { lazy, Suspense } from 'react';
-import { Outlet } from 'react-router-dom';
-import { Layout as DashboardLayout } from 'src/layouts/dashboard';
+import { lazy, Suspense } from "react";
+import { Outlet } from "react-router-dom";
+import { Layout as DashboardLayout } from "src/layouts/dashboard";
 
 //(do not delete)
-const IndexPage = lazy(() => import('src/pages/dashboard/index'));
+const IndexPage = lazy(() => import("src/pages/dashboard/index"));
 
 // Quotation (do not delete)
 
-const QuotationServicePage = lazy(() => import('src/pages/dashboard/quotation/serviceQuotation'));
-const QuotationViewPage = lazy(() => import('src/pages/dashboard/quotation/view'));
-const QuotationViewDetailPage = lazy(() => import('src/pages/dashboard/quotation/viewDetail'));
-const QuotationServiceEditPage = lazy(() => import('src/pages/dashboard/quotation/editserviceQuotation'));
-
+const QuotationServicePage = lazy(() =>
+  import("src/pages/dashboard/quotation/serviceQuotation")
+);
+const QuotationViewPage = lazy(() =>
+  import("src/pages/dashboard/quotation/view")
+);
+const QuotationViewDetailPage = lazy(() =>
+  import("src/pages/dashboard/quotation/viewDetail")
+);
+const QuotationServiceEditPage = lazy(() =>
+  import("src/pages/dashboard/quotation/editserviceQuotation")
+);
 
 // AMC (do not delete)
-const AMCCreatePage = lazy(() => import('src/pages/dashboard/services/AMC/create'));
-const AMCViewPage = lazy(() => import('src/pages/dashboard/services/AMC/view'));
-const AMCViewDetailPage = lazy(() => import('src/pages/dashboard/services/AMC/viewDetail'));
-const AMCOrderEdit = lazy(() => import('src/pages/dashboard/services/AMC/edit'));
+const AMCCreatePage = lazy(() =>
+  import("src/pages/dashboard/services/AMC/create")
+);
+const AMCViewPage = lazy(() => import("src/pages/dashboard/services/AMC/view"));
+const AMCViewDetailPage = lazy(() =>
+  import("src/pages/dashboard/services/AMC/viewDetail")
+);
+const AMCOrderEdit = lazy(() =>
+  import("src/pages/dashboard/services/AMC/edit")
+);
 //const WorkOrderDownload = lazy(() => import('src/pages/dashboard/services/workorder/downloadamc'));
 
 // Temporary User (do not delete)
-const LogisticsDashboardPage = lazy(() => import('src/pages/dashboard/logistics/dashboard'));
-
+const LogisticsDashboardPage = lazy(() =>
+  import("src/pages/dashboard/logistics/dashboard")
+);
 
 //add technician
-const TechnicianCreatePage = lazy(() => import('src/pages/dashboard/services/technician/dashboard'));
-const TechnicianViewPage =lazy(() => import('src/pages/dashboard/services/technician/view'));
-const TechnicianViewDetailPage =lazy(() => import('src/pages/dashboard/services/technician/viewDetail'));
-
+const TechnicianCreatePage = lazy(() =>
+  import("src/pages/dashboard/services/technician/dashboard")
+);
+const TechnicianViewPage = lazy(() =>
+  import("src/pages/dashboard/services/technician/view")
+);
+const TechnicianViewDetailPage = lazy(() =>
+  import("src/pages/dashboard/services/technician/viewDetail")
+);
 
 // Products (do not delete)
-const ProductListPage = lazy(() => import('src/pages/dashboard/products/list'));
-const ProductCreatePage = lazy(() => import('src/pages/dashboard/products/create'));
-const ProductViewPage = lazy(() => import('src/pages/dashboard/products/viewDetail'));
+const ProductListPage = lazy(() => import("src/pages/dashboard/products/list"));
+const ProductCreatePage = lazy(() =>
+  import("src/pages/dashboard/products/create")
+);
+const ProductViewPage = lazy(() =>
+  import("src/pages/dashboard/products/viewDetail")
+);
 
 // Social (do not delete)
-const SocialProfilePage = lazy(() => import('src/pages/dashboard/social/profile'));
+const SocialProfilePage = lazy(() =>
+  import("src/pages/dashboard/social/profile")
+);
 
 // Other
-const BlankPage = lazy(() => import('src/pages/dashboard/blank'));
+const BlankPage = lazy(() => import("src/pages/dashboard/blank"));
 
 //registered users
-const ActiveUsers = lazy(() => import('src/pages/dashboard/registeredUsers/active'))
+const ActiveUsers = lazy(() =>
+  import("src/pages/dashboard/registeredUsers/customer/active")
+);
 const InactiveUsers = lazy(() =>
-  import("src/pages/dashboard/registeredUsers/inactive")
+  import("src/pages/dashboard/registeredUsers/customer/inactive")
 );
 const ActiveView = lazy(() =>
-  import("src/pages/dashboard/registeredUsers/activeView")
+  import("src/pages/dashboard/registeredUsers/customer/activeView")
 );
 const InactiveView = lazy(() =>
-  import("src/pages/dashboard/registeredUsers/inactiveView")
+  import("src/pages/dashboard/registeredUsers/customer/inactiveView")
+);
+
+//admin
+const AdminCreate = lazy(() =>
+  import("src/pages/dashboard/registeredUsers/admin/create")
+);
+const AdminView = lazy(() =>
+  import("src/pages/dashboard/registeredUsers/admin/view")
+);
+const AdminViewDetail = lazy(() =>
+  import("src/pages/dashboard/registeredUsers/admin/viewDetail")
 );
 
 export const dashboardRoutes = [
@@ -117,6 +155,18 @@ export const dashboardRoutes = [
           {
             path: "inactiveView",
             element: <InactiveView />,
+          },
+          {
+            path: "adminCreate",
+            element: <AdminCreate />,
+          },
+          {
+            path: "adminView",
+            element: <AdminView />,
+          },
+          {
+            path: "adminViewDetail",
+            element: <AdminViewDetail />,
           },
         ],
       },

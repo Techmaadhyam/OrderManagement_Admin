@@ -30,7 +30,7 @@ export const tokens = {
     invoice: "nav.invoice",
     invoices: "nav.invoices",
     amc: "nav.amc",
-    home: 'nav.home',
+    home: "nav.home",
     addAmc: "nav.addAmc",
     error: "nav.error",
     feed: "nav.feed",
@@ -64,5 +64,7 @@ export const tokens = {
     products: "nav.products",
     isActive: "nav.isActive",
     isInactive: "nav.isInactive",
+    adminCreate: "nav.adminCreate",
+ 
   },
 };

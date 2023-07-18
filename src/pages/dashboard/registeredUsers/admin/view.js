@@ -38,7 +38,7 @@ const Page = () => {
 
   const [isSearching, setIsSearching] = useState(false);
   const [searchText, setSearchText] = useState("");
-      const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
 
 
@@ -96,7 +96,7 @@ const filteredData =
         key: "id",
         render: (name, record) => {
           const handleNavigation = () => {
-            navigate("/dashboard/logistics/activeView", { state: record });
+            navigate("/dashboard/logistics/adminViewDetail", { state: record });
           };
 
           return (

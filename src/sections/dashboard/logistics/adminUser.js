@@ -49,8 +49,8 @@ const customerType = [
   },
 ];
 
-const TempUserCreateForm = () => {
-    const navigate = useNavigate();
+const AdminUserCreateForm = () => {
+  const navigate = useNavigate();
   //image carousel state handeling
   const [currentImage, setCurrentImage] = useState(0);
   // country, state, city API access token
@@ -85,7 +85,7 @@ const TempUserCreateForm = () => {
 
   //handle file uploads
   const [uploadFile, setUploadFile] = useState(null);
-    const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(false);
 
   //updating form state
   const handleInputChange = (event) => {
@@ -144,8 +144,6 @@ const TempUserCreateForm = () => {
   //add email validation
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const hasError = touched && !emailRegex.test(email);
-
- 
 
   //getting current date
   useEffect(() => {
@@ -270,124 +268,117 @@ const TempUserCreateForm = () => {
     });
   };
 
-
-
   //handle switch
-    const handleChange = (event) => {
-      setChecked(event.target.checked);
-    };
+  const handleChange = (event) => {
+    setChecked(event.target.checked);
+  };
 
- 
   //calls toast notification on sucessful registration and redirects to login page, handles fetch POST request
   const handleToHome = async (event) => {
     event.preventDefault();
 
-    
-      if (
-        firstName &&
-   
-        email &&
-        phone &&
-        company &&
-        type &&
-        currentCountry &&
-        currentState &&
-        currentCity &&
-        zipcode &&
-        currentDate &&
-        uploadFile
-      ) {
-        try {
-          const response = await fetch(apiUrl + "addUser", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              companyName: company,
-              userName: email,
-              password: password,
-              firstName: firstName,
-              lastName: lastName,
-              emailId: email,
-              mobile: `+91 ${phone}`,
-              address: address,
-              city: currentCity,
-              state: currentState,
-              country: currentCountry,
-              type: type,
-              gstNumber: gstn,
-              pandcard: pan,
-              pincode: zipcode,
-              issuperuser: checked,
-              isactive:checked,
-              createdDate: new Date(),
-              unpdatedDate: new Date(),
-            }),
-          });
+    if (
+      firstName &&
+      email &&
+      phone &&
+      company &&
+      type &&
+      currentCountry &&
+      currentState &&
+      currentCity &&
+      zipcode &&
+      currentDate &&
+      uploadFile
+    ) {
+      try {
+        const response = await fetch(apiUrl + "addUser", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            companyName: company,
+            userName: email,
+            password: password,
+            firstName: firstName,
+            lastName: lastName,
+            emailId: email,
+            mobile: `+91 ${phone}`,
+            address: address,
+            city: currentCity,
+            state: currentState,
+            country: currentCountry,
+            type: type,
+            gstNumber: gstn,
+            pandcard: pan,
+            pincode: zipcode,
+            issuperuser: checked,
+            isactive: checked,
+            createdDate: new Date(),
+            unpdatedDate: new Date(),
+          }),
+        });
 
-          if (response.ok) {
-            // Redirect to home page upon successful submission
+        if (response.ok) {
+          // Redirect to home page upon successful submission
 
-            response.json().then(async (data) => {
-              if (uploadFile) {
-                const formData = new FormData();
+          response.json().then(async (data) => {
+            if (uploadFile) {
+              const formData = new FormData();
 
-                let jsonBodyData = {};
+              let jsonBodyData = {};
 
-                let file = uploadFile;
-    
-                jsonBodyData.fileName = "companylogo";
-                jsonBodyData.fileType = uploadFile?.type;
-                jsonBodyData.createdbyid = data.id;
-                jsonBodyData.lastmodifybyid = null;
-                jsonBodyData.createdDate = new Date();
-                jsonBodyData.lastModifiedDate = new Date();
+              let file = uploadFile;
 
-                formData.append("file", file);
-                formData.append("fileWrapper", JSON.stringify(jsonBodyData));
+              jsonBodyData.fileName = "companylogo";
+              jsonBodyData.fileType = uploadFile?.type;
+              jsonBodyData.createdbyid = data.id;
+              jsonBodyData.lastmodifybyid = null;
+              jsonBodyData.createdDate = new Date();
+              jsonBodyData.lastModifiedDate = new Date();
 
-                try {
-                  const uploadResponse = await fetch(apiUrl + "upload", {
-                    method: "POST",
-                    body: formData,
-                  });
+              formData.append("file", file);
+              formData.append("fileWrapper", JSON.stringify(jsonBodyData));
 
-                  if (uploadResponse.ok) {
-                    if (data.isactive === true) {
-                       navigate("/dashboard/logistics/activeView", {
-                         state: data,
-                       });
-                    } else {
-                      navigate("/dashboard/logistics/inactiveView", {
-                        state: data,
-                      });
-                    }
-                   
+              try {
+                const uploadResponse = await fetch(apiUrl + "upload", {
+                  method: "POST",
+                  body: formData,
+                });
+
+                if (uploadResponse.ok) {
+                  if (data.isactive === true) {
+                    navigate("/dashboard/logistics/activeView", {
+                      state: data,
+                    });
                   } else {
-                    console.error("Logo upload failed");
+                    navigate("/dashboard/logistics/inactiveView", {
+                      state: data,
+                    });
                   }
-                } catch (error) {
-                  console.error(error);
+                } else {
+                  console.error("Logo upload failed");
                 }
+              } catch (error) {
+                console.error(error);
               }
-            });
-          } else {
-            notify(
-              "error",
-              "Failed to submit the form. Please try again later."
-            );
-          }
-        } catch (error) {
-          notify(
-            "error",
-            "An error occurred while submitting the form. Please try again later."
-          );
+            }
+          });
+        } else {
+          notify("error", "Failed to submit the form. Please try again later.");
         }
-      } else {
-        notify("error", "Please input all fields and company logo before submitting.");
+      } catch (error) {
+        notify(
+          "error",
+          "An error occurred while submitting the form. Please try again later."
+        );
       }
-   
+    } else {
+      notify(
+        "error",
+        "Please input all fields and company logo before submitting."
+      );
+    }
   };
 
   const handleUploadChange = (event) => {
@@ -396,7 +387,6 @@ const TempUserCreateForm = () => {
 
     if (file && (file.type === "image/png" || file.type === "image/jpeg")) {
       // Perform necessary operations with the file, such as saving or previewing
-
     } else {
       // Display an error message or perform any other error handling
       alert("Invalid file format. Please select a PNG or JPEG file.");
@@ -533,7 +523,7 @@ const TempUserCreateForm = () => {
                             onChange={handleInputChange}
                           ></TextField>
                         </Grid>
-                        <Grid/>
+                        <Grid />
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
@@ -671,7 +661,6 @@ const TempUserCreateForm = () => {
                           </Typography>
                         </Grid>
                       </Grid>
-                 
                     </CardContent>
                     <Divider />
                   </Card>
@@ -719,7 +708,6 @@ const TempUserCreateForm = () => {
           justifyContent: "space-between",
           alignItems: "center",
           marginTop: "1rem",
-  
         }}
       >
         <div style={{ flex: 1 }}>
@@ -757,4 +745,4 @@ const TempUserCreateForm = () => {
   );
 };
 
-export default TempUserCreateForm;
+export default AdminUserCreateForm;

@@ -124,6 +124,9 @@ export const paths = {
       inactive: "/dashboard/logistics/inactive",
       inactiveView: "/dashboard/logistics/inactiveView",
       activeView: "/dashboard/logistics/activeView",
+      adminCreate: "/dashboard/logistics/adminCreate",
+      adminView: "/dashboard/logistics/adminView",
+      adminViewDetail: "/dashboard/logistics/adminViewDetail",
     },
 
     mail: "/dashboard/mail",

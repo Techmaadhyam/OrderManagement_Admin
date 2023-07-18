@@ -62,4 +62,6 @@ export const en = {
   [tokens.nav.verifyCode]: "Verify Code",
   [tokens.nav.isActive]: "Active Customers",
   [tokens.nav.isInactive]: "Inactive Customers",
+  [tokens.nav.adminCreate]: "Admin User"
+
 };

@@ -120,13 +120,26 @@ export const useSections = () => {
                   },
                   {
                     title: t(tokens.nav.isInactive),
-                    path: paths.dashboard.logistics.inactive
+                    path: paths.dashboard.logistics.inactive,
                   },
                 ],
               },
               {
                 title: t(tokens.nav.create),
                 path: paths.dashboard.logistics.index,
+              },
+              {
+                title: t(tokens.nav.adminCreate),
+                items: [
+                  {
+                    title: t(tokens.nav.view),
+                    path: paths.dashboard.logistics.adminView,
+                  },
+                  {
+                    title: t(tokens.nav.create),
+                    path: paths.dashboard.logistics.adminCreate,
+                  },
+                ],
               },
             ],
           },
