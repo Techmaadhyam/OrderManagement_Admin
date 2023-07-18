@@ -175,6 +175,7 @@ const Password = () => {
               country: registeredData.country,
               type: registeredData.type,
               isactive: registeredData.isactive,
+              issuperuser: registeredData.issuperuser,
               gstNumber: registeredData.gstNumber,
               pandcard: registeredData.pandcard,
               createdDate: registeredData.createdDate,

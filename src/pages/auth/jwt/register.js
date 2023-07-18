@@ -33,6 +33,10 @@ import {
 
 const customerType = [
   {
+    label: "Admin",
+    value: "Admin",
+  },
+  {
     label: "Distributor",
     value: "Distributor",
   },
@@ -81,7 +85,7 @@ const Register = () => {
 
   //handle file uploads
   const [uploadFile, setUploadFile] = useState(null);
-    const [checked, setChecked] = useState(false);
+
 
   //updating form state
   const handleInputChange = (event) => {
@@ -289,10 +293,7 @@ const Register = () => {
     "/assets/logos/logo10.png",
   ];
 
-  //handle switch
-    const handleChange = (event) => {
-      setChecked(event.target.checked);
-    };
+
 
   //handles image carousel
   const handleImageChange = useCallback(() => {
@@ -303,7 +304,7 @@ const Register = () => {
     const intervalId = setInterval(handleImageChange, 3000);
     return () => clearInterval(intervalId);
   }, [handleImageChange]);
-console.log(uploadFile)
+
   //calls toast notification on sucessful registration and redirects to login page, handles fetch POST request
   const handleToHome = async (event) => {
     event.preventDefault();
@@ -345,8 +346,8 @@ console.log(uploadFile)
               gstNumber: gstn,
               pandcard: pan,
               pincode: zipcode,
-              issuperuser: checked,
-              isactive:checked,
+              issuperuser: false,
+              isactive: false,
               createdDate: new Date(),
               updatedDate: new Date(),
             }),
@@ -742,26 +743,7 @@ console.log(uploadFile)
                             onChange={handleInputChange}
                           ></TextField>
                         </Grid>
-                        <Grid
-                          container
-                          direction="row"
-                          alignItems="center"
-                          xs={12}
-                          md={6}
-                        >
-                          <Grid item>
-                            <Typography variant="subtitle2">
-                              Admin access:
-                            </Typography>
-                          </Grid>
-                          <Grid item>
-                            <Switch
-                              checked={checked}
-                              onChange={handleChange}
-                              inputProps={{ "aria-label": "controlled" }}
-                            />
-                          </Grid>
-                        </Grid>
+ 
                         <Grid xs={12} md={6}>
                           <div>
                             <div style={{ display: "inline-block" }}>
