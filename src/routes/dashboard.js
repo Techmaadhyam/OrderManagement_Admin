@@ -62,6 +62,9 @@ const ProductViewPage = lazy(() =>
 const SocialProfilePage = lazy(() =>
   import("src/pages/dashboard/social/profile")
 );
+const SocialPasswordPage = lazy(() =>
+  import("src/pages/dashboard/social/changePassword")
+);
 
 // Other
 const BlankPage = lazy(() => import("src/pages/dashboard/blank"));
@@ -212,6 +215,10 @@ export const dashboardRoutes = [
           {
             path: "profile",
             element: <SocialProfilePage />,
+          },
+          {
+            path: "password",
+            element: <SocialPasswordPage />,
           },
         ],
       },

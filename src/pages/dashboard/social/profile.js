@@ -9,6 +9,9 @@ import { PropertyListItem } from "src/components/property-list-item";
 import {  useContext } from "react";
 import { LogoContext } from "src/utils/logoContext";
 import PropTypes from "prop-types";
+import ManageAccountsTwoToneIcon from '@mui/icons-material/ManageAccountsTwoTone';
+import LockResetRoundedIcon from "@mui/icons-material/LockResetRounded";
+import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 
 import {
   Card,
@@ -22,6 +25,10 @@ import {
   TextField,
   Button,
   Grid,
+  MenuItem,
+  Popover,
+  IconButton,
+  Icon,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { RouterLink } from "src/components/router-link";
@@ -38,6 +45,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import FileUploadRoundedIcon from "@mui/icons-material/FileUploadRounded";
 import { users } from "src/api/auth/data";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -46,23 +54,15 @@ import { users } from "src/api/auth/data";
 
 export const Page = () => {
   const { logo } = useContext(LogoContext);
-
-
-  //logout
-  const handleLogout = () => {
-    // Clear the session storage
-    sessionStorage.clear();
-    localStorage.removeItem("accessToken");
-    const broadcastChannel = new BroadcastChannel("logoutChannel");
-    broadcastChannel.postMessage("logout");
-    window.location.href = paths.index;
-  };
+    const navigate = useNavigate();
 
   const [logoPreview, setLogoPreview] = useState(null);
   const [logo1, setLogo1] = useState();
-  const [userData, setUserData]= useState()
+  const [userData, setUserData] = useState();
   const [editMode, setEditMode] = useState(false);
   //handle file uploads
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [isPopoverOpen, setPopoverOpen] = useState(false);
   const [uploadFile, setUploadFile] = useState(null);
   const [modifiedValues, setModifiedValues] = useState();
   const handleEditClick = () => {
@@ -121,19 +121,17 @@ export const Page = () => {
     });
   };
 
+  useEffect(() => {
+    axios
+      .get(apiUrl + `getUserByUsername/${mail}`)
+      .then((response) => {
+        setUserData(response.data.loggedIUser[0]);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
-    useEffect(() => {
-      axios
-        .get(apiUrl + `getUserByUsername/${mail}`)
-        .then((response) => {
-          setUserData(response.data.loggedIUser[0]);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }, []);
-  
-  
   useEffect(() => {
     axios
       .get(apiUrl + `getUserLogo/${userData?.id}`)
@@ -146,7 +144,17 @@ export const Page = () => {
       });
   }, [userData]);
 
-  console.log(modifiedValues)
+
+
+  //logout
+  const handleLogout = () => {
+    // Clear the session storage
+    sessionStorage.clear();
+    localStorage.removeItem("accessToken");
+    const broadcastChannel = new BroadcastChannel("logoutChannel");
+    broadcastChannel.postMessage("logout");
+    window.location.href = paths.index;
+  };
 
   const handleSaveClick = async () => {
     if (userData?.id) {
@@ -239,7 +247,6 @@ export const Page = () => {
     }
   };
 
-
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setModifiedValues((prevValues) => ({
@@ -249,6 +256,24 @@ export const Page = () => {
   };
 
   const align = "horizontal";
+    const handleOpenPopover = (event) => {
+      setAnchorEl(event.currentTarget);
+      setPopoverOpen(true);
+    };
+
+    const handleClosePopover = () => {
+      setAnchorEl(null);
+      setPopoverOpen(false);
+    };
+
+ 
+   const handleNavigation = () => {
+     navigate("/dashboard/social/password", { state: userData });
+   };
+
+  
+
+  
 
   return (
     <>
@@ -257,9 +282,58 @@ export const Page = () => {
         title="Your Profile Details"
         titleTypographyProps={{ variant: "h5" }}
         action={
-          <Button color="primary" variant="contained" onClick={handleLogout}>
-            Log Out
-          </Button>
+          // <SvgIcon onClick={handleLogout} sx={{ fontSize:  '2.5rem', cursor: 'pointer'}}>
+          //   <ManageAccountsTwoToneIcon />
+          // </SvgIcon>
+
+          <div>
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={handleOpenPopover}
+              ref={(node) => {
+                setAnchorEl(node);
+              }}
+              sx={{
+                borderRadius: "50%",
+                minWidth: 40,
+                minHeight: 40,
+                width: 40,
+                height: 40,
+                fontSize: "2.4rem",
+              }}
+            >
+              <ManageAccountsTwoToneIcon />
+            </Button>
+            <Popover
+              open={isPopoverOpen}
+              anchorEl={anchorEl}
+              onClose={handleClosePopover}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+            >
+              <MenuItem onClick={handleNavigation} sx={{ padding: ".6rem" }}>
+                <LockResetRoundedIcon
+                  sx={{ marginRight: 1, fontSize: 18, color: "grey" }}
+                />
+
+                <Typography variant="subtitle2">Change Password</Typography>
+              </MenuItem>
+              <MenuItem onClick={handleLogout} sx={{ padding: ".6rem" }}>
+                <LogoutRoundedIcon
+                  sx={{ marginRight: 1, fontSize: 18, color: "grey" }}
+                />{" "}
+                {/* LogoutRoundedIcon */}
+                <Typography variant="subtitle2">Sign Out</Typography>
+              </MenuItem>
+            </Popover>
+          </div>
         }
       />
 
@@ -351,43 +425,54 @@ export const Page = () => {
                         </div>
                       ) : (
                         <Box
-                          component="img"
                           sx={{
-                            height: 70,
-                            width: "auto",
-                            ml: 0,
-                            mt: 0,
-                            mb: 0,
-                            mr: 2,
+                            display: "flex",
+                            alignItems: "center",
                           }}
-                          alt="logo"
-                          src={`data:${logo1?.fileType};base64, ${logo1?.fileData}`}
-                        />
+                        >
+                          <Box
+                            component="img"
+                            sx={{
+                              height: 70,
+                              width: "auto",
+                              ml: 0,
+                              mt: 0,
+                              mb: 0,
+                              mr: 2,
+                            }}
+                            alt="logo"
+                            src={`data:${logo1?.fileType};base64, ${logo1?.fileData}`}
+                          />
+                          <div>
+                            <Typography variant="h6">
+                              Company: {userData?.companyName}
+                            </Typography>
+                            <Typography variant="subtitle2">
+                              GSTN: {userData?.gstNumber}
+                            </Typography>
+                          </div>
+                        </Box>
                       )}
                       <Box>
-                      
-                        
-                            {editMode && (
-                              <Button
-                                color="primary"
-                                variant="contained"
-                                align="right"
-                                onClick={handleCancelClick}
-                                sx={{ mr: 2 }}
-                              >
-                                Cancel
-                              </Button>
-                            )}
-                            <Button
-                              color="primary"
-                              variant="contained"
-                              align="right"
-                              onClick={handleEditClick}
-                            >
-                              Update Profile
-                            </Button>
-                        
-                       
+                        {editMode && (
+                          <Button
+                            color="primary"
+                            variant="contained"
+                            align="right"
+                            onClick={handleCancelClick}
+                            sx={{ mr: 2 }}
+                          >
+                            Cancel
+                          </Button>
+                        )}
+                        <Button
+                          color="primary"
+                          variant="contained"
+                          align="right"
+                          onClick={handleEditClick}
+                        >
+                          Update Profile
+                        </Button>
                       </Box>
                     </Box>
                   </PropertyListItem>
