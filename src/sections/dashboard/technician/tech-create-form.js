@@ -441,6 +441,13 @@ event.preventDefault();
                   name="country"
                   required
                   select
+                  SelectProps={{
+                    MenuProps: {
+                      style: {
+                        maxHeight: 300,
+                      },
+                    },
+                  }}
                   defaultValue=""
                   value={currentCountry}
                   onChange={handleCountry}
@@ -460,6 +467,13 @@ event.preventDefault();
                   name="state"
                   required
                   select
+                  SelectProps={{
+                    MenuProps: {
+                      style: {
+                        maxHeight: 300,
+                      },
+                    },
+                  }}
                   defaultValue=""
                   value={currentState}
                   onChange={handleState}
@@ -479,6 +493,13 @@ event.preventDefault();
                   label="City"
                   name="city"
                   select
+                  SelectProps={{
+                    MenuProps: {
+                      style: {
+                        maxHeight: 300,
+                      },
+                    },
+                  }}
                   required
                   defaultValue=""
                   value={currentCity}

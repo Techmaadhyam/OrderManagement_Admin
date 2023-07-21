@@ -461,6 +461,13 @@ const deliveryIST2 = deliveryDateJS2
                   label="Type"
                   name="type"
                   select
+                  SelectProps={{
+                    MenuProps: {
+                      style: {
+                        maxHeight: 300,
+                      },
+                    },
+                  }}
                   required
                   value={type}
                   onChange={handleInputChange}
@@ -498,6 +505,13 @@ const deliveryIST2 = deliveryDateJS2
                   name="user"
                   required
                   select
+                  SelectProps={{
+                    MenuProps: {
+                      style: {
+                        maxHeight: 300,
+                      },
+                    },
+                  }}
                   value={userName}
                   onChange={(e) => {
                     const selectedOption = userData.find(
@@ -541,6 +555,13 @@ const deliveryIST2 = deliveryDateJS2
                   value={status}
                   onChange={handleInputChange}
                   select
+                  SelectProps={{
+                    MenuProps: {
+                      style: {
+                        maxHeight: 300,
+                      },
+                    },
+                  }}
                 >
                   {userOptions.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
@@ -668,6 +689,14 @@ const deliveryIST2 = deliveryDateJS2
                             name="name"
                             required
                             select
+                             SelectProps={{
+                              MenuProps: {
+                                style: {
+                                  maxHeight: 300,
+                                },
+                              },
+                            }}
+                       
                             value={productName}
                             onChange={(e) => {
                               const selectedOption = userData2.find(

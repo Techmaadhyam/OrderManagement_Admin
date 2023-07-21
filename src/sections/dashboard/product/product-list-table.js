@@ -130,89 +130,87 @@ export const ProductListTable = (props) => {
 
               return (
                 <Fragment key={product.id}>
-                  <TableRow
-                    hover
-                    key={product.id}
-                  >
+                  <TableRow hover key={product.id}>
                     <TableCell
                       padding="checkbox"
                       sx={{
                         ...(isCurrent && {
-                          position: 'relative',
-                          '&:after': {
-                            position: 'absolute',
+                          position: "relative",
+                          "&:after": {
+                            position: "absolute",
                             content: '" "',
                             top: 0,
                             left: 0,
-                            backgroundColor: 'primary.main',
+                            backgroundColor: "primary.main",
                             width: 3,
-                            height: 'calc(100% + 1px)'
-                          }
-                        })
+                            height: "calc(100% + 1px)",
+                          },
+                        }),
                       }}
                       width="25%"
                     >
-                      <IconButton onClick={() => handleProductToggle(product.id)}>
+                      <IconButton
+                        onClick={() => handleProductToggle(product.id)}
+                      >
                         <SvgIcon>
-                          {isCurrent ? <ChevronDownIcon /> : <ChevronRightIcon />}
+                          {isCurrent ? (
+                            <ChevronDownIcon />
+                          ) : (
+                            <ChevronRightIcon />
+                          )}
                         </SvgIcon>
                       </IconButton>
                     </TableCell>
                     <TableCell width="25%">
                       <Box
                         sx={{
-                          alignItems: 'center',
-                          display: 'flex'
+                          alignItems: "center",
+                          display: "flex",
                         }}
                       >
-                        {product.image
-                          ? (
-                            <Box
-                              sx={{
-                                alignItems: 'center',
-                                backgroundColor: 'neutral.50',
-                                backgroundImage: `url(${product.image})`,
-                                backgroundPosition: 'center',
-                                backgroundSize: 'cover',
-                                borderRadius: 1,
-                                display: 'flex',
-                                height: 80,
-                                justifyContent: 'center',
-                                overflow: 'hidden',
-                                width: 80
-                              }}
-                            />
-                          )
-                          : (
-                            <Box
-                              sx={{
-                                alignItems: 'center',
-                                backgroundColor: 'neutral.50',
-                                borderRadius: 1,
-                                display: 'flex',
-                                height: 80,
-                                justifyContent: 'center',
-                                width: 80
-                              }}
-                            >
-                              <SvgIcon>
-                                <Image01Icon />
-                              </SvgIcon>
-                            </Box>
-                          )}
+                        {product.image ? (
+                          <Box
+                            sx={{
+                              alignItems: "center",
+                              backgroundColor: "neutral.50",
+                              backgroundImage: `url(${product.image})`,
+                              backgroundPosition: "center",
+                              backgroundSize: "cover",
+                              borderRadius: 1,
+                              display: "flex",
+                              height: 80,
+                              justifyContent: "center",
+                              overflow: "hidden",
+                              width: 80,
+                            }}
+                          />
+                        ) : (
+                          <Box
+                            sx={{
+                              alignItems: "center",
+                              backgroundColor: "neutral.50",
+                              borderRadius: 1,
+                              display: "flex",
+                              height: 80,
+                              justifyContent: "center",
+                              width: 80,
+                            }}
+                          >
+                            <SvgIcon>
+                              <Image01Icon />
+                            </SvgIcon>
+                          </Box>
+                        )}
                         <Box
                           sx={{
-                            cursor: 'pointer',
-                            ml: 2
+                            cursor: "pointer",
+                            ml: 2,
                           }}
                         >
                           <Typography variant="subtitle2">
                             {product.name}
                           </Typography>
-                          <Typography
-                            color="text.secondary"
-                            variant="body2"
-                          >
+                          <Typography color="text.secondary" variant="body2">
                             in {product.category}
                           </Typography>
                         </Box>
@@ -225,25 +223,16 @@ export const ProductListTable = (props) => {
                         color={quantityColor}
                         sx={{
                           height: 8,
-                          width: 36
+                          width: 36,
                         }}
                       />
-                      <Typography
-                        color="text.secondary"
-                        variant="body2"
-                      >
-                        {product.quantity}
-                        {' '}
-                        in stock
+                      <Typography color="text.secondary" variant="body2">
+                        {product.quantity} in stock
                         {hasManyVariants && ` in ${product.variants} variants`}
                       </Typography>
                     </TableCell>
-                    <TableCell>
-                      {price}
-                    </TableCell>
-                    <TableCell>
-                      {product.sku}
-                    </TableCell>
+                    <TableCell>{price}</TableCell>
+                    <TableCell>{product.sku}</TableCell>
                     <TableCell>
                       <SeverityPill color={statusColor}>
                         {product.status}
@@ -263,41 +252,27 @@ export const ProductListTable = (props) => {
                         colSpan={7}
                         sx={{
                           p: 0,
-                          position: 'relative',
-                          '&:after': {
-                            position: 'absolute',
+                          position: "relative",
+                          "&:after": {
+                            position: "absolute",
                             content: '" "',
                             top: 0,
                             left: 0,
-                            backgroundColor: 'primary.main',
+                            backgroundColor: "primary.main",
                             width: 3,
-                            height: 'calc(100% + 1px)'
-                          }
+                            height: "calc(100% + 1px)",
+                          },
                         }}
                       >
                         <CardContent>
-                          <Grid
-                            container
-                            spacing={3}
-                          >
-                            <Grid
-                              item
-                              md={6}
-                              xs={12}
-                            >
+                          <Grid container spacing={3}>
+                            <Grid item md={6} xs={12}>
                               <Typography variant="h6">
                                 Basic details
                               </Typography>
                               <Divider sx={{ my: 2 }} />
-                              <Grid
-                                container
-                                spacing={3}
-                              >
-                                <Grid
-                                  item
-                                  md={6}
-                                  xs={12}
-                                >
+                              <Grid container spacing={3}>
+                                <Grid item md={6} xs={12}>
                                   <TextField
                                     defaultValue={product.name}
                                     fullWidth
@@ -305,11 +280,7 @@ export const ProductListTable = (props) => {
                                     name="name"
                                   />
                                 </Grid>
-                                <Grid
-                                  item
-                                  md={6}
-                                  xs={12}
-                                >
+                                <Grid item md={6} xs={12}>
                                   <TextField
                                     defaultValue={product.sku}
                                     disabled
@@ -318,16 +289,19 @@ export const ProductListTable = (props) => {
                                     name="sku"
                                   />
                                 </Grid>
-                                <Grid
-                                  item
-                                  md={6}
-                                  xs={12}
-                                >
+                                <Grid item md={6} xs={12}>
                                   <TextField
                                     defaultValue={product.category}
                                     fullWidth
                                     label="Category"
                                     select
+                                    SelectProps={{
+                                      MenuProps: {
+                                        style: {
+                                          maxHeight: 300,
+                                        },
+                                      },
+                                    }}
                                   >
                                     {categoryOptions.map((option) => (
                                       <MenuItem
@@ -339,11 +313,7 @@ export const ProductListTable = (props) => {
                                     ))}
                                   </TextField>
                                 </Grid>
-                                <Grid
-                                  item
-                                  md={6}
-                                  xs={12}
-                                >
+                                <Grid item md={6} xs={12}>
                                   <TextField
                                     defaultValue={product.id}
                                     disabled
@@ -354,24 +324,13 @@ export const ProductListTable = (props) => {
                                 </Grid>
                               </Grid>
                             </Grid>
-                            <Grid
-                              item
-                              md={6}
-                              xs={12}
-                            >
+                            <Grid item md={6} xs={12}>
                               <Typography variant="h6">
                                 Pricing and stocks
                               </Typography>
                               <Divider sx={{ my: 2 }} />
-                              <Grid
-                                container
-                                spacing={3}
-                              >
-                                <Grid
-                                  item
-                                  md={6}
-                                  xs={12}
-                                >
+                              <Grid container spacing={3}>
+                                <Grid item md={6} xs={12}>
                                   <TextField
                                     defaultValue={product.price}
                                     fullWidth
@@ -382,16 +341,12 @@ export const ProductListTable = (props) => {
                                         <InputAdornment position="start">
                                           {product.currency}
                                         </InputAdornment>
-                                      )
+                                      ),
                                     }}
                                     type="number"
                                   />
                                 </Grid>
-                                <Grid
-                                  item
-                                  md={6}
-                                  xs={12}
-                                >
+                                <Grid item md={6} xs={12}>
                                   <TextField
                                     defaultValue={product.price}
                                     fullWidth
@@ -402,7 +357,7 @@ export const ProductListTable = (props) => {
                                         <InputAdornment position="start">
                                           $
                                         </InputAdornment>
-                                      )
+                                      ),
                                     }}
                                     type="number"
                                   />
@@ -412,8 +367,8 @@ export const ProductListTable = (props) => {
                                   md={6}
                                   xs={12}
                                   sx={{
-                                    alignItems: 'center',
-                                    display: 'flex'
+                                    alignItems: "center",
+                                    display: "flex",
                                   }}
                                 >
                                   <Switch />
@@ -452,10 +407,7 @@ export const ProductListTable = (props) => {
                             </Button>
                           </Stack>
                           <div>
-                            <Button
-                              onClick={handleProductDelete}
-                              color="error"
-                            >
+                            <Button onClick={handleProductDelete} color="error">
                               Delete product
                             </Button>
                           </div>

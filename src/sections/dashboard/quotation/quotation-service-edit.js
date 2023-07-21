@@ -556,6 +556,13 @@ console.log(idx, row)
                   label="Type"
                   name="type"
                   select
+                  SelectProps={{
+                    MenuProps: {
+                      style: {
+                        maxHeight: 300,
+                      },
+                    },
+                  }}
                   value={type}
                   onChange={handleInputChange}
                 >
@@ -595,6 +602,13 @@ console.log(idx, row)
                   label="Company Name"
                   name="user"
                   select
+                  SelectProps={{
+                    MenuProps: {
+                      style: {
+                        maxHeight: 300,
+                      },
+                    },
+                  }}
                   value={user}
                   onChange={(e) => {
                     const selectedOption = userData?.find(
@@ -638,6 +652,13 @@ console.log(idx, row)
                   value={status}
                   onChange={handleInputChange}
                   select
+                  SelectProps={{
+                    MenuProps: {
+                      style: {
+                        maxHeight: 300,
+                      },
+                    },
+                  }}
                 >
                   {userOptions.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
@@ -758,6 +779,13 @@ console.log(idx, row)
                             label="Product / Service"
                             name="name"
                             select
+                            SelectProps={{
+                              MenuProps: {
+                                style: {
+                                  maxHeight: 300,
+                                },
+                              },
+                            }}
                             value={productName}
                             onChange={(e) => {
                               const selectedOption = userData2.find(

@@ -514,6 +514,13 @@ export const AmcCreateForm = (props) => {
                   label="Type"
                   name="type"
                   select
+                  SelectProps={{
+                    MenuProps: {
+                      style: {
+                        maxHeight: 300,
+                      },
+                    },
+                  }}
                   required
                   value={type}
                   onChange={handleInputChange}
@@ -550,6 +557,13 @@ export const AmcCreateForm = (props) => {
                   name="user"
                   required
                   select
+                  SelectProps={{
+                    MenuProps: {
+                      style: {
+                        maxHeight: 300,
+                      },
+                    },
+                  }}
                   value={userName}
                   onChange={(e) => {
                     const selectedOption = userData.find(
@@ -592,6 +606,13 @@ export const AmcCreateForm = (props) => {
                   value={status}
                   onChange={handleInputChange}
                   select
+                  SelectProps={{
+                    MenuProps: {
+                      style: {
+                        maxHeight: 300,
+                      },
+                    },
+                  }}
                   required
                 >
                   {userOptions.map((option) => (
@@ -608,6 +629,13 @@ export const AmcCreateForm = (props) => {
                   name="technician"
                   required
                   select
+                  SelectProps={{
+                    MenuProps: {
+                      style: {
+                        maxHeight: 300,
+                      },
+                    },
+                  }}
                   value={technician}
                   onChange={handleInputChange}
                 >
@@ -727,6 +755,13 @@ export const AmcCreateForm = (props) => {
                             label="Product / Service"
                             name="name"
                             select
+                            SelectProps={{
+                              MenuProps: {
+                                style: {
+                                  maxHeight: 300,
+                                },
+                              },
+                            }}
                             required
                             value={productName}
                             onChange={(e) => {
@@ -780,9 +815,7 @@ export const AmcCreateForm = (props) => {
                         </Grid>
                       </div>
                       <div className="popup-right">
-                        <Grid xs={12} md={6}>
-                          
-                         </Grid>
+                        <Grid xs={12} md={6}></Grid>
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth

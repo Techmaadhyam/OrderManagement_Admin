@@ -431,14 +431,14 @@ const AdminUserCreateForm = () => {
                           ></TextField>
                         </Grid>
                         <Grid xs={12} md={6}>
-                        <TextField
-                          fullWidth
-                          label="Last Name"
-                          name="lastname"
-                          value={lastName}
-                          onChange={handleInputChange}
-                        ></TextField>
-                      </Grid>
+                          <TextField
+                            fullWidth
+                            label="Last Name"
+                            name="lastname"
+                            value={lastName}
+                            onChange={handleInputChange}
+                          ></TextField>
+                        </Grid>
                         <Grid xs={12} md={6}>
                           <TextField
                             fullWidth
@@ -508,6 +508,13 @@ const AdminUserCreateForm = () => {
                             name="type"
                             value={type}
                             select
+                            SelectProps={{
+                              MenuProps: {
+                                style: {
+                                  maxHeight: 300,
+                                },
+                              },
+                            }}
                             onChange={handleInputChange}
                           >
                             {customerType.map((option) => (
@@ -535,6 +542,13 @@ const AdminUserCreateForm = () => {
                             label="Country"
                             name="country"
                             select
+                            SelectProps={{
+                              MenuProps: {
+                                style: {
+                                  maxHeight: 300,
+                                },
+                              },
+                            }}
                             defaultValue=""
                             value={currentCountry}
                             onChange={handleCountry}
@@ -552,6 +566,13 @@ const AdminUserCreateForm = () => {
                             label="State"
                             name="state"
                             select
+                            SelectProps={{
+                              MenuProps: {
+                                style: {
+                                  maxHeight: 300,
+                                },
+                              },
+                            }}
                             defaultValue=""
                             value={currentState}
                             onChange={handleState}
@@ -570,6 +591,13 @@ const AdminUserCreateForm = () => {
                             label="City"
                             name="city"
                             select
+                            SelectProps={{
+                              MenuProps: {
+                                style: {
+                                  maxHeight: 300,
+                                },
+                              },
+                            }}
                             defaultValue=""
                             value={currentCity}
                             onChange={handleCities}
