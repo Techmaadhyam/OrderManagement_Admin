@@ -14,6 +14,9 @@ import { paths } from 'src/paths';
 import BuildCircleTwoToneIcon from '@mui/icons-material/BuildCircleTwoTone';
 import InventoryTwoToneIcon from '@mui/icons-material/InventoryTwoTone';
 import AssignmentTwoToneIcon from '@mui/icons-material/AssignmentTwoTone';
+import GridViewTwoToneIcon from "@mui/icons-material/GridViewTwoTone";
+import SupervisedUserCircleTwoToneIcon from "@mui/icons-material/SupervisedUserCircleTwoTone";
+import BusinessTwoToneIcon from "@mui/icons-material/BusinessTwoTone";
 
 export const useSections = () => {
   const { t } = useTranslation();
@@ -246,6 +249,111 @@ export const useSections = () => {
                   {
                     title: t(tokens.nav.create),
                     path: paths.dashboard.services.createTechnician,
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            title: t(tokens.nav.application),
+
+            icon: (
+              <SvgIcon fontSize="small">
+                <GridViewTwoToneIcon />
+              </SvgIcon>
+            ),
+            items: [
+              {
+                title: t(tokens.nav.customTab),
+                //path: paths.dashboard.services.createTechnician,
+                items: [
+                  {
+                    title: t(tokens.nav.view),
+                    //path: paths.dashboard.services.technicianview,
+                  },
+                  {
+                    title: t(tokens.nav.create),
+                    //path: paths.dashboard.services.createTechnician,
+                  },
+                ],
+              },
+              {
+                title: t(tokens.nav.customFields),
+                //path: paths.dashboard.services.createTechnician,
+                items: [
+                  {
+                    title: t(tokens.nav.view),
+                    //path: paths.dashboard.services.technicianview,
+                  },
+                  {
+                    title: t(tokens.nav.create),
+                    //path: paths.dashboard.services.createTechnician,
+                  },
+                ],
+              },
+              {
+                title: t(tokens.nav.schema),
+                //path: paths.dashboard.services.createTechnician,
+                items: [
+                  {
+                    title: t(tokens.nav.view),
+                    //path: paths.dashboard.services.technicianview,
+                  },
+                  {
+                    title: t(tokens.nav.create),
+                    //path: paths.dashboard.services.createTechnician,
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            title: t(tokens.nav.company),
+
+            icon: (
+              <SvgIcon fontSize="small">
+                <BusinessTwoToneIcon />
+              </SvgIcon>
+            ),
+            items: [
+              {
+                title: t(tokens.nav.view),
+                path: paths.dashboard.company.index,
+              },
+              {
+                title: t(tokens.nav.create),
+                path: paths.dashboard.company.view,
+              },
+            ],
+          },
+          {
+            title: t(tokens.nav.appUser),
+
+            icon: (
+              <SvgIcon fontSize="small">
+                <SupervisedUserCircleTwoToneIcon />
+              </SvgIcon>
+            ),
+            items: [
+              {
+                title: t(tokens.nav.view),
+                //path: paths.dashboard.services.technicianview,
+              },
+              {
+                title: t(tokens.nav.create),
+                //path: paths.dashboard.services.createTechnician,
+              },
+              {
+                title: t(tokens.nav.profile),
+                //path: paths.dashboard.services.createAMC,
+                items: [
+                  {
+                    title: t(tokens.nav.view),
+                    //path: paths.dashboard.services.technicianview,
+                  },
+                  {
+                    title: t(tokens.nav.create),
+                    //path: paths.dashboard.services.createTechnician,
                   },
                 ],
               },

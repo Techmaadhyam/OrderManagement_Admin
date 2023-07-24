@@ -62,6 +62,11 @@ export const en = {
   [tokens.nav.verifyCode]: "Verify Code",
   [tokens.nav.isActive]: "Active Customers",
   [tokens.nav.isInactive]: "Inactive Customers",
-  [tokens.nav.adminCreate]: "Admin User"
-
+  [tokens.nav.adminCreate]: "Admin User",
+  [tokens.nav.application]: "Application",
+  [tokens.nav.company]: "Company",
+  [tokens.nav.appUser]: "App User",
+  [tokens.nav.customFields]: "Custom Fields",
+  [tokens.nav.customTab]: "Custom Tab",
+  [tokens.nav.schema]: "Schema",
 };

@@ -97,6 +97,14 @@ export const paths = {
       technicianDetail: "/dashboard/services/technicianDetail",
     },
 
+    application: {
+      index: "/dashboard/application",
+    },
+    company: {
+      index: "/dashboard/company",
+      view: "/dashboard/company/view"
+    },
+
     ecommerce: "/dashboard/ecommerce",
     fileManager: "/dashboard/file-manager",
     invoices: {

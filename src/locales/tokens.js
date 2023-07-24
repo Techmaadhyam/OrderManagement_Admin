@@ -65,6 +65,11 @@ export const tokens = {
     isActive: "nav.isActive",
     isInactive: "nav.isInactive",
     adminCreate: "nav.adminCreate",
- 
+    application: "nav.application",
+    company: "nav.company",
+    appUser: "nav.appUser",
+    customFields: "nav.customFields",
+    customTab: "nav.customTab",
+    schema: "nav.schema",
   },
 };
