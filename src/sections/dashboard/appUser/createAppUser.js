@@ -40,8 +40,8 @@ const CreateAppUser = () => {
   const [currentCity, setCurrentCity] = useState("");
 
   //form state handling
-
-  const [firstName, setFirstName] = useState("");
+  const [password, setPassword] = useState("");
+  const [category, setCategory] = useState("Customer");
   const [lastName, setLastName] = useState("");
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
@@ -70,14 +70,8 @@ const CreateAppUser = () => {
     const { name, value } = event.target;
 
     switch (name) {
-      case "firstname":
-        setFirstName(value);
-        break;
-      case "lastname":
-        setLastName(value);
-        break;
-      case "username":
-        setUserName(value);
+      case "password":
+        setPassword(value);
         break;
       case "email":
         setEmail(value);
@@ -251,14 +245,15 @@ const CreateAppUser = () => {
       gstn
     ) {
       try {
-        const response = await fetch(apiUrl + "createUpdateCompany", {
+        const response = await fetch(apiUrl + "createUpdateAppUser", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            name: company,
-            category: type,
+            company: { id: company },
+            category: category,
+            profile: { id: type },
             gstnumber: gstn,
             zipcode: zipcode,
             city: currentCity,
@@ -266,6 +261,10 @@ const CreateAppUser = () => {
             country: currentCountry,
             pandcard: pan,
             address: address,
+            email: email,
+            username: email,
+            password: password,
+            isactive: true,
             // createdByUser: { id: userId },
             // createdDate: new Date(),
             // lastModifiedDate: new Date(),
@@ -279,7 +278,7 @@ const CreateAppUser = () => {
           response.json().then((data) => {
             console.log(data);
 
-            navigate("/dashboard/company/viewDetail", { state: data });
+            //navigate("/dashboard/company/viewDetail", { state: data });
           });
         }
       } catch (error) {
@@ -345,7 +344,7 @@ const CreateAppUser = () => {
               <Grid xs={12} md={6}>
                 <TextField
                   fullWidth
-                  label="Category"
+                  label="Profile"
                   name="type"
                   required
                   onChange={handleInputChange}
@@ -369,6 +368,22 @@ const CreateAppUser = () => {
                   )}
                 </TextField>
               </Grid>
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Email"
+                  name="email"
+                  required
+                  value={email}
+                  helperText={hasError && "Please enter a valid email."}
+                  onBlur={handleBlur}
+                  error={hasError}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+              <Grid xs={12} md={6}>
+                <TextField fullWidth label="Category" value={category} />
+              </Grid>
 
               <Grid xs={12} md={6}>
                 <TextField
@@ -388,6 +403,7 @@ const CreateAppUser = () => {
                   onChange={handleInputChange}
                 />
               </Grid>
+
               <Grid xs={12} md={6}>
                 <TextField
                   fullWidth
@@ -400,7 +416,7 @@ const CreateAppUser = () => {
                   onChange={handleInputChange}
                 />
               </Grid>
-              <Grid />
+<Grid/>
               <Grid xs={12} md={6}>
                 <TextField
                   fullWidth
@@ -487,6 +503,15 @@ const CreateAppUser = () => {
                   name="zipcode"
                   required
                   value={zipcode}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Password"
+                  name="password"
+                  value={password}
                   onChange={handleInputChange}
                 />
               </Grid>
