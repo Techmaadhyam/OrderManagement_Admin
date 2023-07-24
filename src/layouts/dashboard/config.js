@@ -329,7 +329,7 @@ export const useSections = () => {
           },
           {
             title: t(tokens.nav.appUser),
-
+            path: paths.dashboard.appUser.index,
             icon: (
               <SvgIcon fontSize="small">
                 <SupervisedUserCircleTwoToneIcon />
@@ -338,11 +338,11 @@ export const useSections = () => {
             items: [
               {
                 title: t(tokens.nav.view),
-                //path: paths.dashboard.services.technicianview,
+                path: paths.dashboard.appUser.view,
               },
               {
                 title: t(tokens.nav.create),
-                //path: paths.dashboard.services.createTechnician,
+                path: paths.dashboard.appUser.index,
               },
               {
                 title: t(tokens.nav.profile),
@@ -350,11 +350,11 @@ export const useSections = () => {
                 items: [
                   {
                     title: t(tokens.nav.view),
-                    //path: paths.dashboard.services.technicianview,
+                    path: paths.dashboard.appUser.viewProfile,
                   },
                   {
                     title: t(tokens.nav.create),
-                    //path: paths.dashboard.services.createTechnician,
+                    path: paths.dashboard.appUser.createProfile,
                   },
                 ],
               },

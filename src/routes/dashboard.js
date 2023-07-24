@@ -100,6 +100,12 @@ const CompanyView = lazy(() =>
 const CompanyCreate = lazy(() => import("src/pages/dashboard/company/create"));
 const CompanyViewDetail = lazy(() => import("src/pages/dashboard/company/viewDetail"));
 
+//addUser
+const UserCreate = lazy(() => import("src/pages/dashboard/appUser/create"));
+const UserView = lazy(() => import("src/pages/dashboard/appUser/view"));
+const ProfileCreate = lazy(() => import("src/pages/dashboard/appUser/profile/create"));
+const ProfileView = lazy(() => import("src/pages/dashboard/appUser/profile/view"));
+
 export const dashboardRoutes = [
   {
     path: "dashboard",
@@ -259,6 +265,28 @@ export const dashboardRoutes = [
           {
             path: "viewDetail",
             element: <CompanyViewDetail />,
+          },
+        ],
+      },
+      {
+        path: "appUser",
+        children: [
+          {
+            index: true,
+            element: <UserCreate />,
+          },
+          {
+            path: "view",
+            element: <UserView />,
+          },
+      
+          {
+            path: "profileCreate",
+            element: <ProfileCreate />,
+          },
+          {
+            path: "profileView",
+            element: <ProfileView />,
           },
         ],
       },

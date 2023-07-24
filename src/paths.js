@@ -103,7 +103,14 @@ export const paths = {
     company: {
       index: "/dashboard/company",
       view: "/dashboard/company/view",
-      viewDetail: "/dashboard/company/viewDetail"
+      viewDetail: "/dashboard/company/viewDetail",
+    },
+    appUser: {
+      index: "/dashboard/appUser",
+      view: "/dashboard/appUser/view",
+      viewDetail: "/dashboard/appUser/viewDetail",
+      createProfile: "/dashboard/appUser/profileCreate",
+      viewProfile: "/dashboard/appUser/profileView",
     },
 
     ecommerce: "/dashboard/ecommerce",
@@ -162,7 +169,7 @@ export const paths = {
     social: {
       index: "/dashboard/social",
       profile: "/dashboard/social/profile",
-      password: '/dashboard/social/password',
+      password: "/dashboard/social/password",
       feed: "/dashboard/social/feed",
     },
   },
