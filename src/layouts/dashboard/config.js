@@ -309,6 +309,7 @@ export const useSections = () => {
           },
           {
             title: t(tokens.nav.company),
+            path: paths.dashboard.company.index,
 
             icon: (
               <SvgIcon fontSize="small">

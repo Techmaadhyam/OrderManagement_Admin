@@ -102,7 +102,8 @@ export const paths = {
     },
     company: {
       index: "/dashboard/company",
-      view: "/dashboard/company/view"
+      view: "/dashboard/company/view",
+      viewDetail: "/dashboard/company/viewDetail"
     },
 
     ecommerce: "/dashboard/ecommerce",

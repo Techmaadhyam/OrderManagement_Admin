@@ -98,6 +98,7 @@ const CompanyView = lazy(() =>
   import("src/pages/dashboard/company/view")
 );
 const CompanyCreate = lazy(() => import("src/pages/dashboard/company/create"));
+const CompanyViewDetail = lazy(() => import("src/pages/dashboard/company/viewDetail"));
 
 export const dashboardRoutes = [
   {
@@ -255,7 +256,11 @@ export const dashboardRoutes = [
             path: "view",
             element: <CompanyView />,
           },
-        ]
+          {
+            path: "viewDetail",
+            element: <CompanyViewDetail />,
+          },
+        ],
       },
       {
         path: "blank",
