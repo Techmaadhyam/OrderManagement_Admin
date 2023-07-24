@@ -318,11 +318,11 @@ export const useSections = () => {
             items: [
               {
                 title: t(tokens.nav.view),
-                path: paths.dashboard.company.index,
+                path: paths.dashboard.company.view,
               },
               {
                 title: t(tokens.nav.create),
-                path: paths.dashboard.company.view,
+                path: paths.dashboard.company.index,
               },
             ],
           },
