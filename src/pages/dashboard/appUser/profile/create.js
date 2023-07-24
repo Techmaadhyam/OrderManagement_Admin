@@ -4,7 +4,7 @@ import { customersApi } from "src/api/customers";
 import { Seo } from "src/components/seo";
 import { useMounted } from "src/hooks/use-mounted";
 import { usePageView } from "src/hooks/use-page-view";
-import ViewCompany from "src/sections/dashboard/company/viewCompany";
+import CreateProfile from "src/sections/dashboard/appUser/profile/createProfile";
 
 const useCustomer = () => {
   const isMounted = useMounted();
@@ -54,7 +54,7 @@ const Page = () => {
       >
         <Container maxWidth="lg">
           <Stack spacing={4}>
-            <ViewCompany customer={customer} />
+            <CreateProfile customer={customer} />
           </Stack>
         </Container>
       </Box>
