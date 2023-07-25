@@ -4,7 +4,7 @@ import { customersApi } from "src/api/customers";
 import { Seo } from "src/components/seo";
 import { useMounted } from "src/hooks/use-mounted";
 import { usePageView } from "src/hooks/use-page-view";
-import ViewField from "src/sections/dashboard/application/CustomFields/viewCustomFields";
+import ViewCustomFields from "src/sections/dashboard/application/CustomFields/viewCustomFields";
 
 const useCustomer = () => {
   const isMounted = useMounted();
@@ -54,7 +54,7 @@ const Page = () => {
       >
         <Container maxWidth="lg">
           <Stack spacing={4}>
-            <ViewField customer={customer} />
+            <ViewCustomFields customer={customer} />
           </Stack>
         </Container>
       </Box>
