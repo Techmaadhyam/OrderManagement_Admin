@@ -105,6 +105,7 @@ const UserCreate = lazy(() => import("src/pages/dashboard/appUser/create"));
 const UserView = lazy(() => import("src/pages/dashboard/appUser/view"));
 const ProfileCreate = lazy(() => import("src/pages/dashboard/appUser/profile/create"));
 const ProfileView = lazy(() => import("src/pages/dashboard/appUser/profile/view"));
+const UserViewDetail = lazy(() => import("src/pages/dashboard/appUser/viewDetail"));
 
 export const dashboardRoutes = [
   {
@@ -279,7 +280,10 @@ export const dashboardRoutes = [
             path: "view",
             element: <UserView />,
           },
-      
+          {
+            path: "viewDetail",
+            element: <UserViewDetail />,
+          },
           {
             path: "profileCreate",
             element: <ProfileCreate />,

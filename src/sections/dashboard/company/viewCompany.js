@@ -435,7 +435,7 @@ const ViewCompany = () => {
         }}
       >
         <div style={{ flex: 1 }}>
-          <h2 style={{ margin: 0 }}>View companies</h2>
+          <h2 style={{ margin: 0 }}>View Companies</h2>
         </div>
         <div style={{ flex: 1, textAlign: "center" }}>
           <Logo />

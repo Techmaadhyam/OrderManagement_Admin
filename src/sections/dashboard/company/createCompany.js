@@ -27,6 +27,22 @@ import {
 //get userid
 const userId = sessionStorage.getItem("user") || localStorage.getItem("user");
 
+const customerType = [
+
+  {
+    label: "Distributor",
+    value: "Distributor",
+  },
+  {
+    label: "Retailer",
+    value: "Retailer",
+  },
+  {
+    label: "Manufacturer",
+    value: "Manufacturer",
+  },
+];
+
 const CreateCompany = () => {
   // country, state, city API access token
   const [accessToken, setAccessToken] = useState(null);
@@ -221,30 +237,7 @@ const CreateCompany = () => {
   //for sending response body via route
   const navigate = useNavigate();
 
-  //get company
-  useEffect(() => {
-    axios
-      .get(apiUrl + `getAllCompanys`)
-      .then((response) => {
-        setUserData(response.data);
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
-    
-      // Create a Set to keep track of unique category names
-  const uniqueCategories = new Set();
 
-  // Filter the userData array to get unique categories
-  const uniqueUserData = userData.filter((option) => {
-    if (option?.category && !uniqueCategories.has(option.category)) {
-      uniqueCategories.add(option.category);
-      return true;
-    }
-    return false;
-  });
 
   const handleClick = async (event) => {
     event.preventDefault();
@@ -332,24 +325,7 @@ const CreateCompany = () => {
                   required
                   value={company}
                   onChange={handleInputChange}
-                  select
-                  SelectProps={{
-                    MenuProps: {
-                      style: {
-                        maxHeight: 300,
-                      },
-                    },
-                  }}
-                >
-                  {uniqueUserData.map(
-                    (option) =>
-                      option?.name && (
-                        <MenuItem key={option.id} value={option.name}>
-                          {option.name}
-                        </MenuItem>
-                      )
-                  )}
-                </TextField>
+                ></TextField>
               </Grid>
 
               <Grid xs={12} md={6}>
@@ -369,14 +345,11 @@ const CreateCompany = () => {
                     },
                   }}
                 >
-                  {uniqueUserData.map(
-                    (option) =>
-                      option?.category && (
-                        <MenuItem key={option.id} value={option.category}>
-                          {option.category}
-                        </MenuItem>
-                      )
-                  )}
+                  {customerType.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
                 </TextField>
               </Grid>
 
@@ -385,6 +358,7 @@ const CreateCompany = () => {
                   fullWidth
                   label="PAN Card"
                   name="pan"
+                  required
                   value={pan}
                   onChange={handleInputChange}
                 />
@@ -394,6 +368,7 @@ const CreateCompany = () => {
                   fullWidth
                   label="GST Number"
                   name="gstn"
+                  required
                   value={gstn}
                   onChange={handleInputChange}
                 />

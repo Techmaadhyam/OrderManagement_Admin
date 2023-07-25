@@ -56,6 +56,7 @@ const CreateAppUser = () => {
   const [pan, setPan] = useState("");
 
   const [userData, setUserData] = useState([]);
+    const [profileData, setProfileData] = useState([]);
 
   ////
 
@@ -228,6 +229,19 @@ const CreateAppUser = () => {
       });
   }, []);
 
+  //get Profile
+   useEffect(() => {
+    axios
+      .get(apiUrl + `getAllProfiles`)
+      .then((response) => {
+        setProfileData(response.data);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
 
 
   const handleClick = async (event) => {
@@ -358,11 +372,11 @@ const CreateAppUser = () => {
                     },
                   }}
                 >
-                  {userData.map(
+                  {profileData.map(
                     (option) =>
-                      option?.category && (
+                      option?.name && (
                         <MenuItem key={option.id} value={option.id}>
-                          {option.category}
+                          {option.name}
                         </MenuItem>
                       )
                   )}

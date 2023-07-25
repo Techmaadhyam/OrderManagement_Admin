@@ -242,7 +242,9 @@ const ViewAppUser = () => {
             // render: (name) => name.name,
             render: (name, record) => {
                 const handleNavigation = () => {
-                    // navigate("/dashboard/company/viewDetail", { state: record });
+                     navigate("/dashboard/appUser/viewDetail", {
+                       state: record,
+                     });
                 };
                 return (
                     <Link
@@ -434,7 +436,7 @@ const ViewAppUser = () => {
                 }}
             >
                 <div style={{ flex: 1 }}>
-                    <h2 style={{ margin: 0 }}>View Users</h2>
+                    <h2 style={{ margin: 0 }}>View App Users</h2>
                 </div>
                 <div style={{ flex: 1, textAlign: "center" }}>
                     <Logo />
