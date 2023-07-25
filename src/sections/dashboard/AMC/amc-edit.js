@@ -523,8 +523,8 @@ export const AmcEditForm = (props) => {
           // Redirect to home page upon successful submission
 
           response.json().then((data) => {
-            navigate("/dashboard/services/amcDetail", { state: data });
-            console.log(data);
+           const updatedData = { ...data, showpaid: true };
+           navigate("/dashboard/services/amcDetail", { state: updatedData });
           });
         }
       } catch (error) {
@@ -580,8 +580,8 @@ export const AmcEditForm = (props) => {
           // Redirect to home page upon successful submission
 
           response.json().then((data) => {
-            navigate("/dashboard/services/amcDetail", { state: data });
-            console.log(data);
+     const updatedData = { ...data, showpaid: true };
+     navigate("/dashboard/services/amcDetail", { state: updatedData });
           });
         }
       } catch (error) {
