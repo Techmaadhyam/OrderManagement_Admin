@@ -99,6 +99,12 @@ export const paths = {
 
     application: {
       index: "/dashboard/application",
+      tabCreate: "/dashboard/application/tab/create",
+      tabView: "/dashboard/application/tab/view",
+      schemaCreate: "/dashboard/application/schema/create",
+      schemaView: "/dashboard/application/schema/view",
+      FieldCreate: "/dashboard/application/field/create",
+      FieldView: "/dashboard/application/field/view",
     },
     company: {
       index: "/dashboard/company",

@@ -256,6 +256,7 @@ export const useSections = () => {
           },
           {
             title: t(tokens.nav.application),
+            path: paths.dashboard.application.index,
 
             icon: (
               <SvgIcon fontSize="small">
@@ -265,15 +266,16 @@ export const useSections = () => {
             items: [
               {
                 title: t(tokens.nav.customTab),
-                //path: paths.dashboard.services.createTechnician,
+                // path: paths.dashboard.services.createTechnician,
                 items: [
                   {
                     title: t(tokens.nav.view),
-                    //path: paths.dashboard.services.technicianview,
+                    // path: paths.dashboard.application.index,
+                    path: paths.dashboard.application.tabView,
                   },
                   {
                     title: t(tokens.nav.create),
-                    //path: paths.dashboard.services.createTechnician,
+                    path: paths.dashboard.application.tabCreate,
                   },
                 ],
               },
@@ -283,11 +285,11 @@ export const useSections = () => {
                 items: [
                   {
                     title: t(tokens.nav.view),
-                    //path: paths.dashboard.services.technicianview,
+                    path: paths.dashboard.application.FieldView,
                   },
                   {
                     title: t(tokens.nav.create),
-                    //path: paths.dashboard.services.createTechnician,
+                    path: paths.dashboard.application.FieldCreate,
                   },
                 ],
               },
@@ -297,11 +299,11 @@ export const useSections = () => {
                 items: [
                   {
                     title: t(tokens.nav.view),
-                    //path: paths.dashboard.services.technicianview,
+                    path: paths.dashboard.application.schemaView,
                   },
                   {
                     title: t(tokens.nav.create),
-                    //path: paths.dashboard.services.createTechnician,
+                    path: paths.dashboard.application.schemaCreate,
                   },
                 ],
               },
