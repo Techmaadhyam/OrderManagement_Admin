@@ -17,13 +17,7 @@ import { apiUrl } from "src/config";
 import Logo from "../logo/logo";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
-import {
-  fetchAccessToken,
-  fetchCountries,
-  fetchStates,
-  fetchCities,
-  fetchIndianStates,
-} from "src/utils/api-service";
+
 
 //get userid
 const userId = sessionStorage.getItem("user") || localStorage.getItem("user");

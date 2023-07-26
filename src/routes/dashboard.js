@@ -94,7 +94,6 @@ const AdminViewDetail = lazy(() =>
   import("src/pages/dashboard/registeredUsers/admin/viewDetail")
 );
 
-
 //Application
 ////Custom Tab
 const TabCreate = lazy(() =>
@@ -134,6 +133,7 @@ const CompanyCreate = lazy(() => import("src/pages/dashboard/company/create"));
 const CompanyViewDetail = lazy(() =>
   import("src/pages/dashboard/company/viewDetail")
 );
+const CompanyEdit = lazy(() => import("src/pages/dashboard/company/edit"));
 
 //addUser
 const UserCreate = lazy(() => import("src/pages/dashboard/appUser/create"));
@@ -350,6 +350,10 @@ export const dashboardRoutes = [
           {
             path: "viewDetail",
             element: <CompanyViewDetail />,
+          },
+          {
+            path: "edit",
+            element: <CompanyEdit />,
           },
         ],
       },

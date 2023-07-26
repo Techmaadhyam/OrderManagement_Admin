@@ -51,7 +51,6 @@ const ViewProfile = () => {
   const [loading, setLoading] = useState(true);
   const [selectedProductId, setSelectedProductId] = useState(null);
 
-  const [selectedType, setSelectedType] = useState("Technician");
 
   const navigate = useNavigate();
 
@@ -118,59 +117,26 @@ const ViewProfile = () => {
   //   setOpen(true);
   // };
 
-  // const handleEditRecord = (record) => {
-  //   setEditRecord(record);
-  //   setPopupVisible(true);
-  // };
+  const handleEditRecord = (record) => {
+    setEditRecord(record);
+    setPopupVisible(true);
+  };
 
   const handleSaveRecord = async (editedRecord) => {
-    console.log("Saving edited record:", editedRecord);
-    console.log(
-      JSON.stringify({
-        id: editedRecord.id,
-        firstName: editedRecord.firstName,
-        lastName: editedRecord.lastName,
-        userName: editedRecord.emailId,
-        companyName: editedRecord.companyName,
-        emailId: editedRecord.emailId,
-        mobile: editedRecord.mobile,
-        address: editedRecord.address,
-        type: editedRecord.type,
-        pincode: editedRecord.pincode,
-        city: editedRecord.city,
-        gstNumber: editedRecord.gstNumber,
-        state: editedRecord.state,
-        country: editedRecord.country,
-        createdBy: editedRecord.createdBy,
-        lastModifiedDate: currentDate,
-      })
-    );
-
-    if (currentDate) {
+    
+    if (editedRecord) {
       try {
-        const response = await fetch(apiUrl + "addTempUser", {
+        const response = await fetch(apiUrl + "createUpdateProfile", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
             id: editedRecord.id,
-            firstName: editedRecord.firstName,
-            lastName: editedRecord.lastName,
-            userName: editedRecord.userName,
-            companyName: editedRecord.companyName,
-            emailId: editedRecord.emailId,
-            gstNumber: editedRecord.gstNumber,
-            mobile: editedRecord.mobile,
-            address: editedRecord.address,
-            type: editedRecord.type,
-            pincode: editedRecord.pincode,
-            city: editedRecord.city,
-            state: editedRecord.state,
-            country: editedRecord.country,
-            createdByUser: { id: editedRecord.createdByUser.id },
-            lastModifiedDate: new Date(),
-            lastModifiedByUser: { id: userId },
+            name: editedRecord.name,
+            description: editedRecord.description,
+            createddate: editedRecord.createddate,
+            lastmodifieddate: new Date(),
           }),
         });
 
@@ -186,15 +152,6 @@ const ViewProfile = () => {
     }
   };
 
-  //Get date
-  useEffect(() => {
-    const today = new Date();
-    const year = today.getFullYear().toString();
-    const month = (today.getMonth() + 1).toString().padStart(2, "0");
-    const day = today.getDate().toString().padStart(2, "0");
-    const formattedDate = `${year}/${month}/${day}`;
-    setCurrentDate(formattedDate);
-  }, []);
 
   //company search
   const handleNameClick = () => {
@@ -246,17 +203,9 @@ const ViewProfile = () => {
         };
 
         return (
-          <Link
-            color="primary"
-            onClick={handleNavigation}
-            sx={{
-              alignItems: "center",
-
-            }}
-            underline="hover"
-          >
+        
             <Typography variant="subtitle1">{name}</Typography>
-          </Link>
+       
         );
       },
     },
@@ -266,19 +215,19 @@ const ViewProfile = () => {
       dataIndex: "description",
     },
 
-    // {
-    //   dataIndex: "actionEdit",
-    //   key: "actionEdit",
-    //   render: (_, record) => (
-    //     <Link>
-    //       <IconButton onClick={() => handleEditRecord(record)}>
-    //         <Icon>
-    //           <EditIcon />
-    //         </Icon>
-    //       </IconButton>
-    //     </Link>
-    //   ),
-    // },
+    {
+      dataIndex: "actionEdit",
+      key: "actionEdit",
+      render: (_, record) => (
+        <Link>
+          <IconButton onClick={() => handleEditRecord(record)}>
+            <Icon>
+              <EditIcon />
+            </Icon>
+          </IconButton>
+        </Link>
+      ),
+    },
     // {
     //   dataIndex: "actionDelete",
     //   key: "actionDelete",
@@ -310,88 +259,25 @@ const ViewProfile = () => {
 
     return (
       <Dialog open={true} onClose={onClose}>
-        <DialogTitle>Edit TechMaadhyam Resource</DialogTitle>
+        <DialogTitle>Edit Profile</DialogTitle>
         <DialogContent>
           <Grid container spacing={2}>
-            <Grid xs={12} md={6}>
+            <Grid xs={12} md={12}>
               <TextField
                 label="Name"
-                name="userName"
+                name="name"
                 fullWidth
-                value={editedRecord.userName}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid xs={12} md={6}>
-              <TextField
-                label="Email"
-                name="emailId"
-                fullWidth
-                value={editedRecord.emailId}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid xs={12} md={6}>
-              <TextField
-                label="Type"
-                name="type"
-                fullWidth
-                value={editedRecord.type}
-              ></TextField>
-            </Grid>
-            <Grid xs={12} md={6}>
-              <TextField
-                label="Company"
-                name="companyName"
-                fullWidth
-                value={editedRecord.companyName}
-              />
-            </Grid>
-            <Grid xs={12} md={6}>
-              <TextField
-                label="GST Number"
-                name="gstn"
-                fullWidth
-                value={editedRecord.gstNumber}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid xs={12} md={6}>
-              <TextField
-                label="Country"
-                name="country"
-                fullWidth
-                value={editedRecord.country}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid xs={12} md={6}>
-              <TextField
-                label="State"
-                name="state"
-                fullWidth
-                value={editedRecord.state}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid xs={12} md={6}>
-              <TextField
-                label="City"
-                name="city"
-                fullWidth
-                value={editedRecord.city}
+                value={editedRecord.name}
                 onChange={handleChange}
               />
             </Grid>
             <Grid xs={12} md={12}>
               <TextField
-                label="Address"
-                name="address"
-                multiline
-                rows={2}
-                value={editedRecord.address}
-                onChange={handleChange}
+                label="Description"
+                name="description"
                 fullWidth
+                value={editedRecord.description}
+                onChange={handleChange}
               />
             </Grid>
           </Grid>
@@ -420,7 +306,7 @@ const ViewProfile = () => {
         }}
       >
         <div style={{ flex: 1 }}>
-          <h2 style={{ margin: 0 }}>View companies</h2>
+          <h2 style={{ margin: 0 }}>View Profiles</h2>
         </div>
         <div style={{ flex: 1, textAlign: "center" }}>
           <Logo />

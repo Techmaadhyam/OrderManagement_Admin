@@ -113,6 +113,7 @@ export const paths = {
       index: "/dashboard/company",
       view: "/dashboard/company/view",
       viewDetail: "/dashboard/company/viewDetail",
+      edit: "/dashboard/company/edit",
     },
     appUser: {
       index: "/dashboard/appUser",
