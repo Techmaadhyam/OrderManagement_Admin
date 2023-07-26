@@ -284,7 +284,7 @@ const ViewSchema = () => {
       title: "Table",
       key: "appobject",
       dataIndex: "appobject",
-      render: (text) => `${text.tablename}`,
+      render: (text) => `${text.tablelabel}`,
     },
     {
       title: "Field Name",
@@ -423,7 +423,7 @@ const handleChange = (event) => {
               >
                 {tabData.map((option) => (
                   <MenuItem key={option.id} value={option.id}>
-                    {option.tablename}
+                    {option.tablelabel}
                   </MenuItem>
                 ))}
               </TextField>

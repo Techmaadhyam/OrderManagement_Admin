@@ -83,7 +83,7 @@ export const ViewCustomTabDetail = (props) => {
             label="Table Label"
             value={state?.tablelabel}
           />
-          <Divider />
+          <Divider /> 
           <PropertyListItem
             align={align}
             label="Description"

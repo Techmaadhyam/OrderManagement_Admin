@@ -238,7 +238,7 @@ const CreateSchema = () => {
                 >
                   {tabData.map((option) => (
                     <MenuItem key={option.id} value={option.id}>
-                      {option.tablename}
+                      {option.tablelabel}
                     </MenuItem>
                   ))}
                 </TextField>

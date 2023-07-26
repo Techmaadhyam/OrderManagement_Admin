@@ -88,7 +88,7 @@ export const ViewSchemaDetail = (props) => {
           <PropertyListItem
             align={align}
             label="Tab"
-            value={state?.appobject?.tablename}
+            value={state?.appobject?.tablelabel}
           />
           <Divider />
 
