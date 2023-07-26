@@ -140,7 +140,7 @@ const ViewCustomTab = () => {
                         id: editedRecord.id,
                         tablename: editedRecord.tablename,
                         tablelabel: editedRecord.tablelabel,
-                        type: editedRecord.type,
+                        isvisible: editedRecord.isvisible,
                         description: editedRecord.description,
                         createddate: editedRecord.createddate,
                         lastmodifieddate: new Date(),
@@ -294,7 +294,7 @@ const ViewCustomTab = () => {
                                 onChange={handleChange}
                             />
                         </Grid>
-                        <Grid />
+                
                         <Grid xs={12} md={6}>
                             <TextField
                                 label="Table Label"
