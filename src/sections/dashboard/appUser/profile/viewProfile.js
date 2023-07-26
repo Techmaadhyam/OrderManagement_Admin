@@ -204,7 +204,7 @@ const ViewProfile = () => {
 
         return (
         
-            <Typography variant="subtitle1">{name}</Typography>
+            <Typography variant="subtitle2">{name}</Typography>
        
         );
       },
@@ -322,6 +322,7 @@ const ViewProfile = () => {
               sx={{ minWidth: 800, overflowX: "auto" }}
               columns={columns}
               dataSource={filteredList}
+              size="small"
               rowClassName={() => "table-data-row"}
             ></Table>
           </Scrollbar>
