@@ -299,6 +299,7 @@ const ViewCustomFields = () => {
                 onChange={handleChange}
               />
             </Grid>
+            <Grid/>
             <Grid xs={12} md={6}>
               <TextField
                 label="Field Label"

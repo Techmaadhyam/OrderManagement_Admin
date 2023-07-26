@@ -137,6 +137,7 @@ const CompanyViewDetail = lazy(() =>
 
 //addUser
 const UserCreate = lazy(() => import("src/pages/dashboard/appUser/create"));
+const UserEdit = lazy(() => import("src/pages/dashboard/appUser/edit"));
 const UserView = lazy(() => import("src/pages/dashboard/appUser/view"));
 const ProfileCreate = lazy(() =>
   import("src/pages/dashboard/appUser/profile/create")
@@ -366,6 +367,10 @@ export const dashboardRoutes = [
           {
             path: "viewDetail",
             element: <UserViewDetail />,
+          },
+          {
+            path: "edit",
+            element: <UserEdit />,
           },
           {
             path: "profileCreate",

@@ -40,18 +40,11 @@ const userId = sessionStorage.getItem("user") || localStorage.getItem("user");
 
 const ViewAppUser = () => {
     const [userData, setUserData] = useState([]);
-
-    const [isPopupVisible, setPopupVisible] = useState(false);
-    const [editRecord, setEditRecord] = useState(null);
-    const [currentDate, setCurrentDate] = useState("");
-
     const [isSearching, setIsSearching] = useState(false);
     const [searchText, setSearchText] = useState("");
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(true);
     const [selectedProductId, setSelectedProductId] = useState(null);
-
-    const [selectedType, setSelectedType] = useState("Technician");
 
     const navigate = useNavigate();
 
@@ -113,88 +106,12 @@ const ViewAppUser = () => {
         setOpen(false);
     };
 
-    // const handleConfirmDelete = (productId) => {
-    //   setSelectedProductId(productId);
-    //   setOpen(true);
-    // };
 
-    // const handleEditRecord = (record) => {
-    //   setEditRecord(record);
-    //   setPopupVisible(true);
-    // };
-
-    const handleSaveRecord = async (editedRecord) => {
-        console.log("Saving edited record:", editedRecord);
-        console.log(
-            JSON.stringify({
-                id: editedRecord.id,
-                firstName: editedRecord.firstName,
-                lastName: editedRecord.lastName,
-                userName: editedRecord.emailId,
-                companyName: editedRecord.companyName,
-                emailId: editedRecord.emailId,
-                mobile: editedRecord.mobile,
-                address: editedRecord.address,
-                type: editedRecord.type,
-                pincode: editedRecord.pincode,
-                city: editedRecord.city,
-                gstNumber: editedRecord.gstNumber,
-                state: editedRecord.state,
-                country: editedRecord.country,
-                createdBy: editedRecord.createdBy,
-                lastModifiedDate: currentDate,
-            })
-        );
-
-        if (currentDate) {
-            try {
-                const response = await fetch(apiUrl + "addTempUser", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        id: editedRecord.id,
-                        firstName: editedRecord.firstName,
-                        lastName: editedRecord.lastName,
-                        userName: editedRecord.userName,
-                        companyName: editedRecord.companyName,
-                        emailId: editedRecord.emailId,
-                        gstNumber: editedRecord.gstNumber,
-                        mobile: editedRecord.mobile,
-                        address: editedRecord.address,
-                        type: editedRecord.type,
-                        pincode: editedRecord.pincode,
-                        city: editedRecord.city,
-                        state: editedRecord.state,
-                        country: editedRecord.country,
-                        createdByUser: { id: editedRecord.createdByUser.id },
-                        lastModifiedDate: new Date(),
-                        lastModifiedByUser: { id: userId },
-                    }),
-                });
-
-                if (response.ok) {
-                    response.json().then((data) => {
-                        console.log(data);
-                        window.location.reload();
-                    });
-                }
-            } catch (error) {
-                console.error("API call failed:", error);
-            }
-        }
-    };
-
-    //Get date
-    useEffect(() => {
-        const today = new Date();
-        const year = today.getFullYear().toString();
-        const month = (today.getMonth() + 1).toString().padStart(2, "0");
-        const day = today.getDate().toString().padStart(2, "0");
-        const formattedDate = `${year}/${month}/${day}`;
-        setCurrentDate(formattedDate);
-    }, []);
+  const handleNavigation = (record) => {
+   
+      navigate("/dashboard/appUser/edit", { state: record });
+    
+  };
 
     //company search
     const handleNameClick = () => {
@@ -211,218 +128,108 @@ const ViewAppUser = () => {
     };
 
     const columns = [
-        {
-            title: (
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    {!isSearching ? (
-                        <>
-                            <Typography variant="subtitle2">Company Name</Typography>
-                            <IconButton onClick={handleNameClick}>
-                                <SearchIcon />
-                            </IconButton>
-                        </>
-                    ) : (
-                        <>
-                            <InputBase
-                                value={searchText}
-                                onChange={handleNameInputChange}
-                                placeholder="Search user..."
-                            />
-                            <IconButton onClick={handleNameCancel}>
-                                <Icon >
-                                    <HighlightOffIcon />
-                                </Icon>
-                            </IconButton>
-                        </>
-                    )}
-                </div>
-            ),
-            key: "company",
-            dataIndex: "company",
-            // render: (name) => name.name,
-            render: (name, record) => {
-                const handleNavigation = () => {
-                     navigate("/dashboard/appUser/viewDetail", {
-                       state: record,
-                     });
-                };
-                return (
-                    <Link
-                        color="primary"
-                        onClick={handleNavigation}
-                        sx={{
-                            alignItems: "center",
+      {
+        title: (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            {!isSearching ? (
+              <>
+                <Typography variant="subtitle2">Company Name</Typography>
+                <IconButton onClick={handleNameClick}>
+                  <SearchIcon />
+                </IconButton>
+              </>
+            ) : (
+              <>
+                <InputBase
+                  value={searchText}
+                  onChange={handleNameInputChange}
+                  placeholder="Search user..."
+                />
+                <IconButton onClick={handleNameCancel}>
+                  <Icon>
+                    <HighlightOffIcon />
+                  </Icon>
+                </IconButton>
+              </>
+            )}
+          </div>
+        ),
+        key: "company",
+        dataIndex: "company",
+        // render: (name) => name.name,
+        render: (name, record) => {
+          const handleNavigation = () => {
+            navigate("/dashboard/appUser/viewDetail", {
+              state: record,
+            });
+          };
+          return (
+            <Link
+              color="primary"
+              onClick={handleNavigation}
+              sx={{
+                alignItems: "center",
+              }}
+              underline="hover"
+            >
+              <Typography variant="subtitle1">{name.name}</Typography>
+            </Link>
+          );
+        },
+      },
+      {
+        title: "User Name",
+        key: "username",
+        dataIndex: "username",
+      },
+      {
+        title: "GSTN",
+        key: "gstnumber",
+        dataIndex: "gstnumber",
+      },
+      {
+        title: "PAN",
+        key: "pandcard",
+        dataIndex: "pandcard",
+      },
+      {
+        title: "Category",
+        key: "category",
+        dataIndex: "category",
+      },
 
-                        }}
-                        underline="hover"
-                    >
-                        <Typography variant="subtitle1">{name.name}</Typography>
-                    </Link>
-                );
-            },
-        },
-        {
-            title: "User Name",
-            key: "username",
-            dataIndex: "username",
-        },
-        {
-            title: "GSTN",
-            key: "gstnumber",
-            dataIndex: "gstnumber",
-        },
-        {
-            title: "PAN",
-            key: "pandcard",
-            dataIndex: "pandcard",
-        },
-        {
-            title: "Category",
-            key: "category",
-            dataIndex: "category",
-        },
-
-        // {
-        //   dataIndex: "actionEdit",
-        //   key: "actionEdit",
-        //   render: (_, record) => (
-        //     <Link>
-        //       <IconButton onClick={() => handleEditRecord(record)}>
-        //         <Icon>
-        //           <EditIcon />
-        //         </Icon>
-        //       </IconButton>
-        //     </Link>
-        //   ),
-        // },
-        // {
-        //   dataIndex: "actionDelete",
-        //   key: "actionDelete",
-        //   render: (_, row) => (
-        //     <IconButton onClick={() => handleConfirmDelete(row.id)}>
-        //       <Icon>
-        //         <Delete />
-        //       </Icon>
-        //     </IconButton>
-        //   ),
-        // },
+      {
+        dataIndex: "actionEdit",
+        key: "actionEdit",
+        render: (_, record) => (
+          <Link>
+            <IconButton onClick={() => handleNavigation(record)}>
+              <Icon>
+                <EditIcon />
+              </Icon>
+            </IconButton>
+          </Link>
+        ),
+      },
+      // {
+      //   dataIndex: "actionDelete",
+      //   key: "actionDelete",
+      //   render: (_, row) => (
+      //     <IconButton onClick={() => handleConfirmDelete(row.id)}>
+      //       <Icon>
+      //         <Delete />
+      //       </Icon>
+      //     </IconButton>
+      //   ),
+      // },
     ];
 
-    const PopupComponent = ({ record, onClose, onSave }) => {
-        const [editedRecord, setEditedRecord] = useState(record);
-
-        const handleChange = (event) => {
-            const { name, value } = event.target;
-            setEditedRecord((prevRecord) => ({
-                ...prevRecord,
-                [name]: value,
-            }));
-        };
-
-        const handleSave = () => {
-            onSave(editedRecord);
-            onClose();
-        };
-
-        return (
-            <Dialog open={true} onClose={onClose}>
-                <DialogTitle>Edit TechMaadhyam Resource</DialogTitle>
-                <DialogContent>
-                    <Grid container spacing={2}>
-                        <Grid xs={12} md={6}>
-                            <TextField
-                                label="Name"
-                                name="userName"
-                                fullWidth
-                                value={editedRecord.userName}
-                                onChange={handleChange}
-                            />
-                        </Grid>
-                        <Grid xs={12} md={6}>
-                            <TextField
-                                label="Email"
-                                name="emailId"
-                                fullWidth
-                                value={editedRecord.emailId}
-                                onChange={handleChange}
-                            />
-                        </Grid>
-                        <Grid xs={12} md={6}>
-                            <TextField
-                                label="Type"
-                                name="type"
-                                fullWidth
-                                value={editedRecord.type}
-                            ></TextField>
-                        </Grid>
-                        <Grid xs={12} md={6}>
-                            <TextField
-                                label="Company"
-                                name="companyName"
-                                fullWidth
-                                value={editedRecord.companyName}
-                            />
-                        </Grid>
-                        <Grid xs={12} md={6}>
-                            <TextField
-                                label="GST Number"
-                                name="gstn"
-                                fullWidth
-                                value={editedRecord.gstNumber}
-                                onChange={handleChange}
-                            />
-                        </Grid>
-                        <Grid xs={12} md={6}>
-                            <TextField
-                                label="Country"
-                                name="country"
-                                fullWidth
-                                value={editedRecord.country}
-                                onChange={handleChange}
-                            />
-                        </Grid>
-                        <Grid xs={12} md={6}>
-                            <TextField
-                                label="State"
-                                name="state"
-                                fullWidth
-                                value={editedRecord.state}
-                                onChange={handleChange}
-                            />
-                        </Grid>
-                        <Grid xs={12} md={6}>
-                            <TextField
-                                label="City"
-                                name="city"
-                                fullWidth
-                                value={editedRecord.city}
-                                onChange={handleChange}
-                            />
-                        </Grid>
-                        <Grid xs={12} md={12}>
-                            <TextField
-                                label="Address"
-                                name="address"
-                                multiline
-                                rows={2}
-                                value={editedRecord.address}
-                                onChange={handleChange}
-                                fullWidth
-                            />
-                        </Grid>
-                    </Grid>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={onClose} color="primary">
-                        Cancel
-                    </Button>
-                    <Button onClick={handleSave} color="primary">
-                        Save
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        );
-    };
 
     return (
         <div style={{ minWidth: "100%" }}>
@@ -496,13 +303,7 @@ const ViewAppUser = () => {
                     </DialogActions>
                 </Dialog>
             )}
-            {isPopupVisible && editRecord && (
-                <PopupComponent
-                    record={editRecord}
-                    onClose={() => setPopupVisible(false)}
-                    onSave={handleSaveRecord}
-                />
-            )}
+         
         </div>
     );
 };

@@ -117,6 +117,7 @@ export const paths = {
     appUser: {
       index: "/dashboard/appUser",
       view: "/dashboard/appUser/view",
+      edit: "/dashboard/appUser/edit",
       viewDetail: "/dashboard/appUser/viewDetail",
       createProfile: "/dashboard/appUser/profileCreate",
       viewProfile: "/dashboard/appUser/profileView",
