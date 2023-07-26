@@ -74,23 +74,15 @@ export const ViewCustomTabDetail = (props) => {
       <h2>Custom Table Details</h2>
       <Card style={{ marginBottom: "12px" }}>
         <PropertyList>
-          <PropertyListItem align={align} label="Field Name">
-            <Typography variant="subtitle2">{state?.fieldname}</Typography>
+          <PropertyListItem align={align} label="Table Name">
+            <Typography variant="subtitle2">{state?.tablename}</Typography>
           </PropertyListItem>
           <Divider />
           <PropertyListItem
             align={align}
-            label="Field Label"
-            value={state?.fieldlabel}
+            label="Table Label"
+            value={state?.tablelabel}
           />
-          <Divider />
-
-          <PropertyListItem
-            align={align}
-            label="Field Type"
-            value={state?.fieldtype}
-          />
-          <Divider />
 
           <PropertyListItem
             align={align}
