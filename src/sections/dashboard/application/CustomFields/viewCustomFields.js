@@ -1,4 +1,3 @@
-
 import {
   Unstable_Grid2 as Grid,
   Typography,
@@ -36,6 +35,16 @@ import {
   CardContent,
 } from "@mui/material";
 
+const fieldType = [
+  {
+    label: "Textfield",
+    value: "Textfield",
+  },
+  {
+    label: "Dropdown",
+    value: "Dropdown",
+  },
+];
 //get userid
 const userId = sessionStorage.getItem("user") || localStorage.getItem("user");
 
@@ -44,14 +53,11 @@ const ViewCustomFields = () => {
 
   const [isPopupVisible, setPopupVisible] = useState(false);
   const [editRecord, setEditRecord] = useState(null);
-  const [currentDate, setCurrentDate] = useState("");
-
   const [isSearching, setIsSearching] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [selectedProductId, setSelectedProductId] = useState(null);
-
   const [selectedType, setSelectedType] = useState("Technician");
 
   const navigate = useNavigate();
@@ -93,83 +99,51 @@ const ViewCustomFields = () => {
     });
   };
 
-  const handleRemoveRow = async () => {
-    try {
-      await axios.delete(apiUrl + `deleteTempUserId/${selectedProductId}`);
-      const updatedRows = userData.filter(
-        (item) => item.id !== selectedProductId
-      );
-      setUserData(updatedRows);
-      notify("success", `Sucessfully deleted technician row.`);
-    } catch (error) {
-      console.error("Error deleting row:", error.message);
-      notify("error", `This record is linked with AMC.`);
-    }
-    setOpen(false);
-  };
+  // const handleRemoveRow = async () => {
+  //   try {
+  //     await axios.delete(apiUrl + `deleteTempUserId/${selectedProductId}`);
+  //     const updatedRows = userData.filter(
+  //       (item) => item.id !== selectedProductId
+  //     );
+  //     setUserData(updatedRows);
+  //     notify("success", `Sucessfully deleted technician row.`);
+  //   } catch (error) {
+  //     console.error("Error deleting row:", error.message);
+  //     notify("error", `This record is linked with AMC.`);
+  //   }
+  //   setOpen(false);
+  // };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
 
   // const handleConfirmDelete = (productId) => {
   //   setSelectedProductId(productId);
   //   setOpen(true);
   // };
 
-  // const handleEditRecord = (record) => {
-  //   setEditRecord(record);
-  //   setPopupVisible(true);
-  // };
+  const handleEditRecord = (record) => {
+    setEditRecord(record);
+    setPopupVisible(true);
+  };
 
   const handleSaveRecord = async (editedRecord) => {
-    console.log("Saving edited record:", editedRecord);
-    console.log(
-      JSON.stringify({
-        id: editedRecord.id,
-        firstName: editedRecord.firstName,
-        lastName: editedRecord.lastName,
-        userName: editedRecord.emailId,
-        companyName: editedRecord.companyName,
-        emailId: editedRecord.emailId,
-        mobile: editedRecord.mobile,
-        address: editedRecord.address,
-        type: editedRecord.type,
-        pincode: editedRecord.pincode,
-        city: editedRecord.city,
-        gstNumber: editedRecord.gstNumber,
-        state: editedRecord.state,
-        country: editedRecord.country,
-        createdBy: editedRecord.createdBy,
-        lastModifiedDate: currentDate,
-      })
-    );
-
-    if (currentDate) {
+    if (editedRecord) {
       try {
-        const response = await fetch(apiUrl + "addTempUser", {
+        const response = await fetch(apiUrl + "createUpdateAppObjField", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
             id: editedRecord.id,
-            firstName: editedRecord.firstName,
-            lastName: editedRecord.lastName,
-            userName: editedRecord.userName,
-            companyName: editedRecord.companyName,
-            emailId: editedRecord.emailId,
-            gstNumber: editedRecord.gstNumber,
-            mobile: editedRecord.mobile,
-            address: editedRecord.address,
-            type: editedRecord.type,
-            pincode: editedRecord.pincode,
-            city: editedRecord.city,
-            state: editedRecord.state,
-            country: editedRecord.country,
-            createdByUser: { id: editedRecord.createdByUser.id },
-            lastModifiedDate: new Date(),
-            lastModifiedByUser: { id: userId },
+            fieldname: editedRecord.fieldname,
+            fieldlabel: editedRecord.fieldlabel,
+            fieldtype: editedRecord.fieldtype,
+            description: editedRecord.description,
+            createddate: editedRecord.createddate,
+            lastmodifieddate: new Date(),
           }),
         });
 
@@ -184,16 +158,6 @@ const ViewCustomFields = () => {
       }
     }
   };
-
-  //Get date
-  useEffect(() => {
-    const today = new Date();
-    const year = today.getFullYear().toString();
-    const month = (today.getMonth() + 1).toString().padStart(2, "0");
-    const day = today.getDate().toString().padStart(2, "0");
-    const formattedDate = `${year}/${month}/${day}`;
-    setCurrentDate(formattedDate);
-  }, []);
 
   //company search
   const handleNameClick = () => {
@@ -246,7 +210,7 @@ const ViewCustomFields = () => {
       dataIndex: "fieldname",
       render: (name, record) => {
         const handleNavigation = () => {
-          // navigate("/dashboard/company/viewDetail", { state: record });
+          navigate("/dashboard/application/field/detail", { state: record });
         };
 
         return (
@@ -279,19 +243,19 @@ const ViewCustomFields = () => {
       dataIndex: "description",
     },
 
-    // {
-    //   dataIndex: "actionEdit",
-    //   key: "actionEdit",
-    //   render: (_, record) => (
-    //     <Link>
-    //       <IconButton onClick={() => handleEditRecord(record)}>
-    //         <Icon>
-    //           <EditIcon />
-    //         </Icon>
-    //       </IconButton>
-    //     </Link>
-    //   ),
-    // },
+    {
+      dataIndex: "actionEdit",
+      key: "actionEdit",
+      render: (_, record) => (
+        <Link>
+          <IconButton onClick={() => handleEditRecord(record)}>
+            <Icon>
+              <EditIcon />
+            </Icon>
+          </IconButton>
+        </Link>
+      ),
+    },
     // {
     //   dataIndex: "actionDelete",
     //   key: "actionDelete",
@@ -323,86 +287,58 @@ const ViewCustomFields = () => {
 
     return (
       <Dialog open={true} onClose={onClose}>
-        <DialogTitle>Edit TechMaadhyam Resource</DialogTitle>
+        <DialogTitle>Edit Custom Field</DialogTitle>
         <DialogContent>
           <Grid container spacing={2}>
             <Grid xs={12} md={6}>
               <TextField
-                label="Name"
-                name="userName"
+                label="Field Name"
+                name="fieldname"
                 fullWidth
-                value={editedRecord.userName}
+                value={editedRecord.fieldname}
                 onChange={handleChange}
               />
             </Grid>
             <Grid xs={12} md={6}>
               <TextField
-                label="Email"
-                name="emailId"
+                label="Field Label"
+                name="fieldlabel"
                 fullWidth
-                value={editedRecord.emailId}
+                value={editedRecord.fieldlabel}
                 onChange={handleChange}
               />
             </Grid>
             <Grid xs={12} md={6}>
               <TextField
-                label="Type"
-                name="type"
+                label="Field Type"
+                name="fieldtype"
                 fullWidth
-                value={editedRecord.type}
-              ></TextField>
-            </Grid>
-            <Grid xs={12} md={6}>
-              <TextField
-                label="Company"
-                name="companyName"
-                fullWidth
-                value={editedRecord.companyName}
-              />
-            </Grid>
-            <Grid xs={12} md={6}>
-              <TextField
-                label="GST Number"
-                name="gstn"
-                fullWidth
-                value={editedRecord.gstNumber}
+                value={editedRecord?.fieldtype}
                 onChange={handleChange}
-              />
+                select
+                SelectProps={{
+                  MenuProps: {
+                    style: {
+                      maxHeight: 300,
+                    },
+                  },
+                }}
+              >
+                {fieldType.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
             </Grid>
-            <Grid xs={12} md={6}>
-              <TextField
-                label="Country"
-                name="country"
-                fullWidth
-                value={editedRecord.country}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid xs={12} md={6}>
-              <TextField
-                label="State"
-                name="state"
-                fullWidth
-                value={editedRecord.state}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid xs={12} md={6}>
-              <TextField
-                label="City"
-                name="city"
-                fullWidth
-                value={editedRecord.city}
-                onChange={handleChange}
-              />
-            </Grid>
+
             <Grid xs={12} md={12}>
               <TextField
-                label="Address"
-                name="address"
+                label="Description"
+                name="description"
                 multiline
                 rows={2}
-                value={editedRecord.address}
+                value={editedRecord.description}
                 onChange={handleChange}
                 fullWidth
               />
@@ -477,7 +413,8 @@ const ViewCustomFields = () => {
           theme="light"
         />
       </Box>
-      {open && (
+
+      {/* {open && (
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Confirm Delete</DialogTitle>
           <DialogContent>
@@ -492,7 +429,7 @@ const ViewCustomFields = () => {
             </Button>
           </DialogActions>
         </Dialog>
-      )}
+      )}*/}
       {isPopupVisible && editRecord && (
         <PopupComponent
           record={editRecord}

@@ -119,6 +119,7 @@ const CreateProfile = () => {
           body: JSON.stringify({
             name: userName,
             description: description,
+            createddate: new Date(),
             // createdByUser: { id: userId },
             // createdDate: new Date(),
             // lastModifiedDate: new Date(),

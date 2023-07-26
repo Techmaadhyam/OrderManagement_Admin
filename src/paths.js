@@ -101,10 +101,13 @@ export const paths = {
       index: "/dashboard/application",
       tabCreate: "/dashboard/application/tab/create",
       tabView: "/dashboard/application/tab/view",
+      tabDetail: "/dashboard/application/tab/detail",
       schemaCreate: "/dashboard/application/schema/create",
       schemaView: "/dashboard/application/schema/view",
+      schemaDetail: "/dashboard/application/schema/detail",
       FieldCreate: "/dashboard/application/field/create",
       FieldView: "/dashboard/application/field/view",
+      FieldDetail: "/dashboard/application/field/detail",
     },
     company: {
       index: "/dashboard/company",

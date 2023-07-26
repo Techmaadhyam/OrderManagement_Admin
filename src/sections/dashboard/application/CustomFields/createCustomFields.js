@@ -6,6 +6,7 @@ import {
   CardHeader,
   Divider,
   TextField,
+  MenuItem,
   Unstable_Grid2 as Grid,
 } from "@mui/material";
 import { Box } from "@mui/system";
@@ -14,9 +15,21 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiUrl } from "src/config";
 import Logo from "src/sections/dashboard/logo/logo";
-import axios from "axios";
-import { fetchAccessToken } from "src/utils/api-service";
 
+
+
+const fieldType = [
+
+  {
+    label: "Textfield",
+    value: "Textfield",
+  },
+  {
+    label: "Dropdown",
+    value:  "Dropdown",
+  },
+  
+];
 //get userid
 const userId = sessionStorage.getItem("user") || localStorage.getItem("user");
 
@@ -24,6 +37,7 @@ const CreateCustomFields = () => {
   //form state handling
   const [userName, setUserName] = useState("");
   const [label, setLabel] = useState("");
+  const [type, setType] = useState("");
   const [description, setDescription] = useState("");
   const [userData, setUserData] = useState([]);
 
@@ -36,6 +50,9 @@ const CreateCustomFields = () => {
         break;
       case "label":
         setLabel(value);
+        break;
+        case "type":
+        setType(value);
         break;
       case "description":
         setDescription(value);
@@ -60,10 +77,11 @@ const CreateCustomFields = () => {
           body: JSON.stringify({
             fieldname: userName,
             fieldlabel: label,
-            fieldtype: "freetext",
+            fieldtype: type,
             description: description,
+            createddate: new Date(),
             // createdByUser: { id: userId },
-            // createdDate: new Date(),
+
             // lastModifiedDate: new Date(),
             // lastModifiedByUser: { id: userId },
           }),
@@ -73,9 +91,7 @@ const CreateCustomFields = () => {
           // Redirect to home page upon successful submission
 
           response.json().then((data) => {
-            console.log(data);
-
-            //navigate("/dashboard/appUser/profileView", { state: data });
+            navigate("/dashboard/application/field/detail", { state: data });
           });
         }
       } catch (error) {
@@ -129,7 +145,28 @@ const CreateCustomFields = () => {
                 />
               </Grid>
               <Grid xs={12} md={6}>
-                <TextField fullWidth label="Field Type" value="Freetext" />
+                <TextField
+                  fullWidth
+                  label="Field Type"
+                  name="type"
+                  required
+                  onChange={handleInputChange}
+                  value={type}
+                  select
+                  SelectProps={{
+                    MenuProps: {
+                      style: {
+                        maxHeight: 300,
+                      },
+                    },
+                  }}
+                >
+                  {fieldType.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
               </Grid>
               <Grid xs={12} md={6}>
                 <TextField

@@ -93,29 +93,60 @@ const AdminView = lazy(() =>
 const AdminViewDetail = lazy(() =>
   import("src/pages/dashboard/registeredUsers/admin/viewDetail")
 );
+
+
 //Application
 ////Custom Tab
-const TabCreate = lazy(() => import("src/pages/dashboard/application/CustomTab/create"));
-const TabView = lazy(() => import("src/pages/dashboard/application/CustomTab/view"));
-////Custom Field
-const FieldCreate = lazy(() => import("src/pages/dashboard/application/CustomFields/create"));
-const FieldView = lazy(() => import("src/pages/dashboard/application/CustomFields/view"));
-////Schema
-const SchemaCreate = lazy(() => import("src/pages/dashboard/application/Schema/create"));
-const SchemaView = lazy(() => import("src/pages/dashboard/application/Schema/view"));
-//company
-const CompanyView = lazy(() =>
-  import("src/pages/dashboard/company/view")
+const TabCreate = lazy(() =>
+  import("src/pages/dashboard/application/CustomTab/create")
 );
+const TabView = lazy(() =>
+  import("src/pages/dashboard/application/CustomTab/view")
+);
+const TabViewDetail = lazy(() =>
+  import("src/pages/dashboard/application/CustomTab/viewDetail")
+);
+
+////Custom Field
+const FieldCreate = lazy(() =>
+  import("src/pages/dashboard/application/CustomFields/create")
+);
+const FieldView = lazy(() =>
+  import("src/pages/dashboard/application/CustomFields/view")
+);
+const FieldViewDetail = lazy(() =>
+  import("src/pages/dashboard/application/CustomFields/viewDetail")
+);
+
+////Schema
+const SchemaCreate = lazy(() =>
+  import("src/pages/dashboard/application/Schema/create")
+);
+const SchemaView = lazy(() =>
+  import("src/pages/dashboard/application/Schema/view")
+);
+const SchemaViewDetail = lazy(() =>
+  import("src/pages/dashboard/application/Schema/viewDetail")
+);
+//company
+const CompanyView = lazy(() => import("src/pages/dashboard/company/view"));
 const CompanyCreate = lazy(() => import("src/pages/dashboard/company/create"));
-const CompanyViewDetail = lazy(() => import("src/pages/dashboard/company/viewDetail"));
+const CompanyViewDetail = lazy(() =>
+  import("src/pages/dashboard/company/viewDetail")
+);
 
 //addUser
 const UserCreate = lazy(() => import("src/pages/dashboard/appUser/create"));
 const UserView = lazy(() => import("src/pages/dashboard/appUser/view"));
-const ProfileCreate = lazy(() => import("src/pages/dashboard/appUser/profile/create"));
-const ProfileView = lazy(() => import("src/pages/dashboard/appUser/profile/view"));
-const UserViewDetail = lazy(() => import("src/pages/dashboard/appUser/viewDetail"));
+const ProfileCreate = lazy(() =>
+  import("src/pages/dashboard/appUser/profile/create")
+);
+const ProfileView = lazy(() =>
+  import("src/pages/dashboard/appUser/profile/view")
+);
+const UserViewDetail = lazy(() =>
+  import("src/pages/dashboard/appUser/viewDetail")
+);
 
 export const dashboardRoutes = [
   {
@@ -275,6 +306,10 @@ export const dashboardRoutes = [
             element: <TabCreate />,
           },
           {
+            path: "tab/detail",
+            element: <TabViewDetail />,
+          },
+          {
             path: "Field/create",
             element: <FieldCreate />,
           },
@@ -283,12 +318,20 @@ export const dashboardRoutes = [
             element: <FieldView />,
           },
           {
+            path: "Field/detail",
+            element: <FieldViewDetail />,
+          },
+          {
             path: "Schema/create",
             element: <SchemaCreate />,
           },
           {
             path: "Schema/view",
             element: <SchemaView />,
+          },
+          {
+            path: "Schema/detail",
+            element: <SchemaViewDetail />,
           },
         ],
       },

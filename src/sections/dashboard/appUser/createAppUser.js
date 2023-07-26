@@ -279,6 +279,7 @@ const CreateAppUser = () => {
             username: email,
             password: password,
             isactive: true,
+            createddate: new Date(),
             // createdByUser: { id: userId },
             // createdDate: new Date(),
             // lastModifiedDate: new Date(),

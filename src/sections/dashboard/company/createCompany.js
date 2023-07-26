@@ -269,6 +269,7 @@ const CreateCompany = () => {
             country: currentCountry,
             pandcard: pan,
             address: address,
+            createddate: new Date(),
             // createdByUser: { id: userId },
             // createdDate: new Date(),
             // lastModifiedDate: new Date(),
