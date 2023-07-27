@@ -44,7 +44,7 @@ const ViewCompany = () => {
   const [searchText, setSearchText] = useState("");
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [selectedProductId, setSelectedProductId] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
 
 
   const navigate = useNavigate();
@@ -90,15 +90,15 @@ const ViewCompany = () => {
 
   const handleRemoveRow = async () => {
     try {
-      await axios.delete(apiUrl + `deleteTempUserId/${selectedProductId}`);
+      await axios.delete(apiUrl + `deleteCompanyById/${selectedId}`);
       const updatedRows = userData.filter(
-        (item) => item.id !== selectedProductId
+        (item) => item.id !== selectedId
       );
       setUserData(updatedRows);
-      notify("success", `Sucessfully deleted technician row.`);
+      notify("success", `Sucessfully deleted company row.`);
     } catch (error) {
       console.error("Error deleting row:", error.message);
-      notify("error", `This record is linked with AMC.`);
+      notify("error", `Data is linked to another section, unable to delete.`);
     }
     setOpen(false);
   };
@@ -106,6 +106,11 @@ const ViewCompany = () => {
   const handleClose = () => {
     setOpen(false);
   };
+    const handleConfirmDelete = (productId) => {
+      setSelectedId(productId);
+      setOpen(true);
+    };
+
 
    const handleNavigation = (record) => {
      navigate("/dashboard/company/edit", { state: record });
@@ -214,17 +219,17 @@ const ViewCompany = () => {
         </Link>
       ),
     },
-    // {
-    //   dataIndex: "actionDelete",
-    //   key: "actionDelete",
-    //   render: (_, row) => (
-    //     <IconButton onClick={() => handleConfirmDelete(row.id)}>
-    //       <Icon>
-    //         <Delete />
-    //       </Icon>
-    //     </IconButton>
-    //   ),
-    // },
+    {
+      dataIndex: "actionDelete",
+      key: "actionDelete",
+      render: (_, row) => (
+        <IconButton onClick={() => handleConfirmDelete(row.id)}>
+          <Icon>
+            <Delete />
+          </Icon>
+        </IconButton>
+      ),
+    },
   ];
 
 
@@ -288,7 +293,7 @@ const ViewCompany = () => {
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Confirm Delete</DialogTitle>
           <DialogContent>
-            Are you sure you want to delete this technician?
+            Are you sure you want to delete this company?
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose} color="primary">

@@ -99,29 +99,29 @@ const ViewCustomTab = () => {
         });
     };
 
-    // const handleRemoveRow = async () => {
-    //   try {
-    //     await axios.delete(apiUrl + `deleteTempUserId/${selectedProductId}`);
-    //     const updatedRows = userData.filter(
-    //       (item) => item.id !== selectedProductId
-    //     );
-    //     setUserData(updatedRows);
-    //     notify("success", `Sucessfully deleted technician row.`);
-    //   } catch (error) {
-    //     console.error("Error deleting row:", error.message);
-    //     notify("error", `This record is linked with AMC.`);
-    //   }
-    //   setOpen(false);
-    // };
+    const handleRemoveRow = async () => {
+      try {
+        await axios.delete(apiUrl + `deleteAppObjectById/${selectedProductId}`);
+        const updatedRows = userData.filter(
+          (item) => item.id !== selectedProductId
+        );
+        setUserData(updatedRows);
+        notify("success", `Sucessfully deleted tab row.`);
+      } catch (error) {
+        console.error("Error deleting row:", error.message);
+        notify("error", `Data is linked to another section, unable to delete.`);
+      }
+      setOpen(false);
+    };
 
-    // const handleClose = () => {
-    //   setOpen(false);
-    // };
+    const handleClose = () => {
+      setOpen(false);
+    };
 
-    // const handleConfirmDelete = (productId) => {
-    //   setSelectedProductId(productId);
-    //   setOpen(true);
-    // };
+    const handleConfirmDelete = (productId) => {
+      setSelectedProductId(productId);
+      setOpen(true);
+    };
 
     const handleEditRecord = (record) => {
         setEditRecord(record);
@@ -251,17 +251,17 @@ const ViewCustomTab = () => {
                 </Link>
             ),
         },
-        // {
-        //   dataIndex: "actionDelete",
-        //   key: "actionDelete",
-        //   render: (_, row) => (
-        //     <IconButton onClick={() => handleConfirmDelete(row.id)}>
-        //       <Icon>
-        //         <Delete />
-        //       </Icon>
-        //     </IconButton>
-        //   ),
-        // },
+        {
+          dataIndex: "actionDelete",
+          key: "actionDelete",
+          render: (_, row) => (
+            <IconButton onClick={() => handleConfirmDelete(row.id)}>
+              <Icon>
+                <Delete />
+              </Icon>
+            </IconButton>
+          ),
+        },
     ];
 
     const PopupComponent = ({ record, onClose, onSave }) => {
@@ -387,11 +387,11 @@ const ViewCustomTab = () => {
                 />
             </Box>
 
-            {/* {open && (
+            {open && (
           <Dialog open={open} onClose={handleClose}>
             <DialogTitle>Confirm Delete</DialogTitle>
             <DialogContent>
-              Are you sure you want to delete this technician?
+              Are you sure you want to delete this tab?
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose} color="primary">
@@ -402,7 +402,7 @@ const ViewCustomTab = () => {
               </Button>
             </DialogActions>
           </Dialog>
-        )}*/}
+        )}
             {isPopupVisible && editRecord && (
                 <PopupComponent
                     record={editRecord}

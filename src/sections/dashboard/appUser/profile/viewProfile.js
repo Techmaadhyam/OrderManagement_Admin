@@ -95,15 +95,15 @@ const ViewProfile = () => {
 
   const handleRemoveRow = async () => {
     try {
-      await axios.delete(apiUrl + `deleteTempUserId/${selectedProductId}`);
+      await axios.delete(apiUrl + `deleteProfileById/${selectedProductId}`);
       const updatedRows = userData.filter(
         (item) => item.id !== selectedProductId
       );
       setUserData(updatedRows);
-      notify("success", `Sucessfully deleted technician row.`);
+      notify("success", `Sucessfully deleted profile row.`);
     } catch (error) {
       console.error("Error deleting row:", error.message);
-      notify("error", `This record is linked with AMC.`);
+      notify("error", `Data is linked to another section, unable to delete.`);
     }
     setOpen(false);
   };
@@ -112,10 +112,10 @@ const ViewProfile = () => {
     setOpen(false);
   };
 
-  // const handleConfirmDelete = (productId) => {
-  //   setSelectedProductId(productId);
-  //   setOpen(true);
-  // };
+  const handleConfirmDelete = (productId) => {
+    setSelectedProductId(productId);
+    setOpen(true);
+  };
 
   const handleEditRecord = (record) => {
     setEditRecord(record);
@@ -228,17 +228,17 @@ const ViewProfile = () => {
         </Link>
       ),
     },
-    // {
-    //   dataIndex: "actionDelete",
-    //   key: "actionDelete",
-    //   render: (_, row) => (
-    //     <IconButton onClick={() => handleConfirmDelete(row.id)}>
-    //       <Icon>
-    //         <Delete />
-    //       </Icon>
-    //     </IconButton>
-    //   ),
-    // },
+    {
+      dataIndex: "actionDelete",
+      key: "actionDelete",
+      render: (_, row) => (
+        <IconButton onClick={() => handleConfirmDelete(row.id)}>
+          <Icon>
+            <Delete />
+          </Icon>
+        </IconButton>
+      ),
+    },
   ];
 
   const PopupComponent = ({ record, onClose, onSave }) => {
@@ -355,7 +355,7 @@ const ViewProfile = () => {
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Confirm Delete</DialogTitle>
           <DialogContent>
-            Are you sure you want to delete this technician?
+            Are you sure you want to delete this profile?
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose} color="primary">

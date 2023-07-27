@@ -89,22 +89,33 @@ const ViewAppUser = () => {
 
     const handleRemoveRow = async () => {
         try {
-            await axios.delete(apiUrl + `deleteTempUserId/${selectedProductId}`);
+            await axios.delete(
+              apiUrl + `deleteAppUserById/${selectedProductId}`
+            );
             const updatedRows = userData.filter(
                 (item) => item.id !== selectedProductId
             );
             setUserData(updatedRows);
-            notify("success", `Sucessfully deleted technician row.`);
+            notify("success", `Sucessfully deleted app user row.`);
         } catch (error) {
             console.error("Error deleting row:", error.message);
-            notify("error", `This record is linked with AMC.`);
+            notify(
+              "error",
+              `Data is linked to another section, unable to delete.`
+            );
         }
         setOpen(false);
     };
 
     const handleClose = () => {
         setOpen(false);
+  };
+  
+    const handleConfirmDelete = (productId) => {
+      setSelectedProductId(productId);
+      setOpen(true);
     };
+
 
 
   const handleNavigation = (record) => {
@@ -217,17 +228,17 @@ const ViewAppUser = () => {
           </Link>
         ),
       },
-      // {
-      //   dataIndex: "actionDelete",
-      //   key: "actionDelete",
-      //   render: (_, row) => (
-      //     <IconButton onClick={() => handleConfirmDelete(row.id)}>
-      //       <Icon>
-      //         <Delete />
-      //       </Icon>
-      //     </IconButton>
-      //   ),
-      // },
+      {
+        dataIndex: "actionDelete",
+        key: "actionDelete",
+        render: (_, row) => (
+          <IconButton onClick={() => handleConfirmDelete(row.id)}>
+            <Icon>
+              <Delete />
+            </Icon>
+          </IconButton>
+        ),
+      },
     ];
 
 
@@ -291,7 +302,7 @@ const ViewAppUser = () => {
                 <Dialog open={open} onClose={handleClose}>
                     <DialogTitle>Confirm Delete</DialogTitle>
                     <DialogContent>
-                        Are you sure you want to delete this technician?
+                        Are you sure you want to delete this app user?
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose} color="primary">

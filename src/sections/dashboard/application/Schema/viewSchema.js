@@ -144,15 +144,15 @@ const ViewSchema = () => {
 
   const handleRemoveRow = async () => {
     try {
-      await axios.delete(apiUrl + `deleteTempUserId/${selectedProductId}`);
+      await axios.delete(apiUrl + `deleteSchemaById/${selectedProductId}`);
       const updatedRows = userData.filter(
         (item) => item.id !== selectedProductId
       );
       setUserData(updatedRows);
-      notify("success", `Sucessfully deleted technician row.`);
+      notify("success", `Sucessfully deleted schema row.`);
     } catch (error) {
       console.error("Error deleting row:", error.message);
-      notify("error", `This record is linked with AMC.`);
+      notify("error", `Data is linked to another section, unable to delete.`);
     }
     setOpen(false);
   };
@@ -306,17 +306,17 @@ const ViewSchema = () => {
         </Link>
       ),
     },
-    // {
-    //   dataIndex: "actionDelete",
-    //   key: "actionDelete",
-    //   render: (_, row) => (
-    //     <IconButton onClick={() => handleConfirmDelete(row.id)}>
-    //       <Icon>
-    //         <Delete />
-    //       </Icon>
-    //     </IconButton>
-    //   ),
-    // },
+    {
+      dataIndex: "actionDelete",
+      key: "actionDelete",
+      render: (_, row) => (
+        <IconButton onClick={() => handleConfirmDelete(row.id)}>
+          <Icon>
+            <Delete />
+          </Icon>
+        </IconButton>
+      ),
+    },
     ,
   ];
 
@@ -525,7 +525,7 @@ const handleChange = (event) => {
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Confirm Delete</DialogTitle>
           <DialogContent>
-            Are you sure you want to delete this technician?
+            Are you sure you want to delete this schema?
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose} color="primary">
