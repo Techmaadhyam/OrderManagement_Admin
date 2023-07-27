@@ -7,6 +7,8 @@ import {
     Divider,
     TextField,
     MenuItem,
+    Select,
+    Icon,
     Unstable_Grid2 as Grid,
 } from "@mui/material";
 import { Box } from "@mui/system";
@@ -16,6 +18,16 @@ import { useNavigate } from "react-router-dom";
 import { apiUrl } from "src/config";
 import Logo from "src/sections/dashboard/logo/logo";
 
+// Add icon options imports here
+import BusinessTwoToneIcon from '@mui/icons-material/BusinessTwoTone';
+
+const iconOptions = [
+    {
+        label: 'Business Two Tone',
+        value: 'BusinessTwoToneIcon',
+        icon: <BusinessTwoToneIcon />,
+    },
+];
 
 
 const fieldType = [
@@ -37,6 +49,7 @@ const CreateCustomTab = () => {
     const [type, setType] = useState(true);
     const [description, setDescription] = useState("");
     const [userData, setUserData] = useState([]);
+    const [selectedIcon, setSelectedIcon] = useState('');
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -48,9 +61,9 @@ const CreateCustomTab = () => {
             case "label":
                 setLabel(value);
                 break;
-            // case "type":
-            //     setType(true);
-            //     break;
+            case "selectedIcon":
+                setSelectedIcon(value);
+                break;
             case "description":
                 setDescription(value);
                 break;
@@ -76,6 +89,7 @@ const CreateCustomTab = () => {
                         tablelabel: label,
                         isvisible: type,
                         description: description,
+                        logo: selectedIcon,
                         createddate: new Date(),
                         // createdByUser: { id: userId },
 
@@ -141,17 +155,6 @@ const CreateCustomTab = () => {
                                     onChange={handleInputChange}
                                 />
                             </Grid>
-                            {/* <Grid xs={12} md={6}>
-                                <TextField
-                                    fullWidth
-                                    label="Is Visible"
-                                    name="type"
-                                    required
-                                    onChange={handleInputChange}
-                                    value={type}
-                                >
-                                </TextField>
-                            </Grid> */}
                             <Grid xs={12} md={6}>
                                 <TextField
                                     fullWidth
@@ -160,6 +163,24 @@ const CreateCustomTab = () => {
                                     value={description}
                                     onChange={handleInputChange}
                                 />
+                            </Grid>
+                            <Grid xs={12} md={6}>
+                                <Select
+                                    value={selectedIcon}
+                                    name="selectedIcon"
+                                    onChange={handleInputChange}
+                                    variant="outlined"
+                                    fullWidth
+                                >
+                                    {iconOptions.map((option) => (
+                                        <MenuItem
+                                            key={option.value}
+                                            value={option.value}>
+                                            <Icon>{option.icon}</Icon>
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
                             </Grid>
                         </Grid>
                     </CardContent>
