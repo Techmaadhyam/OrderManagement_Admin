@@ -293,7 +293,7 @@ const CreateAppUser = () => {
           response.json().then((data) => {
             console.log(data);
 
-            //navigate("/dashboard/company/viewDetail", { state: data });
+            navigate("/dashboard/appUser/viewDetail", { state: data });
           });
         }
       } catch (error) {
