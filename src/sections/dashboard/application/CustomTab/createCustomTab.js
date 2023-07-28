@@ -176,27 +176,6 @@ const CreateCustomTab = () => {
                 </Grid>
                 <Grid xs={12} md={6}>
                   <TextField
-                    fullWidth
-                    label="Table Label"
-                    name="label"
-                    value={label}
-                    onChange={handleInputChange}
-                  />
-                </Grid>
-                <Grid xs={12} md={6}>
-                  <TextField
-                    fullWidth
-                    label="Description"
-                    name="description"
-                    multiline
-                    rows={2}
-                    value={description}
-                    onChange={handleInputChange}
-                  />
-                </Grid>
-                <Grid />
-                <Grid xs={12} md={6}>
-                  <TextField
                     value={selectedIcon}
                     name="selectedIcon"
                     onChange={handleInputChange}
@@ -206,7 +185,7 @@ const CreateCustomTab = () => {
                     SelectProps={{
                       MenuProps: {
                         style: {
-                          maxHeight: 200,
+                          maxHeight: 250,
                         },
                       },
                     }}
@@ -216,7 +195,7 @@ const CreateCustomTab = () => {
                         <Icon
                           style={{
                             marginRight: 8,
-                            verticalAlign: "middle", 
+                            verticalAlign: "middle",
                             lineHeight: "normal",
                           }}
                         >
@@ -226,6 +205,27 @@ const CreateCustomTab = () => {
                       </MenuItem>
                     ))}
                   </TextField>
+                </Grid>
+                <Grid xs={12} md={6}>
+                  <TextField
+                    fullWidth
+                    label="Table Label"
+                    name="label"
+                    value={label}
+                    onChange={handleInputChange}
+                  />
+                </Grid>
+                <Grid />
+                <Grid xs={12} md={6}>
+                  <TextField
+                    fullWidth
+                    label="Description"
+                    name="description"
+                    multiline
+                    rows={3}
+                    value={description}
+                    onChange={handleInputChange}
+                  />
                 </Grid>
               </Grid>
             </CardContent>
