@@ -7,6 +7,7 @@ import {
   Divider,
   TextField,
   MenuItem,
+  Typography,
   Unstable_Grid2 as Grid,
 } from "@mui/material";
 import { Box } from "@mui/system";
@@ -16,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { apiUrl } from "src/config";
 import Logo from "../logo/logo";
 import axios from "axios";
+import { Delete } from "@mui/icons-material";
 import {
   fetchAccessToken,
   fetchCountries,
@@ -72,6 +74,7 @@ const CreateCompany = () => {
   const [pan, setPan] = useState("");
 
   const [userData, setUserData] = useState([]);
+  const [uploadFile, setUploadFile] = useState(null);
 
   ////
 
@@ -81,6 +84,31 @@ const CreateCompany = () => {
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const hasError = touched && !emailRegex.test(email);
+
+  const handleUploadChange = (event) => {
+    const file = event.target.files[0];
+    setUploadFile(file);
+
+    if (file && (file.type === "image/png" || file.type === "image/jpeg")) {
+      // Perform necessary operations with the file, such as saving or previewing
+
+    } else {
+      // Display an error message or perform any other error handling
+      alert("Invalid file format. Please select a PNG or JPEG file.");
+    }
+  };
+
+  //delete uploaded files from state
+  const handleDeleteFile = (fileType) => {
+    switch (fileType) {
+      case "upload":
+        setUploadFile(null);
+        document.getElementById("upload").value = "";
+        break;
+      default:
+        break;
+    }
+  };
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -254,27 +282,32 @@ const CreateCompany = () => {
       gstn
     ) {
       try {
+        const formData = new FormData();
+
+        let jsonBodyData = {};
+
+        let file = uploadFile;
+
+        jsonBodyData.name = company;
+        jsonBodyData.category = type;
+        jsonBodyData.gstnumber = gstn;
+        jsonBodyData.zipcode = zipcode;
+        jsonBodyData.city = currentCity;
+        jsonBodyData.state = currentState;
+        jsonBodyData.country = currentCountry;
+        jsonBodyData.pandcard = pan;
+        jsonBodyData.address = address;
+        jsonBodyData.createddate = new Date();
+        jsonBodyData.logotype = uploadFile?.type;
+        // jsonBodyData.createdByUser = { id: userId };
+        // jsonBodyData.createdDate = new Date();
+
+        formData.append("logo", file);
+        formData.append("companywrapper", JSON.stringify(jsonBodyData));
+
         const response = await fetch(apiUrl + "createUpdateCompany", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: company,
-            category: type,
-            gstnumber: gstn,
-            zipcode: zipcode,
-            city: currentCity,
-            state: currentState,
-            country: currentCountry,
-            pandcard: pan,
-            address: address,
-            createddate: new Date(),
-            // createdByUser: { id: userId },
-            // createdDate: new Date(),
-            // lastModifiedDate: new Date(),
-            // lastModifiedByUser: { id: userId },
-          }),
+          body: formData,
         });
 
         if (response.ok) {
@@ -282,7 +315,7 @@ const CreateCompany = () => {
 
           response.json().then((data) => {
             console.log(data);
- 
+
             navigate("/dashboard/company/viewDetail", { state: data });
           });
         }
@@ -475,6 +508,41 @@ const CreateCompany = () => {
                   value={zipcode}
                   onChange={handleInputChange}
                 />
+              </Grid>
+              <Grid xs={12} md={6}>
+                <div>
+                  <div style={{ display: "inline-block" }}>
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      align="right"
+                      onClick={() =>
+                        document.getElementById("upload").click()
+                      }
+                    >
+                      Upload Company Logo
+                    </Button>
+                    {uploadFile && (
+                      <Button
+                        color="secondary"
+                        onClick={() => handleDeleteFile("upload")}
+                        startIcon={<Delete />}
+                        sx={{ color: "grey" }}
+                      >
+                        Delete
+                      </Button>
+                    )}
+                  </div>
+                  <input
+                    type="file"
+                    id="upload"
+                    onChange={handleUploadChange}
+                    style={{ display: "none" }}
+                  />
+                </div>
+                <Typography variant="subtitle2" sx={{ mt: 1 }}>
+                  File must be in PNG/JPEG format
+                </Typography>
               </Grid>
             </Grid>
           </CardContent>
