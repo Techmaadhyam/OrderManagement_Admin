@@ -7,6 +7,7 @@ import {
   Divider,
   TextField,
   MenuItem,
+  Typography,
   Unstable_Grid2 as Grid,
 } from "@mui/material";
 import { Box } from "@mui/system";
@@ -17,6 +18,7 @@ import { apiUrl } from "src/config";
 import Logo from "../logo/logo";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import { Delete } from "@mui/icons-material";
 
 
 //get userid
@@ -54,13 +56,15 @@ const EditCompany = () => {
   //form state handling
 
   const [email, setEmail] = useState("");
-  const [company, setCompany] = useState(state?.name ||"");
+  const [company, setCompany] = useState(state?.name || "");
   const [type, setType] = useState(state?.category || "");
-  const [address, setAddress] = useState(state?.address||"");
-  const [zipcode, setZipcode] = useState(state?.zipcode||"");
+  const [address, setAddress] = useState(state?.address || "");
+  const [zipcode, setZipcode] = useState(state?.zipcode || "");
   const [gstn, setGstn] = useState(state?.gstnumber || "");
   const [touched, setTouched] = useState(false);
   const [pan, setPan] = useState(state?.pandcard || "");
+  const [uploadFile, setUploadFile] = useState("");
+  const [base64String, setBase64String] = useState(state?.logo);
 
   const [userData, setUserData] = useState([]);
 
@@ -73,12 +77,53 @@ const EditCompany = () => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const hasError = touched && !emailRegex.test(email);
 
+  const handleUploadChange = (event) => {
+    const file = event.target.files[0];
+    setUploadFile(file);
+
+    if (file && (file.type === "image/png" || file.type === "image/jpeg")) {
+      // Perform necessary operations with the file, such as saving or previewing
+    } else {
+      // Display an error message or perform any other error handling
+      alert("Invalid file format. Please select a PNG or JPEG file.");
+    }
+  };
+
+
+
+  //delete uploaded files from state
+  const handleDeleteFile = (fileType) => {
+    switch (fileType) {
+      case "upload":
+        setUploadFile(null);
+        setBase64String(null)
+        document.getElementById("upload").value = "";
+        break;
+      default:
+        break;
+    }
+  };
+  const base64toBlob = (base64String, contentType) => {
+    const binaryString = window.atob(base64String);
+    const length = binaryString.length;
+    const bytes = new Uint8Array(length);
+
+    for (let i = 0; i < length; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+
+    return new Blob([bytes], { type: contentType });
+  };
+
+
+
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
 
     switch (name) {
-    
-     
+
+
       case "email":
         setEmail(value);
         break;
@@ -340,37 +385,46 @@ const EditCompany = () => {
       gstn
     ) {
       try {
+        const formData = new FormData();
+
+        let jsonBodyData = {};
+
+
+        jsonBodyData.id = state?.id;
+        jsonBodyData.name = company;
+        jsonBodyData.category = type;
+        jsonBodyData.gstnumber = gstn;
+        jsonBodyData.zipcode = zipcode;
+        jsonBodyData.city = currentCity;
+        jsonBodyData.state = currentState;
+        jsonBodyData.country = currentCountry;
+        jsonBodyData.pandcard = pan;
+        jsonBodyData.address = address;
+        jsonBodyData.createddate = state?.createddate;
+        jsonBodyData.lastmodifieddate = new Date();
+        jsonBodyData.logotype = uploadFile?.type || state?.logotype;
+        // jsonBodyData.createdByUser = { id: userId };
+        // jsonBodyData.createdDate = new Date();
+
+        if (uploadFile) {
+          formData.append("logo", uploadFile);
+        } else if (base64String) {
+          const contentType = state?.logotype
+          formData.append("logo", base64toBlob(base64String, contentType));
+        }
+
+        formData.append("companywrapper", JSON.stringify(jsonBodyData));
+
+
         const response = await fetch(apiUrl + "createUpdateCompany", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            id: state?.id,
-            name: company,
-            category: type,
-            gstnumber: gstn,
-            zipcode: zipcode,
-            city: currentCity,
-            state: currentState,
-            country: currentCountry,
-            pandcard: pan,
-            address: address,
-            createddate: state?.createddate,
-            lastmodifieddate: new Date(),
-            // createdByUser: { id: userId },
-            // createdDate: new Date(),
-            // lastModifiedDate: new Date(),
-            // lastModifiedByUser: { id: userId },
-          }),
+          body: formData,
         });
 
         if (response.ok) {
           // Redirect to home page upon successful submission
-
           response.json().then((data) => {
             console.log(data);
-
             navigate("/dashboard/company/viewDetail", { state: data });
           });
         }
@@ -563,6 +617,39 @@ const EditCompany = () => {
                   value={zipcode}
                   onChange={handleInputChange}
                 />
+              </Grid>
+              <Grid xs={12} md={6}>
+                <div>
+                  <div style={{ display: "inline-block" }}>
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      align="right"
+                      onClick={() => document.getElementById("upload").click()}
+                    >
+                      Update Company Logo
+                    </Button>
+                    {uploadFile || base64String && (
+                      <Button
+                        color="secondary"
+                        onClick={() => handleDeleteFile("upload")}
+                        startIcon={<Delete />}
+                        sx={{ color: "grey" }}
+                      >
+                        Delete
+                      </Button>
+                    )}
+                  </div>
+                  <input
+                    type="file"
+                    id="upload"
+                    onChange={handleUploadChange}
+                    style={{ display: "none" }}
+                  />
+                </div>
+                <Typography variant="subtitle2" sx={{ mt: 1 }}>
+                  File must be in PNG/JPEG format
+                </Typography>
               </Grid>
             </Grid>
           </CardContent>

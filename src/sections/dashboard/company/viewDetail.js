@@ -7,6 +7,7 @@ import {
   Typography,
   Link,
   SvgIcon,
+  Box,
 } from "@mui/material";
 
 import { PropertyList } from "src/components/property-list";
@@ -74,6 +75,20 @@ export const ViewCompanyDetail = (props) => {
       <h2>Company Details</h2>
       <Card style={{ marginBottom: "12px" }}>
         <PropertyList>
+          <Box
+            component="img"
+            sx={{
+              height: 50,
+              width: "auto",
+              ml: 3,
+              mt: 1,
+              mb: 0,
+              mr: 0,
+            }}
+            alt="logo"
+            src={`data:${state?.logotype};base64, ${state?.logo}`}
+          />
+          <Divider />
           <PropertyListItem align={align} label="Company Name">
             <Typography variant="subtitle2">{state?.name}</Typography>
           </PropertyListItem>
