@@ -629,7 +629,7 @@ const EditCompany = () => {
                     >
                       Update Company Logo
                     </Button>
-                    {uploadFile || base64String && (
+                    {(uploadFile || base64String) && (
                       <Button
                         color="secondary"
                         onClick={() => handleDeleteFile("upload")}
