@@ -35,6 +35,53 @@ import {
     CardContent,
 } from "@mui/material";
 
+// Add icon options imports here
+import BusinessTwoToneIcon from '@mui/icons-material/BusinessTwoTone';
+import WarehouseOutlinedIcon from "@mui/icons-material/WarehouseOutlined";
+import StorefrontTwoToneIcon from "@mui/icons-material/StorefrontTwoTone";
+import StoreMallDirectoryTwoToneIcon from "@mui/icons-material/StoreMallDirectoryTwoTone";
+import FactoryTwoToneIcon from "@mui/icons-material/FactoryTwoTone";
+import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";
+import ProductionQuantityLimitsTwoToneIcon from "@mui/icons-material/ProductionQuantityLimitsTwoTone";
+
+const iconOptions = [
+    {
+        label: "Accouting 1",
+        value: "BusinessTwoToneIcon",
+        icon: <BusinessTwoToneIcon />,
+    },
+    {
+        label: "Warehouse 1",
+        value: "WarehouseOutlinedIcon",
+        icon: <WarehouseOutlinedIcon />,
+    },
+    {
+        label: "Warehouse 2",
+        value: "StorefrontTwoToneIcon",
+        icon: <StorefrontTwoToneIcon />,
+    },
+    {
+        label: "Warehouse 3",
+        value: "StoreMallDirectoryTwoToneIcon",
+        icon: <StoreMallDirectoryTwoToneIcon />,
+    },
+    {
+        label: "Warehouse 4",
+        value: "FactoryTwoToneIcon",
+        icon: <FactoryTwoToneIcon />,
+    },
+    {
+        label: "Product 1",
+        value: "AddTwoToneIcon",
+        icon: <AddTwoToneIcon />,
+    },
+    {
+        label: "Product 2",
+        value: "ProductionQuantityLimitsTwoToneIcon",
+        icon: <ProductionQuantityLimitsTwoToneIcon />,
+    },
+];
+
 const fieldType = [
     {
         label: "Textfield",
@@ -100,27 +147,27 @@ const ViewCustomTab = () => {
     };
 
     const handleRemoveRow = async () => {
-      try {
-        await axios.delete(apiUrl + `deleteAppObjectById/${selectedProductId}`);
-        const updatedRows = userData.filter(
-          (item) => item.id !== selectedProductId
-        );
-        setUserData(updatedRows);
-        notify("success", `Sucessfully deleted tab row.`);
-      } catch (error) {
-        console.error("Error deleting row:", error.message);
-        notify("error", `Data is linked to another section, unable to delete.`);
-      }
-      setOpen(false);
+        try {
+            await axios.delete(apiUrl + `deleteAppObjectById/${selectedProductId}`);
+            const updatedRows = userData.filter(
+                (item) => item.id !== selectedProductId
+            );
+            setUserData(updatedRows);
+            notify("success", `Sucessfully deleted tab row.`);
+        } catch (error) {
+            console.error("Error deleting row:", error.message);
+            notify("error", `Data is linked to another section, unable to delete.`);
+        }
+        setOpen(false);
     };
 
     const handleClose = () => {
-      setOpen(false);
+        setOpen(false);
     };
 
     const handleConfirmDelete = (productId) => {
-      setSelectedProductId(productId);
-      setOpen(true);
+        setSelectedProductId(productId);
+        setOpen(true);
     };
 
     const handleEditRecord = (record) => {
@@ -141,6 +188,7 @@ const ViewCustomTab = () => {
                         tablename: editedRecord.tablename,
                         tablelabel: editedRecord.tablelabel,
                         isvisible: editedRecord.isvisible,
+                        logo: editedRecord.logo,
                         description: editedRecord.description,
                         createddate: editedRecord.createddate,
                         lastmodifieddate: new Date(),
@@ -252,15 +300,15 @@ const ViewCustomTab = () => {
             ),
         },
         {
-          dataIndex: "actionDelete",
-          key: "actionDelete",
-          render: (_, row) => (
-            <IconButton onClick={() => handleConfirmDelete(row.id)}>
-              <Icon>
-                <Delete />
-              </Icon>
-            </IconButton>
-          ),
+            dataIndex: "actionDelete",
+            key: "actionDelete",
+            render: (_, row) => (
+                <IconButton onClick={() => handleConfirmDelete(row.id)}>
+                    <Icon>
+                        <Delete />
+                    </Icon>
+                </IconButton>
+            ),
         },
     ];
 
@@ -294,7 +342,7 @@ const ViewCustomTab = () => {
                                 onChange={handleChange}
                             />
                         </Grid>
-                
+
                         <Grid xs={12} md={6}>
                             <TextField
                                 label="Table Label"
@@ -315,6 +363,38 @@ const ViewCustomTab = () => {
                                 onChange={handleChange}
                                 fullWidth
                             />
+                        </Grid>
+                        <Grid xs={12} md={6}>
+                            <TextField
+                                value={editedRecord.logo}
+                                name="logo"
+                                onChange={handleChange}
+                                label="Choose icon"
+                                fullWidth
+                                select
+                                SelectProps={{
+                                    MenuProps: {
+                                        style: {
+                                            maxHeight: 250,
+                                        },
+                                    },
+                                }}
+                            >
+                                {iconOptions.map((option) => (
+                                    <MenuItem key={option.value} value={option.value}>
+                                        <Icon
+                                            style={{
+                                                marginRight: 8,
+                                                verticalAlign: "middle",
+                                                lineHeight: "normal",
+                                            }}
+                                        >
+                                            {option.icon}
+                                        </Icon>
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
                         </Grid>
                     </Grid>
                 </DialogContent>
@@ -388,21 +468,21 @@ const ViewCustomTab = () => {
             </Box>
 
             {open && (
-          <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>Confirm Delete</DialogTitle>
-            <DialogContent>
-              Are you sure you want to delete this tab?
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose} color="primary">
-                Cancel
-              </Button>
-              <Button onClick={handleRemoveRow} color="primary">
-                Delete
-              </Button>
-            </DialogActions>
-          </Dialog>
-        )}
+                <Dialog open={open} onClose={handleClose}>
+                    <DialogTitle>Confirm Delete</DialogTitle>
+                    <DialogContent>
+                        Are you sure you want to delete this tab?
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose} color="primary">
+                            Cancel
+                        </Button>
+                        <Button onClick={handleRemoveRow} color="primary">
+                            Delete
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            )}
             {isPopupVisible && editRecord && (
                 <PopupComponent
                     record={editRecord}
