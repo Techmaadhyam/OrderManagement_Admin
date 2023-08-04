@@ -99,6 +99,12 @@ export const ViewCustomFieldsDetail = (props) => {
             value={state?.description}
           />
           <Divider />
+          {state.dropdownlovs ? (<PropertyListItem
+            align={align}
+            label="Dropdown"
+            value={state?.dropdownlovs}
+          />) : null}
+          <Divider />
         </PropertyList>
         <Divider />
       </Card>

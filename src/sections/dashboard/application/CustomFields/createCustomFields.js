@@ -26,9 +26,9 @@ const fieldType = [
   },
   {
     label: "Dropdown",
-    value:  "Dropdown",
+    value: "Dropdown",
   },
-  
+
 ];
 //get userid
 const userId = sessionStorage.getItem("user") || localStorage.getItem("user");
@@ -39,6 +39,7 @@ const CreateCustomFields = () => {
   const [label, setLabel] = useState("");
   const [type, setType] = useState("");
   const [description, setDescription] = useState("");
+  const [dropdowns, setDropdowns] = useState(null);
   const [userData, setUserData] = useState([]);
 
   const handleInputChange = (event) => {
@@ -51,11 +52,14 @@ const CreateCustomFields = () => {
       case "label":
         setLabel(value);
         break;
-        case "type":
+      case "type":
         setType(value);
         break;
       case "description":
         setDescription(value);
+        break;
+      case "dropdowns":
+        setDropdowns(value);
         break;
       default:
         break;
@@ -80,6 +84,7 @@ const CreateCustomFields = () => {
             fieldtype: type,
             description: description,
             createddate: new Date(),
+            dropdownlovs: dropdowns,
             // createdByUser: { id: userId },
 
             // lastModifiedDate: new Date(),
@@ -177,6 +182,22 @@ const CreateCustomFields = () => {
                   onChange={handleInputChange}
                 />
               </Grid>
+              {
+                type === "Dropdown" ? (
+                  <Grid xs={12} md={6}>
+                    <TextField
+                      fullWidth
+                      multiline
+                      rows={4}
+                      maxRows={8}
+                      label="Dropdown Values (comma separated)"
+                      name="dropdowns"
+                      value={dropdowns}
+                      onChange={handleInputChange}
+                    />
+                  </Grid>
+                ) : null
+              }
             </Grid>
           </CardContent>
           <Divider />

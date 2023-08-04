@@ -143,6 +143,7 @@ const ViewCustomFields = () => {
             fieldtype: editedRecord.fieldtype,
             description: editedRecord.description,
             createddate: editedRecord.createddate,
+            dropdownlovs: editedRecord.dropdownlovs,
             lastmodifieddate: new Date(),
           }),
         });
@@ -344,6 +345,20 @@ const ViewCustomFields = () => {
                 fullWidth
               />
             </Grid>
+
+            {
+              editedRecord.fieldtype === "Dropdown" ? (
+                <Grid xs={12} md={12}>
+                  <TextField
+                    label="Dropdown Values"
+                    name="dropdownlovs"
+                    multiline
+                    rows={2}
+                    value={editedRecord.dropdownlovs}
+                    onChange={handleChange}
+                    fullWidth
+                  />
+                </Grid>) : null}
           </Grid>
         </DialogContent>
         <DialogActions>
