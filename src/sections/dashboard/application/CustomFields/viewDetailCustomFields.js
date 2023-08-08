@@ -105,6 +105,12 @@ export const ViewCustomFieldsDetail = (props) => {
             value={state?.dropdownlovs}
           />) : null}
           <Divider />
+          {state.fieldtype === "TabField" ? (<PropertyListItem
+            align={align}
+            label="Tab id"
+            value={state?.tabid}
+          />) : null}
+          <Divider />
         </PropertyList>
         <Divider />
       </Card>

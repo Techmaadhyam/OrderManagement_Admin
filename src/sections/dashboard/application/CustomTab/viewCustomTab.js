@@ -191,6 +191,7 @@ const ViewCustomTab = () => {
                         logo: editedRecord.logo,
                         description: editedRecord.description,
                         createddate: editedRecord.createddate,
+                        tablekey: editedRecord.tablekey,
                         lastmodifieddate: new Date(),
                     }),
                 });
@@ -362,6 +363,15 @@ const ViewCustomTab = () => {
                                 value={editedRecord.description}
                                 onChange={handleChange}
                                 fullWidth
+                            />
+                        </Grid>
+                        <Grid xs={12} md={6}>
+                            <TextField
+                                label="Table Key"
+                                name="tablekey"
+                                fullWidth
+                                value={editedRecord.tablekey}
+                                onChange={handleChange}
                             />
                         </Grid>
                         <Grid xs={12} md={6}>

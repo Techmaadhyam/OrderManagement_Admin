@@ -44,6 +44,10 @@ const fieldType = [
     label: "Dropdown",
     value: "Dropdown",
   },
+  {
+    label: "TabField",
+    value: "TabField",
+  }
 ];
 //get userid
 const userId = sessionStorage.getItem("user") || localStorage.getItem("user");
@@ -59,6 +63,39 @@ const ViewCustomFields = () => {
   const [loading, setLoading] = useState(true);
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [selectedType, setSelectedType] = useState("Technician");
+  const [login, setLogin] = useState([]);
+  const [tabsData, setTabsData] = useState([]);
+  const [breakpoint, setBreakpoint] = useState(0);
+  const email = sessionStorage.getItem("mail") || localStorage.getItem("mail");
+  const password = sessionStorage.getItem("password") || localStorage.getItem("password");
+  useEffect(() => {
+    axios
+      .get(apiUrl + `getAppUser/${email}/${password}`)
+      .then((response) => {
+        setLogin(response.data[0]);
+        // console.log(response.data[0]);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [email, password]);
+
+  if (login.company
+    && login.profile
+    && login.company.id
+    && login.profile.id
+    && breakpoint === 0) {
+    axios
+      .get(apiUrl + `getSchemaTabs/${login.company.id}/${login.profile.id}`)
+      .then((response) => {
+        setTabsData(response.data);
+        console.log(response.data);
+        setBreakpoint(1);
+      })
+      .catch((error) => {
+        console.error("tabs is not working");
+      });
+  }
 
   const navigate = useNavigate();
 
@@ -144,6 +181,7 @@ const ViewCustomFields = () => {
             description: editedRecord.description,
             createddate: editedRecord.createddate,
             dropdownlovs: editedRecord.dropdownlovs,
+            tabid: editedRecord.tabid,
             lastmodifieddate: new Date(),
           }),
         });
@@ -345,7 +383,32 @@ const ViewCustomFields = () => {
                 fullWidth
               />
             </Grid>
-
+            {
+              editedRecord.fieldtype === "TabField" ? (
+                <Grid xs={12} md={6}>
+                  <TextField
+                    label="Tab Id"
+                    name="tabid"
+                    fullWidth
+                    value={editedRecord?.tabid}
+                    onChange={handleChange}
+                    select
+                    SelectProps={{
+                      MenuProps: {
+                        style: {
+                          maxHeight: 300,
+                        },
+                      },
+                    }}
+                  >
+                    {tabsData.map((option) => (
+                      <MenuItem key={option.tabid} value={option.tabid}>
+                        {option.tabname}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+              ) : null}
             {
               editedRecord.fieldtype === "Dropdown" ? (
                 <Grid xs={12} md={12}>

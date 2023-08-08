@@ -15,6 +15,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiUrl } from "src/config";
 import Logo from "src/sections/dashboard/logo/logo";
+import axios from "axios";
+
 
 
 
@@ -28,19 +30,62 @@ const fieldType = [
     label: "Dropdown",
     value: "Dropdown",
   },
+  {
+    label: "TabField",
+    value: "TabField",
+  }
 
 ];
 //get userid
 const userId = sessionStorage.getItem("user") || localStorage.getItem("user");
 
 const CreateCustomFields = () => {
+
+
   //form state handling
   const [userName, setUserName] = useState("");
   const [label, setLabel] = useState("");
   const [type, setType] = useState("");
   const [description, setDescription] = useState("");
   const [dropdowns, setDropdowns] = useState(null);
+  const [tabfields, setTabfields] = useState(null);
   const [userData, setUserData] = useState([]);
+  const [login, setLogin] = useState([]);
+  const [tabsData, setTabsData] = useState([]);
+  const [breakpoint, setBreakpoint] = useState(0);
+  const email = sessionStorage.getItem("mail") || localStorage.getItem("mail");
+  const password = sessionStorage.getItem("password") || localStorage.getItem("password");
+
+  useEffect(() => {
+    axios
+      .get(apiUrl + `getAppUser/${email}/${password}`)
+      .then((response) => {
+        setLogin(response.data[0]);
+        // console.log(response.data[0]);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [email, password]);
+
+  if (login.company
+    && login.profile
+    && login.company.id
+    && login.profile.id
+    && breakpoint === 0) {
+    axios
+      .get(apiUrl + `getSchemaTabs/${login.company.id}/${login.profile.id}`)
+      .then((response) => {
+        setTabsData(response.data);
+        console.log(response.data);
+        setBreakpoint(1);
+      })
+      .catch((error) => {
+        console.error("tabs is not working");
+      });
+  }
+
+
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -60,6 +105,9 @@ const CreateCustomFields = () => {
         break;
       case "dropdowns":
         setDropdowns(value);
+        break;
+      case "tabfields":
+        setTabfields(value);
         break;
       default:
         break;
@@ -85,6 +133,7 @@ const CreateCustomFields = () => {
             description: description,
             createddate: new Date(),
             dropdownlovs: dropdowns,
+            tabid: tabfields,
             // createdByUser: { id: userId },
 
             // lastModifiedDate: new Date(),
@@ -195,6 +244,35 @@ const CreateCustomFields = () => {
                       value={dropdowns}
                       onChange={handleInputChange}
                     />
+                  </Grid>
+                ) : null
+              }
+              {
+                type === "TabField" ? (
+                  <Grid xs={12} md={6}>
+                    <TextField
+                      fullWidth
+                      label="Tab Field"
+                      name="tabfields"
+                      required
+                      onChange={handleInputChange}
+                      value={tabfields}
+                      select
+                      SelectProps={{
+                        MenuProps: {
+                          style: {
+                            maxHeight: 300,
+                          },
+                        },
+                      }}
+                    >
+                      {tabsData.map((option) => (
+                        <MenuItem key={option.tabid}
+                          value={option.tabid}>
+                          {option.tabname}
+                        </MenuItem>
+                      ))}
+                    </TextField>
                   </Grid>
                 ) : null
               }

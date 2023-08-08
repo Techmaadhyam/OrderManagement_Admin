@@ -1,12 +1,12 @@
 
-import {  JWT_EXPIRES_IN, JWT_SECRET, sign } from 'src/utils/jwt';
+import { JWT_EXPIRES_IN, JWT_SECRET, sign } from 'src/utils/jwt';
 //import { users } from './data';
 import axios from 'axios';
 import { apiUrl } from 'src/config';
 
 const STORAGE_KEY = 'users';
 
-var users={}
+var users = {}
 
 
 
@@ -45,34 +45,38 @@ class AuthApi {
     await axios
       .get(apiUrl + `getUserByUsername/${email}`)
       .then((response) => {
-            users = response.data.loggedIUser[0];
+        users = response.data.loggedIUser[0];
 
-          if (
-            response &&
-            response.data &&
-            response.data.loggedIUser.length > 0 &&
-            password === response.data.loggedIUser[0].password
-          ) {
-            window.sessionStorage.setItem(
-              "user",
-              response.data.loggedIUser[0].id
-            );
-            window.sessionStorage.setItem(
-              "mail",
-              response.data.loggedIUser[0].userName
-            );
-            localStorage.setItem("user", response.data.loggedIUser[0].id);
-            //const accessToken = sign({ userId: user.id }, user.id, null);
-            //const accessToken = sign({ userId: user.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+        if (
+          response &&
+          response.data &&
+          response.data.loggedIUser.length > 0 &&
+          password === response.data.loggedIUser[0].password
+        ) {
+          window.sessionStorage.setItem(
+            "user",
+            response.data.loggedIUser[0].id
+          );
+          window.sessionStorage.setItem(
+            "mail",
+            response.data.loggedIUser[0].userName
+          );
+          window.sessionStorage.setItem(
+            "password",
+            response.data.loggedIUser[0].password
+          );
+          localStorage.setItem("user", response.data.loggedIUser[0].id);
+          //const accessToken = sign({ userId: user.id }, user.id, null);
+          //const accessToken = sign({ userId: user.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 
-            //resolve({accessToken});
-          } 
-          
+          //resolve({accessToken});
+        }
+
       })
       .catch((error) => {
-          console.error('[Auth Api]: ', error);
-          //return new Error('Internal server error');
-      });  
+        console.error('[Auth Api]: ', error);
+        //return new Error('Internal server error');
+      });
 
     return new Promise((resolve, reject) => {
       try {
@@ -84,11 +88,11 @@ class AuthApi {
 
         // Find the user
         //const user = mergedUsers.find((user) => user.emailId === email);
-       
-           if (users.password !== password) {
-             reject(new Error("Please check your email and password"));
 
-           }
+        if (users.password !== password) {
+          reject(new Error("Please check your email and password"));
+
+        }
 
         // Create the access token
         const accessToken = sign({ userId: users.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
@@ -108,21 +112,21 @@ class AuthApi {
   async signUp(request) {
     const { email, password } = request;
     await axios
-      .get(apiUrl +`getUserByUsername/${email}`)
+      .get(apiUrl + `getUserByUsername/${email}`)
       .then((response) => {
         console.log(response.data);
-          if(response && response.data && response.data.length > 0 && password === response.data[0].password){
-            users = response.data[0];
-            //const accessToken = sign({ userId: user.id }, user.id, null);
-            //const accessToken = sign({ userId: user.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+        if (response && response.data && response.data.length > 0 && password === response.data[0].password) {
+          users = response.data[0];
+          //const accessToken = sign({ userId: user.id }, user.id, null);
+          //const accessToken = sign({ userId: user.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 
-            //resolve({accessToken});
-          }
+          //resolve({accessToken});
+        }
       })
       .catch((error) => {
-          console.error('[Auth Api]: ', error);
-          //return new Error('Internal server error');
-      });   
+        console.error('[Auth Api]: ', error);
+        //return new Error('Internal server error');
+      });
 
     return new Promise((resolve, reject) => {
       try {
@@ -149,7 +153,7 @@ class AuthApi {
         };
 
         persistUser(user);
-        
+
         const accessToken = sign({ userId: users.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 
         resolve({ accessToken });

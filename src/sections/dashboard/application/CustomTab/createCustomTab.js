@@ -76,6 +76,7 @@ const CreateCustomTab = () => {
     const [label, setLabel] = useState("");
     const [type, setType] = useState(true);
     const [description, setDescription] = useState("");
+    const [tablekey, setTablekey] = useState("");
     const [userData, setUserData] = useState([]);
     const [selectedIcon, setSelectedIcon] = useState("");
 
@@ -94,6 +95,9 @@ const CreateCustomTab = () => {
                 break;
             case "description":
                 setDescription(value);
+                break;
+            case "tablekey":
+                setTablekey(value);
                 break;
             default:
                 break;
@@ -118,6 +122,7 @@ const CreateCustomTab = () => {
                         isvisible: type,
                         description: description,
                         logo: selectedIcon,
+                        tablekey: tablekey,
                         createddate: new Date(),
                         // createdByUser: { id: userId },
 
@@ -225,6 +230,15 @@ const CreateCustomTab = () => {
                                     multiline
                                     rows={3}
                                     value={description}
+                                    onChange={handleInputChange}
+                                />
+                            </Grid>
+                            <Grid xs={12} md={6}>
+                                <TextField
+                                    fullWidth
+                                    label="Table Key"
+                                    name="tablekey"
+                                    value={tablekey}
                                     onChange={handleInputChange}
                                 />
                             </Grid>
