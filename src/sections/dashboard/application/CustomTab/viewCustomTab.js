@@ -43,12 +43,39 @@ import StoreMallDirectoryTwoToneIcon from "@mui/icons-material/StoreMallDirector
 import FactoryTwoToneIcon from "@mui/icons-material/FactoryTwoTone";
 import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";
 import ProductionQuantityLimitsTwoToneIcon from "@mui/icons-material/ProductionQuantityLimitsTwoTone";
+import AddchartIcon from '@mui/icons-material/Addchart';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import HomeIcon from '@mui/icons-material/Home';
+import StorefrontIcon from '@mui/icons-material/Storefront';
+import GroupIcon from '@mui/icons-material/Group';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import AddBusinessIcon from '@mui/icons-material/AddBusiness';
+import BusinessIcon from '@mui/icons-material/Business';
+import ApartmentIcon from '@mui/icons-material/Apartment';
+import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
+import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
+import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 
 const iconOptions = [
+    {
+        label: "Home",
+        value: "HomeIcon",
+        icon: <HomeIcon />,
+    },
     {
         label: "Accouting 1",
         value: "BusinessTwoToneIcon",
         icon: <BusinessTwoToneIcon />,
+    },
+    {
+        label: "Accouting 2",
+        value: "AddchartIcon",
+        icon: <AddchartIcon />,
+    },
+    {
+        label: "Accouting 3",
+        value: "AccountBalanceIcon",
+        icon: <AccountBalanceIcon />,
     },
     {
         label: "Warehouse 1",
@@ -80,6 +107,51 @@ const iconOptions = [
         value: "ProductionQuantityLimitsTwoToneIcon",
         icon: <ProductionQuantityLimitsTwoToneIcon />,
     },
+    {
+        label: "Sell",
+        value: "StorefrontIcon",
+        icon: <StorefrontIcon />,
+    },
+    {
+        label: "User1",
+        value: "GroupIcon",
+        icon: <GroupIcon />,
+    },
+    {
+        label: "User2",
+        value: "ManageAccountsIcon",
+        icon: <ManageAccountsIcon />,
+    },
+    {
+        label: "Company1",
+        value: "AddBusinessIcon",
+        icon: <AddBusinessIcon />,
+    },
+    {
+        label: "Company2",
+        value: "BusinessIcon",
+        icon: <BusinessIcon />,
+    },
+    {
+        label: "Company3",
+        value: "ApartmentIcon",
+        icon: <ApartmentIcon />,
+    },
+    {
+        label: "Service1",
+        value: "HomeRepairServiceIcon",
+        icon: <HomeRepairServiceIcon />,
+    },
+    {
+        label: "Service2",
+        value: "MiscellaneousServicesIcon",
+        icon: <MiscellaneousServicesIcon />,
+    },
+    {
+        label: "Service3",
+        value: "SupportAgentIcon",
+        icon: <SupportAgentIcon />,
+    }
 ];
 
 const fieldType = [
